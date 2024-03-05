@@ -1,0 +1,4 @@
+-r requirements.txt
+pytest>=6.0
+flake8>=3.8
+sphinx>=3.2
