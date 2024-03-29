@@ -2,7 +2,7 @@ import unittest
 import os
 import pandas as pd
 import sys
-from generator import generate_fsh_from_excel
+from who_l3_smart_tools.core.logical_models.logical_model_generator import generate_fsh_from_excel
 
 
 class TestGenerator(unittest.TestCase):

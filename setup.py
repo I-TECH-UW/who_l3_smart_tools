@@ -2,13 +2,19 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name="l3_logical_model_generator",
-    version="0.1.1",
+    name="who_l3_smart_tools",
+    version="0.2.0",
     packages=find_packages(),
-    install_requires=["pandas>=1.0", "xlrd>=1.2", "openpyxl>=3.0"],
+    install_requires=[
+        "pandas>=1.0",
+        "xlrd>=1.2",
+        "openpyxl>=3.0",
+        "fhirpy>=1.4",
+        "fhir.resources>=7.0",
+    ],
     author="I-TECH-UW",
     author_email="pmanko@uw.edu",
-    description="A package to generate L3 Logical models from from Excel files.",
+    description="A CLI toolset for translating WHO Smart Guidelines L2 DAK artifacts into L3 FHIR Content IGs.",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     classifiers=[
@@ -19,7 +25,8 @@ setup(
     python_requires=">=3.6",
     entry_points={
         "console_scripts": [
-            "l3_logical_model_generator = l3_logical_model_generator.__init__:main"
+            "logical_model_gen = who_l3_smart_tools.cli.logical_model_gen:main",
+            "indicator_testing = who_l3_smart_tools.cli.indicator_testing:main",
         ]
     },
 )
