@@ -4,47 +4,37 @@ from openpyxl import Workbook
 import re
 
 
+import re
+
+
 def extract_elements(calculation_str):
     """
-    Extract unique terms and operation types from calculation strings.
-    """  # Define function keywords to look for
-    function_keywords = ["SUM", "DIFFERENCE", "MIN", "MAX", "IN"]
+    Extract unique terms and operation types from calculation strings and
+    reconstruct a logical function with column names.
+    """
+    # Extract the operation type (e.g., 'COUNT') from the string
+    operation_match = re.match(r"(\w+)\s+of\s+clients\s+with", calculation_str)
+    operation = operation_match.group(1) if operation_match else ""
 
-    # Regular expression to identify terms (assuming terms are quoted or listed after 'IN')
-    term_regex = re.compile(r'"(.*?)"|\'(.*?)\'|\bIN\s*\((.*?)\)')
+    # Split by ' with ' and ignore the first chunk ('COUNT of clients with')
+    terms = calculation_str.split(" with ")[1:]
 
-    # Find all terms
-    terms = term_regex.findall(calculation_str)
-    # Flatten the list of terms and filter out empty strings
-    terms = [item for sublist in terms for item in sublist if item]
+    # Clean the terms and remove special characters and additional information
+    cleaned_terms = []
+    for term in terms:
+        # Remove quotes and other non-alphanumeric characters except for equal sign and spaces
+        cleaned_term = re.sub(r"[^\w\s=]", "", term).strip()
+        cleaned_terms.append(cleaned_term)
 
-    # Clean and separate terms for 'IN' operation
-    in_terms = [term.split(",") for term in terms if "," in term]
-    in_terms = [
-        item.strip().strip("'").strip('"') for sublist in in_terms for item in sublist
-    ]
-
-    # Remove 'IN' operation terms from the main list
-    terms = [term for term in terms if "," not in term]
-
-    # Combine and ensure unique terms
-    all_terms = list(set(terms + in_terms))
-
-    # Assign each term a column name
+    # Ensure unique terms and generate column names (A, B, C, ...)
+    all_terms = list(set(cleaned_terms))  # In case of duplicates
     term_to_column = {term: chr(65 + i) for i, term in enumerate(all_terms)}
 
-    # Reconstruct the logical function with column names
-    logical_function = calculation_str
-    for term, column_name in term_to_column.items():
-        logical_function = re.sub(
-            rf'"{term}"|\'{term}\'', column_name, logical_function
-        )
+    # Construct the logical expression
+    logical_expression = " AND ".join([f"{term_to_column[term]}" for term in all_terms])
+    logical_expression = f"{operation} where {logical_expression}"
 
-    # Replace function keywords with their operation equivalents if needed
-    for keyword in function_keywords:
-        logical_function = logical_function.replace(keyword, keyword.upper())
-
-    return term_to_column, logical_function
+    return term_to_column, logical_expression
 
 
 def generate_test_scaffolding(input_file, output_file):

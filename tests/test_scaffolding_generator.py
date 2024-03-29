@@ -15,14 +15,14 @@ class TestExtractElements(unittest.TestCase):
                     "Medications prescribed=PrEP for HIV prevention",
                     "Date medications prescribed in the reporting period",
                 },
-                "expected_logic": "COUNT where A AND B",
+                "expected_logic": "COUNT of clients where A AND B",
             },
             'SUM of "Number of days prescribed" for all clients with "Medications prescribed"=\'PrEP for HIV prevention\'': {
                 "expected_terms": {
                     "Number of days prescribed",
-                    "Medications prescribed",
+                    "Medications prescribed=PrEP for HIV prevention",
                 },
-                "expected_logic": "SUM of A for all clients with B='PrEP for HIV prevention'",
+                "expected_logic": "SUM of A for all clients where B",
             },
             'SUM of [DIFFERENCE in MIN("Date OAMT initiated", "Reporting period start date") and MAX("Date of loss to follow-up or OAMT stopped", "Reporting period end date")] for all clients with "Medications prescribed" IN \'Methadone\', \'Buprenorphine\'': {
                 "expected_terms": {
