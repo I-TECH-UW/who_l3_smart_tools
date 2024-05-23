@@ -185,7 +185,7 @@ def generate_test_scaffolding(input_file, output_file):
 
         # Construct headers, starting with 'Patient ID'
         headers = (
-            ["Patient ID", "Numerator:"]
+            ["Patient.id", "Numerator:"]
             + [row["Numerator calculation"]]
             + numerator_terms
             + ["Denominator:"]

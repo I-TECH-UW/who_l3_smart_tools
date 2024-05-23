@@ -23,7 +23,7 @@ class DataGenerator:
         "Key population member type": ["FSW", "MSM", "PWID", "TG", "PWUD"],
         "TB diagnosis result": ["Yes", "No"],
         "Presumptive TB": ["Yes", "No"],
-        "gender": ["male", "female", "other", "unknown"],
+        "Patient.gender": ["male", "female", "other", "unknown"],
     }
 
     general_output_headers = [
@@ -88,15 +88,19 @@ class DataGenerator:
             }
 
     # Generate a random dataset based on the template
-    def generate_data_sheet(self, input_datasheet, num_random_rows):
+    def generate_data_sheet(self, input_datasheet_name, num_random_rows):
         # Use provided example rows and fill in the additional required values, especially
         # for the disaggregation fields
 
-        output_headers = self.general_output_headers
-        +self.parsed_data["disaggregation_terms"]
-        +self.parsed_data["numerator_terms"]
-        +self.parsed_data["denominator_terms"]
-        +self.indicator_calculation_headers
+        output_headers = (
+            self.general_output_headers
+            + self.parsed_data["disaggregation_terms"]
+            + self.parsed_data["numerator_terms"]
+            + self.parsed_data["denominator_terms"]
+            + self.indicator_calculation_headers
+        )
+
+        input_datasheet = self.excel_data[input_datasheet_name]
 
         output_rows = []
 
@@ -106,12 +110,13 @@ class DataGenerator:
             output_row = []
             # Add data based on function mapped to header
             for header in output_headers:
-                output_row.append(self.map_header_value(header, row))
+                output_row.append(self.map_header_value(header, row, index))
 
         # Generate additional rows with a random selection of numerator,
         # denominator, and disaggregation values
 
-        df = pd.DataFrame(rows, columns=self.parsed_data.keys())
+        df = pd.DataFrame(output_rows, columns=self.parsed_data.keys())
+
         return df
 
     def random_valueset_value(self, header):
