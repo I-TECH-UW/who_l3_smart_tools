@@ -1,7 +1,8 @@
 import unittest
 import os
+import pandas as pd
 from openpyxl import load_workbook
-from who_l3_smart_tools.core.indicator_testing.test_scaffolding_generator import (
+from who_l3_smart_tools.core.indicator_testing.scaffolding_generator import (
     extract_elements,
     generate_test_scaffolding,
 )
@@ -10,19 +11,19 @@ from who_l3_smart_tools.core.indicator_testing.test_scaffolding_generator import
 class TestExtractElements(unittest.TestCase):
     def setUp(self):
         self.test_cases = {
-            'COUNT of clients with "Medications prescribed"=\'PrEP for HIV prevention\' with "Date medications prescribed" in the reporting period': {
-                "expected_terms": {
-                    "Medications prescribed=PrEP for HIV prevention",
-                    "Date medications prescribed in the reporting period",
-                },
-                "expected_logic": "COUNT of clients where A AND B",
-            },
             'SUM of "Number of days prescribed" for all clients with "Medications prescribed"=\'PrEP for HIV prevention\'': {
                 "expected_terms": {
                     "Number of days prescribed",
                     "Medications prescribed=PrEP for HIV prevention",
                 },
-                "expected_logic": "SUM of A for all clients where B",
+                "expected_logic": "SUM of A for ALL WHERE B",
+            },
+            'COUNT of clients with "Medications prescribed"=\'PrEP for HIV prevention\' with "Date medications prescribed" in the reporting period': {
+                "expected_terms": {
+                    "Medications prescribed=PrEP for HIV prevention",
+                    "Date medications prescribed in the reporting period",
+                },
+                "expected_logic": "COUNT WHERE A AND B",
             },
             'SUM of [DIFFERENCE in MIN("Date OAMT initiated", "Reporting period start date") and MAX("Date of loss to follow-up or OAMT stopped", "Reporting period end date")] for all clients with "Medications prescribed" IN \'Methadone\', \'Buprenorphine\'': {
                 "expected_terms": {
@@ -30,9 +31,9 @@ class TestExtractElements(unittest.TestCase):
                     "Reporting period start date",
                     "Date of loss to follow-up or OAMT stopped",
                     "Reporting period end date",
-                    "Medications prescribed",
+                    "Medications prescribed in Methadone, Buprenorphine",
                 },
-                "expected_logic": "SUM of [DIFFERENCE in MIN(A, B) and MAX(C, D)] for all clients with E IN 'Methadone', 'Buprenorphine'",
+                "expected_logic": "SUM of [DIFFERENCE in MIN(A, B) and MAX(C, D)] for ALL WHERE E",
             },
             'COUNT of clients with ("Medications prescribed"=\'Methadone\' AND "Dose of medications prescribed" GREATER THAN OR EQUAL TO 60mg) OR ("Medications prescribed"=\'Buprenorphine\' AND "Dose of medications prescribed" GREATER THAN OR EQUAL TO 8mg) for a specified "Reporting date"': {
                 "expected_terms": {
@@ -71,43 +72,54 @@ class TestExtractElements(unittest.TestCase):
                 )
 
 
+class ScaffoldingTestCase(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        # Define paths to your input and output Excel files
+        cls.input_file = "tests/data/indicator_dak_input.xlsx"
+        cls.output_file = "tests/output/indicator_test_output.xlsx"
+        # Generate the test scaffolding output file
+        generate_test_scaffolding(cls.input_file, cls.output_file)
+
+    @classmethod
+    def tearDownClass(cls):
+        # Remove the output file after tests are done
+        # os.remove(cls.output_file)
+        pass
+
+    def test_sheet_columns(self):
+        # Load the output workbook
+        wb = load_workbook(self.output_file)
+        df = pd.read_excel(self.input_file, sheet_name="Indicator definitions")
+
+        for index, row in df.iterrows():
+            ws_name = f"Indicator_{index + 1}"
+            # Check if sheet exists
+            self.assertIn(
+                ws_name, wb.sheetnames, f"{ws_name} does not exist in the output file."
+            )
+
+            # Load the sheet
+            ws = wb[ws_name]
+
+            # Expected number of columns = # of terms + # of disaggregations + 4 (Patient ID, Logic String, Numerator, Denominator)
+            expected_columns = (
+                len(row["Disaggregation data elements"].split(","))
+                + len(
+                    row[
+                        "List of all data elements included in numerator and denominator"
+                    ].split(",")
+                )
+                + 4
+            )
+            actual_columns = ws.max_column
+
+            self.assertEqual(
+                expected_columns,
+                actual_columns,
+                f"{ws_name} has incorrect number of columns.",
+            )
+
+
 if __name__ == "__main__":
     unittest.main()
-
-
-# class ScaffoldingTestCase(unittest.TestCase):
-
-#     @classmethod
-#     def setUpClass(cls):
-#         # Setup tasks before any tests are run (e.g., create a minimal input Excel file)
-#         cls.input_file = "data/indicator_dak_input.xlsx"
-#         cls.output_file = "output/indicator_test_output.xlsx"
-
-#     @classmethod
-#     def tearDownClass(cls):
-#         # Clean up tasks after all tests are run (e.g., delete test files)
-#         os.remove(cls.output_file)
-
-#     def test_extract_elements(self):
-#         # Test the extract_elements function
-#         calculation_str = '"Element1" + "Element2"'
-#         term_to_column, logical_function = extract_elements(calculation_str)
-#         self.assertEqual(set(term_to_column.keys()), {"Element1", "Element2"})
-#         self.assertTrue(
-#             logical_function.startswith("A + B"), "Logical function replacement error."
-#         )
-
-#     def test_generate_test_scaffolding_sheets_count(self):
-#         # Test to ensure the output Excel file has the expected number of sheets
-#         generate_test_scaffolding(self.input_file, self.output_file)
-#         wb = load_workbook(self.output_file)
-#         expected_sheets_count = 1  # Adjust based on your input file
-#         self.assertEqual(
-#             len(wb.sheetnames),
-#             expected_sheets_count,
-#             "Incorrect number of sheets in the output file.",
-#         )
-
-
-# if __name__ == "__main__":
-#     unittest.main()

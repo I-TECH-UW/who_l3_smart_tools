@@ -162,5 +162,6 @@ l3-data/
 ~$*
 
 output/*
+tests/output/*
 
 .DS_Store

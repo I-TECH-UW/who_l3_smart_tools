@@ -3,3 +3,4 @@ xlrd>=1.2
 openpyxl>=3.0
 fhirpy>=1.4
 fhir.resources>=7.0
+faker>=25.0
