@@ -50,7 +50,28 @@ def apply_fill_to_column_range(ws, start_col, end_col, fill):
             row.fill = fill
 
 
-def parse_terms(description):
+def parse_exclusions(exclusions_str):
+    try:
+        pattern = r'with a[n]? "(.*?)" IN (.*?) at the end of the reporting period'
+        match = re.search(pattern, exclusions_str)
+
+        if match:
+            variable = match.group(1)
+            terms = match.group(2)
+            terms_list = [term.strip() for term in terms.split(",")]
+            result = [f'"{variable}" IN {term}' for term in terms_list]
+            return exclusions_str, result
+        else:
+            return exclusions_str, exclusions_str.split(",")
+
+    except Exception as e:
+        print(f"Error parsing exclusions: {e}")
+        return None, []
+
+
+def parse_calculation(description):
+    scope = "unknown"
+
     # Define the patterns
     count_pattern = re.compile(r"COUNT OF (.*?) WITH", re.IGNORECASE)
     sum_pattern = re.compile(r"SUM OF (.*?) FOR ALL CLIENTS WITH", re.IGNORECASE)
@@ -70,12 +91,12 @@ def parse_terms(description):
             r"\sAND\s|\sOR\s(?![^()]*\))", op_term_str, flags=re.IGNORECASE
         )
     else:
-        return []
+        return [], scope
 
     # Find the terms after the WITH
     term_match = term_pattern.search(description)
     if not term_match:
-        return []
+        return [], scope
 
     terms = term_match.group(1)
 
@@ -87,7 +108,11 @@ def parse_terms(description):
         return_terms.extend(op_split_terms)
     return_terms.extend(split_terms)
 
-    return [term.strip() for term in return_terms]
+    return_terms = [term.strip() for term in return_terms]
+
+    if op_term_str:
+        scope = op_term_str
+    return return_terms, scope
 
 
 def extract_elements(calculation_str):
@@ -166,77 +191,109 @@ def generate_test_scaffolding(input_file, output_file):
         )
 
         # Extract Exclusion Elements if they exist and are strings
-        numerator_exclusions = []
-        denominator_exclusions = []
-        if row["Numerator exclusions"] and isinstance(row["Numerator exclusions"], str):
-            numerator_exclusions = re.split(
-                r"[\n,]+", row["Numerator exclusions"].strip()
-            )
-        if row["Denominator exclusions"] and isinstance(
-            row["Denominator exclusions"], str
-        ):
-            denominator_exclusions = re.split(
-                r"[\n,]+", row["Denominator exclusions"].strip()
-            )
-
-        # Extract and process calculation elements for numerator and denominator
-        numerator_terms = parse_terms(row["Numerator calculation"])
-        denominator_terms = parse_terms(row["Denominator calculation"])
-
-        # Construct headers, starting with 'Patient ID'
-        headers = (
-            ["Patient.id", "Numerator:"]
-            + [row["Numerator calculation"]]
-            + numerator_terms
-            + ["Denominator:"]
-            + [row["Denominator calculation"]]
-            + denominator_terms
-            + ["Disaggregation:"]
-            + disaggregation_elements
+        numerator_exclusion_string, numerator_exclusions = parse_exclusions(
+            row["Numerator exclusions"]
         )
 
-        numerator_col_num = len(numerator_terms) + 2
-        denominator_col_num = len(denominator_terms) + 2
+        denominator_exclusion_string, denominator_exclusions = parse_exclusions(
+            row["Denominator exclusions"]
+        )
+
+        # Parse the numerator and denominator calculations
+        numerator_terms, numerator_scope = parse_calculation(
+            row["Numerator calculation"]
+        )
+        denominator_terms, denominator_scope = parse_calculation(
+            row["Denominator calculation"]
+        )
+
+        if numerator_scope != denominator_scope:
+            print(
+                f"Indicator {indicator_id} has different scopes for numerator and denominator calculations."
+            )
+
+        # Column 1
+        if numerator_scope == "tests":
+            headers = ["Test.id"]
+        elif numerator_scope == "clients":
+            headers = ["Patient.id"]
+        else:
+            raise ValueError(
+                f"Indicator {indicator_id} has an unknown scope: {numerator_scope}"
+            )
+
+        # Construct headers, starting with 'Patient ID'
+        headers = headers + ["Numerator:"] + [row["Numerator calculation"]]
+
+        if numerator_exclusion_string:
+            headers.append("EXCLUSION: " + numerator_exclusion_string)
+
+        blank_fill_length = len(headers) - 1
+
+        headers = headers + numerator_terms + numerator_exclusions
+
+        headers = headers + ["Denominator:"] + [row["Denominator calculation"]]
+
+        if denominator_exclusion_string:
+            headers.append("EXCLUSION: " + denominator_exclusion_string)
+
+        headers = headers + denominator_terms + denominator_exclusions
+
+        headers = headers + ["Disaggregation:"] + disaggregation_elements
 
         # Write headers to the worksheet
         ws.append(headers)
 
         # Generate true/false combinations for each term
-        combinations = list(product([0, 1], repeat=len(numerator_terms)))
+
+        # Only create combinations for numerator and numerator exclusion, since
+        # denominator should be a superset and might need to be cleaned up manually
+        # due to the DAK imprecise definitions.
+        combinations = list(
+            product([0, 1], repeat=(len(numerator_terms) + len(numerator_exclusions)))
+        )
+
+        # If client scope, then each row represents a unique client. If test scope,
+        # then each row represents a unique test. For simplicity, we only deal with the
+        # scope indicated, and generate relevant patient data in later steps.
         for i, combo in enumerate(combinations, start=1):
             # Append combination rows with Patient ID and placeholders for numerator and denominator values
             ws.append(
-                [i] + ["", ""] + list(combo)
+                [i] + [""] * blank_fill_length + list(combo)
             )  # Empty values for placeholder logic and actual num/denom values
 
         # Apply color fills based on calculated column ranges
-        # Column 1 is always Patient ID
+        # Column 1 is always ID
         apply_fill_to_column_range(ws, 1, 1, fills["Patient ID"])
 
         # Numerator terms start after Patient ID
         num_start_col = 2
-        num_end_col = num_start_col + numerator_col_num - 1
+        num_end_col = (
+            num_start_col + len(numerator_terms) + len(numerator_exclusions) + 1
+        )
+        if numerator_exclusion_string:
+            num_end_col += 1
+
         apply_fill_to_column_range(
             ws, num_start_col, num_end_col, fills["Numerator Terms"]
         )
 
         # Denominator terms follow numerator terms
         denom_start_col = num_end_col + 1
-        denom_end_col = denom_start_col + denominator_col_num - 1
+        denom_end_col = (
+            denom_start_col + len(denominator_terms) + len(denominator_exclusions) + 1
+        )
+        if denominator_exclusion_string:
+            denom_end_col += 1
         apply_fill_to_column_range(
             ws, denom_start_col, denom_end_col, fills["Denominator Terms"]
         )
 
         # Disaggregation starts after
         dis_start_col = denom_end_col + 1
-        dis_end_col = dis_start_col + len(disaggregation_elements) + 1
+        dis_end_col = dis_start_col + len(disaggregation_elements)
         apply_fill_to_column_range(
             ws, dis_start_col, dis_end_col, fills["Disaggregation"]
         )
-
-        # # adjust the column widths based on the content
-        # for idx, col in enumerate(ws.columns):  # loop through all columns
-        #     max_len = len(str(headers[idx])) + 1
-        #     ws.column_dimensions[get_column_letter(idx + 1)].width = max_len
 
     writer.close()

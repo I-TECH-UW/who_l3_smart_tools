@@ -11,8 +11,8 @@ class TestGenerateTestScaffolding(unittest.TestCase):
 
     # Generates a new Excel file with the same number of sheets as the number of rows in the 'Indicator definitions' sheet of the input file.
     def test_generate_test_scaffolding_same_number_of_sheets(self):
-        input_file = "tests/data/indicator_dak_input.xlsx"
-        output_file = "tests/output/indicator_test_output.xlsx"
+        input_file = "tests/data/indicator_dak_input_MINI.xlsx"
+        output_file = "tests/output/indicator_test_output_MINI.xlsx"
 
         generate_test_scaffolding(input_file, output_file)
 
