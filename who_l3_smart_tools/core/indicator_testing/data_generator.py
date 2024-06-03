@@ -1,3 +1,4 @@
+import re
 import pandas as pd
 import uuid
 from random import choice, randint
@@ -18,6 +19,7 @@ from faker import Faker
 class DataGenerator:
     fake = Faker()
 
+    # TODO: Reference IG for valuesets
     valuesets = {
         "Patient.state (home)": ["Lagos", "Abuja", "Kano", "Ogun", "Oyo"],
         "Key population member type": ["FSW", "MSM", "PWID", "TG", "PWUD"],
@@ -26,17 +28,15 @@ class DataGenerator:
         "Patient.gender": ["male", "female", "other", "unknown"],
     }
 
-    general_output_headers = {
-        [
-            "Bundle #",
-            "Patient.id",
-            "Patient.name.family",
-            "Patient.name.given",
-            "Patient.gender",
-            "Patient.birthDate",
-            "Test.id",
-        ]
-    }
+    general_output_headers = [
+        "Bundle #",
+        "Patient.id",
+        "Patient.name.family",
+        "Patient.name.given",
+        "Patient.gender",
+        "Patient.birthDate",
+        "Test.id",
+    ]
 
     indicator_calculation_headers = ["Numerator", "Denominator"]
 
@@ -69,13 +69,27 @@ class DataGenerator:
             denominator_index = headers.index("Denominator:")
             disaggregation_index = headers.index("Disaggregation:")
 
+            # Determine if sheet contains exclusion column by matching for "EXCLUSION:" regular expression
+            re_string = r"EXCLUSION:"
+            exclusion_indices = []
+            for i, header in enumerate(headers):
+                if re.match(re_string, header):
+                    exclusion_indices.append(i)
+
+            numerator_len = 3 if exclusion_indices else 2
+            denominator_len = 3 if exclusion_indices else 2
+
             # Get all terms between the 'Numerator:' and 'Denominator:' headings
             numerator_formula = headers[numerator_index + 1]
-            numerator_terms = headers[numerator_index + 2 : denominator_index]
+            numerator_terms = headers[
+                numerator_index + numerator_len : denominator_index
+            ]
 
             # Get all terms between the 'Denominator:' and 'Disaggregation:' headings
             denominator_formula = headers[denominator_index + 1]
-            denominator_terms = headers[denominator_index + 2 : disaggregation_index]
+            denominator_terms = headers[
+                denominator_index + denominator_len : disaggregation_index
+            ]
 
             # Get all terms after the 'Disaggregation:' heading
             disaggregation_terms = headers[disaggregation_index + 1 :]
@@ -104,7 +118,7 @@ class DataGenerator:
             }
         return parsed_data
 
-    def generate_data_file(self, path, num_random_rows=10):
+    def generate_data_file(self, path, num_random_rows=1000):
         sheets = {}
 
         # Generate data for each sheet
@@ -157,8 +171,8 @@ class DataGenerator:
         ]
 
         # Remove any duplicate column names which are read in with an appended number
-        for header in appended_headers:
-            phenotype_headers.remove(header)
+        for appended_header in appended_headers:
+            phenotype_headers.remove(appended_header)
 
         # Remove Age and Gender from disaggregation terms since they are already generated
         # by default
@@ -180,13 +194,15 @@ class DataGenerator:
             phenotype_column_values = []
 
             # Generate non-phenotype columns
-            for header in general_headers:
+            for general_header in general_headers:
                 general_column_values.append(
-                    self.map_header_value(header, index, sheet_parsed_data, row)
+                    self.map_header_value(general_header, index, sheet_parsed_data, row)
                 )
-            for header in phenotype_headers:
+            for phenotype_header in phenotype_headers:
                 phenotype_column_values.append(
-                    self.map_header_value(header, index, sheet_parsed_data, row)
+                    self.map_header_value(
+                        phenotype_header, index, sheet_parsed_data, row
+                    )
                 )
 
             # Add the phenotype to the list of phenotypes
@@ -259,7 +275,7 @@ class DataGenerator:
         # Map header to function
         # Call function with row as argument
         try:
-            if header == "Patient #":
+            if header == "Patient #" or header == "Bundle #":
                 return index + 1
             elif header == "Patient.id":
                 return str(uuid.uuid4())

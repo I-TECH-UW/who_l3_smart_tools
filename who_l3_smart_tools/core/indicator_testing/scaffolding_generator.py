@@ -168,110 +168,155 @@ def extract_elements(calculation_str):
     return term_to_placeholder, calculation_str
 
 
-def generate_test_scaffolding(input_file, output_file):
-    df = pd.read_excel(input_file, sheet_name="Indicator definitions")
-    writer = pd.ExcelWriter(output_file, engine="openpyxl")
+class ScaffoldingGenerator:
+    def __init__(self, input_file, output_file):
+        self.input_file = input_file
+        self.output_file = output_file
+        self.dak_data = pd.read_excel(input_file, sheet_name="Indicator definitions")
+        self.writer = pd.ExcelWriter(output_file, engine="openpyxl")
 
-    for index, row in df.iterrows():
-        # Create a new worksheet for each indicator
-        short_name = row["Short name"]
-        indicator_id = row["DAK ID"]
-        ref_id = row["Ref no."]
+    def generate_test_scaffolding(self):
+        for index, row in self.dak_data.iterrows():
 
-        ws_name = f"{indicator_id}"
-        workbook = writer.book
-        if ws_name in workbook.sheetnames:
-            ws = workbook[ws_name]
-        else:
-            ws = workbook.create_sheet(title=ws_name)
+            row_data = self.parse_dak_row(row)
+
+            # Create a new worksheet for each indicator
+            indicator_id = row_data["dak-id"]
+            ws_name = f"{indicator_id}"
+            workbook = self.writer.book
+
+            if ws_name in workbook.sheetnames:
+                ws = workbook[ws_name]
+            else:
+                ws = workbook.create_sheet(title=ws_name)
+
+            numerator_scope, denominator_scope = (
+                row_data["numerator-scope"],
+                row_data["denominator-scope"],
+            )
+
+            if numerator_scope != denominator_scope:
+                print(
+                    f"Indicator {indicator_id} has different scopes for numerator and denominator calculations."
+                )
+
+            headers, blank_fill_length = self.generate_headers(row, row_data)
+
+            # Write headers to the worksheet
+            ws.append(headers)
+
+            # Generate true/false combinations for each term
+
+            # Only create combinations for numerator and numerator exclusion, since
+            # denominator should be a superset and might need to be cleaned up manually
+            # due to the DAK imprecise definitions.
+            combinations = list(
+                product(
+                    [0, 1],
+                    repeat=(
+                        len(row_data["numerator-terms"])
+                        + len(row_data["numerator-exclusions"])
+                    ),
+                )
+            )
+
+            # If client scope, then each row represents a unique client. If test scope,
+            # then each row represents a unique test. For simplicity, we only deal with the
+            # scope indicated, and generate relevant patient data in later steps.
+            for i, combo in enumerate(combinations, start=1):
+                # Append combination rows with Patient ID and placeholders for numerator and denominator values
+                ws.append(
+                    [i] + [""] * blank_fill_length + list(combo)
+                )  # Empty values for placeholder logic and actual num/denom values
+            
+            # Apply color fills based on calculated column ranges
+            self.paint_worksheet(ws, row_data)
+            
+
+        self.writer.close()
+
+    def parse_dak_row(self, row):
+        # Extract the elements from the row
+        row_data = {}
+
+        row_data["short-name"] = row["Short name"]
+        row_data["dak-id"] = row["DAK ID"]
+        row_data["ref-id"] = row["Ref no."]
 
         # Extract disaggregation elements and data elements
-        disaggregation_elements = re.split(
+        row_data["disaggregation-elements"] = re.split(
             r"[\n,]+", row["Disaggregation data elements"].strip()
         )
 
         # Extract Exclusion Elements if they exist and are strings
-        numerator_exclusion_string, numerator_exclusions = parse_exclusions(
-            row["Numerator exclusions"]
+        row_data["numerator-exclusion-string"], row_data["numerator-exclusions"] = (
+            parse_exclusions(row["Numerator exclusions"])
         )
 
-        denominator_exclusion_string, denominator_exclusions = parse_exclusions(
-            row["Denominator exclusions"]
+        row_data["denominator-exclusion-string"], row_data["denominator-exclusions"] = (
+            parse_exclusions(row["Denominator exclusions"])
         )
 
         # Parse the numerator and denominator calculations
-        numerator_terms, numerator_scope = parse_calculation(
+        row_data["numerator-terms"], row_data["numerator-scope"] = parse_calculation(
             row["Numerator calculation"]
         )
-        denominator_terms, denominator_scope = parse_calculation(
-            row["Denominator calculation"]
+
+        row_data["denominator-terms"], row_data["denominator-scope"] = (
+            parse_calculation(row["Denominator calculation"])
         )
 
-        if numerator_scope != denominator_scope:
-            print(
-                f"Indicator {indicator_id} has different scopes for numerator and denominator calculations."
-            )
+        return row_data
 
+    def generate_headers(self, row, row_data):
         # Column 1
-        if numerator_scope == "tests":
+        if row_data["numerator-scope"] == "tests":
             headers = ["Test.id"]
-        elif numerator_scope == "clients":
+        elif row_data["numerator-scope"] == "clients":
             headers = ["Patient.id"]
         else:
             raise ValueError(
-                f"Indicator {indicator_id} has an unknown scope: {numerator_scope}"
+                f"Indicator {row_data["dak-id"]  } has an unknown scope: {row_data["numerator-scope"]}"
             )
 
         # Construct headers, starting with 'Patient ID'
         headers = headers + ["Numerator:"] + [row["Numerator calculation"]]
 
-        if numerator_exclusion_string:
-            headers.append("EXCLUSION: " + numerator_exclusion_string)
+        if row_data["numerator-exclusion-string"]:
+            headers.append("EXCLUSION: " + row_data["numerator-exclusion-string"])
 
         blank_fill_length = len(headers) - 1
 
-        headers = headers + numerator_terms + numerator_exclusions
+        headers = (
+            headers + row_data["numerator-terms"] + row_data["numerator-exclusions"]
+        )
 
         headers = headers + ["Denominator:"] + [row["Denominator calculation"]]
 
-        if denominator_exclusion_string:
-            headers.append("EXCLUSION: " + denominator_exclusion_string)
+        if row_data["denominator-exclusion-string"]:
+            headers.append("EXCLUSION: " + row_data["denominator-exclusion-string"])
 
-        headers = headers + denominator_terms + denominator_exclusions
-
-        headers = headers + ["Disaggregation:"] + disaggregation_elements
-
-        # Write headers to the worksheet
-        ws.append(headers)
-
-        # Generate true/false combinations for each term
-
-        # Only create combinations for numerator and numerator exclusion, since
-        # denominator should be a superset and might need to be cleaned up manually
-        # due to the DAK imprecise definitions.
-        combinations = list(
-            product([0, 1], repeat=(len(numerator_terms) + len(numerator_exclusions)))
+        headers = (
+            headers + row_data["denominator-terms"] + row_data["denominator-exclusions"]
         )
 
-        # If client scope, then each row represents a unique client. If test scope,
-        # then each row represents a unique test. For simplicity, we only deal with the
-        # scope indicated, and generate relevant patient data in later steps.
-        for i, combo in enumerate(combinations, start=1):
-            # Append combination rows with Patient ID and placeholders for numerator and denominator values
-            ws.append(
-                [i] + [""] * blank_fill_length + list(combo)
-            )  # Empty values for placeholder logic and actual num/denom values
+        headers = headers + ["Disaggregation:"] + row_data["disaggregation-elements"]
 
-        # Apply color fills based on calculated column ranges
+        return headers, blank_fill_length
+
+    def paint_worksheet(self, ws, row_data):
         # Column 1 is always ID
         apply_fill_to_column_range(ws, 1, 1, fills["Patient ID"])
 
         # Numerator terms start after Patient ID
         num_start_col = 2
         num_end_col = (
-            num_start_col + len(numerator_terms) + len(numerator_exclusions) + 1
+            num_start_col
+            + len(row_data["numerator-terms"])
+            + len(row_data["numerator-exclusions"])
+            + 1
         )
-        if numerator_exclusion_string:
+        if row_data["numerator-exclusion-string"]:
             num_end_col += 1
 
         apply_fill_to_column_range(
@@ -281,9 +326,12 @@ def generate_test_scaffolding(input_file, output_file):
         # Denominator terms follow numerator terms
         denom_start_col = num_end_col + 1
         denom_end_col = (
-            denom_start_col + len(denominator_terms) + len(denominator_exclusions) + 1
+            denom_start_col
+            + len(row_data["denominator-terms"])
+            + len(row_data["denominator-exclusions"])
+            + 1
         )
-        if denominator_exclusion_string:
+        if row_data["denominator-exclusion-string"]:
             denom_end_col += 1
         apply_fill_to_column_range(
             ws, denom_start_col, denom_end_col, fills["Denominator Terms"]
@@ -291,9 +339,7 @@ def generate_test_scaffolding(input_file, output_file):
 
         # Disaggregation starts after
         dis_start_col = denom_end_col + 1
-        dis_end_col = dis_start_col + len(disaggregation_elements)
+        dis_end_col = dis_start_col + len(row_data["disaggregation-elements"])
         apply_fill_to_column_range(
             ws, dis_start_col, dis_end_col, fills["Disaggregation"]
         )
-
-    writer.close()
