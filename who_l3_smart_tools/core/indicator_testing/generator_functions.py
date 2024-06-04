@@ -692,13 +692,20 @@ class FhirGenerator:
             test_resources, bundle = find_or_create_test_resources(
                 bundle, self.codings["hiv-test"]
             )
-            update_test_resources(
-                test_resources,
-                row,
-                self.codings["hiv-test"],
-                start_date=self.reporting_period_start_date,
-                end_date=self.reporting_period_end_date,
-            )
+            sr = ServiceRequest(test_resources["sr"])
+            sr.authoredOn = random_date_between(
+                self.reporting_period_start_date, self.reporting_period_end_date
+            ).isoformat()
+        else:
+            if random.choice([True, False]):
+                test_resources, bundle = find_or_create_test_resources(
+                    bundle, self.codings["hiv-test"]
+                )
+                sr = ServiceRequest(test_resources["sr"])
+                sr.authoredOn = random_date_between(
+                    self.reporting_period_start_date,
+                    self.reporting_period_end_date - timedelta(days=365),
+                ).isoformat()
         return bundle
 
     def generate_hiv_status_hiv_positive(self, row, bundle, header=None, value=None):
