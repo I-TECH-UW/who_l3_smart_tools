@@ -38,6 +38,10 @@ class TestBundleGenerator(unittest.TestCase):
             self.assertIsInstance(indicator, str)
             self.assertIsInstance(bundles, list)
             self.assertEqual(len(bundles), num_rows[indicator])
+            for bundle in bundles:
+                self.assertEqual(bundle.resource_type, "Bundle")
+                self.assertIsInstance(bundle.entry, list)
+                self.assertGreater(len(bundle.entry), 0)
 
 
 if __name__ == "__main__":
