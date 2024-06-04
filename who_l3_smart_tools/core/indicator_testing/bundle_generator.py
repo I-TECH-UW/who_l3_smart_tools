@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import os
 import random
 import json
@@ -36,18 +36,22 @@ class BundleGenerator:
         self.pd_data = pd.read_excel(data_file_path, sheet_name=None)
 
         # If reporting_period_start is not provided or invalid format, set a year ago
-        if reporting_period_start is None or not datetime.fromisoformat(
-            reporting_period_start
+        if (
+            reporting_period_start is None
+            or type(reporting_period_start) is not str
+            or not datetime.fromisoformat(reporting_period_start)
         ):
             self.reporting_period_start = (
-                datetime.now() - timedelta(days=365)
+                datetime.now(timezone.utc) - timedelta(days=365)
             ).isoformat()
         else:
             self.reporting_period_start = reporting_period_start
 
         # If reporting_period_end is not provided or invalid format, set a year from start
-        if reporting_period_end is None or not datetime.fromisoformat(
-            reporting_period_end
+        if (
+            reporting_period_end is None
+            or type(reporting_period_end) is not str
+            or not datetime.fromisoformat(reporting_period_end)
         ):
             self.reporting_period_end = (
                 datetime.fromisoformat(self.reporting_period_start)

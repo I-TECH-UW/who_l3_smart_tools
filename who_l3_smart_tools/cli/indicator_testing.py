@@ -12,7 +12,9 @@ from scaffolding_generator import ScaffoldingGenerator
 def generate_test_scaffold(input_file):
     scaffolding_generator = ScaffoldingGenerator(
         input_file,
-        "Indicator_Scaffold_" + datetime.now().strftime("%Y%m%d_%H%M%S") + ".xlsx",
+        "Indicator_Scaffold_"
+        + datetime.now(datetime.timezone.utc).strftime("%Y%m%d_%H%M%S")
+        + ".xlsx",
     )
     scaffolding_generator.generate_test_scaffolding()
 
@@ -20,7 +22,9 @@ def generate_test_scaffold(input_file):
 def generate_test_values(input_file):
     data_generator = DataGenerator(input_file)
     data_generator.generate_data_file(
-        "Indicator_Test_Data_" + datetime.now().strftime("%Y%m%d_%H%M%S") + ".xlsx",
+        "Indicator_Test_Data_"
+        + datetime.now(datetime.timezone.utc).strftime("%Y%m%d_%H%M%S")
+        + ".xlsx",
         1000,
     )
 

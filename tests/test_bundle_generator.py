@@ -3,7 +3,7 @@ import unittest
 from unittest.mock import MagicMock
 
 import pandas as pd
-from bundle_generator import BundleGenerator
+from who_l3_smart_tools.core.indicator_testing.bundle_generator import BundleGenerator
 
 
 class TestBundleGenerator(unittest.TestCase):
@@ -21,12 +21,11 @@ class TestBundleGenerator(unittest.TestCase):
             num_rows[sheet] = len(input_file[sheet])
 
         # Create bundle with 1 year reporting period
-        system_date = datetime.now()
+        system_date = datetime.datetime.now(datetime.timezone.utc)
+        start_date = (system_date - datetime.timedelta(days=365)).isoformat()
+        end_date = system_date.isoformat()
         bundle_generator = BundleGenerator(
-            input_path,
-            output_directory,
-            system_date - datetime.timedelta(days=365),
-            system_date,
+            input_path, output_directory, start_date, end_date
         )
 
         # Call the generate_all_data method
