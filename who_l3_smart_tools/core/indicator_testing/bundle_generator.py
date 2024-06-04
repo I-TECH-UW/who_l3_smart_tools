@@ -155,16 +155,17 @@ class BundleGenerator:
 
     # Main Functions
     def generate_all_data(self):
+        all_data = {}
         # Generate data for each sheet
         for sheet_name in self.pd_data.keys():
+            all_data[sheet_name] = []
             sheet_fl = self.feature_list[sheet_name]
 
             # Generate bundle for each row
             for index, row in self.pd_data[sheet_name].iterrows():
                 bundle = self.generate_row_bundle(row, sheet_fl)
-
-                # Save bundle to file
-                # self.save_bundle_to_file(bundle, sheet_name, index)
+                all_data[sheet_name].append(bundle)
+        return all_data
 
     def generate_row_bundle(self, row, feature_list):
         # Generate a new FHIR bundle for the given row and feature list
