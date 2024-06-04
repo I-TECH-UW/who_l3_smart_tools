@@ -33,7 +33,6 @@ class BundleGenerator:
     ):
         self.data_file_path = data_file_path
         self.all_feature_keys = self.get_all_feature_keys()
-        self.fhir_generator = FhirGenerator(self.all_feature_keys)
         self.pd_data = pd.read_excel(data_file_path, sheet_name=None)
 
         # If reporting_period_start is not provided or invalid format, set a year ago
@@ -59,6 +58,10 @@ class BundleGenerator:
 
         self.start_date = datetime.fromisoformat(self.reporting_period_start)
         self.end_date = datetime.fromisoformat(self.reporting_period_end)
+
+        self.fhir_generator = FhirGenerator(
+            self.all_feature_keys, self.start_date, self.end_date
+        )
 
         if not output_directory or not os.path.isdir(output_directory):
             output_directory = os.path.join(os.getcwd(), "output")
@@ -147,21 +150,31 @@ class BundleGenerator:
                     print(f"Key '{key}' not processed!")
             self.feature_list[sheet_name] = sheet_fl
 
-    # Generator Fuctions
+    # Generator Functions
     # See generator_functions.py
 
     # Main Functions
     def generate_all_data(self):
         # Generate data for each sheet
         for sheet_name in self.pd_data.keys():
-            for row in self.pd_data[sheet_name].iterrows():
-                self.generate_row_bundle(row)
+            sheet_fl = self.feature_list[sheet_name]
 
-    def generate_row_bundle(self, row):
-        # Generate a new FHIR bundle for each row in the data file
+            # Generate bundle for each row
+            for index, row in self.pd_data[sheet_name].iterrows():
+                bundle = self.generate_row_bundle(row, sheet_fl)
+
+                # Save bundle to file
+                # self.save_bundle_to_file(bundle, sheet_name, index)
+
+    def generate_row_bundle(self, row, feature_list):
+        # Generate a new FHIR bundle for the given row and feature list
 
         # Initialize the list of resources to be included in the bundle
-        bundle_resources = []
+        bundle = Bundle()
+
+        for feature in feature_list:
+            # Generate the FHIR resource for the given feature
+            bundle = self.fhir_generator.generate_for(feature, row, bundle)
 
         return bundle
 
