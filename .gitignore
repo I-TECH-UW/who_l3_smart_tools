@@ -158,3 +158,10 @@ Pipfile.lock
 
 # l3-data
 l3-data/
+
+~$*
+
+output/*
+tests/output/*
+
+.DS_Store
