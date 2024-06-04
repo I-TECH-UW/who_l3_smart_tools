@@ -31,4 +31,6 @@ jobs:
         run: python -c "import sys; print(sys.version)"
 
       - run: pip install -r requirements.txt
-      - run: pip test
+      - run: pip install -r requirements_dev.txt
+
+      - run: pip pytest
