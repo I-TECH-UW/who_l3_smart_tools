@@ -204,14 +204,14 @@ class BundleGenerator:
 
         # If HIV_Treatment, add MedicationStatement resource
         if row["HIV_Treatment"]:
-            medication_resource = generate_medication_statement_resource(
+            medication_resource = generate_art_medication_statement_resource(
                 row, start_date, end_date
             )
             bundle_resources.append(medication_resource)
         else:
             # Randomly decide to either do nothing or add a MedicationStatement resource outside the period
             if random.choice([True, False]):
-                medication_resource = generate_medication_statement_resource(
+                medication_resource = generate_art_medication_statement_resource(
                     row, start_date - timedelta(days=10), end_date - timedelta(days=1)
                 )
                 bundle_resources.append(medication_resource)
