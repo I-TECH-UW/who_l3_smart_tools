@@ -38,22 +38,15 @@ def generate_patient_resource(row):
     return patient
 
 
-def generate_observation_resource(row):
+def generate_observation_resource(coding, patient_id):
     # Create an instance of Observation
     observation = Observation.parse_obj(
         {
             "resourceType": "Observation",
             "status": "final",
-            "code": {
-                "coding": [
-                    {
-                        "system": "http://snomed.info/sct",
-                        "display": row["Key Population Status"],
-                    }
-                ]
-            },
+            "code": {"coding": coding},
             # Observation subject would need to be a reference to the Patient resource
-            "subject": {"reference": f"Patient/{row['Patient.ID']}"},
+            "subject": {"reference": f"Patient/{patient_id}"},
             # Additional required attributes should be added here
         }
     )
@@ -335,6 +328,21 @@ class FhirGenerator:
             "code": "419984006",
             "display": "Inconclusive",
         },
+        "presumptive-tb": {
+            "system": "http://snomed.info/sct",
+            "code": "161920001",
+            "display": "Presumptive TB",
+        },
+        "diagnosed-tb": {
+            "system": "http://snomed.info/sct",
+            "code": "56717001",
+            "display": "Diagnosed TB",
+        },
+        "self-reported": {
+            "system": "http://snomed.info/sct",
+            "code": "1156040003",
+            "display": "Self reported (qualifier value)",
+        },
     }
 
     def __init__(
@@ -377,25 +385,82 @@ class FhirGenerator:
 
     # See generator_functions.py
     def generate_patient(self, row, bundle):
+        # Patient-based bundle
 
         return bundle
 
     def generate_test(self, row, bundle):
+        # Service Request-based bundle
+
         return bundle
 
-    def generate_key_population_member_type(self, row, bundle):
+    def generate_key_population_member_type(self, row, bundle, header):
+        obs_value = row[header]
+
+        bundle.entry.append(
+            BundleEntry(
+                resource=generate_observation_resource(obs_value, row["Patient.id"]),
+                request=BundleEntryRequest(method="PUT", url=Uri("Observation")),
+            )
+        )
+
         return bundle
 
-    def generate_tb_diagnosis_result(self, row, bundle):
+    def generate_tb_diagnosis_result(self, row, bundle, header):
+        obs_value = row[header]
+
+        if obs_value == "Yes":
+            condition_resource = find_or_create_condition_resource(
+                bundle, self.codings["diagnosed-tb"]
+            )
+            update_condition_resource(
+                condition_resource,
+                row,
+                coding=[self.codings["diagnosed-tb"]],
+                start_date=self.reporting_period_start_date,
+                end_date=self.reporting_period_end_date,
+            )
+
         return bundle
 
-    def generate_presumptive_tb(self, row, bundle):
+    def generate_presumptive_tb(self, row, bundle, header):
+        obs_value = row[header]
+
+        if obs_value == "Yes":
+            condition_resource = find_or_create_condition_resource(
+                bundle, self.codings["presumptive-tb"]
+            )
+            update_condition_resource(
+                condition_resource,
+                row,
+                coding=[self.codings["presumptive-tb"]],
+                start_date=self.reporting_period_start_date,
+                end_date=self.reporting_period_end_date,
+            )
         return bundle
 
-    def generate_testing_entry_point(self, row, bundle):
+    def generate_testing_entry_point(self, row, bundle, header):
+        val = row[header]
+
+        # If value exists, modify the DiagnosticReport or Observation resources
+
         return bundle
 
-    def generate_self_testing(self, row, bundle):
+    def generate_self_testing(self, row, bundle, header):
+        val = row[header]
+
+        # If value exists, modify the DiagnosticReport or Observation resources
+        if val == "Yes":
+            test_resources, bundle = find_or_create_test_resources(
+                bundle, self.codings["hiv-test"]
+            )
+            update_test_resources(
+                test_resources,
+                row,
+                self.codings["hiv-test"],
+                method=self.codings["self-reported"],
+            )
+
         return bundle
 
     def generate_hiv_test_result_hiv_positive(self, row, bundle, header):
@@ -454,18 +519,30 @@ class FhirGenerator:
             pass
         return bundle
 
-    def generate_hiv_diagnosis_date_in_the_reporting_period(self, row, bundle):
+    def generate_hiv_diagnosis_date_in_the_reporting_period(self, row, bundle, header):
+        self.generate_hiv_status_hiv_positive(row, bundle, value=row[header])
 
-        return bundle
+    def generate_hiv_test_date_in_the_reporting_period(self, row, bundle, header):
+        val = row[header]
 
-    def generate_hiv_test_date_in_the_reporting_period(self, row, bundle):
-
+        if val == "1":
+            test_resources, bundle = find_or_create_test_resources(
+                bundle, self.codings["hiv-test"]
+            )
+            update_test_resources(
+                test_resources,
+                row,
+                self.codings["hiv-test"],
+                start_date=self.reporting_period_start_date,
+                end_date=self.reporting_period_end_date,
+            )
         return bundle
 
     def generate_hiv_treatment_outcome_lost_to_follow_up(self, row, bundle):
+        
         return bundle
 
-    def generate_hiv_status_hiv_positive(self, row, bundle, header):
+    def generate_hiv_status_hiv_positive(self, row, bundle, header=None, value=None):
         # Note - qualified by `at the end of the reporting period`
 
         # Add / modify condition resource based on value of feature
@@ -473,7 +550,10 @@ class FhirGenerator:
 
         # Determine if creating a new condition
         create_new_condition = random.choice([True, False])
-        hiv_positive = row[header] and row[header] == "1"
+        if header:
+            hiv_positive = row[header] and row[header] == "1"
+        else:
+            hiv_positive = value == "1"
 
         # Search for existing condition resource or create new
         if create_new_condition or hiv_positive:
