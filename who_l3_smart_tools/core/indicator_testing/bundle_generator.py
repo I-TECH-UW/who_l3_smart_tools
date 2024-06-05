@@ -175,7 +175,11 @@ class BundleGenerator:
         # Generate a new FHIR bundle for the given row and feature list
 
         # Initialize the list of resources to be included in the bundle
-        bundle = Bundle.construct()
+        bundle = Bundle.parse_obj({
+            "resourceType": "Bundle",
+            "type": "transaction",
+            "entry": []
+        })
 
         for feature in feature_list:
             # Generate the FHIR resource for the given feature
