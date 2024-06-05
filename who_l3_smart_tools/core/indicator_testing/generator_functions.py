@@ -1,9 +1,17 @@
 from re import sub
+import re
+import traceback
+import uuid
 from fhir.resources.patient import Patient
 from fhir.resources.observation import Observation
 from fhir.resources.condition import Condition
 from fhir.resources.medicationstatement import MedicationStatement
 from fhir.resources.medication import Medication
+from fhir.resources.codeablereference import CodeableReference
+from fhir.resources.coding import Coding
+from fhir.resources.codeableconcept import CodeableConcept
+from fhir.resources.diagnosticreport import DiagnosticReport
+from fhir.resources.servicerequest import ServiceRequest
 from fhir.resources.episodeofcare import EpisodeOfCare
 from fhir.resources.bundle import Bundle
 from fhir.resources.bundle import BundleEntry
@@ -38,58 +46,149 @@ def generate_patient_resource(row):
     return patient
 
 
-def generate_observation_resource(coding, patient_id):
+def generate_observation_resource(code, patient_id, val=None):
+
+    if code and isinstance(code, dict) and "text" in code:
+        code = code
+    elif code and isinstance(code, dict) and "code" in code:
+        code = {"coding": [code]}
+
     # Create an instance of Observation
     observation = Observation.parse_obj(
         {
             "resourceType": "Observation",
             "status": "final",
-            "code": {"coding": coding},
             # Observation subject would need to be a reference to the Patient resource
             "subject": {"reference": f"Patient/{patient_id}"},
-            # Additional required attributes should be added here
+            "code": code,
         }
     )
+
+    if val:
+        observation.valueString = val
+
     return observation
 
 
-def find_or_create_test_resources(bundle, coding):
-    test_resources = None
+def find_or_create_test_resources(bundle, row, test_coding):
+    # Create ServiceRequest, DiagnosticReport, and Observation resources
+    test_resources = {}
 
-    for r in bundle.entry:
-        try:
-            if r.resource.resource_type == "Observation":
-                if (
-                    r.resource.code.coding[0].code == coding["code"]
-                    and r.resource.code.coding[0].system == coding["system"]
-                ):
-                    test_resources = r.resource
-                    break
-        except:
-            pass
-    if not test_resources:
-        test_resources = Observation.construct()
+    # Generate uuids for the resources
+    dr_uuid = str(uuid.uuid4())
+    obs_uuid = str(uuid.uuid4())
+    sr_uuid = row["Test.id"] if "Test.id" in row else str(uuid.uuid4())
+
+    # Find ServiceRequest if it exists
+    service_request_entry = next(
+        (
+            x
+            for x in bundle.entry
+            if x.resource.resource_type == "ServiceRequest"
+            and x.resource.code.concept.coding
+            and len(x.resource.code.concept.coding) > 0
+            and x.resource.code.concept.coding[0].code == test_coding["code"]
+        ),
+        None,
+    )
+
+    service_request = (
+        service_request_entry.resource
+        if service_request_entry and service_request_entry.resource
+        else None
+    )
+
+    if not service_request:
+        service_request = ServiceRequest.parse_obj(
+            {
+                "id": f"{sr_uuid}",
+                "resourceType": "ServiceRequest",
+                "subject": {"reference": f"Patient/{row['Patient.id']}"},
+                "status": "active",
+                "intent": "order",
+                "code": {"concept": {"coding": [test_coding]}},
+            }
+        )
+
         bundle.entry.append(
             BundleEntry(
-                resource=test_resources,
+                resource=service_request,
+                request=BundleEntryRequest(method="PUT", url=Uri("ServiceRequest")),
+            )
+        )
+    test_resources["sr"] = service_request
+
+    # Find DiagnosticReport if it exists
+    diagnostic_report = next(
+        (
+            x
+            for x in bundle.entry
+            if x.resource.resource_type == "DiagnosticReport"
+            and x.resource.basedOn
+            and x.resource.basedOn[0].reference == f"ServiceRequest/{sr_uuid}"
+        ),
+        None,
+    )
+
+    diagnostic_report = (
+        diagnostic_report.resource
+        if diagnostic_report and diagnostic_report.resource
+        else None
+    )
+
+    if not diagnostic_report:
+        diagnostic_report = DiagnosticReport.parse_obj(
+            {
+                "id": f"{dr_uuid}",
+                "resourceType": "DiagnosticReport",
+                "code": {"coding": [test_coding]},
+                "basedOn": [{"reference": f"ServiceRequest/{sr_uuid}"}],
+                "status": "final",
+                "subject": {"reference": f"Patient/{row['Patient.id']}"},
+                "result": [{"reference": f"Observation/{obs_uuid}"}],
+            }
+        )
+        bundle.entry.append(
+            BundleEntry(
+                resource=diagnostic_report,
+                request=BundleEntryRequest(method="PUT", url=Uri("DiagnosticReport")),
+            )
+        )
+    test_resources["dr"] = diagnostic_report
+    # Find Observation if it exists
+    observation = next(
+        (
+            x
+            for x in bundle.entry
+            if x.resource.resource_type == "Observation"
+            and x.resource.code.coding
+            and len(x.resource.code.coding) > 0
+            and x.resource.code.coding[0] == test_coding
+        ),
+        None,
+    )
+
+    observation = observation.resource if observation and observation.resource else None
+
+    if not observation:
+        observation = Observation.parse_obj(
+            {
+                "id": f"{obs_uuid}",
+                "resourceType": "Observation",
+                "status": "final",
+                "code": {"coding": [test_coding]},
+                "subject": {"reference": f"Patient/{row['Patient.id']}"},
+            }
+        )
+        bundle.entry.append(
+            BundleEntry(
+                resource=observation,
                 request=BundleEntryRequest(method="PUT", url=Uri("Observation")),
             )
         )
+    test_resources["obs"] = observation
+
     return test_resources, bundle
-
-
-def update_test_resources(test_resources, row, coding, coding_value):
-    test_resources.code = {"coding": [coding]}
-    test_resources.valueCodeableConcept = {
-        "coding": [
-            {
-                "system": coding_value["system"],
-                "code": coding_value["code"],
-                "display": coding_value["display"],
-            }
-        ]
-    }
-    test_resources.subject = {"reference": f"Patient/{row['Patient.ID']}"}
 
 
 def find_or_create_condition_resource(bundle, coding):
@@ -147,19 +246,44 @@ def update_condition_resource(
     condition.subject = {"reference": f"Patient/{row['Patient.id']}"}
 
 
-def generate_medication_statement_resource(row, start_date, end_date):
+def generate_art_medication_statement_resource(row, start_date, end_date):
     # Create an instance of MedicationStatement
-
     medication_statement = MedicationStatement.parse_obj(
         {
             "resourceType": "MedicationStatement",
             "status": "active",
+            "code": {
+                "coding": [
+                    {
+                        "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                        "code": "1049620",
+                        "display": "Tenofovir disoproxil fumarate 300 MG / emtricitabine 200 MG Oral Tablet [Truvada]",
+                    }
+                ]
+            },
             "subject": {"reference": f"Patient/{row['Patient.ID']}"},
-            "medication": {"reference": {"reference": "#med1"}},
-            "contained": [
+            "effectiveDateTime": random_date_between(start_date, end_date).isoformat(),
+            "dosage": [
                 {
-                    "resourceType": "Medication",
-                    "id": "med1",
+                    "text": "Take one tablet once daily",
+                    "timing": {
+                        "repeat": {"frequency": 1, "period": 1, "periodUnit": "d"}
+                    },
+                    "route": {
+                        "coding": [
+                            {
+                                "system": "http://snomed.info/sct",
+                                "code": "26643006",
+                                "display": "Oral route",
+                            }
+                        ]
+                    },
+                    "doseQuantity": {
+                        "value": 1,
+                        "unit": "tablet",
+                        "system": "http://unitsofmeasure.org",
+                        "code": "tablet",
+                    },
                 }
             ],
         }
@@ -218,15 +342,39 @@ def random_date(start, end):
     )
 
 
+def get_episode_of_care_scaffold():
+    return EpisodeOfCare.parse_obj(
+        {
+            "resourceType": "EpisodeOfCare",
+            "patient": {"reference": f"Patient/{row['Patient.id']}"},
+            "diagnosis": [
+                {
+                    "condition": {"reference": "Condition/condition1"},
+                    "role": {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/diagnosis-role",
+                                "code": "primary",
+                            }
+                        ]
+                    },
+                    "rank": 1,
+                }
+            ],
+        }
+    )
+
+
 def generate_episode_of_care_finished_before_measurement(row, measurement_end):
     """
     Generate an EpisodeOfCare resource that ends before the measurement period.
     """
-    episode_of_care = EpisodeOfCare.construct()
+    # Parse from string
+    episode_of_care = get_episode_of_care_scaffold()
     episode_of_care.status = "finished"
 
-    # Assuming the date of birth is in row['Patient.DOB']
-    dob = datetime.fromisoformat(row["Patient.DOB"])
+    # Assuming the date of birth is in row['Patient.birthDate']
+    dob = datetime.fromisoformat(row["Patient.birthDate"])
     period_end = random_date_between(dob, measurement_end)
     period_start = random_date_between(dob, period_end)
 
@@ -243,7 +391,7 @@ def generate_episode_of_care_finished_after_measurement(row, measurement_end):
     """
     Generate an EpisodeOfCare resource that ends after the measurement period.
     """
-    episode_of_care = EpisodeOfCare.construct()
+    episode_of_care = get_episode_of_care_scaffold()
     episode_of_care.status = "active"
 
     period_start = random_date_between(
@@ -343,6 +491,29 @@ class FhirGenerator:
             "code": "1156040003",
             "display": "Self reported (qualifier value)",
         },
+        "lost-to-follow-up": {
+            "system": "http://snomed.info/sct",
+            "code": "399307001",
+            "display": "Lost to follow-up (finding)",
+        },
+        "patient-transfer": {
+            "system": "http://snomed.info/sct",
+            "code": "107724000",
+            "display": "Patient transfer (procedure)",
+        },
+        "death": {
+            "system": "http://snomed.info/sct",
+            "code": "419620001",
+            "display": "Death (event)",
+        },
+        "patient-non-compliant": {
+            "system": "http://snomed.info/sct",
+            "code": "413312003",
+            "display": "Patient non-compliant - refused service (situation)",
+        },
+        "key-population": {
+            "text": "Key population member",
+        },
     }
 
     def __init__(
@@ -357,40 +528,90 @@ class FhirGenerator:
     def generate_for(self, header, row, bundle):
         try:
             # Get the function to call based on the header
+            print(f"Generating resource for header '{header}'")
             function = self.get_mapped_function(header)
             return function(row, bundle, header)
         except Exception as e:
-            print(f"Error generating resource for header '{header}': {e}")
+            print(f"Error generating resource for header '{header}':\n{e}")
+            print(traceback.format_exc())
             return bundle
 
     def snake_case(self, s):
-        # Replace hyphens with spaces, then apply regular expression substitutions for title case conversion
-        # and add an underscore between words, finally convert the result to lowercase
-        return "_".join(
-            sub(
-                "([A-Z][a-z]+)", r" \1", sub("([A-Z]+)", r" \1", s.replace("-", " "))
-            ).split()
-        ).lower()
+        # Replace hyphens with spaces
+        s = s.replace("-", " ")
+        # Remove all non-alphanumeric characters except spaces
+        s = re.sub(r"[^A-Za-z0-9 ]+", "", s)
+        # Apply regular expression substitutions for title case conversion and add an underscore between words
+        s = "_".join(
+            re.sub("([A-Z][a-z]+)", r" \1", re.sub("([A-Z]+)", r" \1", s)).split()
+        )
+        # Convert the result to lowercase
+        return s.lower()
 
     def get_mapped_function(self, key):
-        function_name = "generate_" + self.snake_case(key)
-
-        if function_name not in self.all_feature_keys:
+        if key not in self.all_feature_keys:
             raise Exception(f"Function {function_name} not found for key '{key}'")
 
-        if function_name in globals():
-            return globals()[function_name]
+        function_name = "generate_" + self.snake_case(key)
+
+        fn = getattr(self, function_name)
+
+        if callable(fn):
+            return fn
         else:
             raise Exception(f"Function {function_name} not found for key '{key}'")
 
     # See generator_functions.py
-    def generate_patient(self, row, bundle):
+    def generate_patient(self, row, bundle, header):
         # Patient-based bundle
 
         return bundle
 
-    def generate_test(self, row, bundle):
+    def generate_test(self, row, bundle, header):
         # Service Request-based bundle
+
+        return bundle
+
+    def generate_exclusion_observation(self, row, bundle, header, coding):
+        val = row[header]
+        my_coding = self.codings[coding]
+
+        if val == "1":
+            # Generate observation for the given coding
+            observation = generate_observation_resource(
+                code=my_coding, patient_id=row["Patient.id"]
+            )
+
+            # Add effective datetime
+            observation.effectiveDateTime = random_date(
+                end=self.reporting_period_end_date
+            )
+
+            bundle.entry.append(
+                BundleEntry(
+                    resource=observation,
+                    request=BundleEntryRequest(method="PUT", url=Uri("Observation")),
+                )
+            )
+        else:
+            # Do nothing or add observation after reporting period
+            if random.choice([True, False]):
+                observation = generate_observation_resource(
+                    code=my_coding, patient_id=row["Patient.id"]
+                )
+                observation.effectiveDateTime = random_date(
+                    self.reporting_period_end_date,
+                    self.reporting_period_end_date + timedelta(days=365),
+                )
+
+                bundle.entry.append(
+                    BundleEntry(
+                        resource=observation,
+                        request=BundleEntryRequest(
+                            method="PUT", url=Uri("Observation")
+                        ),
+                    )
+                )
 
         return bundle
 
@@ -399,7 +620,11 @@ class FhirGenerator:
 
         bundle.entry.append(
             BundleEntry(
-                resource=generate_observation_resource(obs_value, row["Patient.id"]),
+                resource=generate_observation_resource(
+                    val=obs_value,
+                    code=self.codings["key-population"],
+                    patient_id=row["Patient.id"],
+                ),
                 request=BundleEntryRequest(method="PUT", url=Uri("Observation")),
             )
         )
@@ -410,7 +635,7 @@ class FhirGenerator:
         obs_value = row[header]
 
         if obs_value == "Yes":
-            condition_resource = find_or_create_condition_resource(
+            condition_resource, bundle = find_or_create_condition_resource(
                 bundle, self.codings["diagnosed-tb"]
             )
             update_condition_resource(
@@ -427,7 +652,7 @@ class FhirGenerator:
         obs_value = row[header]
 
         if obs_value == "Yes":
-            condition_resource = find_or_create_condition_resource(
+            condition_resource, bundle = find_or_create_condition_resource(
                 bundle, self.codings["presumptive-tb"]
             )
             update_condition_resource(
@@ -452,94 +677,129 @@ class FhirGenerator:
         # If value exists, modify the DiagnosticReport or Observation resources
         if val == "Yes":
             test_resources, bundle = find_or_create_test_resources(
-                bundle, self.codings["hiv-test"]
+                bundle, row, self.codings["hiv-test"]
             )
-            update_test_resources(
-                test_resources,
-                row,
-                self.codings["hiv-test"],
-                method=self.codings["self-reported"],
-            )
+            observation = test_resources["obs"]
+            observation.method = self.codings["self-reported"]
 
         return bundle
 
     def generate_hiv_test_result_hiv_positive(self, row, bundle, header):
         # Add / modify condition resource based on value of feature
         test_coding = self.codings["hiv-test"]
-        positive_coding = self.codings["hiv-positive"]
-        negative_coding = self.codings["hiv-negative"]
-        inconclusive_coding = self.codings["inconclusive"]
+        unrelated_coding = CodeableConcept.parse_obj(
+            {
+                "coding": [
+                    {
+                        "code": "1234567",
+                        "display": "Unrelated",
+                    }
+                ]
+            }
+        )
+        positive_coding = CodeableConcept.parse_obj(
+            {"coding": [self.codings["hiv-positive"]]}
+        )
+        negative_coding = CodeableConcept.parse_obj(
+            {"coding": [self.codings["hiv-negative"]]}
+        )
+        inconclusive_coding = CodeableConcept.parse_obj(
+            {"coding": [self.codings["inconclusive"]]}
+        )
 
         # Search for existing condition resource or create new
-        test_resources, bundle = find_or_create_test_resources(bundle, test_coding)
+        test_resources, bundle = find_or_create_test_resources(bundle, row, test_coding)
 
-        if row[header] and row[header] == "1":
-            update_test_resources(test_resources, row, test_coding, positive_coding)
-        elif row[header] and row[header] == "0":
+        obs = test_resources.get("obs")
+
+        if row[header] == "1":
+            obs.valueCodeableConcept = positive_coding
+        else:
             # Randomly assign negative, inconclusive or no result
-            coding = random.choice(negative_coding, inconclusive_coding, None)
-            if coding:
-                update_test_resources(test_resources, row, test_coding, coding)
+            coding = random.choice(
+                [negative_coding, inconclusive_coding, unrelated_coding, None]
+            )
+            if coding is not None:
+                if obs and isinstance(obs, Observation):
+                    obs.valueCodeableConcept = coding
+                else:
+                    raise Exception(
+                        "Observation resource does not exist for test result"
+                    )
+            else:
+                # Remove Observation resource
+                bundle.entry = [
+                    x
+                    for x in bundle.entry
+                    if x.resource.resource_type != "Observation"
+                    or x.resource.id != obs.id
+                ]
 
         return bundle
 
     def generate_date_hiv_test_results_returned_in_the_reporting_period(
         self, row, bundle, header
     ):
-        # Assumes row[header] - 1 is the index of hiv-positive test result column
-        hiv_pos_value = row[row.index(header) - 1]
+        associated_header = "\"HIV test result\"='HIV-positive'"
+
+        hiv_pos_value = row[associated_header]
         my_value = row[header]
 
         my_coding = self.codings["hiv-test"]
 
         if hiv_pos_value == "1":
             # Test resources should exist - update the date based on the value of the feature
-            test_resources, bundle = find_or_create_test_resources(bundle, my_coding)
+            test_resources, bundle = find_or_create_test_resources(
+                bundle, row, my_coding
+            )
+
+            dr = test_resources["dr"]
+            obs = test_resources["obs"]
 
             if my_value == "1":
                 # Date should be in the reporting period
-                update_test_resources(
-                    test_resources,
-                    row,
-                    start_date=self.reporting_period_start_date,
-                    end_date=self.reporting_period_end_date,
-                )
+                dr.effectiveDateTime = random_date_between(
+                    self.reporting_period_start_date, self.reporting_period_end_date
+                ).isoformat()
+                obs.effectiveDateTime = dr.effectiveDateTime
             else:
                 # Date should be outside the reporting period
                 outside_start = self.reporting_period_start_date - timedelta(days=10)
                 outside_end = outside_start + timedelta(days=5)
-                update_test_resources(
-                    test_resources,
-                    row,
-                    start_date=outside_start,
-                    end_date=outside_end,
-                )
+                dr.effectiveDateTime = random_date_between(
+                    outside_start, outside_end
+                ).isoformat()
+                obs.effectiveDateTime = dr.effectiveDateTime
+
         else:
-            # Condition should not exist - do nothing
+            # Test resources should not exist - do nothing
             pass
         return bundle
 
     def generate_hiv_diagnosis_date_in_the_reporting_period(self, row, bundle, header):
-        self.generate_hiv_status_hiv_positive(row, bundle, value=row[header])
+        return self.generate_hiv_status_hiv_positive(row, bundle, value=row[header])
 
     def generate_hiv_test_date_in_the_reporting_period(self, row, bundle, header):
         val = row[header]
 
         if val == "1":
             test_resources, bundle = find_or_create_test_resources(
-                bundle, self.codings["hiv-test"]
+                bundle, row, self.codings["hiv-test"]
             )
-            update_test_resources(
-                test_resources,
-                row,
-                self.codings["hiv-test"],
-                start_date=self.reporting_period_start_date,
-                end_date=self.reporting_period_end_date,
-            )
-        return bundle
-
-    def generate_hiv_treatment_outcome_lost_to_follow_up(self, row, bundle):
-        
+            sr = test_resources["sr"]
+            sr.authoredOn = random_date_between(
+                self.reporting_period_start_date, self.reporting_period_end_date
+            ).isoformat()
+        else:
+            if random.choice([True, False]):
+                test_resources, bundle = find_or_create_test_resources(
+                    bundle, row, self.codings["hiv-test"]
+                )
+                sr = test_resources["sr"]
+                sr.authoredOn = random_date_between(
+                    self.reporting_period_start_date - timedelta(days=10),
+                    self.reporting_period_end_date,
+                ).isoformat()
         return bundle
 
     def generate_hiv_status_hiv_positive(self, row, bundle, header=None, value=None):
@@ -581,11 +841,66 @@ class FhirGenerator:
             pass
         return bundle
 
-    def generate_hiv_treatment_outcome_death_documented(self, row, bundle):
+    def generate_hiv_treatment_outcome_in_death_documented(self, row, bundle, header):
+        val = row[header]
+        patient = next(
+            (
+                x.resource
+                for x in bundle.entry
+                if x.resource.resource_type == "Patient"
+                and x.resource.id == row["Patient.id"]
+            ),
+            None,
+        )
+
+        patient = (
+            patient.resource if patient and isinstance(patient, BundleEntry) else None
+        )
+
+        if patient:
+            if val == "1":
+                patient.resource = add_deceased_information(
+                    patient.resource, self.reporting_period_end_date
+                )
+            else:
+                if random.choice([True, False]):
+                    patient.resource = add_future_deceased_information(
+                        patient.resource, self.reporting_period_end_date
+                    )
+
         return bundle
 
-    def generate_on_art_true_at_reporting_period_end_date(self, row, bundle):
+    def generate_on_art_true_at_reporting_period_end_date(self, row, bundle, header):
+        val = row[header]
+
+        if val == "1":
+            # Generate Episode of Care resource, connect to condition resource, and add
+            bundle.entry.append(
+                BundleEntry(
+                    resource=generate_art_medication_statement_resource(
+                        row,
+                        self.reporting_period_start_date,
+                        self.reporting_period_end_date,
+                    ),
+                    request=BundleEntryRequest(
+                        method="PUT", url=Uri("MedicationStatement")
+                    ),
+                )
+            )
+        else:
+            # Either do nothing or add medication statement with end date before reporting period
+            pass
         return bundle
 
-    def generate_hiv_treatment_outcome_transferred_out(self, row, bundle):
-        return bundle
+    def generate_hiv_treatment_outcome_in_transferred_out(self, row, bundle, header):
+        # TODO: make more applicable to real-world scenarios by using Encounter resources
+        # and other resources to indicate transfer out
+        return self.generate_exclusion_observation(
+            row, bundle, header, "patient-transfer"
+        )
+
+    def generate_hiv_treatment_outcome_in_lost_to_follow_up(self, row, bundle, header):
+        # TODO: Make more applicable to real-world scenarios
+        return self.generate_exclusion_observation(
+            row, bundle, header, "lost-to-follow-up"
+        )

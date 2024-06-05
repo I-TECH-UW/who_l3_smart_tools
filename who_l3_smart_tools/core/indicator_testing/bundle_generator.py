@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import os
 import random
 import json
@@ -36,18 +36,22 @@ class BundleGenerator:
         self.pd_data = pd.read_excel(data_file_path, sheet_name=None)
 
         # If reporting_period_start is not provided or invalid format, set a year ago
-        if reporting_period_start is None or not datetime.fromisoformat(
-            reporting_period_start
+        if (
+            reporting_period_start is None
+            or type(reporting_period_start) is not str
+            or not datetime.fromisoformat(reporting_period_start)
         ):
             self.reporting_period_start = (
-                datetime.now() - timedelta(days=365)
+                datetime.now(timezone.utc) - timedelta(days=365)
             ).isoformat()
         else:
             self.reporting_period_start = reporting_period_start
 
         # If reporting_period_end is not provided or invalid format, set a year from start
-        if reporting_period_end is None or not datetime.fromisoformat(
-            reporting_period_end
+        if (
+            reporting_period_end is None
+            or type(reporting_period_end) is not str
+            or not datetime.fromisoformat(reporting_period_end)
         ):
             self.reporting_period_end = (
                 datetime.fromisoformat(self.reporting_period_start)
@@ -129,7 +133,7 @@ class BundleGenerator:
                 continue
 
             sheet_fl = []
-            sheet_df = self.excel_data[sheet_name]
+            sheet_df = self.pd_data[sheet_name]
 
             for key in sheet_df.columns:
                 resource_match = re.match(resource_pattern, key)
@@ -155,93 +159,31 @@ class BundleGenerator:
 
     # Main Functions
     def generate_all_data(self):
+        all_data = {}
         # Generate data for each sheet
         for sheet_name in self.pd_data.keys():
+            all_data[sheet_name] = []
             sheet_fl = self.feature_list[sheet_name]
 
             # Generate bundle for each row
             for index, row in self.pd_data[sheet_name].iterrows():
                 bundle = self.generate_row_bundle(row, sheet_fl)
-
-                # Save bundle to file
-                # self.save_bundle_to_file(bundle, sheet_name, index)
+                all_data[sheet_name].append(bundle)
+        return all_data
 
     def generate_row_bundle(self, row, feature_list):
         # Generate a new FHIR bundle for the given row and feature list
 
         # Initialize the list of resources to be included in the bundle
-        bundle = Bundle()
+        bundle = Bundle.parse_obj({
+            "resourceType": "Bundle",
+            "type": "transaction",
+            "entry": []
+        })
 
         for feature in feature_list:
             # Generate the FHIR resource for the given feature
             bundle = self.fhir_generator.generate_for(feature, row, bundle)
-
-        return bundle
-
-    # This method reads in a row from a data value file and generates a FHIR bundle
-    # that encodes the incoming patient or test phenotype using FHIR resources.
-    def generate_output_bundle(self, row):
-        # Input: dictionary with relevant keys from the Excel row data
-        # Generate Patient resource
-        patient_resource = generate_patient_resource(row)
-        bundle_resources.append(patient_resource)
-
-        # Generate Observation for Key Population Status
-        observation_resource = generate_observation_resource(row)
-        bundle_resources.append(observation_resource)
-
-        # If HIV_Positive, add Condition resource
-        if row["HIV_Positive"]:
-            condition_resource = generate_condition_resource(row, start_date, end_date)
-            bundle_resources.append(condition_resource)
-        else:
-            # Randomly decide to either do nothing or add a Condition resource outside the period
-            if random.choice([True, False]):
-                condition_resource = generate_condition_resource(
-                    row, start_date - timedelta(days=10), end_date - timedelta(days=1)
-                )
-                bundle_resources.append(condition_resource)
-
-        # If HIV_Treatment, add MedicationStatement resource
-        if row["HIV_Treatment"]:
-            medication_resource = generate_medication_statement_resource(
-                row, start_date, end_date
-            )
-            bundle_resources.append(medication_resource)
-        else:
-            # Randomly decide to either do nothing or add a MedicationStatement resource outside the period
-            if random.choice([True, False]):
-                medication_resource = generate_medication_statement_resource(
-                    row, start_date - timedelta(days=10), end_date - timedelta(days=1)
-                )
-                bundle_resources.append(medication_resource)
-
-        # If Deceased, add deceased information to Patient resource
-        if row["Deceased"]:
-            patient_resource = add_deceased_information(patient_resource, end_date)
-        else:
-            # Randomly decide to either do nothing or add deceased information after the period
-            if random.choice([True, False]):
-                patient_resource = add_future_deceased_information(
-                    patient_resource, end_date
-                )
-
-        # If Stopped_ART, add an EpisodeOfCare resource with status finished
-        if row["Stopped_ART"]:
-            episode_of_care_resource = (
-                generate_episode_of_care_finished_before_measurement(row, end_date)
-            )
-            bundle_resources.append(episode_of_care_resource)
-        else:
-            # Randomly decide to either do nothing or add an EpisodeOfCare resource with status active
-            if random.choice([True, False]):
-                episode_of_care_resource = (
-                    generate_episode_of_care_finished_after_measurement(row, end_date)
-                )
-                bundle_resources.append(episode_of_care_resource)
-
-        # Compile all resources into a bundle
-        bundle = create_bundle(bundle_resources)
 
         return bundle
 
