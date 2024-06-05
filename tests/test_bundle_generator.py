@@ -1,4 +1,5 @@
 import datetime
+import os
 import unittest
 from unittest.mock import MagicMock
 
@@ -12,6 +13,10 @@ class TestBundleGenerator(unittest.TestCase):
         # Create a mock data file path and output directory
         input_path = "tests/data/test_data_file.xlsx"
         output_directory = "tests/output/fhir_data"
+
+        # Make sure output directory exists
+        if not os.path.exists(output_directory):
+            os.makedirs(output_directory)
 
         # Get some general stats on input file
         input_file = pd.read_excel(input_path, sheet_name=None)
