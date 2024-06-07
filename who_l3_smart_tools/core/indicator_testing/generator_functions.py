@@ -28,6 +28,17 @@ from datetime import datetime, timedelta
 # Helper Functions
 
 
+def snake_case(s):
+    # Replace hyphens with spaces
+    s = s.replace("-", " ")
+    # Remove all non-alphanumeric characters except spaces
+    s = re.sub(r"[^A-Za-z0-9 ]+", "", s)
+    # Apply regular expression substitutions for title case conversion and add an underscore between words
+    s = "_".join(re.sub("([A-Z][a-z]+)", r" \1", re.sub("([A-Z]+)", r" \1", s)).split())
+    # Convert the result to lowercase
+    return s.lower()
+
+
 def generate_patient_resource(row):
     # Create an instance of Patient
     patient = Patient.parse_obj(
@@ -536,23 +547,11 @@ class FhirGenerator:
             print(traceback.format_exc())
             return bundle
 
-    def snake_case(self, s):
-        # Replace hyphens with spaces
-        s = s.replace("-", " ")
-        # Remove all non-alphanumeric characters except spaces
-        s = re.sub(r"[^A-Za-z0-9 ]+", "", s)
-        # Apply regular expression substitutions for title case conversion and add an underscore between words
-        s = "_".join(
-            re.sub("([A-Z][a-z]+)", r" \1", re.sub("([A-Z]+)", r" \1", s)).split()
-        )
-        # Convert the result to lowercase
-        return s.lower()
-
     def get_mapped_function(self, key):
         if key not in self.all_feature_keys:
             raise Exception(f"Function {function_name} not found for key '{key}'")
 
-        function_name = "generate_" + self.snake_case(key)
+        function_name = "generate_" + snake_case(key)
 
         fn = getattr(self, function_name)
 

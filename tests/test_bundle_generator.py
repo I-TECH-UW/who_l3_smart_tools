@@ -2,6 +2,7 @@ import datetime
 import os
 import unittest
 from unittest.mock import MagicMock
+from fhir.resources.measurereport import MeasureReport
 
 import pandas as pd
 from who_l3_smart_tools.core.indicator_testing.bundle_generator import BundleGenerator
@@ -35,11 +36,16 @@ class TestBundleGenerator(unittest.TestCase):
 
         # Call the generate_all_data method
         all_data = bundle_generator.generate_all_data()
+        bundle_generator.save_to_file()
 
         # Check all data
         self.assertIsInstance(all_data, dict)
         self.assertEqual(len(all_data), num_sheets)
-        for indicator, bundles in all_data.items():
+        for indicator, results in all_data.items():
+            mr = results["MeasureReport"]
+            bundles = results["bundles"]
+
+            self.assertIsInstance(mr, MeasureReport)
             self.assertIsInstance(indicator, str)
             self.assertIsInstance(bundles, list)
             self.assertEqual(len(bundles), num_rows[indicator])
@@ -47,6 +53,11 @@ class TestBundleGenerator(unittest.TestCase):
                 self.assertEqual(bundle.resource_type, "Bundle")
                 self.assertIsInstance(bundle.entry, list)
                 self.assertGreater(len(bundle.entry), 0)
+        self.assertTrue(os.path.exists(output_directory))
+        self.assertGreaterEqual(len(os.listdir(output_directory)), num_sheets)
+        for dir in os.listdir(output_directory):
+            self.assertTrue(os.path.isdir(os.path.join(output_directory, dir)))
+            self.assertGreater(len(os.listdir(os.path.join(output_directory, dir))), 0)
 
 
 if __name__ == "__main__":

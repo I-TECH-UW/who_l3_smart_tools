@@ -38,7 +38,7 @@ def generate_fhir_data(input_file, start_date, end_date, output_mode, fhir_serve
     generated_data = bundle_generator.generate_all_data()
 
     # Save generated bundles as ndjson files:
-    for indicator, bundles in generated_data.items():
+    for indicator, bundles in generated_data["bundles"].items():
         for bundle in bundles:
             if output_mode in ["local", "both"]:
                 Path(f"output/{indicator}.json").write_text(bundle.json())
