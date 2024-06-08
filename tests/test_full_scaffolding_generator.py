@@ -43,3 +43,4 @@ class TestGenerateTestScaffolding(unittest.TestCase):
             sg.generate_test_scaffolding(input_file, output_file)
         except FileNotFoundError:
             assert True
+            
