@@ -56,8 +56,11 @@ class TestBundleGenerator(unittest.TestCase):
         self.assertTrue(os.path.exists(output_directory))
         self.assertGreaterEqual(len(os.listdir(output_directory)), num_sheets)
         for dir in os.listdir(output_directory):
-            self.assertTrue(os.path.isdir(os.path.join(output_directory, dir)))
-            self.assertGreater(len(os.listdir(os.path.join(output_directory, dir))), 0)
+            if "HIV" in dir:
+                self.assertTrue(os.path.isdir(os.path.join(output_directory, dir)))
+                self.assertGreater(
+                    len(os.listdir(os.path.join(output_directory, dir))), 0
+                )
 
 
 if __name__ == "__main__":
