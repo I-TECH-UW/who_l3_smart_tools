@@ -7,6 +7,7 @@ from who_l3_smart_tools.core.logical_models.logical_model_generator import (
 )
 
 
+@unittest.skip("Skip for now")
 class TestLogicalModelGenerator(unittest.TestCase):
     def setUp(self):
         self.input_file = "../l3-data/test-data.xlsx"

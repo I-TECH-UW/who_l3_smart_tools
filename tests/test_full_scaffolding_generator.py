@@ -15,6 +15,10 @@ class TestGenerateTestScaffolding(unittest.TestCase):
         input_file = "tests/data/indicator_dak_input_MINI.xlsx"
         output_file = "tests/output/indicator_test_output_MINI.xlsx"
 
+        # Make sure output directory exists
+        if not os.path.exists("tests/output"):
+            os.makedirs("tests/output")
+
         sg = ScaffoldingGenerator(input_file, output_file)
         sg.generate_test_scaffolding()
 
@@ -39,3 +43,4 @@ class TestGenerateTestScaffolding(unittest.TestCase):
             sg.generate_test_scaffolding(input_file, output_file)
         except FileNotFoundError:
             assert True
+            

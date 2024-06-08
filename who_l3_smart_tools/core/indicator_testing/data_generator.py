@@ -2,7 +2,6 @@ import re
 import pandas as pd
 import uuid
 from random import choice, randint
-from datetime import datetime, timedelta
 from faker import Faker
 
 ##-----------------------------------------------------------------##
