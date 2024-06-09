@@ -1,8 +1,5 @@
-# l3_logical_model_generator
+# WHO SMART Guidelines Tooling for L3 Translation
 
-# L3 Logical Model Generator
-
-This project provides a Python package `fhir_fsh_generator` that generates FHIR Shorthand (FSH) Logical Model artifacts from WHO SMART GUIDELINES L3 documents following the SOP outlined at https://worldhealthorganization.github.io/smart-ig-starter-kit/l3_logicalmodels.html. It can be used as a CLI tool to process Excel files containing the WHO SMART DAK data dictionary and generate FSH artifacts for the logical models representing each sheet in the Excel file.
 
 ## Installation
 
@@ -11,7 +8,7 @@ This project provides a Python package `fhir_fsh_generator` that generates FHIR 
 Ensure you have Python 3.6 or newer installed on your system. You can install the package using the following command:
 
 ```bash
-pip3 install l3_logical_model_generator
+pip3 install who_l3_smart_tools
 ```
 
 ### Docker
@@ -21,16 +18,19 @@ If you prefer using Docker, you can run the tool without installing Python on yo
 Build the Docker image with the following command from the root directory of this project:
 
 ```bash
-docker build -t l3_logical_model_generator .
+docker build -t who_l3_smart_tools .
 ```
 
-This command builds a Docker image named `l3_logical_model_generator` from the Dockerfile in the root directory of this project.
+This command builds a Docker image named `who_l3_smart_tools` from the Dockerfile in the root directory of this project.
 
 ## Usage
 
 ### On Host Machine
 
-After installation, you can run the package as a CLI tool. To generate FSH artifacts from an Excel file, use the following syntax:
+After installation, you can run the package as a CLI tool. 
+
+
+To generate FSH artifacts from an Excel file, use the following syntax:
 
 ```bash
 fhir_fsh_generator /path/to/excel_file.xlsx
@@ -64,7 +64,7 @@ pytest
 
 ## Contributing
 
-Contributions to the `fhir_fsh_generator` project are welcome! Please fork the repository and submit pull requests with any enhancements or bug fixes.
+Contributions to the project are welcome! Please fork the repository and submit pull requests with any enhancements or bug fixes.
 
 ## License
 
