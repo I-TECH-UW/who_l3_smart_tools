@@ -52,7 +52,7 @@ class OclLoader:
 
         return df_dict
 
-    def transform_data(self, df):
+    def transform_data(self):
         """
         Transform the DataFrame for OCL import.
         """
