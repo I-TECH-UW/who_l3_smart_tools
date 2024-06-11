@@ -14,7 +14,8 @@ class CqlScaffoldGenerator:
         This method writes the CQL scaffolds to files in the output directory.
         """
         for indicator_name, scaffold in self.cql_scaffolds.items():
-            with open(f"{output_dir}/{indicator_name}.cql", "w") as file:
+            file_name = indicator_name.replace(".", "")
+            with open(f"{output_dir}/{file_name}Logic.cql", "w") as file:
                 file.write(scaffold)
 
     def generate_cql_scaffolds(self):
@@ -82,7 +83,7 @@ class CqlScaffoldGenerator:
  * Library: {DAK ID} Logic
  * Short Name: {Short name}
  * 
- * {Indicator definition}
+ * Definition: {Indicator definition}
  *
  * Numerator: {Numerator definition}
  * Numerator Calculation: {Numerator calculation}
@@ -136,7 +137,14 @@ class CQLResourceGenerator:
     def __init__(self, indicator_row, cql_content):
         self.cql_content = cql_content
         self.indicator_row = indicator_row
-        self.header_variables = self.parseRow(self.indicator_row)
+        self.header_variables = self.parseRow()
+        self.parsed_cql = self.parse_cql()
+
+    def parseRow(self):
+        """
+        This method converts the indicator row into a dictionary.
+        """
+        return self.indicator_row.to_dict()
 
     def parse_cql(self):
         """
@@ -150,50 +158,35 @@ class CQLResourceGenerator:
             library_name_match.group(1) if library_name_match else None
         )
 
-        # Extract the description and title
-        description_match = re.search(r"\*\s+Description:\s+(.+)", self.cql_content)
-        parsed_data["description"] = (
-            description_match.group(1) if description_match else None
-        )
-
-        title_match = re.search(r"\*\s+Title:\s+(.+)", self.cql_content)
-        parsed_data["title"] = title_match.group(1) if title_match else None
-
-        # Extract measure populations
-        measure_population_match = re.findall(r'define\s+"(\w+)"', self.cql_content)
-        parsed_data["measure_populations"] = (
-            measure_population_match if measure_population_match else []
-        )
-
         return parsed_data
 
-
-# def generate_library_fsh(parsed_data):
-#     """
-#     Generate the Library FSH file content.
-#     """
-#     library_fsh = f"""
-# Instance: {parsed_data['library_name']}
-# InstanceOf: Library
-# Title: "{parsed_data['title']}"
-# Description: "{parsed_data['description']}"
-# Usage: #definition
-# * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-shareablelibrary"
-# * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablelibrary"
-# * meta.profile[+] = "http://hl7.org/fhir/uv/cql/StructureDefinition/cql-library"
-# * meta.profile[+] = "http://hl7.org/fhir/uv/cql/StructureDefinition/cql-module"
-# * url = "http://smart.who.int/immunizations-measles/Library/{parsed_data['library_name']}"
-# * extension[+]
-#   * url = "http://hl7.org/fhir/StructureDefinition/cqf-knowledgeCapability"
-#   * valueCode = #computable
-# * name = "{parsed_data['library_name']}"
-# * status = #draft
-# * experimental = true
-# * publisher = "World Health Organization (WHO)"
-# * type = $library-type#logic-library
-# * content.id = "ig-loader-{parsed_data['library_name']}.cql"
-# """
-#     return library_fsh
+    def generate_library_fsh(self):
+        library_name = F"{self.header_variables["DAK ID"].replace(".", "")}Logic"
+        """
+        Generate the Library FSH file content.
+        """
+        library_fsh = f"""
+Instance: {library_name}
+InstanceOf: Library
+Title: "{self.header_variables['DAK ID']} Logic"
+Description: "{self.header_variables['Indicator definition']}"
+Usage: #definition
+* meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-shareablelibrary"
+* meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablelibrary"
+* meta.profile[+] = "http://hl7.org/fhir/uv/cql/StructureDefinition/cql-library"
+* meta.profile[+] = "http://hl7.org/fhir/uv/cql/StructureDefinition/cql-module"
+* url = "http://smart.who.int/immunizations-measles/Library/{library_name}"
+* extension[+]
+  * url = "http://hl7.org/fhir/StructureDefinition/cqf-knowledgeCapability"
+  * valueCode = #computable
+* name = "{library_name}"
+* status = #draft
+* experimental = true
+* publisher = "World Health Organization (WHO)"
+* type = $library-type#logic-library
+* content.id = "ig-loader-{library_name}.cql"
+"""
+        return library_fsh
 
 
 # def generate_measure_fsh(parsed_data):
@@ -261,7 +254,3 @@ class CQLResourceGenerator:
 #     print(
 #         f"Generated {parsed_data['library_name']}_Library.fsh and {parsed_data['library_name']}_Measure.fsh"
 #     )
-
-
-if __name__ == "__main__":
-    main()
