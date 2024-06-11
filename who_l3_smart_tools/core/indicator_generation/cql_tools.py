@@ -1,5 +1,6 @@
 import re
 import json
+from datetime import datetime, timezone
 
 import pandas as pd
 
@@ -158,6 +159,8 @@ class CQLResourceGenerator:
             library_name_match.group(1) if library_name_match else None
         )
 
+        
+
         return parsed_data
 
     def generate_library_fsh(self):
@@ -189,49 +192,52 @@ Usage: #definition
         return library_fsh
 
 
-# def generate_measure_fsh(parsed_data):
-#     """
-#     Generate the Measure FSH file content.
-#     """
-#     measure_fsh = f"""
-# Instance: {parsed_data['library_name']}Measure
-# InstanceOf: http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cv-measure-cqfm
-# Title: "{parsed_data['title']}"
-# * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-shareablemeasure"
-# * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
-# * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
-# * description = "{parsed_data['description']}"
-# * url = "http://smart.who.int/immunizations-measles/Measure/{parsed_data['library_name']}Measure"
-# * status = #draft
-# * experimental = true
-# * date = "2023-10-05"
-# * name = "{parsed_data['library_name']}Measure"
-# * title = "{parsed_data['title']}"
-# * publisher = "World Health Organization (WHO)"
-# * library = "http://smart.who.int/immunizations-measles/Library/{parsed_data['library_name']}"
-# * scoring = $measure-scoring#continuous-variable "Continuous Variable"
-# * group[+]
-#   * population[initialPopulation]
-#     * id = "{parsed_data['library_name']}.IP"
-#     * description = "Initial Population"
-#     * code = $measure-population#initial-population "Initial Population"
-#     * criteria.language = #text/cql-identifier
-#     * criteria.expression = "Initial Population"
-# """
+    def generate_measure_fsh(self):
+        dak_id = self.header_variables["DAK ID"]
+        measure_name = self.header_variables["DAK ID"].replace(".", "")
+        title = f"{self.header_variables['DAK ID']} {self.header_variables['Short name']}"
+        """
+        Generate the Measure FSH file content.
+        """
+        measure_fsh = f"""
+Instance: {measure_name}
+InstanceOf: http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cv-measure-cqfm
+Title: "{title}"
+* meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-shareablemeasure"
+* meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
+* extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
+* description = "{self.header_variables['Indicator definition']}"
+* url = "http://smart.who.int/immunizations-measles/Measure/{measure_name}"
+* status = #draft
+* experimental = true
+* date = "{datetime.now(timezone.utc).date().isoformat()}"
+* name = "{measure_name}"
+* title = "{title}"
+* publisher = "World Health Organization (WHO)"
+* library = "http://smart.who.int/immunizations-measles/Library/{measure_name}Logic"
+* scoring = $measure-scoring#proportion "Proportion"
+* group[+]
+  * population[initialPopulation]
+    * id = "{dak_id}.IP"
+    * description = "Initial Population"
+    * code = $measure-population#initial-population "Initial Population"
+    * criteria.language = #text/cql-identifier
+    * criteria.expression = "Initial Population"
+"""
 
-#     # Add populations
-#     for population in parsed_data["measure_populations"]:
-#         measure_fsh += f"""
-#   * population[{population}]
-#     * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
-#     * id = "{parsed_data['library_name']}.{population}"
-#     * description = "{population}"
-#     * code = $measure-population#{population} "{population}"
-#     * criteria.language = #text/cql-identifier
-#     * criteria.expression = "{population}"
-# """
-#     measure_fsh += "\n"
-#     return measure_fsh
+        # Add populations
+        for population in parsed_data["measure_populations"]:
+            measure_fsh += f"""
+  * population[{population}]
+    * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
+    * id = "{parsed_data['library_name']}.{population}"
+    * description = "{population}"
+    * code = $measure-population#{population} "{population}"
+    * criteria.language = #text/cql-identifier
+    * criteria.expression = "{population}"
+"""
+        measure_fsh += "\n"
+        return measure_fsh
 
 
 # def main():
