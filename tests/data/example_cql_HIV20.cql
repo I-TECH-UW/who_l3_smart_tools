@@ -41,12 +41,16 @@ parameter "Measurement Period" Interval<Date> default Interval[@2020-01-01, @202
  
 context Unfiltered
 
-
 // From BRYN
 //you use a Measure resource, and your Measure would be based on either Patients or Observations.
 //If you want to count number of Patients that have received the test, that's a Patient-based Measure using an "exists", 
 //if you want to count the number of Tests, that could be a Patient-based continuous variable measure, where the Measure Observation is a Count of tests, or it could be an Observation-based proportion measure, where the basis is actually Observation.
 
+/*
+ * As defined by Member State
+ */
+define "Initial Population":
+  true
 
 //Does this also filter out self HIV tests 
 //right now using HIVIND19 definition which does
@@ -63,7 +67,6 @@ define "denominator":
     exists(HIC."HIV test resulted" T
 	where T.issued before end of "Measurement Period"
 	and T.issued after start of "Measurement Period")
-
 
 /*
  * Disaggregators

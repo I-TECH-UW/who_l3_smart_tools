@@ -151,15 +151,43 @@ class CQLResourceGenerator:
         """
         Parse the CQL file to extract relevant information.
         """
-        parsed_data = {}
+        parsed_data = {
+            "stratifiers": {},
+            "populations": {},
+            "numerator": False,
+            "denominator": False,
+            "library_name": None
+        }
 
         # Extract library name
-        library_name_match = re.search(r"library\s+(\w+)", self.cql_content)
+        library_name_match = re.search(r"Library\:\s+([a-zA-Z0-9.]+)\sLogic", self.cql_content)
         parsed_data["library_name"] = (
             library_name_match.group(1) if library_name_match else None
         )
 
+        # Extract denominator, if exists:
+        denominator_match = re.search(
+            r"define: \"denominator\"\:", self.cql_content, re.IGNORECASE
+        )
+        if denominator_match:
+            parsed_data["denominator"] = True
+
+        # Extract numerator, if exists:
+        numerator_match = re.search(
+            r"define: \"numerator\"\:", self.cql_content, re.IGNORECASE
+        )   
+        if numerator_match:
+            parsed_data["numerator"] = True
+
+        # Extract stratifiers
+        stratifier_matches = re.findall(r'define "(.+ Stratifier)":', self.cql_content)
+        for stratifier in stratifier_matches:
+            parsed_data["stratifiers"][stratifier] = True
         
+        # Extract populations
+        population_matches = re.findall(r'define "(.+ Population)":', self.cql_content)
+        for population in population_matches:
+            parsed_data["populations"][population] = True
 
         return parsed_data
 
@@ -216,47 +244,47 @@ Title: "{title}"
 * publisher = "World Health Organization (WHO)"
 * library = "http://smart.who.int/immunizations-measles/Library/{measure_name}Logic"
 * scoring = $measure-scoring#proportion "Proportion"
-* group[+]
-  * population[initialPopulation]
-    * id = "{dak_id}.IP"
-    * description = "Initial Population"
-    * code = $measure-population#initial-population "Initial Population"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "Initial Population"
 """
+        
+        # Add Populations and Stratifiers to the measure FSH string if group is not empty
+        if self.parsed_cql["stratifiers"] or self.parsed_cql["populations"] or self.parsed_cql["denominator"] or self.parsed_cql["numerator"]:
+            measure_fsh += "\n* group[+]\n"
 
-        # Add populations
-        for population in parsed_data["measure_populations"]:
-            measure_fsh += f"""
-  * population[{population}]
-    * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
-    * id = "{parsed_data['library_name']}.{population}"
-    * description = "{population}"
-    * code = $measure-population#{population} "{population}"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "{population}"
+            for population in self.parsed_cql["populations"].keys():
+                # Grab first letters of population title to create code
+                pop_code = "".join([word[0] for word in population.split()])
+                pop_string = population.replace(" ", "-").lower()
+                measure_fsh += f"""
+    * population[{population}]
+        * id = "{dak_id}.{pop_code}"
+        * description = "{population}"
+        * code = $measure-population#{pop_string} "{population}"
+        * criteria.language = #text/cql-identifier
+        * criteria.expression = "{population}"
 """
-        measure_fsh += "\n"
+            if self.cql_content["denominator"]:
+                measure_fsh += f"""
+    * population[denominator]
+        * id = "{dak_id}.DEN"
+        * description = {self.cql_content["Denominator definition"]}
+        * code = $measure-population#denominator "Denominator"
+        * criteria.language = #text/cql-identifier
+        * criteria.expression = "Denominator"
+"""
+            if self.parsed_cql["numerator"]:
+                measure_fsh += f"""
+    * population[numerator]
+        * id = "{dak_id}.NUM"
+        * description = {self.cql_content["Numerator definition"]}
+        * code = $measure-population#numerator "Numerator"
+        * criteria.language = #text/cql-identifier
+        * criteria.expression = "Numerator"
+"""
+            for index, stratifier in self.parsed_cql["stratifiers"].items():
+                measure_fsh += f"""
+    * stratifier[+]
+        * id = "{dak_id}.S.{index}"
+        * criteria.language = #text/cql-identifier
+        * criteria.expression = "{stratifier}"
+"""
         return measure_fsh
-
-
-# def main():
-#     cql_file_path = "IMMZ.IND.08.cql"
-
-#     with open(cql_file_path, "r") as file:
-#         cql_content = file.read()
-
-#     parsed_data = parse_cql(cql_content)
-
-#     library_fsh = generate_library_fsh(parsed_data)
-#     measure_fsh = generate_measure_fsh(parsed_data)
-
-#     with open(f"{parsed_data['library_name']}_Library.fsh", "w") as file:
-#         file.write(library_fsh)
-
-#     with open(f"{parsed_data['library_name']}_Measure.fsh", "w") as file:
-#         file.write(measure_fsh)
-
-#     print(
-#         f"Generated {parsed_data['library_name']}_Library.fsh and {parsed_data['library_name']}_Measure.fsh"
-#     )

@@ -74,6 +74,9 @@ define "denominator":
    and not exists (HIC."Patient Deceased before end of Measurement Period")
    and not exists (HIC."Stopped ART at Facility during the measurement period")
 
+
+
+
 /*
  * Disaggregators
  */
