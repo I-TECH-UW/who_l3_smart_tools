@@ -1,7 +1,7 @@
 import re
 import json
 from datetime import datetime, timezone
-
+import stringcase
 import pandas as pd
 
 
@@ -165,16 +165,16 @@ class CQLResourceGenerator:
             library_name_match.group(1) if library_name_match else None
         )
 
-        # Extract denominator, if exists:
+        # Extract denominator, if exists: 
         denominator_match = re.search(
-            r"define: \"denominator\"\:", self.cql_content, re.IGNORECASE
+            r"define \"denominator\"\:", self.cql_content, re.IGNORECASE
         )
         if denominator_match:
             parsed_data["denominator"] = True
 
         # Extract numerator, if exists:
         numerator_match = re.search(
-            r"define: \"numerator\"\:", self.cql_content, re.IGNORECASE
+            r"define \"numerator\"\:", self.cql_content, re.IGNORECASE
         )   
         if numerator_match:
             parsed_data["numerator"] = True
@@ -229,7 +229,7 @@ Usage: #definition
         """
         measure_fsh = f"""
 Instance: {measure_name}
-InstanceOf: http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cv-measure-cqfm
+InstanceOf: http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/proportion-measure-cqfm
 Title: "{title}"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-shareablemeasure"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
@@ -254,37 +254,45 @@ Title: "{title}"
                 # Grab first letters of population title to create code
                 pop_code = "".join([word[0] for word in population.split()])
                 pop_string = population.replace(" ", "-").lower()
+                population_camel_case = stringcase.camelcase(stringcase.alphanumcase(population))
                 measure_fsh += f"""
-    * population[{population}]
-        * id = "{dak_id}.{pop_code}"
-        * description = "{population}"
-        * code = $measure-population#{pop_string} "{population}"
-        * criteria.language = #text/cql-identifier
-        * criteria.expression = "{population}"
+  * population[{population_camel_case}]
+    * id = "{dak_id}.{pop_code}"
+    * description = "Number in target group"
+    * code = $measure-population#{pop_string} "{population}"
+    * criteria.language = #text/cql-identifier
+    * criteria.expression = "{population}"
 """
-            if self.cql_content["denominator"]:
+            if self.parsed_cql["denominator"]:
                 measure_fsh += f"""
-    * population[denominator]
-        * id = "{dak_id}.DEN"
-        * description = {self.cql_content["Denominator definition"]}
-        * code = $measure-population#denominator "Denominator"
-        * criteria.language = #text/cql-identifier
-        * criteria.expression = "Denominator"
+  * population[denominator]
+    * id = "{dak_id}.DEN"
+    * description = "{self.indicator_row["Denominator definition"]}"
+    * code = $measure-population#denominator "Denominator"
+    * criteria.language = #text/cql-identifier
+    * criteria.expression = "Denominator"
 """
             if self.parsed_cql["numerator"]:
                 measure_fsh += f"""
-    * population[numerator]
-        * id = "{dak_id}.NUM"
-        * description = {self.cql_content["Numerator definition"]}
-        * code = $measure-population#numerator "Numerator"
-        * criteria.language = #text/cql-identifier
-        * criteria.expression = "Numerator"
+  * population[numerator]
+    * id = "{dak_id}.NUM"
+    * description = "{self.indicator_row["Numerator definition"]}"
+    * code = $measure-population#numerator "Numerator"
+    * criteria.language = #text/cql-identifier
+    * criteria.expression = "Numerator"
 """
             for index, stratifier in self.parsed_cql["stratifiers"].items():
+                # Remove last word from stratifier title, and use first letter of each remaining word to create code
+                words = index.split()           
+                strat_code = "".join([word[0] for word in words[:-1]]).upper()
+                
                 measure_fsh += f"""
-    * stratifier[+]
-        * id = "{dak_id}.S.{index}"
-        * criteria.language = #text/cql-identifier
-        * criteria.expression = "{stratifier}"
+  * stratifier[+]
+    * id = "{dak_id}.S.{strat_code}"
+    * criteria.language = #text/cql-identifier
+    * criteria.expression = "{index}"
 """
+                
+        # remove any empty lines from measure
+        measure_fsh = "\n".join([line for line in measure_fsh.split("\n") if line.strip()])
         return measure_fsh

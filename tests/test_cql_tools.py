@@ -40,26 +40,27 @@ class TestCqlScaffold(unittest.TestCase):
         self.assertIsNotNone(cql_template)
 
 
-class TestParseCql(unittest.TestCase):
-    def test_parse_cql_with_valid_content(self):
+class TestCqlResourceGenerator(unittest.TestCase):
+    def setUp(self):
         # Load example CQL from data directory
         cql_file_path = "tests/data/example_cql_HIV20.cql"
         indicator_file_path = "tests/data/indicator_dak_input_MINI.xlsx"
 
         # Load content and close file
         cql_file = open(cql_file_path, "r")
-        cql_content = cql_file.read()
+        self.cql_content = cql_file.read()
         cql_file.close()
 
         indicator_file = pd.read_excel(
             indicator_file_path, sheet_name="Indicator definitions"
         )
 
-        indicator_row = indicator_file.iloc[1]
+        self.indicator_row = indicator_file.iloc[1]
 
-        generator = CQLResourceGenerator(indicator_row, cql_content)
+        self.generator = CQLResourceGenerator(self.indicator_row, self.cql_content)
 
-        parsed_cql = generator.parse_cql()
+    def test_parse_cql_with_valid_content(self):
+        parsed_cql = self.generator.parse_cql()
 
         self.assertIsNotNone(parsed_cql)
         self.assertEqual(parsed_cql["library_name"], "HIV.IND.20")
@@ -71,6 +72,45 @@ class TestParseCql(unittest.TestCase):
         self.assertGreater(len(parsed_cql["populations"]), 0)
         self.assertIsNotNone(parsed_cql["denominator"])
         self.assertIsNotNone(parsed_cql["numerator"])
+
+    def test_generate_library_fsh(self):
+        self.generator.parse_cql()
+        library_fsh = self.generator.generate_library_fsh()
+
+        output_file = "tests/output/fsh/HIV20_library.fsh"
+
+        if os.path.exists(output_file):
+            os.remove(output_file)
+        with open(output_file, "w") as f:
+            f.write(library_fsh)
+
+        expected_lib_file = "tests/data/example_fsh/HIV20_library.fsh"
+        expected_lib_file = open(expected_lib_file, "r")
+
+        expected_library_fsh = expected_lib_file.read()
+
+        self.assertIsNotNone(library_fsh)
+
+        self.assertEqual(library_fsh.strip(), expected_library_fsh.strip())
+
+    def test_generate_measure_fsh(self):
+        self.generator.parse_cql()
+        measure_fsh = self.generator.generate_measure_fsh()
+
+        output_file = "tests/output/fsh/HIV20_measure.fsh"
+
+        if os.path.exists(output_file):
+            os.remove(output_file)
+        with open(output_file, "w") as f:
+            f.write(measure_fsh)
+
+        expected_measure_file = "tests/data/example_fsh/HIV20_measure.fsh"
+        expected_measure_file = open(expected_measure_file, "r")
+
+        expected_measure_fsh = expected_measure_file.read()
+
+        self.assertIsNotNone(measure_fsh)
+        self.assertEqual(measure_fsh.strip(), expected_measure_fsh.strip())
 
 
 if __name__ == "__main__":
