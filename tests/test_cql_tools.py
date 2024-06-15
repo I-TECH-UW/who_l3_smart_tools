@@ -6,7 +6,7 @@ from who_l3_smart_tools.core.indicator_generation.cql_tools import (
 )
 import pandas as pd
 import unittest
-
+import stringcase
 
 class TestCqlScaffold(unittest.TestCase):
     def test_generate_cql_file_headers(self):
@@ -43,7 +43,7 @@ class TestCqlScaffold(unittest.TestCase):
 class TestCqlResourceGenerator(unittest.TestCase):
     def setUp(self):
         # Load example CQL from data directory
-        cql_file_path = "tests/data/example_cql_HIV20.cql"
+        cql_file_path = "tests/data/example_cql_HIV27.cql"
         indicator_file_path = "tests/data/indicator_dak_input_MINI.xlsx"
 
         # Load content and close file
@@ -55,7 +55,7 @@ class TestCqlResourceGenerator(unittest.TestCase):
             indicator_file_path, sheet_name="Indicator definitions"
         )
 
-        self.indicator_row = indicator_file.iloc[1]
+        self.indicator_row = indicator_file.iloc[2]
 
         self.generator = CQLResourceGenerator(self.indicator_row, self.cql_content)
 
@@ -63,7 +63,7 @@ class TestCqlResourceGenerator(unittest.TestCase):
         parsed_cql = self.generator.parse_cql()
 
         self.assertIsNotNone(parsed_cql)
-        self.assertEqual(parsed_cql["library_name"], "HIV.IND.20")
+        self.assertEqual(parsed_cql["library_name"], "HIV.IND.27")
         self.assertIn("stratifiers", parsed_cql.keys())
         self.assertIn("denominator", parsed_cql.keys())
         self.assertIn("numerator", parsed_cql.keys())
@@ -74,17 +74,17 @@ class TestCqlResourceGenerator(unittest.TestCase):
         self.assertIsNotNone(parsed_cql["numerator"])
 
     def test_generate_library_fsh(self):
-        self.generator.parse_cql()
+        p = self.generator.parse_cql()
         library_fsh = self.generator.generate_library_fsh()
 
-        output_file = "tests/output/fsh/HIV20_library.fsh"
+        output_file = "tests/output/fsh/HIV27_library.fsh"
 
         if os.path.exists(output_file):
             os.remove(output_file)
         with open(output_file, "w") as f:
             f.write(library_fsh)
 
-        expected_lib_file = "tests/data/example_fsh/HIV20_library.fsh"
+        expected_lib_file = f"tests/data/example_fsh/{stringcase.alphanumcase(p["library_name"])}_library.fsh"
         expected_lib_file = open(expected_lib_file, "r")
 
         expected_library_fsh = expected_lib_file.read()
@@ -94,17 +94,17 @@ class TestCqlResourceGenerator(unittest.TestCase):
         self.assertEqual(library_fsh.strip(), expected_library_fsh.strip())
 
     def test_generate_measure_fsh(self):
-        self.generator.parse_cql()
+        p = self.generator.parse_cql()
         measure_fsh = self.generator.generate_measure_fsh()
 
-        output_file = "tests/output/fsh/HIV20_measure.fsh"
+        output_file = f"tests/output/fsh/{stringcase.alphanumcase(p["library_name"])}_measure.fsh"
 
         if os.path.exists(output_file):
             os.remove(output_file)
         with open(output_file, "w") as f:
             f.write(measure_fsh)
 
-        expected_measure_file = "tests/data/example_fsh/HIV20_measure.fsh"
+        expected_measure_file = "tests/data/example_fsh/HIV27_measure.fsh"
         expected_measure_file = open(expected_measure_file, "r")
 
         expected_measure_fsh = expected_measure_file.read()

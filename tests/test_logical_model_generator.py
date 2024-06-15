@@ -3,15 +3,14 @@ import os
 import pandas as pd
 import sys
 from who_l3_smart_tools.core.logical_models.logical_model_generator import (
-    generate_fsh_from_excel,
+    LogicalModelGenerator,
 )
 
 
-@unittest.skip("Skip for now")
 class TestLogicalModelGenerator(unittest.TestCase):
     def setUp(self):
-        self.input_file = "../l3-data/test-data.xlsx"
-        self.output_dir = "../l3-data/output"
+        self.input_file = "tests/tmp/l2/test_dd.xlsx"
+        self.output_dir = "tests/tmp/fsh/models"
 
     def tearDown(self):
         os.remove(self.input_file)
@@ -30,14 +29,13 @@ class TestLogicalModelGenerator(unittest.TestCase):
         df = pd.DataFrame(test_data)
         df.to_excel(self.input_file, index=False)
 
-        # Call the function under test
-        generate_fsh_from_excel(self.input_file, self.output_dir)
+        g = LogicalModelGenerator(self.input_file, self.output_dir)
 
-        # Check if the output file is generated
+        g.generate_fsh_from_excel()
+
         output_file = os.path.join(self.output_dir, "HIV.X.fsh")
         self.assertTrue(os.path.exists(output_file))
 
-        # Check the content of the output file
         with open(output_file, "r") as f:
             fsh_artifact = f.read()
 
@@ -57,6 +55,17 @@ class TestLogicalModelGenerator(unittest.TestCase):
         """
 
         self.assertEqual(fsh_artifact.strip(), expected_fsh_artifact.strip())
+
+
+class TestFullLogicalModelGeneration(unittest.TestCase):
+    def setUp(self) -> None:
+        self.input_file = os.path.join("tests", "data", "l2", "test_dd.xlsx")
+        self.output_dir = os.path.join("tests", "output", "fsh", "models")
+
+    def test_full_data_dictionary(self):
+        generator = LogicalModelGenerator(self.input_file, self.output_dir)
+
+        generator.generate_fsh_from_excel()
 
 
 if __name__ == "__main__":
