@@ -72,6 +72,18 @@ def parse_exclusions(exclusions_str):
 def parse_calculation(description):
     scope = "unknown"
 
+    if description == "1":
+        scope = "1"
+        return [], scope
+
+    client_scope_pattern = re.compile(r"of clients|for all clients", re.IGNORECASE)
+    test_scope_pattern = re.compile(r"of tests|for all tests", re.IGNORECASE)
+
+    if client_scope_pattern.search(description):
+        scope = "clients"
+    elif test_scope_pattern.search(description):
+        scope = "tests"
+
     # Define the patterns
     count_pattern = re.compile(r"COUNT OF (.*?) WITH", re.IGNORECASE)
     sum_pattern = re.compile(r"SUM OF (.*?) FOR ALL CLIENTS WITH", re.IGNORECASE)
@@ -110,8 +122,6 @@ def parse_calculation(description):
 
     return_terms = [term.strip() for term in return_terms]
 
-    if op_term_str:
-        scope = op_term_str
     return return_terms, scope
 
 
@@ -177,6 +187,8 @@ class ScaffoldingGenerator:
 
     def generate_test_scaffolding(self):
         for index, row in self.dak_data.iterrows():
+            if not (row["Included in DAK"] and row["Priority"] and row["Core"]):
+                continue
 
             row_data = self.parse_dak_row(row)
 
@@ -197,7 +209,7 @@ class ScaffoldingGenerator:
 
             if numerator_scope != denominator_scope:
                 print(
-                    f"Indicator {indicator_id} has different scopes for numerator and denominator calculations."
+                    f"Indicator {indicator_id} has different scopes for numerator and denominator calculations:\nnumerator:{numerator_scope} and denominator:{denominator_scope}"
                 )
 
             headers, blank_fill_length = self.generate_headers(row, row_data)
@@ -228,10 +240,9 @@ class ScaffoldingGenerator:
                 ws.append(
                     [i] + [""] * blank_fill_length + list(combo)
                 )  # Empty values for placeholder logic and actual num/denom values
-            
+
             # Apply color fills based on calculated column ranges
             self.paint_worksheet(ws, row_data)
-            
 
         self.writer.close()
 
@@ -275,9 +286,10 @@ class ScaffoldingGenerator:
         elif row_data["numerator-scope"] == "clients":
             headers = ["Patient.id"]
         else:
-            raise ValueError(
-                f"Indicator {row_data["dak-id"]  } has an unknown scope: {row_data["numerator-scope"]}"
+            print(
+                f"Indicator {row_data['dak-id']} has an unknown scope: {row_data['numerator-scope']}"
             )
+            headers = ["Patient.id"]
 
         # Construct headers, starting with 'Patient ID'
         headers = headers + ["Numerator:"] + [row["Numerator calculation"]]
