@@ -1,5 +1,5 @@
 import argparse
-from who_l3_smart_tools.core.logical_models.logical_model_generator import generate_fsh_from_excel
+from who_l3_smart_tools.core.logical_models.logical_model_generator import LogicalModelGenerator
 
 
 def main():
@@ -21,7 +21,7 @@ def main():
 
     args = parser.parse_args()
 
-    generate_fsh_from_excel(args.input, args.output)
+    LogicalModelGenerator(args.input, args.output).generate_fsh_from_excel()
 
 
 if __name__ == "__main__":
