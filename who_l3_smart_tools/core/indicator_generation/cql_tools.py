@@ -1,6 +1,7 @@
 import re
 import json
 from datetime import datetime, timezone
+from typing import Any
 import stringcase
 import pandas as pd
 
@@ -10,7 +11,7 @@ cql_file_header_template = """
 /*
  * Library: {DAK ID} Logic
  * Short Name: {Short name}
- * 
+ *
  * Definition: {Indicator definition}
  *
  * Numerator: {Numerator definition}
@@ -20,16 +21,16 @@ cql_file_header_template = """
  * Denominator: {Denominator definition}
  * Denominator Calculation: {Denominator calculation}
  * Denominator Exclusions: {Denominator exclusions}
- * 
+ *
  * Disaggregations:
  * {Disaggregation description}
  * Disaggregation Elements: {Disaggregation data elements}
  *
- * Numerator and Denominator Elements: 
+ * Numerator and Denominator Elements:
  * {List of all data elements included in numerator and denominator}
  *
- * Reference: {Reference} 
- * 
+ * Reference: {Reference}
+ *
  * Additional Context
  * - what it measures: {What it measures}
  * - rationale: {Rationale}
@@ -202,6 +203,21 @@ class CqlScaffoldGenerator:
         return row_dict["DAK ID"], filled_template
 
 
+# Get indicator DAK ID from CQL file with first instance of DAK ID pattern HIV.IND.X
+DAK_INDICATOR_ID_PATTERN = re.compile(r"(HIV\.IND\.\d+)")
+
+
+class EmptyItem:
+    def __getitem__(self, item) -> Any:
+        return None
+
+    def keys(self):
+        return []
+
+
+__empty__ = EmptyItem()
+
+
 class CQLResourceGenerator:
     """
     This class assists in the translation of L2 DAK indicator artifacts into
@@ -212,9 +228,10 @@ class CQLResourceGenerator:
         indicator_row (dict): The row of the indicator artifact.
     """
 
-    def __init__(self, cql_content, indicator_dictionary):
+    def __init__(self, cql_content, indicator_dictionary: dict[str, Any]):
         self.cql_content = cql_content
-        self.parsed_cql = self.parse_cql()
+        self.parsed_cql = __empty__
+        self.parse_cql()
         self.indicator_dictionary = indicator_dictionary
 
     def parseRow(self, row):
@@ -227,6 +244,9 @@ class CQLResourceGenerator:
         """
         Parse the CQL file to extract relevant information.
         """
+        if self.parsed_cql is not __empty__:
+            return self.parsed_cql
+
         parsed_data = {
             "stratifiers": {},
             "populations": {},
@@ -235,9 +255,7 @@ class CQLResourceGenerator:
             "library_name": None,
         }
 
-        # Get indicator DAK ID from CQL file with first instance of DAK ID pattern HIV.IND.X
-        dak_id_indicator_pattern = r"(HIV\.IND\.\d+)"
-        indicator_match = re.search(dak_id_indicator_pattern, self.cql_content)
+        indicator_match = DAK_INDICATOR_ID_PATTERN.search(self.cql_content)
 
         if indicator_match:
             parsed_data["library_name"] = indicator_match.group(1)
@@ -278,22 +296,26 @@ class CQLResourceGenerator:
         for population in population_matches:
             parsed_data["populations"][population] = True
 
-        return parsed_data
+        self.parsed_cql = parsed_data
+        return self.parsed_cql
 
     def generate_library_fsh(self):
         """
         Generate the Library FSH file content.
         """
 
-        library_name = f"{self.parsed_cql['library_name'].replace('.', '')}Logic"
+        raw_library_name = self.parsed_cql["library_name"]
+        library_name = f"{raw_library_name.replace('.', '')}Logic"
 
         # Treat as indicator
-        if library_name in self.indicator_dictionary.keys():
-            header_variables = self.parseRow(self.indicator_dictionary[library_name])
-            title = header_variables["Short name"]
+        if raw_library_name in self.indicator_dictionary.keys():
+            header_variables = self.parseRow(
+                self.indicator_dictionary[raw_library_name]
+            )
+            title = raw_library_name
             description = header_variables["Indicator definition"]
         else:
-            title = library_name
+            title = raw_library_name
             description = f"Description not yet available for {library_name}."
 
         library_fsh = library_fsh_template.format(
