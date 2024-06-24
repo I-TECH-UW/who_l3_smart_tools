@@ -3,17 +3,16 @@ import os
 import argparse
 from pathlib import Path
 import pandas as pd
-from fhirclient import send_to_fhir_server
-from bundle_generator import BundleGenerator
-from data_generator import DataGenerator
-from scaffolding_generator import ScaffoldingGenerator
+from who_l3_smart_tools.core.indicator_testing.bundle_generator import BundleGenerator
+from who_l3_smart_tools.core.indicator_testing.data_generator import DataGenerator
+from who_l3_smart_tools.core.indicator_testing.scaffolding_generator import ScaffoldingGenerator
 
 
 def generate_test_scaffold(input_file):
     scaffolding_generator = ScaffoldingGenerator(
         input_file,
         "Indicator_Scaffold_"
-        + datetime.now(datetime.timezone.utc).strftime("%Y%m%d_%H%M%S")
+        + datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%d_%H%M%S")
         + ".xlsx",
     )
     scaffolding_generator.generate_test_scaffolding()
@@ -23,7 +22,7 @@ def generate_test_values(input_file):
     data_generator = DataGenerator(input_file)
     data_generator.generate_data_file(
         "Indicator_Test_Data_"
-        + datetime.now(datetime.timezone.utc).strftime("%Y%m%d_%H%M%S")
+        + datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%d_%H%M%S")
         + ".xlsx",
         1000,
     )
