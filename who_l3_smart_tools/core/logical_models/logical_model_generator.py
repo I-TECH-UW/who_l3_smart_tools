@@ -275,6 +275,9 @@ class LogicalModelAndTerminologyGenerator:
 
                     label_camel = camel_case(label_clean)
 
+                    # valid element identifiers in FHIR must start with a alphabetical character
+                    # therefore if an element starts with a number, we swap the spelt-out version of the
+                    # number, using the inflect library
                     if len(label_camel) > 0 and not label_camel[0].isalpha():
                         try:
                             prefix, rest = re.split(r'(?=[a-zA-Z])', label_camel, 1)
