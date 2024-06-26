@@ -4,7 +4,7 @@ import os
 import re
 from who_l3_smart_tools.core.indicator_generation.cql_tools import (
     CQLResourceGenerator,
-    CqlScaffoldGenerator,
+    CqlGenerator,
 )
 import pandas as pd
 import unittest
@@ -12,14 +12,15 @@ import stringcase
 
 class TestCqlScaffold(unittest.TestCase):
     def test_generate_cql_file_headers(self):
-        input_file = "tests/data/full_indicator_list.xlsx"
+        input_indicators = "tests/data/l2/test_indicators.xlsx"
+        input_dd = "tests/data/l2/test_dd.xlsx"
         output_dir = "tests/output/cql/templates/"
-
+           
         # Make sure output directory exists
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        generator = CqlScaffoldGenerator(input_file)
+        generator = CqlGenerator(input_indicators, input_dd)
 
         generator.generate_cql_scaffolds()
 
@@ -27,19 +28,20 @@ class TestCqlScaffold(unittest.TestCase):
 
         assert os.path.exists(os.path.join(output_dir, "HIVIND2Logic.cql"))
 
-    def test_generate_cql_template(self):
-        input_file = "tests/data/indicator_dak_input_MINI.xlsx"
 
-        generator = CqlScaffoldGenerator(input_file)
+    def test_generate_concepts_cql(self):
+        input_indicators = "tests/data/l2/test_indicators.xlsx"
+        input_dd = "tests/data/l2/test_dd.xlsx"
+        output_dir = "tests/output/cql/files/"
 
-        indicator_artifact = pd.read_excel(
-            input_file, sheet_name="Indicator definitions"
-        )
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        
+        generator = CqlGenerator(input_indicators, input_dd)
 
-        # Test the first row
-        cql_template = generator.generate_cql_template(indicator_artifact.iloc[0])
+        generator.generate_cql_concept_file(output_dir=output_dir)
 
-        assert cql_template is not None
+        assert os.path.exists(os.path.join(output_dir, "HIVConcepts.cql"))
 
 
 class TestCqlResourceGenerator(unittest.TestCase):

@@ -9,34 +9,42 @@ import pandas as pd
 # Templates
 cql_file_header_template = """
 /*
- * Library: {DAK ID} Logic
- * Short Name: {Short name}
+ * Library: {dak_id} Logic
+ * Ref No: {ref_no_}
+ * Short Name: {short_name}
  *
- * Definition: {Indicator definition}
+ * Definition: {indicator_definition}
  *
- * Numerator: {Numerator definition}
- * Numerator Calculation: {Numerator calculation}
- * Numerator Exclusions: {Numerator exclusions}
+ * Numerator: {numerator_definition}
+ * Numerator Calculation: {numerator_calculation}
+ * Numerator Exclusions: {numerator_exclusions}
  *
- * Denominator: {Denominator definition}
- * Denominator Calculation: {Denominator calculation}
- * Denominator Exclusions: {Denominator exclusions}
+ * Denominator: {denominator_definition}
+ * Denominator Calculation: {denominator_calculation}
+ * Denominator Exclusions: {denominator_exclusions}
  *
  * Disaggregations:
- * {Disaggregation description}
- * Disaggregation Elements: {Disaggregation data elements}
+ * {disaggregation_description}
+ * Disaggregation Elements: {disaggregation_data_elements}
  *
  * Numerator and Denominator Elements:
- * {List of all data elements included in numerator and denominator}
+ * {list_of_all_data_elements_included_in_numerator_and_denominator}
  *
- * Reference: {Reference}
+ * Reference: {reference}
+ * 
+ * Data Concepts:
+ """
+cql_file_header_additional_context_template = """
  *
  * Additional Context
- * - what it measures: {What it measures}
- * - rationale: {Rationale}
- * - method: {Method of measurement}
+ * - what it measures: {what_it_measures}
+ * - rationale: {rationale}
+ * - method: {method_of_measurement}
  */
 """
+
+cql_file_header_data_concept_template = """ 
+ * {id}: {label} | {description}"""
 
 
 library_fsh_template = """
@@ -77,7 +85,12 @@ Title: "{title}"
 * title = "{title}"
 * publisher = "World Health Organization (WHO)"
 * library = "http://smart.who.int/immunizations-measles/Library/{measure_name}Logic"
-* scoring = $measure-scoring#proportion "Proportion"
+"""
+
+scoring_value_set: str = {"proportion", "continuous-variable"}
+
+measure_scoring_fsh_template = """
+* scoring = $measure-scoring#{scoring} "{scoring_title}"
 """
 
 measure_population_fsh_template = """
@@ -114,11 +127,21 @@ measure_stratifier_fsh_template = """
     * criteria.expression = "{index}"
 """
 
-class CqlScaffoldGenerator:
-    def __init__(self, indicator_artifact_file):
-        self.indicator_artifact_file = indicator_artifact_file
 
-    def print_to_files(self, output_dir):
+class CqlGenerator:
+    def __init__(self, indicator_artifact_file: str, data_dictionary_file: str):
+        self.dak_name: str = None
+        self.indicator_artifact_file = indicator_artifact_file
+        self.data_dictionary_file = data_dictionary_file
+
+        self.concept_lookup: dict[str, Any] = {}
+        self.cql_concept_dictionary: dict[str, Any] = {}
+
+        self.concept_lookup, self.cql_concept_dictionary = (
+            self.create_cql_concept_dictionaries()
+        )
+
+    def print_to_files(self, output_dir: str):
         """
         This method writes the CQL scaffolds to files in the output directory.
         """
@@ -126,6 +149,104 @@ class CqlScaffoldGenerator:
             file_name = indicator_name.replace(".", "")
             with open(f"{output_dir}/{file_name}Logic.cql", "w") as file:
                 file.write(scaffold)
+
+    def create_cql_concept_dictionaries(self):
+        """
+        This method creates a dictionary of concepts from the data dictionary file to include in the CQL
+        templates
+        """
+
+        # Create a dictionary of concepts
+        indicator_concept_lookup = {}
+        cql_concept_dictionary = {}
+
+        dd_xls = pd.read_excel(self.data_dictionary_file, sheet_name=None)
+
+        # Get DAK name from sheet names using regex to match
+        # a sheet name like `HIV.A Registration` or `HIV.B HTS visit`
+        # and grab the `HIV` part of the name
+        dak_name_pattern = re.compile(r"(\w+)\.\w+")
+        dak_name_matches = []
+
+        for sheet_name in dd_xls.keys():
+            if not sheet_name or pd.isna(sheet_name) or type(sheet_name) != str:
+                continue
+            matches = dak_name_pattern.search(sheet_name)
+            dak_name_matches.extend(matches.groups()) if matches else None
+
+        # Determine if all matches are the same
+        if len(set(dak_name_matches)) == 1:
+            self.dak_name = dak_name_matches[0]
+        else:
+            raise ValueError("DAK name does not match across all sheets")
+
+        # TODO: refactor to common method across logic/terminology/this file
+        for sheet_name in dd_xls.keys():
+            if re.match(rf"{self.dak_name}\.\w+", sheet_name):
+                df = dd_xls[sheet_name]
+                for i, row in df.iterrows():
+                    # Grab Linkages to Decision Support Tables and Aggregate Indicators
+                    data_type = row["Data Type"]
+                    data_element_id = row["Data Element ID"]
+
+                    # Skip for individual valueset values
+                    if data_type == "Codes":
+                        continue
+
+                    cds = row["Linkages to Decision Support Tables"]
+                    indicators = row["Linkages to Aggregate Indicators"]
+
+                    linkages = []
+                    ## TODO: refactor to remove duplicate code for cds and indicators
+
+                    # Select row if Linkage to CDS or Indicator is not empty
+                    if cds and type(cds) == str and not pd.isna(cds):
+                        # Grab: Data Element ID, Data Element Label, Description and Definition
+                        # and index by indicator / cds ids
+
+                        # Add to concept dictionary if not already present
+                        if data_element_id not in cql_concept_dictionary.keys():
+                            cql_concept_dictionary[data_element_id] = {
+                                "label": row["Data Element Label"],
+                                "data_type": data_type,
+                                "description": row["Description and Definition"],
+                            }
+
+                        # Parse linkages
+                        linkages.extend([item.strip() for item in cds.split(",")])
+                    if (
+                        indicators
+                        and type(indicators) == str
+                        and not pd.isna(indicators)
+                    ):
+                        # Add to concept dictionary if not already present
+                        if data_element_id not in cql_concept_dictionary.keys():
+                            cql_concept_dictionary[data_element_id] = {
+                                "label": row["Data Element Label"],
+                                "data_type": data_type,
+                                "description": row["Description and Definition"],
+                            }
+
+                        linkages.extend(
+                            [item.strip() for item in indicators.split(",")]
+                        )
+
+                    # Add linkages as keys to concept dictionary, and add data element details
+                    for linkage in linkages:
+                        # if linkage not in concept dictionary, add it
+                        if linkage not in indicator_concept_lookup.keys():
+                            indicator_concept_lookup[linkage] = []
+
+                        # Add data element details to linkage
+                        indicator_concept_lookup[linkage].append(
+                            {
+                                "id": row["Data Element ID"],
+                                "label": row["Data Element Label"],
+                                "description": row["Description and Definition"],
+                            }
+                        )
+
+        return indicator_concept_lookup, cql_concept_dictionary
 
     def generate_cql_scaffolds(self):
         """
@@ -140,15 +261,15 @@ class CqlScaffoldGenerator:
         cql_scaffolds = {}
 
         for index, row in indicator_artifact.iterrows():
-            if str(row["Included in DAK"]) and str(row["Priority"]) and str(row["Core"]):
-                indicator_name, scaffold = self.generate_cql_template(row)
+            if row["Included in DAK"]:
+                indicator_name, scaffold = self.generate_cql_header(row)
                 cql_scaffolds[indicator_name] = scaffold
 
         self.cql_scaffolds = cql_scaffolds
 
         return cql_scaffolds
 
-    def generate_cql_template(self, row_content):
+    def generate_cql_header(self, row_content):
         """
         This method provides scaffolding for CQL templates that includes
         indicator details from the DAK to facilitate CQL authoring.
@@ -188,21 +309,76 @@ class CqlScaffoldGenerator:
         # - Method of measurement
 
         # Convert row_content to a dictionary and process it to remove newlines
-        row_dict = row_content.to_dict()
+        raw_row_dict = row_content.to_dict()
+        row_dict = {}
 
-        for key, value in row_dict.items():
+        dak_id = raw_row_dict["DAK ID"]
+        ref_no = raw_row_dict["Ref no."]
+
+        for key, value in raw_row_dict.items():
             if isinstance(value, list):
                 value = " ".join(str(v) for v in value)
             if isinstance(value, str):
-                row_dict[key] = value.replace("\n", " | ")
+                value = value.replace("\n", " | ")
+            if pd.isna(value):
+                value = ""
 
-        # Using the format method to fill in the template with row content
+            key = stringcase.snakecase(stringcase.lowercase(key))
+            row_dict[key] = value
+
         filled_template = cql_file_header_template.format(**row_dict)
 
-        return row_dict["DAK ID"], filled_template
+        if ref_no in self.concept_lookup.keys():
+            for concept in self.concept_lookup[ref_no]:
+                if pd.isna(concept["id"]):
+                    continue
+                filled_template += cql_file_header_data_concept_template.format(
+                    **concept
+                )
+
+        filled_template += cql_file_header_additional_context_template.format(
+            **row_dict
+        )
+
+        # Using the format method to fill in the template with row content
+        return dak_id, filled_template
+
+    def generate_cql_concept_file(self, output_dir: str):
+        # Parse the data dictionary and generate a CQL file with all relevant concepts
+        # that can be referenced in the indicator CQL files and CDS CQL files
+        #
+        # Example valueset: `valueset "MCV Vaccine": 'http://smart.who.int/immunizations-measles/ValueSet/IMMZ.Z.DE9'`
+        # Example code: `code "History of anaphylactic reactions": 'D4.DE166' from "IMMZConcepts" display 'History of anaphylactic reactions''`
+
+        # Use the concept lookup dictionary to generate the CQL file
+        concept_file_name = f"{self.dak_name}Concepts.cql"
+        with open(f"{output_dir}/{concept_file_name}", "w") as file:
+            file.write("// Automatically generated from DAK Data Dictionary\n")
+            file.write(f"library {concept_file_name}\n")
+            file.write(
+                f"codesystem \"{concept_file_name}\": 'http://smart.who.int/{self.dak_name.lower()}/CodeSystem/{concept_file_name}'\n\n"
+            )
+
+            # Write valuesets
+            for concept_id, concept_details in self.cql_concept_dictionary.items():
+                if concept_details["data_type"] == "Coding":
+                    file.write(
+                        f"valueset \"{concept_details['label']}\": 'http://smart.who.int/{self.dak_name.lower()}/ValueSet/{concept_id}'\n"
+                    )
+            file.write("\n")
+
+            # Write codes
+            for concept_id, concept_details in self.cql_concept_dictionary.items():
+                if concept_details["data_type"] != "Codes":
+                    file.write(
+                        f"code \"{concept_details['label']}\": '{concept_id}' from \"{concept_file_name}\" display '{concept_details['label']}'\n"
+                    )
+
 
 # Get indicator DAK ID from CQL file with first instance of DAK ID pattern HIV.IND.X
-DAK_INDICATOR_ID_PATTERN = re.compile(r'(HIV\.IND\.\d+)')
+# TODO: generalize this pattern to match any DAK
+DAK_INDICATOR_ID_PATTERN = re.compile(r"(HIV\.IND\.\d+)")
+
 
 class EmptyItem:
     def __getitem__(self, item) -> Any:
@@ -211,7 +387,9 @@ class EmptyItem:
     def keys(self):
         return []
 
+
 __empty__ = EmptyItem()
+
 
 class CQLResourceGenerator:
     """
@@ -223,7 +401,7 @@ class CQLResourceGenerator:
         indicator_row (dict): The row of the indicator artifact.
     """
 
-    def __init__(self, cql_content, indicator_dictionary: dict[str, Any]):
+    def __init__(self, cql_content: str, indicator_dictionary: dict[str, Any]):
         self.cql_content = cql_content
         self.parsed_cql = __empty__
         self.parse_cql()
@@ -303,12 +481,14 @@ class CQLResourceGenerator:
         Generate the Library FSH file content.
         """
 
-        raw_library_name = self.parsed_cql['library_name']
+        raw_library_name = self.parsed_cql["library_name"]
         library_name = f"{raw_library_name.replace('.', '')}Logic"
 
         # Treat as indicator
         if raw_library_name in self.indicator_dictionary.keys():
-            header_variables = self.parseRow(self.indicator_dictionary[raw_library_name])
+            header_variables = self.parseRow(
+                self.indicator_dictionary[raw_library_name]
+            )
             title = raw_library_name
             description = header_variables["Indicator definition"]
         else:
@@ -333,12 +513,29 @@ class CQLResourceGenerator:
         dak_id = header_variables["DAK ID"]
         measure_name = header_variables["DAK ID"].replace(".", "")
         title = f"{header_variables['DAK ID']} {header_variables['Short name']}"
+
+        # Determine Scoring Type
+        if (
+            not self.parsed_cql["denominator"]
+            or self.parsed_cql["denominator"].trim() == "1"
+            or self.parsed_cql["denominator"].trim() == ""
+        ):
+            scoring = "continuous-variable"
+            scoring_title = stringcase.titlecase(scoring)
+        else:
+            scoring = "proportion"
+            scoring_title = stringcase.titlecase(scoring)
+
         # Generate the Measure FSH file content.
         measure_fsh = measure_fsh_template.format(
             measure_name=measure_name,
             title=title,
             description=header_variables["Indicator definition"],
             date=datetime.now(timezone.utc).date().isoformat(),
+        )
+
+        measure_fsh += measure_scoring_fsh_template.format(
+            scoring=scoring, scoring_title=scoring_title
         )
 
         # Add Populations and Stratifiers to the measure FSH string if group is not empty
