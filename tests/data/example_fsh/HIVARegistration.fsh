@@ -73,7 +73,7 @@ Description: "This tab describes the data that are collected during the registra
   * ^code[+] = HIVConcepts#HIV.A.DE4
 * referredBy 0..1 Coding "Referred by" "How the client was referred"
   * ^code[+] = HIVConcepts#HIV.A.DE5
-  * referredBy from HIV.A.DE5
+* referredBy from HIV.A.DE5
 * uniqueIdentifier 1..1 Identifier "Unique identifier" "Unique identifier generated for new clients or a universal ID, if used in the country"
   * ^code[+] = HIVConcepts#HIV.A.DE8
 * nationalId 0..1 Identifier "National ID" "National unique identifier assigned to the client, if used in the country"
@@ -86,7 +86,7 @@ Description: "This tab describes the data that are collected during the registra
   * ^code[+] = HIVConcepts#HIV.A.DE12
 * countryOfBirth 1..1 Coding "Country of birth" "Country where the client was born"
   * ^code[+] = HIVConcepts#HIV.A.DE13
-  * countryOfBirth from HIV.A.DE13
+* countryOfBirth from HIV.A.DE13
 * dateOfBirth 0..1 date "Date of birth" "The client's date of birth (DOB) if known"
   * ^code[+] = HIVConcepts#HIV.A.DE14
 * dateOfBirthUnknown 0..1 boolean "Date of birth unknown" "Is the client's DOB is unknown?"
@@ -97,29 +97,29 @@ Description: "This tab describes the data that are collected during the registra
   * ^code[+] = HIVConcepts#HIV.A.DE17
 * gender 1..1 Coding "Gender" "Gender of the client"
   * ^code[+] = HIVConcepts#HIV.A.DE18
-  * gender from HIV.A.DE18
-* other 0..1 string "Other (specify)" "Additional category (please specify)"
+* gender from HIV.A.DE18
+* otherGender 0..1 string "Other (specify)" "Additional category (please specify)"
   * ^code[+] = HIVConcepts#HIV.A.DE24
 * sex 1..1 Coding "Sex" "Sex of the client assigned at birth"
   * ^code[+] = HIVConcepts#HIV.A.DE25
-  * sex from HIV.A.DE25
+* sex from HIV.A.DE25
 * address 1..1 string "Address" "Client's home address or address which the client is consenting to disclose"
   * ^code[+] = HIVConcepts#HIV.A.DE29
 * maritalStatus 0..1 Coding "Marital Status" "Client's current marital status "
   * ^code[+] = HIVConcepts#HIV.A.DE30
-  * maritalStatus from HIV.A.DE30
+* maritalStatus from HIV.A.DE30
 * telephoneNumber 1..1 integer "Telephone number" "Client's telephone number (a landline or a mobile phone number)"
   * ^code[+] = HIVConcepts#HIV.A.DE42
 * administrativeArea 1..1 Coding "Administrative Area" "This should be a context-specific list of administrative areas, such as villages, districts, etc. The purpose of this data element is to allow for grouping and flagging of client data to a particular facility's catchment area. This can be input into the system by the end user OR it can be automated in the database based on the end user's attributes."
   * ^code[+] = HIVConcepts#HIV.A.DE43
-  * administrativeArea from HIV.A.DE43
+* administrativeArea from HIV.A.DE43
 * communicationConsent 0..1 boolean "Communication consent" "Indication that client gave consent to be contacted"
   * ^code[+] = HIVConcepts#HIV.A.DE44
 * reminderMessages 0..1 boolean "Reminder messages" "Whether client wants to receive text or other messages as follow-up for HIV services"
   * ^code[+] = HIVConcepts#HIV.A.DE45
-* communicationPreference 0..* Coding "Communication preference(s)" "How the client would like to receive family planning communications"
+* communicationPreferences 0..* Coding "Communication preference(s)" "How the client would like to receive family planning communications"
   * ^code[+] = HIVConcepts#HIV.A.DE46
-  * communicationPreference from HIV.A.DE46
+* communicationPreferences from HIV.A.DE46
 * clientEmail 0..1 string "Client's email" "Client's primary email account where the client can be contacted"
   * ^code[+] = HIVConcepts#HIV.A.DE49
 * alternateContactName 0..1 string "Alternate contact's name" "Name of an alternate contact, which could be next of kin (e.g. partner, husband, mother, sibling, etc.). The alternate contact would be used in the case of an emergency situation."
