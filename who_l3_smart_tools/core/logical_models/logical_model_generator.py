@@ -78,6 +78,7 @@ Description: "{description}"
 * ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablecodesystem"
 * ^experimental = true
 * ^caseSensitive = false
+* ^url = "http://smart.who.int/hiv/CodeSystem/{code_system}"
 """
 
 fsh_cs_code_template = """
@@ -92,6 +93,7 @@ Description: "{description}"
 * ^status = #active
 * ^experimental = true
 * ^name = "{name}"
+* ^url = "http://smart.who.int/hiv/ValueSet/{value_set}"
 """
 
 fsh_vs_code_template = """
@@ -149,6 +151,9 @@ class LogicalModelAndTerminologyGenerator:
                 # Initialize any ValueSets
                 valuesets = []
                 active_valueset = None
+
+                # Track element names
+                existing_elements = defaultdict(lambda: Counter())
 
                 # For handling "Other (specify)"
                 previous_element_label = None
@@ -273,6 +278,11 @@ class LogicalModelAndTerminologyGenerator:
                     if data_type == "Codes":
                         continue
 
+                    # For any non-code we set the previous element name. This is used to determine the
+                    # name for "Other (specify)" data elements
+                    previous_element_label = label_clean
+
+                    # The camel-case version of the label becomes the element name in the logical model
                     label_camel = camel_case(label_clean)
 
                     # valid element identifiers in FHIR must start with a alphabetical character
@@ -292,6 +302,7 @@ class LogicalModelAndTerminologyGenerator:
                         label_camel = f"{prefix}{rest}"
 
                     # data elements can only be 64 characters
+                    # note that the idea here is that we trim whole words until reaching the desired size
                     if len(label_camel) > 64:
                         new_label_camel = ''
                         for label_part in re.split("(?=[A-Z1-9])", label_camel):
@@ -301,8 +312,22 @@ class LogicalModelAndTerminologyGenerator:
                             new_label_camel += label_part
                         label_camel = new_label_camel
 
+                    # data elements names must be unique per logical model
+                    count = existing_elements[label_camel].next
 
-                    previous_element_label = label_clean
+                    # we have a duplicate data element
+                    if count > 1:
+                        # the first element needs no suffix
+                        # so the suffix is one less than the count
+                        suffix = str(count - 1)
+
+                        # if the data element id will still be less than 64 characters, we're ok
+                        if len(label_camel) + len(suffix) <= 64:
+                            label_camel += suffix
+                        # otherwise, shorten the name to include the suffix
+                        else:
+                            label_camel = label_camel[:64 - len(suffix)] + suffix
+
 
                     # Process as a normal entry
                     fsh_artifact += fsh_lm_element_template.format(
