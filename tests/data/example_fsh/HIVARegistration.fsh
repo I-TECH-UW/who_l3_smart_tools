@@ -58,6 +58,7 @@ Title: "HIV.A Registration"
 Description: "This tab describes the data that are collected during the registration workflow (HIV.A)"
 * ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-shareablestructuredefinition"
 * ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablestructuredefinition"
+* ^meta.profile[+] = "http://smart.who.int/base/StructureDefinition/SGLogicalModel"
 * ^extension[http://hl7.org/fhir/tools/StructureDefinition/logical-target].valueBoolean = true
 * ^experimental = true
 * ^name = "HIVARegistration"

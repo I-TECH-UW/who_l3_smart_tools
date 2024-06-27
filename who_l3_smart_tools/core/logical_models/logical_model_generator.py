@@ -42,6 +42,7 @@ Title: "{title}"
 Description: "{description}"
 * ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-shareablestructuredefinition"
 * ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablestructuredefinition"
+* ^meta.profile[+] = "http://smart.who.int/base/StructureDefinition/SGLogicalModel"
 * ^extension[http://hl7.org/fhir/tools/StructureDefinition/logical-target].valueBoolean = true
 * ^experimental = true
 * ^name = "{name}"
@@ -76,9 +77,9 @@ Title: "{title}"
 Description: "{description}"
 * ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-shareablecodesystem"
 * ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablecodesystem"
+* ^meta.profile[+] = "http://smart.who.int/base/StructureDefinition/SGCodeSystem"
 * ^experimental = true
 * ^caseSensitive = false
-* ^url = "http://smart.who.int/hiv/CodeSystem/{code_system}"
 """
 
 fsh_cs_code_template = """
@@ -90,10 +91,10 @@ Description: "{description}"
 * ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-shareablevalueset"
 * ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablevalueset"
 * ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-computablevalueset"
+* ^meta.profile[+] = "http://smart.who.int/base/StructureDefinition/SGValueSet"
 * ^status = #active
 * ^experimental = true
 * ^name = "{name}"
-* ^url = "http://smart.who.int/hiv/ValueSet/{value_set}"
 """
 
 fsh_vs_code_template = """
