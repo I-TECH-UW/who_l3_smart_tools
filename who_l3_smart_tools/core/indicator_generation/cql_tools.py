@@ -165,6 +165,7 @@ class CqlGenerator:
         # Get DAK name from sheet names using regex to match
         # a sheet name like `HIV.A Registration` or `HIV.B HTS visit`
         # and grab the `HIV` part of the name
+        # TODO: save as utility?
         dak_name_pattern = re.compile(r"(\w+)\.\w+")
         dak_name_matches = []
 
@@ -182,7 +183,6 @@ class CqlGenerator:
 
         # TODO: refactor to common method across logic/terminology/this file
         for sheet_name in dd_xls.keys():
-
             if re.match(rf"{self.dak_name}\.\w+", sheet_name):
                 df = dd_xls[sheet_name]
                 for i, row in df.iterrows():
@@ -191,11 +191,18 @@ class CqlGenerator:
                     data_element_id = row["Data Element ID"]
 
                     # Skip for individual valueset values
-                    if data_type == "Codes":
-                        continue
+                    # if data_type == "Codes":
+                    #     continue
 
                     cds = row["Linkages to Decision Support Tables"]
                     indicators = row["Linkages to Aggregate Indicators"]
+
+                    # Handle label value == "None"
+                    if row["Data Element Label"] is None or pd.isna(
+                        row["Data Element Label"]
+                    ):
+                        print(f"Data Element Label is None for {data_element_id}")
+                        row["Data Element Label"] = "None"
 
                     linkages = []
                     ## TODO: refactor to remove duplicate code for cds and indicators
@@ -362,6 +369,9 @@ class CqlGenerator:
 
         # Collapse concept_details["label"] to count frequency
         for concept_id, concept_details in self.cql_concept_dictionary.items():
+            if pd.isna(concept_details["label"]) or not concept_details["label"]:
+                continue
+
             concept_details["label"] = re.sub(r"[\'\"()]", "", concept_details["label"])
             if concept_details["label"] not in label_frequency:
                 label_frequency[concept_details["label"]] = 1
@@ -402,10 +412,7 @@ class CqlGenerator:
 
             # Write codes
             for concept_id, concept_details in self.cql_concept_dictionary.items():
-                if (
-                    concept_details["data_type"] != "Codes"
-                    and concept_details["data_type"] != "Coding"
-                ):
+                if concept_details["data_type"] != "Coding":
                     label_str = self.get_concept_label(
                         label_frequency,
                         label_sheet_frequency,
@@ -423,13 +430,13 @@ class CqlGenerator:
         if label_frequency[concept_details["label"]] == 1:
             label_str = concept_details["label"]
         else:
-            label_str = f"{concept_details['label']} - {concept_details['sheet']}"
+            label_str = f"{concept_details['label']} - {concept_id}"
 
-        if (
-            label_sheet_frequency[concept_details["label"], concept_details["sheet"]]
-            > 1
-        ):
-            label_str += f" - {concept_id}"
+        # if (
+        #     label_sheet_frequency[concept_details["label"], concept_details["sheet"]]
+        #     > 1
+        # ):
+        #     label_str += f" - {concept_id}"
         return label_str
 
 
