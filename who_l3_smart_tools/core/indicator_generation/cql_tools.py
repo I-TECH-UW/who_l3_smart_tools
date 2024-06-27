@@ -182,6 +182,7 @@ class CqlGenerator:
 
         # TODO: refactor to common method across logic/terminology/this file
         for sheet_name in dd_xls.keys():
+
             if re.match(rf"{self.dak_name}\.\w+", sheet_name):
                 df = dd_xls[sheet_name]
                 for i, row in df.iterrows():
@@ -208,6 +209,7 @@ class CqlGenerator:
                         if data_element_id not in cql_concept_dictionary.keys():
                             cql_concept_dictionary[data_element_id] = {
                                 "label": row["Data Element Label"],
+                                "sheet": sheet_name,
                                 "data_type": data_type,
                                 "description": row["Description and Definition"],
                             }
@@ -223,6 +225,7 @@ class CqlGenerator:
                         if data_element_id not in cql_concept_dictionary.keys():
                             cql_concept_dictionary[data_element_id] = {
                                 "label": row["Data Element Label"],
+                                "sheet": sheet_name,
                                 "data_type": data_type,
                                 "description": row["Description and Definition"],
                             }
@@ -351,28 +354,83 @@ class CqlGenerator:
         # Example code: `code "History of anaphylactic reactions": 'D4.DE166' from "IMMZConcepts" display 'History of anaphylactic reactions''`
 
         # Use the concept lookup dictionary to generate the CQL file
-        concept_file_name = f"{self.dak_name}Concepts.cql"
+        library_name = f"{self.dak_name}Concepts"
+        concept_file_name = f"{library_name}.cql"
+
+        label_frequency: dict[str, int] = {}
+        label_sheet_frequency: dict[(str, str), int] = {}
+
+        # Collapse concept_details["label"] to count frequency
+        for concept_id, concept_details in self.cql_concept_dictionary.items():
+            concept_details["label"] = re.sub(r"[\'\"()]", "", concept_details["label"])
+            if concept_details["label"] not in label_frequency:
+                label_frequency[concept_details["label"]] = 1
+            else:
+                label_frequency[concept_details["label"]] += 1
+
+            if (
+                concept_details["label"],
+                concept_details["sheet"],
+            ) not in label_sheet_frequency:
+                label_sheet_frequency[
+                    concept_details["label"], concept_details["sheet"]
+                ] = 1
+            else:
+                label_sheet_frequency[
+                    concept_details["label"], concept_details["sheet"]
+                ] += 1
         with open(f"{output_dir}/{concept_file_name}", "w") as file:
             file.write("// Automatically generated from DAK Data Dictionary\n")
-            file.write(f"library {concept_file_name}\n")
+            file.write(f"library {library_name}\n")
             file.write(
-                f"codesystem \"{concept_file_name}\": 'http://smart.who.int/{self.dak_name.lower()}/CodeSystem/{concept_file_name}'\n\n"
+                f"codesystem \"{library_name}\": 'http://smart.who.int/{self.dak_name.lower()}/CodeSystem/{library_name}'\n\n"
             )
 
             # Write valuesets
             for concept_id, concept_details in self.cql_concept_dictionary.items():
                 if concept_details["data_type"] == "Coding":
+                    label_str = self.get_concept_label(
+                        label_frequency,
+                        label_sheet_frequency,
+                        concept_id,
+                        concept_details,
+                    )
                     file.write(
-                        f"valueset \"{concept_details['label']}\": 'http://smart.who.int/{self.dak_name.lower()}/ValueSet/{concept_id}'\n"
+                        f"valueset \"{label_str}\": 'http://smart.who.int/{self.dak_name.lower()}/ValueSet/{concept_id}'\n"
                     )
             file.write("\n")
 
             # Write codes
             for concept_id, concept_details in self.cql_concept_dictionary.items():
-                if concept_details["data_type"] != "Codes":
-                    file.write(
-                        f"code \"{concept_details['label']}\": '{concept_id}' from \"{concept_file_name}\" display '{concept_details['label']}'\n"
+                if (
+                    concept_details["data_type"] != "Codes"
+                    and concept_details["data_type"] != "Coding"
+                ):
+                    label_str = self.get_concept_label(
+                        label_frequency,
+                        label_sheet_frequency,
+                        concept_id,
+                        concept_details,
                     )
+
+                    file.write(
+                        f"code \"{label_str}\": '{concept_id}' from \"{library_name}\" display '{concept_details['label']}'\n"
+                    )
+
+    def get_concept_label(
+        self, label_frequency, label_sheet_frequency, concept_id, concept_details
+    ):
+        if label_frequency[concept_details["label"]] == 1:
+            label_str = concept_details["label"]
+        else:
+            label_str = f"{concept_details['label']} - {concept_details['sheet']}"
+
+        if (
+            label_sheet_frequency[concept_details["label"], concept_details["sheet"]]
+            > 1
+        ):
+            label_str += f" - {concept_id}"
+        return label_str
 
 
 # Get indicator DAK ID from CQL file with first instance of DAK ID pattern HIV.IND.X
