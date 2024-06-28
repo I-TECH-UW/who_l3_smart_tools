@@ -5,6 +5,21 @@ from typing import Any
 import stringcase
 import pandas as pd
 
+# Measure Profiles from http://hl7.org/fhir/us/cqfmeasures/STU4/index.html
+measure_instance = {
+    "proportion": "http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/proportion-measure-cqfm",
+    "continuous-variable": "http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cv-measure-cqfm",
+}
+
+# Measure Required Populations
+measure_required_elements = {
+    "proportion": ["initialPopulation", "numerator", "denominator"],
+    "continuous-variable": [
+        "initialPopulation",
+        "measurePopulation",
+        "measureObservation",
+    ],
+}
 
 # Templates
 cql_file_header_template = """
@@ -34,6 +49,7 @@ cql_file_header_template = """
  * 
  * Data Concepts:
  """
+
 cql_file_header_additional_context_template = """
  *
  * Additional Context
@@ -57,7 +73,7 @@ Usage: #definition
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablelibrary"
 * meta.profile[+] = "http://hl7.org/fhir/uv/cql/StructureDefinition/cql-library"
 * meta.profile[+] = "http://hl7.org/fhir/uv/cql/StructureDefinition/cql-module"
-* url = "http://smart.who.int/immunizations-measles/Library/{library_name}"
+* url = "http://smart.who.int/{dak_name}/Library/{library_name}"
 * extension[+]
   * url = "http://hl7.org/fhir/StructureDefinition/cqf-knowledgeCapability"
   * valueCode = #computable
@@ -71,20 +87,20 @@ Usage: #definition
 
 measure_fsh_template = """
 Instance: {measure_name}
-InstanceOf: http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/proportion-measure-cqfm
+InstanceOf: {measure_instance}
 Title: "{title}"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-shareablemeasure"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "{description}"
-* url = "http://smart.who.int/immunizations-measles/Measure/{measure_name}"
+* url = "http://smart.who.int/{dak_name}/Measure/{measure_name}"
 * status = #draft
 * experimental = true
 * date = "{date}"
 * name = "{measure_name}"
 * title = "{title}"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/immunizations-measles/Library/{measure_name}Logic"
+* library = "http://smart.who.int/{dak_name}/Library/{measure_name}Logic"
 """
 
 scoring_value_set: str = {"proportion", "continuous-variable"}
@@ -577,9 +593,12 @@ class CQLResourceGenerator:
 
         dak_id = header_variables["DAK ID"]
         measure_name = header_variables["DAK ID"].replace(".", "")
-        title = f"{header_variables['DAK ID']} {header_variables['Short name']}"
+        title = re.escape(
+            f"{header_variables['DAK ID']} {header_variables['Short name']}"
+        )
+        description = re.escape(header_variables["Indicator definition"])
 
-        # Determine Scoring Type
+        # Determine Scoring Type and set proper values
         if (
             not self.parsed_cql["denominator"]
             or self.parsed_cql["denominator"].trim() == "1"
@@ -591,11 +610,15 @@ class CQLResourceGenerator:
             scoring = "proportion"
             scoring_title = stringcase.titlecase(scoring)
 
+        scoring_instance = measure_instance[scoring]
+
         # Generate the Measure FSH file content.
         measure_fsh = measure_fsh_template.format(
             measure_name=measure_name,
             title=title,
-            description=header_variables["Indicator definition"],
+            description=description,
+            scoring_instance=scoring_instance,
+            dak_name=self.dak_name,
             date=datetime.now(timezone.utc).date().isoformat(),
         )
 
