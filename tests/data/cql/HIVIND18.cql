@@ -70,7 +70,7 @@ define "ANC Stratifier":
  * NEED TO DISCUSS WITH BRYNN
  */
 
-//define "Stratification":
- // HIC."By Administrative Gender Stratifier".code 
-  //  + ':' + HIC."By Age Stratifier 2".code 
-//	+ ':' + HIC."By Geographic Region Stratifier"
+define "Stratification":
+ HIC."By Administrative Gender Stratifier".code 
+  + ':' + HIC."By Age Stratifier 2"
++ ':' + HIC."By Geographic Region Stratifier"

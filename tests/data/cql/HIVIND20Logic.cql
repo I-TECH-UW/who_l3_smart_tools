@@ -40,6 +40,12 @@ context Patient
 //If you want to count number of Patients that have received the test, that's a Patient-based Measure using an "exists", 
 //if you want to count the number of Tests, that could be a Patient-based continuous variable measure, where the Measure Observation is a Count of tests, or it could be an Observation-based proportion measure, where the basis is actually Observation.
 
+/*
+ * As defined by Member State
+ */
+define "Initial Population":
+  true
+
 
 //Does this also filter out self HIV tests 
 //right now using HIVIND19 definition which does
@@ -79,3 +85,10 @@ define "Setting":
 
 define "TB Stratifier":
     HIC."tb"
+
+define "Stratification":
+ HIC."By Administrative Gender Stratifier".code 
+  + ':' + HIC."By Age Stratifier"
++ ':' + HIC."By Geographic Region Stratifier"
+//Need to discuss how to add list
+//+ ':' +HIC."patientGroups"

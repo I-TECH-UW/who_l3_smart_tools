@@ -33,6 +33,8 @@
  *   - On ART
  * 
  * Reference: Consolidated guidelines on person-centred HIV strategic information: strengthening routine data for impact. Geneva: World Health Organization; 2022 
+ *
+ * continuous-variable
  */
 
 
@@ -49,7 +51,7 @@ include FHIRCommon called FC
 
 parameter "Measurement Period" Interval<Date> default Interval[@2020-01-01, @2020-01-31]
  
-context Unfiltered
+context Patient
 
 /*
 * Many indicator specifications in ANC and Immunization have context as patient. 
@@ -57,7 +59,7 @@ context Unfiltered
 * Should discuss.
 */
 
-define "numerator":
+define "Measure Population":
    (exists(HIC."HIV Positive Condition" C
 	where C.onset before end of "Measurement Period")
 	or 
@@ -66,22 +68,24 @@ define "numerator":
 	))
    and exists(HIC."HIV Treatment Active" H
    where H.effective starts before end of "Measurement Period"
-    and (H.effective ends after start of "Measurement Period"
-    or end of H.effective  ~  null)
+    and (H.effective ends after start of "Measurement Period")
    )
-   and not exists (HIC."Patient Deceased before end of Measurement Period")
-   and not exists (HIC."Stopped ART at Facility during the measurement period")
+   and not HIC."Patient Deceased before end of Measurement Period"
+   and not HIC."Transfer Out at Facility during the measurement period"
+   and not HIC."Lost to Follow Up during the measurement period"
 
+/*
+ * As defined by Member States
+ */
+define "Initial Population":
+  true
 
-define "denominator":
-   (exists(HIC."HIV Positive Condition" C
-	where C.onset before end of "Measurement Period")
-	or 
-	exists(HIC."HIV Positive Observation" O
-	where (O.issued before end of "Measurement Period")
-	))
-   and not exists (HIC."Patient Deceased before end of Measurement Period")
-   and not exists (HIC."Stopped ART at Facility during the measurement period")
+/*
+ * NOTE: Modeled as a Continuous Variable measure because this is an estimated denominator proportion measure
+ */
+
+define function "Measure Observation"(Patient "Patient"):
+  1
 
 /*
  * Disaggregators
@@ -98,3 +102,10 @@ define "Geographic Region Stratifier":
 
 define "patientGroups Stratifier":
 	HIC."patientGroups"
+
+define "Stratification":
+ HIC."By Administrative Gender Stratifier".code 
+  + ':' + HIC."By Age Stratifier"
++ ':' + HIC."By Geographic Region Stratifier"
+//Need to discuss how to add list
+//+ ':' +HIC."patientGroups"

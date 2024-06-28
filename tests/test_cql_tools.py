@@ -2,9 +2,9 @@
 import datetime
 import os
 import re
-from who_l3_smart_tools.core.indicator_generation.cql_tools import (
+from who_l3_smart_tools.core.indicator_generation.cql_file_generator import (
     CQLResourceGenerator,
-    CqlGenerator,
+    CqlFileGenerator,
 )
 import pandas as pd
 import unittest
@@ -20,7 +20,7 @@ class TestCqlScaffold(unittest.TestCase):
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        generator = CqlGenerator(input_indicators, input_dd)
+        generator = CqlFileGenerator(input_indicators, input_dd)
 
         generator.generate_cql_scaffolds()
 
@@ -37,7 +37,7 @@ class TestCqlScaffold(unittest.TestCase):
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
         
-        generator = CqlGenerator(input_indicators, input_dd)
+        generator = CqlFileGenerator(input_indicators, input_dd)
 
         generator.generate_cql_concept_file(output_dir=output_dir)
 

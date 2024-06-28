@@ -41,6 +41,13 @@ parameter "Measurement Period" Interval<Date> default Interval[@2020-01-01, @202
 
 context Patient
 
+/*
+ * As defined by Member State
+ */
+define "Initial Population":
+  true
+
+
 define "numerator":
    (exists(HIC."HIV Positive Condition" C
 	where C.onset during "Measurement Period")
@@ -83,3 +90,10 @@ define "patientGroups Stratifier":
 
 define "TB Stratifier":
     HIC."tb"
+
+define "Stratification":
+ HIC."By Administrative Gender Stratifier".code 
+  + ':' + HIC."By Age Stratifier"
++ ':' + HIC."By Geographic Region Stratifier"
+// how to add list
+//+ ':' + HIC."tb"
