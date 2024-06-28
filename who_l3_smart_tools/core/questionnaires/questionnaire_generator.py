@@ -18,7 +18,7 @@ data_type_map = {
 questionnaire_template = """Instance: {activity_id}
 InstanceOf: sdc-questionnaire-extr-smap
 Title: "{activity_title}"
-Description: "<NOT IMPLEMENTED>"
+Description: "Questionnaire for {activity_title_description}"
 Usage: #definition
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-shareablequestionnaire"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablequestionnaire"
@@ -29,11 +29,13 @@ Usage: #definition
 
 questionnaire_item_template = """
 * item[+]
+  * id = "{data_element_id}"
   * linkId = "{data_element_id}"
   * type = #{data_type}
   * text = "{data_element_label}"
   * required = {required}
-  * repeats = false"""
+  * repeats = false
+  * readOnly = false"""
 
 questionnaire_item_valueset = """
   * answerValueSet = http://smart.who.int/hiv/ValueSet/{data_element_id}"""
@@ -122,5 +124,6 @@ class QuestionnaireGenerator:
                     with open(os.path.join(self.output_dir, f"{activity_code}.fsh"), "w") as f:
                         f.write(current_activity_template.format(
                             activity_id=activity,
-                            activity_title=activity_description
+                            activity_title=activity_description,
+                            activity_title_description=activity_description[0].lower() + activity_description[1:]
                         ) + "\n")

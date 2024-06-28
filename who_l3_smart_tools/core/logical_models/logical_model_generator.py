@@ -382,7 +382,7 @@ class LogicalModelAndTerminologyGenerator:
         if len(codes) > 0:
             code_system_artifact = fsh_cs_header_template.format(
                 code_system = code_system,
-                title = "WHO HIV DAK Concepts CodeSystem",
+                title = "WHO SMART HIV Concepts CodeSystem",
                 description = "This code system defines the concepts used in the World Health Organization SMART HIV DAK"
             )
 

@@ -30,7 +30,7 @@ class CqlScaffoldGenerator:
         cql_scaffolds = {}
 
         for index, row in indicator_artifact.iterrows():
-            if row["Included in DAK"] and row["Priority"] and row["Core"]:
+            if str(row["Included in DAK"]) and str(row["Priority"]) and str(row["Core"]):
                 indicator_name, scaffold = self.generate_cql_template(row)
                 cql_scaffolds[indicator_name] = scaffold
 
@@ -81,7 +81,7 @@ class CqlScaffoldGenerator:
 /*
  * Library: {DAK ID} Logic
  * Short Name: {Short name}
- * 
+ *
  * {Indicator definition}
  *
  * Numerator: {Numerator definition}
@@ -91,16 +91,16 @@ class CqlScaffoldGenerator:
  * Denominator: {Denominator definition}
  * Denominator Calculation: {Denominator calculation}
  * Denominator Exclusions: {Denominator exclusions}
- * 
+ *
  * Disaggregations:
  * {Disaggregation description}
  * Disaggregation Elements: {Disaggregation data elements}
  *
- * Numerator and Denominator Elements: 
+ * Numerator and Denominator Elements:
  * {List of all data elements included in numerator and denominator}
  *
- * Reference: {Reference} 
- * 
+ * Reference: {Reference}
+ *
  * Additional Context
  * - what it measures: {What it measures}
  * - rationale: {Rationale}

@@ -140,7 +140,7 @@ class CqlScaffoldGenerator:
         cql_scaffolds = {}
 
         for index, row in indicator_artifact.iterrows():
-            if row["Included in DAK"] and row["Priority"] and row["Core"]:
+            if str(row["Included in DAK"]) and str(row["Priority"]) and str(row["Core"]):
                 indicator_name, scaffold = self.generate_cql_template(row)
                 cql_scaffolds[indicator_name] = scaffold
 
@@ -266,6 +266,10 @@ class CQLResourceGenerator:
 
         if not parsed_data["library_name"]:
             raise ValueError("Could not find library name in CQL file.")
+
+        # chomp "Logic" off the ned of the library name
+        if parsed_data["library_name"].endswith("Logic"):
+            parsed_data["library_name"] = parsed_data["library_name"][:-5]
 
         # Extract denominator, if exists:
         denominator_match = re.search(
