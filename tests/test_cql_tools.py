@@ -2,10 +2,8 @@
 import datetime
 import os
 import re
-from who_l3_smart_tools.core.indicator_generation.cql_file_generator import (
-    CQLResourceGenerator,
-    CqlFileGenerator,
-)
+from who_l3_smart_tools.core.cql_tools.cql_file_generator import CqlFileGenerator
+from who_l3_smart_tools.core.cql_tools.cql_resource_generator import CqlResourceGenerator
 import pandas as pd
 import unittest
 import stringcase
@@ -63,7 +61,7 @@ class TestCqlResourceGenerator(unittest.TestCase):
 
         self.indicator_row = indicator_file[indicator_file['DAK ID'] == 'HIV.IND.27'].head(1).squeeze()
 
-        self.generator = CQLResourceGenerator(self.cql_content, {
+        self.generator = CqlResourceGenerator(self.cql_content, {
             self.indicator_row['DAK ID']: self.indicator_row
         })
 
