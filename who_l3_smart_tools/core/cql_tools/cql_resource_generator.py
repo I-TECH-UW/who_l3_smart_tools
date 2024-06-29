@@ -111,7 +111,7 @@ class CqlResourceGenerator:
 
     Attributes:
         cql_content (str): The content of the CQL file.
-        indicator_row (dict): The row of the indicator artifact.
+        indicator_dictionary (dict): The row of the indicator artifact.
     """
 
     def __init__(self, cql_content: str, indicator_dictionary: dict[str, Any]):
@@ -194,7 +194,8 @@ class CqlResourceGenerator:
         Generate the Library FSH file content.
         """
 
-        raw_library_name = self.parsed_cql["library_name"]
+        raw_library_name: str = self.parsed_cql["library_name"]
+        dak_name = raw_library_name.split(".")[0]
         library_name = f"{raw_library_name.replace('.', '')}Logic"
 
         # Treat as indicator
@@ -209,7 +210,10 @@ class CqlResourceGenerator:
             description = f"Description not yet available for {library_name}."
 
         library_fsh = library_fsh_template.format(
-            library_name=library_name, title=title, description=description
+            library_name=library_name,
+            title=title,
+            description=description,
+            dak_name=dak_name,
         )
 
         return library_fsh
@@ -217,6 +221,7 @@ class CqlResourceGenerator:
     def generate_measure_fsh(self):
         if not self.parsed_cql["is_indicator"]:
             return None
+        dak_name = self.parsed_cql["library_name"].split(".")[0]
 
         header_variables = self.parseRow(
             self.indicator_dictionary[self.parsed_cql["library_name"]]
@@ -231,7 +236,9 @@ class CqlResourceGenerator:
         description = re.escape(header_variables["Indicator definition"])
 
         # Determine scoring
-        scoring, scoring_title, scoring_instance = self.determine_scoring()
+        scoring, scoring_title, scoring_instance = determine_scoring(
+            indicator_row("Denominator calculation")
+        )
 
         # Generate the Measure FSH file content.
         measure_fsh = measure_fsh_template.format(
@@ -239,13 +246,15 @@ class CqlResourceGenerator:
             title=title,
             description=description,
             scoring_instance=scoring_instance,
-            dak_name=self.dak_name,
+            dak_name=dak_name,
             date=datetime.now(timezone.utc).date().isoformat(),
         )
 
         measure_fsh += measure_scoring_fsh_template.format(
             scoring=scoring, scoring_title=scoring_title
         )
+
+        # Determine scoring type
 
         # Add Populations and Stratifiers to the measure FSH string if group is not empty
         if (

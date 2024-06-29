@@ -3,11 +3,10 @@ from typing import Any
 import stringcase
 import pandas as pd
 
-from who_l3_smart_tools.utils.cql_helpers import determine_scoring
+from who_l3_smart_tools.utils.cql_helpers import determine_scoring, get_dak_name
 
 # Templates
-cql_file_header_template = """
-/*
+cql_file_header_template = """/*
  * Library: {dak_id} Logic
  * Ref No: {ref_no_}
  * Short Name: {short_name}
@@ -23,7 +22,10 @@ cql_file_header_template = """
  * Denominator Exclusions: {denominator_exclusions}
  *
  * Disaggregations:
- * {disaggregation_description}
+ """
+cql_file_header_disaggregation_list_template = """* {disaggregation_description}
+ """
+cql_file_header_second_template = """* 
  * Disaggregation Elements: {disaggregation_data_elements}
  *
  * Numerator and Denominator Elements:
@@ -32,7 +34,11 @@ cql_file_header_template = """
  * Reference: {reference}
  * 
  * Data Concepts:
- """
+ * """
+
+cql_file_header_data_concept_template = """ 
+ * {id}: {label} | {description}"""
+
 
 cql_file_header_additional_context_template = """
  *
@@ -41,12 +47,21 @@ cql_file_header_additional_context_template = """
  * - rationale: {rationale}
  * - method: {method_of_measurement}
  * 
- * Suggested Scoring Method: {scoring_method} | {scoring_title} | {scoring_instance}
+ * Suggested Scoring Method: {scoring_method} | {scoring_instance}
  */
-"""
 
-cql_file_header_data_concept_template = """ 
- * {id}: {label} | {description}"""
+library {cql_library_name}
+
+// Included Libraries
+using FHIR version '4.0.1'
+
+include HIVIndicatorCommon version '0.0.1' called HIC
+include FHIRHelpers version '4.0.1'
+include WHOCommon called WCom
+include FHIRCommon called FC
+
+// Indicator Definition
+"""
 
 
 class CqlFileGenerator:
@@ -62,14 +77,32 @@ class CqlFileGenerator:
             self.create_cql_concept_dictionaries()
         )
 
-    def print_to_files(self, output_dir: str):
+    def print_to_files(self, output_dir: str, update_existing: bool = True):
         """
         This method writes the CQL scaffolds to files in the output directory.
         """
+        last_generated_line = ["include FHIRCommon called FC\n", "using FHIR version '4.0.1'\n"]
+
         for indicator_name, scaffold in self.cql_scaffolds.items():
             file_name = indicator_name.replace(".", "")
+            output_file_contents = scaffold
+
+            # Update existing files, replacing the header and keeping the content
+            if update_existing:
+                with open(f"{output_dir}/{file_name}Logic.cql", "r") as file:
+                    # Read up to the last generated line
+                    lines = file.readlines()
+                    last_generated_line_index = lines.index(last_generated_line[0]) if last_generated_line[0] in lines else lines.index(last_generated_line[1])
+                    if last_generated_line_index == -1:     
+                        raise ValueError(
+                            f"Could not find last generated line in {file_name}Logic.cql"
+                        )
+                    output_file_contents += "".join(
+                        lines[last_generated_line_index + 1 :]
+                    )
+
             with open(f"{output_dir}/{file_name}Logic.cql", "w") as file:
-                file.write(scaffold)
+                file.write(output_file_contents)
 
     def create_cql_concept_dictionaries(self):
         """
@@ -83,24 +116,7 @@ class CqlFileGenerator:
 
         dd_xls = pd.read_excel(self.data_dictionary_file, sheet_name=None)
 
-        # Get DAK name from sheet names using regex to match
-        # a sheet name like `HIV.A Registration` or `HIV.B HTS visit`
-        # and grab the `HIV` part of the name
-        # TODO: save as utility?
-        dak_name_pattern = re.compile(r"(\w+)\.\w+")
-        dak_name_matches = []
-
-        for sheet_name in dd_xls.keys():
-            if not sheet_name or pd.isna(sheet_name) or type(sheet_name) != str:
-                continue
-            matches = dak_name_pattern.search(sheet_name)
-            dak_name_matches.extend(matches.groups()) if matches else None
-
-        # Determine if all matches are the same
-        if len(set(dak_name_matches)) == 1:
-            self.dak_name = dak_name_matches[0]
-        else:
-            raise ValueError("DAK name does not match across all sheets")
+        self.dak_name = get_dak_name(dd_xls)
 
         # TODO: refactor to common method across logic/terminology/this file
         for sheet_name in dd_xls.keys():
@@ -189,7 +205,7 @@ class CqlFileGenerator:
         )
 
         # Generate CQL scaffolds for each indicator
-        cql_scaffolds = {}
+        cql_scaffolds: dict[str, str] = {}
 
         for index, row in indicator_artifact.iterrows():
             if row["Included in DAK"]:
@@ -243,8 +259,10 @@ class CqlFileGenerator:
         raw_row_dict = row_content.to_dict()
         row_dict = {}
 
-        dak_id = raw_row_dict["DAK ID"]
+        dak_id: str = raw_row_dict["DAK ID"]
+        cql_library_name = f"{dak_id.replace(".", "")}Logic"
         ref_no = raw_row_dict["Ref no."]
+        denominator_val = raw_row_dict["Denominator calculation"]
 
         for key, value in raw_row_dict.items():
             if isinstance(value, list):
@@ -257,14 +275,29 @@ class CqlFileGenerator:
             key = stringcase.snakecase(stringcase.lowercase(key))
             row_dict[key] = value
 
-        filled_template = cql_file_header_template.format(**row_dict)
+        # Add library name
+        row_dict["cql_library_name"] = cql_library_name
 
         # get scoring variables using the determine_scoring method
         (
             row_dict["scoring_method"],
             row_dict["scoring_title"],
             row_dict["scoring_instance"],
-        ) = determine_scoring(self.parsed_cql)
+        ) = determine_scoring(denominator_val)
+
+        # Dissagregation parsing
+        disaggregation_data_elements = row_dict["disaggregation_description"].split("|")
+
+        # Generate header using templates
+        filled_template: str = cql_file_header_template.format(**row_dict)
+
+        for disaggregation in disaggregation_data_elements:
+            disaggregation = disaggregation.strip()
+            filled_template += cql_file_header_disaggregation_list_template.format(
+                disaggregation_description=disaggregation
+            )
+
+        filled_template += cql_file_header_second_template.format(**row_dict)
 
         if ref_no in self.concept_lookup.keys():
             for concept in self.concept_lookup[ref_no]:

@@ -1,29 +1,29 @@
 /*
- * Library: HIV.IND.20 Logic
- * Ref No: HTS.3
- * Short Name: Individuals testing positive for HIV
+ * Library: HIV.IND.19 Logic
+ * Ref No: HTS.2
+ * Short Name: HTS test volume and positivity
  *
- * Definition: % testing positive among people who received an HIV test in the reporting period
+ * Definition: Number of HIV tests performed (volume) and the % of HIV-positive results returned to people (positivity)
  *
- * Numerator: Number of people who test HIV-positive in the reporting period and have results returned to them*
- * Numerator Calculation: COUNT of clients with "HIV test result"='HIV-positive' AND "HIV test date" in the reporting period AND (("Date HIV test results returned" in the reporting period) OR ("HIV diagnosis date" in the reporting period))
- * Numerator Exclusions: 
+ * Numerator: Number of tests conducted in which a new HIV-positive result or diagnosis was returned to a person during the reporting period (positivity)
+ * Numerator Calculation: COUNT of tests with "HIV test result"='HIV-positive' AND (("Date HIV test results returned" in the reporting period) OR ("HIV diagnosis date" in the reporting period))
+ * Numerator Exclusions: Self-testing
  *
- * Denominator: Number of people receiving an HIV test in the reporting period
- * Denominator Calculation: COUNT of clients with "HIV test date" in the reporting period AND "Date HIV test results returned" in the reporting period
- * Denominator Exclusions: 
+ * Denominator: Number of tests performed where results were returned to a person during the reporting period (testing volume)
+ * Denominator Calculation: COUNT of tests with "HIV test date" AND "Date HIV test results returned" in the reporting period
+ * Denominator Exclusions: Self-testing
  *
  * Disaggregations:
- * • Gender (female, male, other**)
- * • Age (0–4, 5–9, 10–14, 15–19, 20–24, 25–29, 30–34, 35–39, 40–44, 45–49, 50+ years)***
- * • Key populations (men who have sex with men, people living in prisons and other closed settings, people who inject drugs, sex workers, trans and gender diverse people)****
+ * • Gender (female, male, other*)
+ * • Age (0–4, 5–9, 10–14, 15–19, 20–24, 25–29, 30–34, 35–39, 40–44, 45–49, 50+ years)**
+ * • Key populations (men who have sex with men, people living in prisons and other closed settings, people who inject drugs, sex workers, trans and gender diverse people)***
  * • TB status (presumptive TB, diagnosed TB, none)
  * • Testing entry point:
  * - Facility-level testing: Provider-initiated testing and counselling in clinics or emergency facilities, ANC clinics (including labour and delivery), voluntary counselling and testing (within a health facility setting), family planning clinics (only in high HIV burden settings), TB clinics, other facility-level testing
- * - Community-level testing: Mobile testing (for example, through vans or temporary testing facilities), voluntary counselling and testing (VCT) centres (not within a health facility setting), other community-based testing.
+ * - Community-level testing: Mobile testing (for example, through vans or temporary testing facilities), voluntary counselling and testing centres (not within a health facility setting), other community-based testing.
  * • Cities and other administrative regions of epidemiologic importance
  * 
- * Disaggregation Elements: Gender | Age | Key population member type | TB diagnosis result | Presumptive TB | Testing entry point
+ * Disaggregation Elements: Gender | Age | Key population member type | TB diagnosis result | Presumptive TB
  *
  * Numerator and Denominator Elements:
  * Date HIV test results returned | HIV diagnosis date | HIV test date | HIV test result
@@ -39,9 +39,6 @@
  * HIV.A.DE21: Transgender male | Client identifies as transgender male 
  * HIV.A.DE22: Transgender female | Client identifies as transgender female 
  * HIV.A.DE23: Other | Additional category 
- * HIV.B.DE15: Testing entry point | Whether testing is happening in the community or at a facility 
- * HIV.B.DE16: Community-level testing | Testing is happening in the community, which includes mobile testing 
- * HIV.B.DE17: Facility-level testing | Testing is happening at a facility 
  * HIV.B.DE50: Key population member type* | The type of key population that the client is included in 
  * HIV.B.DE51: Sex worker | Client is a sex worker 
  * HIV.B.DE52: Men who have sex with men | Client is a man who has sex with men 
@@ -68,14 +65,14 @@
  * HIV.E.DE224: HIV test date | Date of the HIV test
  *
  * Additional Context
- * - what it measures: Measures the proportion of people testing positive for HIV. Individuals receiving more than one HIV test in the reporting period are counted only once in the denominator.
- * - rationale: Knowing the HIV test positivity among individuals by testing approach is critical to understanding the reach of HIV testing services, and the number of people aware of their status and receiving person-centred services.
- * - method: For the numerator and denominator: Patient monitoring tools, for example, HIV testing service records, HTS or lab registers, logbooks and reporting forms at facility and community levels or EMRs
+ * - what it measures: This indicator measures HIV test volume and positivity across service delivery approaches and populations.
+ * - rationale: • Knowledge of HIV status is the entry point for people living with HIV to treatment and the continuum of care, and for those who test HIV-negative and remain at risk to prevention interventions. | • Testing volume disaggregated by age, sex, testing approach and HIV status helps to assess the gaps among various settings, contexts and populations and better target service delivery.
+ * - method: For the numerator and denominator: Patient monitoring tools, for example, HIV testing service records, HTS or lab registers, logbooks and reporting forms at facility and community levels or EMRs. Reported data should be a count of the number of tests conducted and their results were returned to a person and not the number of unique persons who tested during the reporting period. The method of measurement intends to prevent double counting when multiple assays are used to confirm an HIV-positive diagnosis according to the national testing algorithm. This indicator does not include self-testing.
  * 
  * Suggested Scoring Method: proportion | http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/proportion-measure-cqfm
  */
 
-library HIVIND20Logic
+library HIVIND19Logic
 
 // Included Libraries
 using FHIR version '4.0.1'
@@ -91,21 +88,7 @@ parameter "Measurement Period" Interval<Date> default Interval[@2020-01-01, @202
  
 context Patient
 
-
-// From BRYN
-//you use a Measure resource, and your Measure would be based on either Patients or Observations.
-//If you want to count number of Patients that have received the test, that's a Patient-based Measure using an "exists", 
-//if you want to count the number of Tests, that could be a Patient-based continuous variable measure, where the Measure Observation is a Count of tests, or it could be an Observation-based proportion measure, where the basis is actually Observation.
-
-/*
- * As defined by Member State
- */
-define "Initial Population":
-  true
-
-
-//Does this also filter out self HIV tests 
-//right now using HIVIND19 definition which does
+//Exclusion happens automatically through test type valueset = excludes self test
 define "numerator":
     exists(HIC."HIV Positive Condition" C
 	where C.onset during "Measurement Period")
@@ -119,7 +102,6 @@ define "denominator":
     exists(HIC."HIV test resulted" T
 	where T.issued before end of "Measurement Period"
 	and T.issued after start of "Measurement Period")
-
 
 /*
  * Disaggregators
@@ -143,9 +125,4 @@ define "Setting":
 define "TB Stratifier":
     HIC."tb"
 
-define "Stratification":
- HIC."By Administrative Gender Stratifier".code 
-  + ':' + HIC."By Age Stratifier"
-+ ':' + HIC."By Geographic Region Stratifier"
-//Need to discuss how to add list
-//+ ':' +HIC."patientGroups"
+

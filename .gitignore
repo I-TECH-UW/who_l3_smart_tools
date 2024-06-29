@@ -166,3 +166,5 @@ tests/output/*
 tests/tmp*
 
 .DS_Store
+
+*bkp*

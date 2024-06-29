@@ -8,7 +8,7 @@ import pandas as pd
 import unittest
 import stringcase
 
-class TestCqlScaffold(unittest.TestCase):
+class TestCqlTools(unittest.TestCase):
     def test_generate_cql_file_headers(self):
         input_indicators = "tests/data/l2/test_indicators.xlsx"
         input_dd = "tests/data/l2/test_dd.xlsx"
@@ -150,12 +150,16 @@ class TestCqlGeneratorOnAllFiles(unittest.TestCase):
         for cql_file in os.listdir(input_directory):
             cql_file_path = os.path.join(input_directory, cql_file)
 
+            # Skip if not a file
+            if not os.path.isfile(cql_file_path):
+                continue
+
             # Load content and close file
             cql_file = open(cql_file_path, "r")
             cql_content = cql_file.read()
             cql_file.close()
 
-            generator = CQLResourceGenerator(cql_content, indicator_dict)
+            generator = CqlResourceGenerator(cql_content, indicator_dict)
 
             # Create Library file and save to file
             library_fsh = generator.generate_library_fsh()
