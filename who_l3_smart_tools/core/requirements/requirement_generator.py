@@ -21,7 +21,7 @@ functional_requirement_item_template = """
    So that {reason}  \"\"\""""
  
 
-non_functional_requirement_template = """Instance: HIV non Functional Requirements
+non_functional_requirement_template = """Instance: HIVNonFunctionalRequirements
 InstanceOf: Requirements
 Title: "HIV non Functional Requirements"
 Description: "Non Functional Requirements For  for HIV"
@@ -56,18 +56,13 @@ class RequirementGenerator:
                 current_requirement_template = ""
                 
                 for i, row in df.iterrows():
-                    requirement_id = str(row["Requirement ID"]).replace(" ", "")
+                    requirement_id = str(row["Requirement ID"])
                     description = row["Activity ID and Description"]
                     if not isinstance(description, str) :
-                         title = ""
-                         last_dot_index = requirement_id.rfind('.')
-                         if not last_dot_index == -1:
-                             title = requirement_id[last_dot_index + 1:].strip()
-                         else : 
-                              title = requirement_id    
-                         fileName = requirement_id
+                         element_id ,title  = requirement_id.split(" ", 1)
+                         fileName = element_id
                          current_requirement_template = requirement_template.format(
-                              id  = requirement_id ,
+                              id  = element_id ,
                               title = title
                           )
                          
