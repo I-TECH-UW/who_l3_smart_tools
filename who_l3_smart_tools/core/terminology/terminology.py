@@ -45,10 +45,10 @@ class ConceptRow:
             "datatype": self.row.pop(self.schema.datatype),
             "description": self.row.pop(self.schema.description),
         }
-        for index, name in eval(self.schema.additional_names):
-            converted_row[f"{name}[{index+1}]"] = self.row.pop(name)
-        for index, description in eval(self.schema.additional_descriptions):
-            converted_row[f"{description}[{index+1}]"] = self.row.pop(description)
+        for index, name in enumerate(self.schema.additional_names):
+            converted_row[f"name[{index+1}]"] = self.row.pop(name)
+        for index, description in enumerate(self.schema.additional_descriptions):
+            converted_row[f"description[{index+1}]"] = self.row.pop(description)
         converted_row.update(extra_args)
         return converted_row
 
