@@ -166,3 +166,8 @@ tests/output/*
 tests/tmp*
 
 .DS_Store
+
+# Temporary ignore this file
+who_ocl.py
+
+.idea/
