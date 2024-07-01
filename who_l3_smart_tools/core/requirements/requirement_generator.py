@@ -56,7 +56,7 @@ class RequirementGenerator:
                 current_requirement_template = ""
                 
                 for i, row in df.iterrows():
-                    requirement_id = row["Requirement ID"]
+                    requirement_id = str(row["Requirement ID"]).replace(" ", "")
                     description = row["Activity ID and Description"]
                     if not isinstance(description, str) :
                          title = ""
@@ -65,7 +65,6 @@ class RequirementGenerator:
                              title = requirement_id[last_dot_index + 1:].strip()
                          else : 
                               title = requirement_id    
-  
                          fileName = requirement_id
                          current_requirement_template = requirement_template.format(
                               id  = requirement_id ,
