@@ -60,9 +60,9 @@ class RequirementGenerator:
                     description = row["Activity ID and Description"]
                     if not isinstance(description, str) :
                          element_id ,title  = requirement_id.split(" ", 1)
-                         fileName = element_id
+                         fileName = element_id.rstrip('.')
                          current_requirement_template = requirement_template.format(
-                              id  = element_id ,
+                              id  =  requirement_id.replace(" ", ""),
                               title = title
                           )
                          
