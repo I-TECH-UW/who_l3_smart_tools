@@ -100,6 +100,13 @@ parameter "Measurement Period" Interval<Date> default Interval[@2020-01-01, @202
 
 context Patient
 
+/*
+ * As defined by Member State
+ */
+define "Initial Population":
+  true
+  
+
 define "numerator":
    exists(HIC."HIV PREP Active" H
    where H.effective starts before end of "Measurement Period"
@@ -146,3 +153,9 @@ define "prep_dosing":
     HIC."prep_dosing"
 
 // Provider type concepts are not found in DD
+
+define "Stratification":
+ HIC."By Administrative Gender Stratifier".code 
+  + ':' + HIC."By Age Stratifier"
++ ':' + HIC."By Geographic Region Stratifier"
+// how to add list

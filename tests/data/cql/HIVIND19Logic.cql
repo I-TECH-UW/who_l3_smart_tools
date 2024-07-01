@@ -88,6 +88,13 @@ parameter "Measurement Period" Interval<Date> default Interval[@2020-01-01, @202
  
 context Patient
 
+/*
+ * As defined by Member State
+ */
+define "Initial Population":
+  true
+
+
 //Exclusion happens automatically through test type valueset = excludes self test
 define "numerator":
     exists(HIC."HIV Positive Condition" C
@@ -125,4 +132,8 @@ define "Setting":
 define "TB Stratifier":
     HIC."tb"
 
-
+define "Stratification":
+ HIC."By Administrative Gender Stratifier".code 
+  + ':' + HIC."By Age Stratifier"
++ ':' + HIC."By Geographic Region Stratifier"
+//Need to discuss how to add list

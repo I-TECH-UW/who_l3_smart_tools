@@ -79,7 +79,7 @@ parameter "Measurement Period" Interval<Date> default Interval[@2020-01-01, @202
  
 context Patient
 
-define "numerator":
+define "Measure Population":
     exists(HIC."HIV Positive Condition" C
 	where C.onset before end of "Measurement Period")
 	or 
@@ -89,6 +89,19 @@ define "numerator":
 
 //define denominator?
 //How to bring in data from external sources
+
+/*
+ * As defined by Member States
+ */
+define "Initial Population":
+  true
+
+/*
+ * NOTE: Modeled as a Continuous Variable measure because this is an estimated denominator proportion measure
+ */
+
+define function "Measure Observation"(Patient "Patient"):
+  1
 
 /*
  * Disaggregators

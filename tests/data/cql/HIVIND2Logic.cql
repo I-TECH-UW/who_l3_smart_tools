@@ -97,12 +97,26 @@ parameter "Measurement Period" Interval<Date> default Interval[@2020-01-01, @202
 
 context Patient
 
-define "numerator":
+define "Measure Population":
    exists(HIC."HIV PREP Active" H
    where H.effective starts before end of "Measurement Period"
     and (H.effective ends after start of "Measurement Period"
     or end of H.effective  ~  null)
    )
+
+/*
+ * As defined by Member States
+ */
+define "Initial Population":
+  true
+
+/*
+ * NOTE: Modeled as a Continuous Variable measure because this is an estimated denominator proportion measure
+ */
+
+define function "Measure Observation"(Patient "Patient"):
+  1
+
 
 /*
  * Disaggregators
@@ -133,3 +147,9 @@ define "prep_dosing":
     HIC."prep_dosing"
 
 // Provider type concepts are not found in DD
+
+define "Stratification":
+ HIC."By Administrative Gender Stratifier".code 
+  + ':' + HIC."By Age Stratifier"
++ ':' + HIC."By Geographic Region Stratifier"
+// how to add list

@@ -83,12 +83,20 @@ include FHIRCommon called FC
 
 parameter "Measurement Period" Interval<Date> default Interval[@2020-01-01, @2020-01-31]
  
-context Unfiltered
+context Patient
+
+/*
+ * As defined by Member State
+ */
+define "Initial Population":
+  true
+
 
 define "numerator":
    (
-    exists(HIC."Patient Deceased during Measurement Period")
-   or exists(HIC."Stopped ART at Facility during the measurement period")
+    HIC."Patient Deceased before end of Measurement Period"
+   and HIC."Transfer Out at Facility during the measurement period"
+   and HIC."Lost to Follow Up during the measurement period"
    )
    and ((
     //saying needs to not be counted this measurement period but should have counted this period or last period
@@ -100,8 +108,7 @@ define "numerator":
 	))
    and exists(HIC."HIV Treatment Active" H
    where H.effective starts before end of "Measurement Period"
-    and (H.effective ends after start of "Measurement Period"
-    or end of H.effective  ~  null)
+    and H.effective ends after start of "Measurement Period"
    )
    ) or
    (
@@ -114,8 +121,7 @@ define "numerator":
 	))
    and exists(HIC."HIV Treatment Active" H
    where H.effective starts before (end of "Measurement Period" - duration in days of "Measurement Period")
-    and (H.effective ends after (start of "Measurement Period" - duration in days of "Measurement Period")
-    or end of H.effective  ~  null)
+    and H.effective ends after (start of "Measurement Period" - duration in days of "Measurement Period")
    )
    )
    )
@@ -133,8 +139,7 @@ define "numerator":
 	))
    and exists(HIC."HIV Treatment Active" H
    where H.effective starts before end of "Measurement Period"
-    and (H.effective ends after start of "Measurement Period"
-    or end of H.effective  ~  null)
+    and H.effective ends after start of "Measurement Period"
    )
    ) or
    (
@@ -147,8 +152,7 @@ define "numerator":
 	))
    and exists(HIC."HIV Treatment Active" H
    where H.effective starts before (end of "Measurement Period" - duration in days of "Measurement Period")
-    and (H.effective ends after (start of "Measurement Period" - duration in days of "Measurement Period")
-    or end of H.effective  ~  null)
+    and H.effective ends after (start of "Measurement Period" - duration in days of "Measurement Period")
    )
    )
    )
@@ -172,3 +176,8 @@ define "patientGroups Stratifier":
 	HIC."patientGroups"
 
 //NEED TO FIGURE OUT Treatment outcome category (died, stopped treatment, lost to follow-up)
+
+define "Stratification":
+ HIC."By Administrative Gender Stratifier".code 
+  + ':' + HIC."By Age Stratifier"
++ ':' + HIC."By Geographic Region Stratifier"

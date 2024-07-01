@@ -4,7 +4,10 @@ from typing import Any
 import stringcase
 import pandas as pd
 
-from who_l3_smart_tools.utils.cql_helpers import determine_scoring
+from who_l3_smart_tools.utils.cql_helpers import (
+    determine_scoring_from_cql,
+    determine_scoring_suggestion,
+)
 
 
 library_fsh_template = """
@@ -134,12 +137,32 @@ class CqlResourceGenerator:
             return self.parsed_cql
 
         parsed_data = {
+            "templateOnly": None,
             "stratifiers": {},
-            "populations": {},
+            "initialPopulation": False,
+            "measurePopulation": False,
+            "measureObservation": False,
             "numerator": False,
             "denominator": False,
             "library_name": None,
         }
+
+        # Don't parse if CQL contents are generated only,
+        # without any content for the indicator definition itself
+
+        # Find where the indicator header location is
+        indicator_header_match = re.search(
+            r"// Indicator Definition(.*)", self.cql_content, re.DOTALL
+        )
+
+        if indicator_header_match:
+            content_after_match = indicator_header_match.group(1)
+
+            # Check if the content after the match is not just whitespace
+            if content_after_match.strip():
+                parsed_data["templateOnly"] = False
+            else:
+                parsed_data["templateOnly"] = True
 
         indicator_match = DAK_INDICATOR_ID_PATTERN.search(self.cql_content)
 
@@ -181,10 +204,35 @@ class CqlResourceGenerator:
         for stratifier in stratifier_matches:
             parsed_data["stratifiers"][stratifier] = True
 
-        # Extract populations
-        population_matches = re.findall(r'define "(.+ Population)":', self.cql_content)
-        for population in population_matches:
-            parsed_data["populations"][population] = True
+        # Extract initial population
+        initial_population_match = re.search(
+            r"define \"Initial Population\"\:", self.cql_content, re.IGNORECASE
+        )
+        if initial_population_match:
+            parsed_data["initialPopulation"] = True
+
+        # Extract measure population
+        measure_population_match = re.search(
+            r"define \"Measure Population\"\:", self.cql_content, re.IGNORECASE
+        )
+        if measure_population_match:
+            parsed_data["measurePopulation"] = True
+
+        # Extract measure observation
+        measure_observation_match = re.search(
+            r"define function \"Measure Observation\"",
+            self.cql_content,
+            re.IGNORECASE,
+        )
+        if measure_observation_match:
+            parsed_data["measureObservation"] = True
+
+        # Extract population exclusions
+        population_exclusion_matches = re.findall(
+            r'define "(.+ Population Exclusion)":', self.cql_content
+        )
+        for population_exclusion in population_exclusion_matches:
+            parsed_data["population exclusions"][population_exclusion] = True
 
         self.parsed_cql = parsed_data
         return self.parsed_cql
@@ -219,8 +267,9 @@ class CqlResourceGenerator:
         return library_fsh
 
     def generate_measure_fsh(self):
-        if not self.parsed_cql["is_indicator"]:
+        if not self.parsed_cql["is_indicator"] or self.parsed_cql["templateOnly"]:
             return None
+
         dak_name = self.parsed_cql["library_name"].split(".")[0]
 
         header_variables = self.parseRow(
@@ -230,22 +279,24 @@ class CqlResourceGenerator:
 
         dak_id = header_variables["DAK ID"]
         measure_name = header_variables["DAK ID"].replace(".", "")
-        title = re.escape(
-            f"{header_variables['DAK ID']} {header_variables['Short name']}"
-        )
-        description = re.escape(header_variables["Indicator definition"])
+        title = f"{header_variables['DAK ID']} {header_variables['Short name']}"
+        description = header_variables["Indicator definition"]
 
-        # Determine scoring
-        scoring, scoring_title, scoring_instance = determine_scoring(
-            indicator_row("Denominator calculation")
+        # Determine scoring based on parsed cql entries
+        scoring, scoring_title, scoring_instance = determine_scoring_from_cql(
+            self.parsed_cql
         )
+
+        if not scoring:
+            print("Could not determine scoring for measure - failed to generate FSH.")
+            return None
 
         # Generate the Measure FSH file content.
         measure_fsh = measure_fsh_template.format(
             measure_name=measure_name,
             title=title,
             description=description,
-            scoring_instance=scoring_instance,
+            measure_instance=scoring_instance,
             dak_name=dak_name,
             date=datetime.now(timezone.utc).date().isoformat(),
         )
@@ -254,30 +305,41 @@ class CqlResourceGenerator:
             scoring=scoring, scoring_title=scoring_title
         )
 
-        # Determine scoring type
-
         # Add Populations and Stratifiers to the measure FSH string if group is not empty
         if (
             self.parsed_cql["stratifiers"]
-            or self.parsed_cql["populations"]
+            or self.parsed_cql["initialPopulation"]
+            or self.parsed_cql["measurePopulation"]
             or self.parsed_cql["denominator"]
             or self.parsed_cql["numerator"]
         ):
             measure_fsh += "\n* group[+]\n"
 
-            for population in self.parsed_cql["populations"].keys():
-                # Grab first letters of population title to create code
-                pop_code = "".join([word[0] for word in population.split()])
-                pop_string = population.replace(" ", "-").lower()
-                population_camel_case = stringcase.camelcase(
-                    stringcase.alphanumcase(population)
-                )
+            if self.parsed_cql["initialPopulation"]:
                 measure_fsh += measure_population_fsh_template.format(
-                    population_camel_case=population_camel_case,
+                    population_camel_case="initialPopulation",
                     dak_id=dak_id,
-                    pop_code=pop_code,
-                    pop_string=pop_string,
-                    population=population,
+                    pop_code="IP",
+                    pop_string="initial-population",
+                    population="Initial Population",
+                )
+
+            if self.parsed_cql["measurePopulation"]:
+                measure_fsh += measure_population_fsh_template.format(
+                    population_camel_case="measurePopulation",
+                    dak_id=dak_id,
+                    pop_code="MP",
+                    pop_string="measure-population",
+                    population="Measure Population",
+                )
+
+            if self.parsed_cql["measureObservation"]:
+                measure_fsh += measure_population_fsh_template.format(
+                    population_camel_case="measureObservation",
+                    dak_id=dak_id,
+                    pop_code="MO",
+                    pop_string="measure-observation",
+                    population="Measure Observation",
                 )
 
             if self.parsed_cql["denominator"]:

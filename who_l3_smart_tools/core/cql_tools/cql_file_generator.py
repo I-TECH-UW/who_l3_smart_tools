@@ -3,7 +3,7 @@ from typing import Any
 import stringcase
 import pandas as pd
 
-from who_l3_smart_tools.utils.cql_helpers import determine_scoring, get_dak_name
+from who_l3_smart_tools.utils.cql_helpers import determine_scoring_suggestion, get_dak_name
 
 # Templates
 cql_file_header_template = """/*
@@ -283,7 +283,7 @@ class CqlFileGenerator:
             row_dict["scoring_method"],
             row_dict["scoring_title"],
             row_dict["scoring_instance"],
-        ) = determine_scoring(denominator_val)
+        ) = determine_scoring_suggestion(denominator_val)
 
         # Dissagregation parsing
         disaggregation_data_elements = row_dict["disaggregation_description"].split("|")
