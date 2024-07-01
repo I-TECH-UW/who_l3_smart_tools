@@ -2,24 +2,23 @@
 import datetime
 import os
 import re
-from who_l3_smart_tools.core.indicator_generation.cql_tools import (
-    CQLResourceGenerator,
-    CqlScaffoldGenerator,
-)
+from who_l3_smart_tools.core.cql_tools.cql_file_generator import CqlFileGenerator
+from who_l3_smart_tools.core.cql_tools.cql_resource_generator import CqlResourceGenerator
 import pandas as pd
 import unittest
 import stringcase
 
-class TestCqlScaffold(unittest.TestCase):
+class TestCqlTools(unittest.TestCase):
     def test_generate_cql_file_headers(self):
-        input_file = "tests/data/full_indicator_list.xlsx"
+        input_indicators = "tests/data/l2/test_indicators.xlsx"
+        input_dd = "tests/data/l2/test_dd.xlsx"
         output_dir = "tests/output/cql/templates/"
-
+           
         # Make sure output directory exists
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        generator = CqlScaffoldGenerator(input_file)
+        generator = CqlFileGenerator(input_indicators, input_dd)
 
         generator.generate_cql_scaffolds()
 
@@ -27,19 +26,20 @@ class TestCqlScaffold(unittest.TestCase):
 
         assert os.path.exists(os.path.join(output_dir, "HIVIND2Logic.cql"))
 
-    def test_generate_cql_template(self):
-        input_file = "tests/data/indicator_dak_input_MINI.xlsx"
 
-        generator = CqlScaffoldGenerator(input_file)
+    def test_generate_concepts_cql(self):
+        input_indicators = "tests/data/l2/test_indicators.xlsx"
+        input_dd = "tests/data/l2/test_dd.xlsx"
+        output_dir = "tests/output/cql/files/"
 
-        indicator_artifact = pd.read_excel(
-            input_file, sheet_name="Indicator definitions"
-        )
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        
+        generator = CqlFileGenerator(input_indicators, input_dd)
 
-        # Test the first row
-        cql_template = generator.generate_cql_template(indicator_artifact.iloc[0])
+        generator.generate_cql_concept_file(output_dir=output_dir)
 
-        assert cql_template is not None
+        assert os.path.exists(os.path.join(output_dir, "HIVConcepts.cql"))
 
 
 class TestCqlResourceGenerator(unittest.TestCase):
@@ -61,7 +61,7 @@ class TestCqlResourceGenerator(unittest.TestCase):
 
         self.indicator_row = indicator_file[indicator_file['DAK ID'] == 'HIV.IND.27'].head(1).squeeze()
 
-        self.generator = CQLResourceGenerator(self.cql_content, {
+        self.generator = CqlResourceGenerator(self.cql_content, {
             self.indicator_row['DAK ID']: self.indicator_row
         })
 
@@ -150,12 +150,16 @@ class TestCqlGeneratorOnAllFiles(unittest.TestCase):
         for cql_file in os.listdir(input_directory):
             cql_file_path = os.path.join(input_directory, cql_file)
 
+            # Skip if not a file
+            if not os.path.isfile(cql_file_path):
+                continue
+
             # Load content and close file
             cql_file = open(cql_file_path, "r")
             cql_content = cql_file.read()
             cql_file.close()
 
-            generator = CQLResourceGenerator(cql_content, indicator_dict)
+            generator = CqlResourceGenerator(cql_content, indicator_dict)
 
             # Create Library file and save to file
             library_fsh = generator.generate_library_fsh()
