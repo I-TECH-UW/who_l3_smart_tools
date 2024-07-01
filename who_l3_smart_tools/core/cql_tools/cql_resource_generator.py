@@ -56,13 +56,34 @@ measure_scoring_fsh_template = """
 * scoring = $measure-scoring#{scoring} "{scoring_title}"
 """
 
-measure_population_fsh_template = """
-  * population[{population_camel_case}]
-    * id = "{dak_id}.{pop_code}"
-    * description = "Number in target group"
-    * code = $measure-population#{pop_string} "{population}"
+measure_initial_population_fsh_template = """
+  * population[initialPopulation]
+    * id = "{dak_id}.IP"
+    * description = "Initial Population"
+    * code = $measure-population#initial-population "Initial Population"
     * criteria.language = #text/cql-identifier
-    * criteria.expression = "{population}"
+    * criteria.expression = "Initial Population"
+"""
+
+measure_measure_population_fsh_template = """
+  * population[measurePopulation]
+    * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
+    * id = "{dak_id}.MP"
+    * description = "Measure Population"
+    * code = $measure-population#measure-population "Measure Population"
+    * criteria.language = #text/cql-identifier
+    * criteria.expression = "Measure Population"
+"""
+
+measure_measure_observation_fsh_template = """
+  * population[measureObservation]
+    * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-criteriaReference].valueString = "measure-population"
+    * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-aggregateMethod].valueCode = #count
+    * id = "{dak_id}.MO"
+    * description = "Measure Observation"
+    * code = $measure-population#measure-observation "Measure Observation"
+    * criteria.language = #text/cql-identifier
+    * criteria.expression = "Measure Observation"
 """
 
 measure_denominator_fsh_template = """
@@ -316,7 +337,7 @@ class CqlResourceGenerator:
             measure_fsh += "\n* group[+]\n"
 
             if self.parsed_cql["initialPopulation"]:
-                measure_fsh += measure_population_fsh_template.format(
+                measure_fsh += measure_initial_population_fsh_template.format(
                     population_camel_case="initialPopulation",
                     dak_id=dak_id,
                     pop_code="IP",
@@ -325,7 +346,7 @@ class CqlResourceGenerator:
                 )
 
             if self.parsed_cql["measurePopulation"]:
-                measure_fsh += measure_population_fsh_template.format(
+                measure_fsh += measure_measure_population_fsh_template.format(
                     population_camel_case="measurePopulation",
                     dak_id=dak_id,
                     pop_code="MP",
@@ -334,7 +355,7 @@ class CqlResourceGenerator:
                 )
 
             if self.parsed_cql["measureObservation"]:
-                measure_fsh += measure_population_fsh_template.format(
+                measure_fsh += measure_measure_observation_fsh_template.format(
                     population_camel_case="measureObservation",
                     dak_id=dak_id,
                     pop_code="MO",
