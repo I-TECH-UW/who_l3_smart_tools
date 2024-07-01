@@ -26,7 +26,7 @@ def main():
         "-f",
         "--files",
         nargs="+",
-        help="List of files containing the HIV terminology data.",
+        help="List of CSV files containing the HIV terminology data.",
     )
     argparser.add_argument(
         "-of",
@@ -44,7 +44,7 @@ def main():
     elif args.files:
         hiv_terminology = HIVTerminology(args.files)
     else:
-        raise ValueError("Either excel file or files must be provided.")
+        raise ValueError("Either and excel file or csv files must be provided.")
     if args.output_format == "json":
         hiv_terminology.process_concept_for_json(os.path.join(args.output_dir, "hiv_concepts.json"))
     else:
