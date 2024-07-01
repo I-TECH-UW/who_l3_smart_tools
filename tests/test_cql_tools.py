@@ -82,6 +82,10 @@ class TestCqlResourceGenerator(unittest.TestCase):
     def test_generate_library_fsh(self):
         library_fsh = self.generator.generate_library_fsh().strip()
 
+        # Ensure directory exists
+        output_directory = "tests/output/fsh/"
+        os.makedirs(output_directory, exist_ok=True)
+
         output_file = "tests/output/fsh/HIV27_library.fsh"
 
         if os.path.exists(output_file):
@@ -102,7 +106,7 @@ class TestCqlResourceGenerator(unittest.TestCase):
 
         assert measure_fsh is not None
 
-        output_file = f"tests/output/fsh/{stringcase.alphanumcase(p["library_name"])}_measure.fsh"
+        output_file = f"tests/output/fsh/{stringcase.alphanumcase(p['library_name'])}_measure.fsh"
 
         if os.path.exists(output_file):
             os.remove(output_file)
