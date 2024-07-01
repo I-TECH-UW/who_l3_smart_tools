@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "who-l3-smart-tools"
+version = "0.2.0"
+description = "Tools for automating extraction of L3 technical resources from L2 packages"
+authors = ["I-TECH DIGI"]
+license = "MPL-2.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pandas = ">=1.0"
+xlrd = ">=1.2"
+openpyxl = ">=3.0"
+fhirpy = ">=1.4"
+"fhir.resources" = ">=7.0"
+Faker = ">=25.0"
+inflect = "^7.3.0"
+python-slugify = ">=8.0.4"
+
+[tool.poetry.group.dev.dependencies]
+pytest = ">=6"
+flake8 = ">=3.8"
+Sphinx = ">=3.2"
+stringcase = ">=1.2"
+pyright = "^1.1.367"
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
