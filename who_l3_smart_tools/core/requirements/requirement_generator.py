@@ -5,8 +5,7 @@ import os
 from who_l3_smart_tools.utils import camel_case
 
 
-requirement_template = """
-Instance: {id}
+requirement_template ="""Instance: {id}
 InstanceOf: Requirements
 Title: "{title}"
 Description: "Functional Requirements For  for {title}"
@@ -19,25 +18,23 @@ functional_requirement_item_template = """
   * requirement = \"\"\"
    As a {actor}
    I want {action}
-   So that {reason}
-  \"\"\" """
+   So that {reason}  \"\"\""""
+ 
 
-non_functional_requirement_template = """
-Instance: HIV non Functional Requirements
+non_functional_requirement_template = """Instance: HIV non Functional Requirements
 InstanceOf: Requirements
 Title: "HIV non Functional Requirements"
 Description: "Non Functional Requirements For  for HIV"
 Usage: #example
 * status = #active"""
 
-
 non_functional_requirement_item_template = """
 * statement[+]
   * key = "{data_element_id}"
-  * requirement = = \"\"\"
+  * requirement = \"\"\"
    Category : {category}
-   {action} 
-   \"\"\" """
+   {action} \"\"\""""
+  
 
 class RequirementGenerator:
     def __init__(self, input_file, output_dir):
