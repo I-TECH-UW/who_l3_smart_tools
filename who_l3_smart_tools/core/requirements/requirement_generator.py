@@ -8,7 +8,7 @@ from who_l3_smart_tools.utils import camel_case
 requirement_template ="""Instance: {id}
 InstanceOf: Requirements
 Title: "{title}"
-Description: "Functional Requirements For  for {title}"
+Description: "Functional Requirements For {title}"
 Usage: #example
 * status = #active"""
 
@@ -24,7 +24,7 @@ functional_requirement_item_template = """
 non_functional_requirement_template = """Instance: HIVNonFunctionalRequirements
 InstanceOf: Requirements
 Title: "HIV non Functional Requirements"
-Description: "Non Functional Requirements For  for HIV"
+Description: "Non Functional Requirements For HIV"
 Usage: #example
 * status = #active"""
 
