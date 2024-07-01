@@ -17,7 +17,7 @@ def dash_preserving_slugify(text):
     """
     dash_replacement = "dashdash"
     text = text.replace("-", dash_replacement)
-    text = slugify(text, lowercase=False, separator="-")
+    text = slugify.slugify(text, lowercase=False, separator="_")
     return text.replace(dash_replacement, "-")
 
 class HIVConceptSchema(ConceptSchema):

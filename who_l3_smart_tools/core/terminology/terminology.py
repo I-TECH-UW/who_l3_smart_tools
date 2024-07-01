@@ -105,7 +105,6 @@ class ConceptTerminology:
     ):
         self.files = files
         self.schema = schema
-        self.output_csv_header = self._get_csv_headers()
         self.extra_args = {
             "resource_type": "concept",
             "owner_type": "Organization",
@@ -113,6 +112,7 @@ class ConceptTerminology:
             "owner_id": owner_id,
             "concept_class": concept_class,
         }
+        self.output_csv_header = self._get_csv_headers()
 
     def _get_csv_headers(self):
         """
@@ -126,8 +126,9 @@ class ConceptTerminology:
             return []
         with open(self.files[0]) as f:
             reader = csv.DictReader(f)
-            processed_row = ConceptRow(next(reader), self.schema).process_for_csv()
-            return list(processed_row.keys())
+            processed_row = ConceptRow(next(reader), self.schema, **self.extra_args)
+            processed_row.process_for_csv()
+            return list(processed_row.converted_row.keys())
 
     def process_concept_for_csv(self, write_to_path: str):
         """
@@ -148,7 +149,7 @@ class ConceptTerminology:
                         row.process_for_csv()
                         writer.writerow(row.converted_row)
 
-    def process_concept_for_json(self, write_to_path: Optional[str]=None):
+    def process_concept_for_json(self, write_to_path: Optional[str]=None) -> Optional[list[dict]]:
         """
         Process the concept data and write it to a JSON file.
 
