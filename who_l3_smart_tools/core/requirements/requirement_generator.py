@@ -32,8 +32,8 @@ non_functional_requirement_item_template = """
 * statement[+]
   * key = "{data_element_id}"
   * requirement = \"\"\"
-   Category : {category}
-   {action} \"\"\""""
+    For {category} ,
+    {action} \"\"\""""
   
 
 class RequirementGenerator:
