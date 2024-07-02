@@ -3,7 +3,6 @@ import argparse
 import os
 import sys
 
-
 from who_l3_smart_tools.core.terminology.who.terminology import HIVTerminology
 
 
@@ -11,18 +10,20 @@ from who_l3_smart_tools.core.terminology.who.terminology import HIVTerminology
 def main():
     argparser = argparse.ArgumentParser(description="Generate HIV Concept Terminology.")
 
+    files_group = argparser.add_mutually_exclusive_group(required=True)
+
     argparser.add_argument(
         "-o",
         "--output-dir",
         required=True,
         help="Output directory for the generated HIV Concept Terminology.",
     )
-    argparser.add_argument(
+    files_group.add_argument(
         "-e",
         "--excel-file",
         help="Excel file containing the HIV terminology data.",
     )
-    argparser.add_argument(
+    files_group.add_argument(
         "-f",
         "--files",
         nargs="+",

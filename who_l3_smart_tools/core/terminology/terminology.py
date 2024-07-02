@@ -170,5 +170,5 @@ class ConceptTerminology:
                     output.append(row.converted_row)
         if write_to_path:
             with open(write_to_path, "w") as f:
-                json.dump(output, f)
+                json.dump(output, f, indent=2)
         return output

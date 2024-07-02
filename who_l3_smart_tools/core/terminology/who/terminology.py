@@ -31,7 +31,9 @@ class HIVTerminology(ConceptTerminology):
         for sheet_name, df in excel_df.items():
             if not sheet_name.startswith(cls.excel_sheets_prefix):
                 continue
-            file_path = os.path.join(directory, f"{sheet_name}.csv")
+            csv_files_dir = os.path.join(directory, "csv_files")
+            os.makedirs(csv_files_dir, exist_ok=True)
+            file_path = os.path.join(csv_files_dir, f"{sheet_name}.csv")
             df.to_csv(file_path, index=False)
             files.append(file_path)
         return cls(files)
