@@ -20,13 +20,12 @@ class HIVTerminology(ConceptTerminology):
 
     def __init__(self, files: list):
         owner_id = "WHO-Smart-Guidelines"
-        concept_class = ""
-        super().__init__(owner_id, concept_class, files, schema=HIVConceptSchema)
+        super().__init__(owner_id, files, schema=HIVConceptSchema)
 
     @classmethod
     def from_excel(cls, file_path: str):
         directory = os.path.dirname(file_path)
-        files = []
+        files = {}
         excel_df = pd.read_excel(file_path, sheet_name=None)
         for sheet_name, df in excel_df.items():
             if not sheet_name.startswith(cls.excel_sheets_prefix):
@@ -35,5 +34,5 @@ class HIVTerminology(ConceptTerminology):
             os.makedirs(csv_files_dir, exist_ok=True)
             file_path = os.path.join(csv_files_dir, f"{sheet_name}.csv")
             df.to_csv(file_path, index=False)
-            files.append(file_path)
+            files[sheet_name] = file_path
         return cls(files)

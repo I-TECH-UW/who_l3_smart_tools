@@ -24,9 +24,10 @@ class ConceptRow:
         process_for_json: Processes the row for JSON output.
     """
 
-    def __init__(self, row: dict, schema: type[ConceptSchema], **kwargs) -> None:
+    def __init__(self, row: dict, schema: type[ConceptSchema], concept_class: str, **kwargs) -> None:
         self.row = row
         self.schema = schema
+        self.concept_class = concept_class
         self.converted_row = self._process_row_required_fields(kwargs)
 
     def _process_row_required_fields(self, extra_args: dict):
@@ -44,6 +45,7 @@ class ConceptRow:
             "name": self.row.pop(self.schema.name),
             "datatype": self.row.pop(self.schema.datatype),
             "description": self.row.pop(self.schema.description),
+            "concept_class": self.concept_class,
         }
         for index, name in enumerate(self.schema.additional_names):
             converted_row[f"name[{index+1}]"] = self.row.pop(name)
@@ -99,8 +101,7 @@ class ConceptTerminology:
     def __init__(
         self,
         owner_id: str,
-        concept_class: str,
-        files: list[str],
+        files: dict[str, str],
         schema: type[ConceptSchema] = ConceptSchema,
     ):
         self.files = files
@@ -110,7 +111,6 @@ class ConceptTerminology:
             "owner_type": "Organization",
             "retired": "FALSE",
             "owner_id": owner_id,
-            "concept_class": concept_class,
         }
         self.output_csv_header = self._get_csv_headers()
 
@@ -124,9 +124,10 @@ class ConceptTerminology:
         """
         if not self.files:
             return []
-        with open(self.files[0]) as f:
+        concept_class = list(self.files.keys())[0]
+        with open(self.files[concept_class]) as f:
             reader = csv.DictReader(f)
-            processed_row = ConceptRow(next(reader), self.schema, **self.extra_args)
+            processed_row = ConceptRow(next(reader), self.schema, concept_class, **self.extra_args)
             processed_row.process_for_csv()
             return list(processed_row.converted_row.keys())
 
@@ -141,11 +142,11 @@ class ConceptTerminology:
         with open(write_to_path, "w") as f:
             writer = csv.DictWriter(f, fieldnames=self.output_csv_header)
             writer.writeheader()
-            for data_file in self.files:
+            for concept_class, data_file in self.files.items():
                 with open(data_file) as f:
                     reader = csv.DictReader(f)
                     for row in reader:
-                        row = ConceptRow(row, self.schema, **self.extra_args)
+                        row = ConceptRow(row, self.schema, concept_class **self.extra_args)
                         row.process_for_csv()
                         writer.writerow(row.converted_row)
 
@@ -161,11 +162,11 @@ class ConceptTerminology:
 
         """
         output = []
-        for data_file in self.files:
+        for concept_class, data_file in self.files.items():
             with open(data_file) as f:
                 reader = csv.DictReader(f)
                 for row in reader:
-                    row = ConceptRow(row, self.schema, **self.extra_args)
+                    row = ConceptRow(row, self.schema, concept_class, **self.extra_args)
                     row.process_for_json()
                     output.append(row.converted_row)
         if write_to_path:

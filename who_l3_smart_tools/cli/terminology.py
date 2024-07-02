@@ -3,6 +3,8 @@ import argparse
 import os
 import sys
 
+sys.path.insert(0, os.getcwd())
+
 from who_l3_smart_tools.core.terminology.who.terminology import HIVTerminology
 
 
@@ -44,7 +46,8 @@ def main():
         "-f",
         "--files",
         nargs="+",
-        help="List of CSV files containing the HIV terminology data.",
+        help="List of CSV files containing the HIV terminology data. With concept class separated by a colon.\
+        Example: '/home/ubuntu/files/file1.csv:concept_class1 /home/ubuntu/files/file2.csv:concept_class2'",
     )
     argparser.add_argument(
         "-of",
