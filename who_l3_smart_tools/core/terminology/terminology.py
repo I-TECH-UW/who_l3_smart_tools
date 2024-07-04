@@ -231,7 +231,7 @@ class ConceptTerminology:
                         row,
                         self.schema,
                         concept_class,
-                        self.values_set,
+                        self.value_set,
                         **self.extra_args,
                     )
                     row.process_for_json()
