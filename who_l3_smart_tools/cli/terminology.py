@@ -22,6 +22,7 @@ def main():
     -e, --excel-file: Excel file containing the HIV terminology data.
     -f, --files: List of CSV files containing the HIV terminology data.
     -of, --output-format: Output format for the generated HIV Concept Terminology. (default: csv)
+    -v, --values-set: File where to write valuesets.
 
     Raises:
     - ValueError: If neither an Excel file nor CSV files are provided.
@@ -56,6 +57,11 @@ def main():
         choices=["csv", "json"],
         help="Output format for the generated HIV Concept Terminology.",
     )
+    argparser.add_argument(
+        "-v",
+        "--values-set",
+        help="File where to write valuesets.",
+    )
     args = argparser.parse_args()
 
     os.makedirs(args.output_dir, exist_ok=True)
@@ -71,6 +77,7 @@ def main():
         hiv_terminology.process_concept_for_json(os.path.join(args.output_dir, "hiv_concepts.json"))
     else:
         hiv_terminology.process_concept_for_csv(os.path.join(args.output_dir, "hiv_concepts.csv"))
+    hiv_terminology.write_value_sets(args.values_set)
 
 
 if __name__ == "__main__":

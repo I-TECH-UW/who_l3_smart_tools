@@ -174,3 +174,7 @@ who_ocl.py
 .idea/
 
 *bkp*
+
+# Output for testing files
+
+test_output/
