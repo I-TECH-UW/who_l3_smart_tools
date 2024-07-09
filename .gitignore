@@ -167,4 +167,15 @@ tests/tmp*
 
 .DS_Store
 
+
+# Temporary ignore this file
+who_ocl.py
+
+.idea/
+
 *bkp*
+
+# Output for testing files
+
+test_output/
+tests/data/l2/csv_files/

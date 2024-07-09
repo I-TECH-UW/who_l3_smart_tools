@@ -27,6 +27,7 @@ setup(
         "console_scripts": [
             "logical_model_gen = who_l3_smart_tools.cli.logical_model_gen:main",
             "indicator_testing = who_l3_smart_tools.cli.indicator_testing:main",
+            "terminology = who_l3_smart_tools.cli.terminology:main",
         ]
     },
 )
