@@ -127,9 +127,6 @@ class CqlFileGenerator:
                     data_type = row["Data Type"]
                     data_element_id = row["Data Element ID"]
 
-                    # Skip for individual valueset values
-                    # if data_type == "Codes":
-                    #     continue
 
                     cds = row["Linkages to Decision Support Tables"]
                     indicators = row["Linkages to Aggregate Indicators"]
@@ -373,17 +370,19 @@ class CqlFileGenerator:
 
             # Write codes
             for concept_id, concept_details in self.cql_concept_dictionary.items():
-                if concept_details["data_type"] != "Coding":
-                    label_str = self.get_concept_label(
-                        label_frequency,
-                        label_sheet_frequency,
-                        concept_id,
-                        concept_details,
-                    )
+                label_str = self.get_concept_label(
+                    label_frequency,
+                    label_sheet_frequency,
+                    concept_id,
+                    concept_details,
+                )
 
-                    file.write(
-                        f"code \"{label_str}\": '{concept_id}' from \"{library_name}\" display '{concept_details['label']}'\n"
-                    )
+                if concept_details["data_type"] == "Coding":
+                    label_str = label_str + " - Coding"
+
+                file.write(
+                    f"code \"{label_str}\": '{concept_id}' from \"{library_name}\" display '{concept_details['label']}'\n"
+                )
 
     def get_concept_label(
         self, label_frequency, label_sheet_frequency, concept_id, concept_details
