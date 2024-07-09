@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 import argparse
+import json
 import os
 import sys
 
@@ -7,6 +8,21 @@ sys.path.insert(0, os.getcwd())
 
 from who_l3_smart_tools.core.terminology.who.terminology import HIVTerminology
 
+
+def write_terminology_valuesets(terminology, valueset_file):
+    """
+    Write terminology valuesets to a file.
+
+    This function takes a terminology object and a file path and writes the valuesets
+    from the terminology object to the specified file.
+
+    Args:
+    - terminology: The terminology object containing the valuesets.
+    - valueset_file: The file path to write the valuesets to.
+
+    """
+    with open(valueset_file, "w", encoding="utf-8") as file:
+        json.dump(terminology.valuesets, file, indent=2)
 
 
 def main():
@@ -50,19 +66,20 @@ def main():
     argparser.add_argument(
         "-v",
         "--values-set",
+        required=False,
         help="File where to write valuesets.",
     )
     args = argparser.parse_args()
 
     os.makedirs(args.output_dir, exist_ok=True)
 
-
-    hiv_terminology = HIVTerminology.from_excel(args.excel_file)
+    hiv_terminology = HIVTerminology(args.excel_file)
     if args.output_format == "json":
-        hiv_terminology.process_concept_for_json(os.path.join(args.output_dir, "hiv_concepts.json"))
+        hiv_terminology.to_json(os.path.join(args.output_dir, "hiv_concepts.json"))
     else:
-        hiv_terminology.process_concept_for_csv(os.path.join(args.output_dir, "hiv_concepts.csv"))
-    hiv_terminology.write_value_sets(args.values_set)
+        hiv_terminology.to_csv(os.path.join(args.output_dir, "hiv_concepts.csv"))
+    if args.values_set:
+        write_terminology_valuesets(hiv_terminology, args.values_set)
 
 
 if __name__ == "__main__":

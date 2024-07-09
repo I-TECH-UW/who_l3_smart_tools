@@ -1,3 +1,11 @@
+"""
+This module defines schema classes for an OCL Concepts, 
+    Repository and Organizations.
+"""
+
+from typing import Callable
+
+
 class ConceptSchema:
     """
     Represents the schema for a concept.
@@ -13,15 +21,16 @@ class ConceptSchema:
         additional_names (list): A list of additional names for the concept.
         additional_descriptions (list): A list of additional descriptions for the concept.
     """
-    id = "id"
-    name = "name"
-    datatype = "datatype"
-    description = "description"
-    include_columns = []
-    exclude_columns = []
-    format_extras_for_csv = lambda x: f"attr:{x}"
-    additional_names = []
-    additional_descriptions = []
+
+    id: str = "id"
+    name: str = "name"
+    datatype: str = "datatype"
+    description: str = "description"
+    include_columns: list[str] = []
+    exclude_columns: list[str] = []
+    format_extras_for_csv: Callable = lambda x: f"attr:{x}"
+    additional_names: list[str] = []
+    additional_descriptions: list[str] = []
 
 
 class OrganizationSchema:
@@ -43,18 +52,19 @@ class OrganizationSchema:
         format_extras_for_csv (function): A lambda function to format extras for CSV.
 
     """
-    id = "id"
-    name = "name"
-    company = "company"
-    website = "website"
-    location = "location"
-    public_access = "public_access"
-    logo_url = "logo_url"
-    description = "description"
-    text = "text"
-    include_columns = []
-    exclude_columns = []
-    format_extras_for_csv = lambda key, type: f"attr:{key}:{type}".rstrip(":")
+
+    id: str = "id"
+    name: str = "name"
+    company: str = "company"
+    website: str = "website"
+    location: str = "location"
+    public_access: str = "public_access"
+    logo_url: str = "logo_url"
+    description: str = "description"
+    text: str = "text"
+    include_columns: list[str] = []
+    exclude_columns: list[str] = []
+    format_extras_for_csv: Callable = lambda key, type: f"attr:{key}:{type}".rstrip(":")
 
 
 class RepositorySchema:
@@ -72,12 +82,13 @@ class RepositorySchema:
         exclude_columns (list): The list of columns to exclude.
         format_extras_for_csv (function): A lambda function to format extras for CSV.
     """
-    id = "id"
-    name = "name"
-    owner_id = "owner_id"
-    owner_type = "owner_type"
-    description = "description"
-    public_access = "public_access"
-    include_columns = []
-    exclude_columns = []
-    format_extras_for_csv = lambda x: f"attr:{x}"
+
+    id: str = "id"
+    name: str = "name"
+    owner_id: str = "owner_id"
+    owner_type: str = "owner_type"
+    description: str = "description"
+    public_access: str = "public_access"
+    include_columns: str = []
+    exclude_columns: str = []
+    format_extras_for_csv: Callable = lambda x: f"attr:{x}"

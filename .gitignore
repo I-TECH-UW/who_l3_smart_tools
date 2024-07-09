@@ -178,3 +178,4 @@ who_ocl.py
 # Output for testing files
 
 test_output/
+tests/data/l2/csv_files/
