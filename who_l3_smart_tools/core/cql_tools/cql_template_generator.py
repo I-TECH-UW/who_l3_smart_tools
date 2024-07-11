@@ -1,7 +1,7 @@
 from typing import Any
 import stringcase
 import pandas as pd
-from jinja2 import Environment, FileSystemLoader, select_autoescape
+from jinja2 import Environment, FileSystemLoader
 
 from who_l3_smart_tools.utils.cql_helpers import (
     determine_scoring_suggestion,
@@ -26,7 +26,8 @@ indicator_file_scaffold_template = env.from_string(
 """
 )
 
-header_template = env.from_string("""/**
+header_template = env.from_string(
+    """/**
  * Library: {{ dak_id }} Logic
  * Ref No: {{ ref_no_ }}
  * Short Name: {{ short_name }}
@@ -85,7 +86,8 @@ context Patient
 """
 )
 
-default_content_template = env.from_string("""
+default_content_template = env.from_string(
+    """
 /* Populations */
 {% if proportion %}
 {{ proportion }}
@@ -97,7 +99,8 @@ default_content_template = env.from_string("""
 {% if dissagrations %}
 {{ disaggregations }}
 {% endif %}
-""")
+"""
+)
 
 proportion_template = env.from_string(
     """
@@ -163,7 +166,8 @@ cql_file_numerator_exclusions_template = env.from_string(
     
 define "Numerator Exclusions":
   false
-""")
+"""
+)
 
 cql_file_denominator_template = env.from_string(
     """/**
@@ -187,7 +191,8 @@ cql_file_denominator_exclusions_template = env.from_string(
 
 define "Denominator Exclusions":
   false
-""")
+"""
+)
 
 cql_file_measure_population_template = env.from_string(
     """/**
@@ -210,7 +215,8 @@ cql_file_measure_population_exclusions_template = env.from_string(
  */
  define "Measure Population Exclusions":
     false
-""")
+"""
+)
 
 cql_file_measure_observation_template = env.from_string(
     """/**
@@ -245,17 +251,19 @@ class CqlTemplateGenerator:
     Attributes:
         indicator_artifact_file (str): The path to the indicator artifact file.
         data_dictionary_file (str): The path to the data dictionary file.
-        cql_scaffolds (dict[str, str]): A dictionary containing the generated CQL scaffolds, with indicator names as keys and scaffolds as values.
+        cql_scaffolds (dict[str, str]): A dictionary containing the generated CQL scaffolds, with indicator names as 
+        keys and scaffolds as values.
         concept_lookup (dict[str, Any]): A dictionary containing the concept lookup data.
         cql_concept_dictionary (dict[str, Any]): A dictionary containing the CQL concept dictionary data.
         data_dictionary_xls (pd.ExcelFile): The data dictionary Excel file.
         indicator_artifact (pd.DataFrame): The indicator artifact data frame.
         dak_name (str): The DAK name.
 
-    There is limited regeneration of existing CQL files. The header section up to the // AUTO-GENERATED END comment is updated.
+    There is limited regeneration of existing CQL files. The header section up to the 
+    // AUTO-GENERATED END comment is updated.
 
-    The other sections are updated only if the input file is empty after the AUTO-GENERATED END comment. Otherwise, a new file is created with a
-    .template suffix.
+    The other sections are updated only if the input file is empty after the AUTO-GENERATED END comment. 
+    Otherwise, a new file is created with a .template suffix.
 
     """
 
@@ -288,10 +296,11 @@ class CqlTemplateGenerator:
 
         Args:
             output_dir (str): The directory where the CQL files will be written.
-            update_existing (bool, optional): Whether to update existing files or create new ones. Defaults to True.
+            update_existing (bool, optional): Whether to update existing files or
+            create new ones. Defaults to True.
         """
-        
-        ## TODO: Settle on updating existing file strategy
+
+        # TODO: Settle on updating existing file strategy
         # last_generated_line = [
         #     "include FHIRCommon called FC\n",
         #     "using FHIR version '4.0.1'\n",
@@ -322,24 +331,32 @@ class CqlTemplateGenerator:
                             f"Could not find last generated line in {file_name}Logic.cql"
                         )
 
-                    output_file_contents += scaffold['header']
+                    output_file_contents += scaffold["header"]
                     # Check if the file is empty after the last generated line
                     if len(lines) > last_generated_line_index + 1:
                         # File is not empty after the last generated line - update header and generate .template file
                         output_file_contents += "".join(
-                            lines[last_generated_line_index + 1 :]
+                            lines[last_generated_line_index + 1:]
                         )
                         create_template_file = True
-                        additional_template_file_contents += scaffold['header'] + scaffold['default_content']
+                        additional_template_file_contents += (
+                            scaffold["header"] + scaffold["default_content"]
+                        )
+                        additional_template_file_contents += "".join(
+                            lines[last_generated_line_index + 1:]
+                        )
                     else:
                         # File is empty after the last generated line
-                        output_file_contents += scaffold['default_content']
+                        output_file_contents += scaffold["default_content"]
 
             with open(f"{output_dir}/{file_name}Logic.cql", "w") as file:
                 file.write(output_file_contents)
             if create_template_file:
                 # Create or Overwrite the .template file
-                with open(f"{output_dir}/{file_name}Logic.cql.template", "w") as file:
+                with open(
+                    f"{output_dir}/suggested_templates/{file_name}Logic-template.cql",
+                    "w",
+                ) as file:
                     file.write(additional_template_file_contents)
 
     def generate_cql_scaffolds(self):
@@ -347,7 +364,8 @@ class CqlTemplateGenerator:
         This method generates CQL scaffolds for each indicator in the DAK.
 
         Returns:
-            dict[str, str]: A dictionary containing the generated CQL scaffolds, with indicator names as keys and scaffolds as values.
+            dict[str, str]: A dictionary containing the generated CQL scaffolds, with indicator names 
+            as keys and scaffolds as values.
         """
 
         # Generate CQL scaffolds for each indicator
@@ -401,7 +419,9 @@ class CqlTemplateGenerator:
         row_dict["disaggregations"] = disaggregation_data_elements
 
         # Data elements parsing
-        all_data_elements = row_dict["list_of_all_data_elements_included_in_numerator_and_denominator"].split("|")
+        all_data_elements = row_dict[
+            "list_of_all_data_elements_included_in_numerator_and_denominator"
+        ].split("|")
         row_dict["all_data_elements"] = all_data_elements
 
         # Data concepts
@@ -409,7 +429,7 @@ class CqlTemplateGenerator:
             row_dict["data_concepts"] = self.concept_lookup[ref_no]
         else:
             row_dict["data_concepts"] = []
-       
+
         header = header_template.render(row_dict)
 
         # Proportion or continuous variable templates
@@ -418,15 +438,33 @@ class CqlTemplateGenerator:
         proportion = None
         continuous_variable = None
 
-        if(row_dict["scoring_method"] == "proportion"):
-            numerator = cql_file_numerator_template.render(numerator_definition=row_dict["numerator_definition"], numerator_calculation=row_dict["numerator_calculation"])
-            denominator = cql_file_denominator_template.render(denominator_definition=row_dict["denominator_definition"], denominator_calculation=row_dict["denominator_calculation"])
-            if row_dict["numerator_exclusions"] and row_dict["numerator_exclusions"] != "":
-                numerator_exclusions = cql_file_numerator_exclusions_template.render(numerator_exclusions=row_dict["numerator_exclusions"])
+        if row_dict["scoring_method"] == "proportion":
+            numerator = cql_file_numerator_template.render(
+                numerator_definition=row_dict["numerator_definition"],
+                numerator_calculation=row_dict["numerator_calculation"],
+            )
+            denominator = cql_file_denominator_template.render(
+                denominator_definition=row_dict["denominator_definition"],
+                denominator_calculation=row_dict["denominator_calculation"],
+            )
+            if (
+                row_dict["numerator_exclusions"]
+                and row_dict["numerator_exclusions"] != ""
+            ):
+                numerator_exclusions = cql_file_numerator_exclusions_template.render(
+                    numerator_exclusions=row_dict["numerator_exclusions"]
+                )
             else:
                 numerator_exclusions = None
-            if row_dict["denominator_exclusions"] and row_dict["denominator_exclusions"] != "":
-                denominator_exclusions = cql_file_denominator_exclusions_template.render(denominator_exclusions=row_dict["denominator_exclusions"])
+            if (
+                row_dict["denominator_exclusions"]
+                and row_dict["denominator_exclusions"] != ""
+            ):
+                denominator_exclusions = (
+                    cql_file_denominator_exclusions_template.render(
+                        denominator_exclusions=row_dict["denominator_exclusions"]
+                    )
+                )
             else:
                 denominator_exclusions = None
             proportion = proportion_template.render(
@@ -434,31 +472,42 @@ class CqlTemplateGenerator:
                 numerator=numerator,
                 denominator=denominator,
                 numerator_exclusions=numerator_exclusions,
-                denominator_exclusions=denominator_exclusions
+                denominator_exclusions=denominator_exclusions,
             )
-        elif(row_dict["scoring_method"] == "continuous-variable"):
-            measure_population = cql_file_measure_population_template.render(measure_population_definition=row_dict["numerator_definition"], measure_population_calculation=row_dict["numerator_definition"])
-            measure_observation = cql_file_measure_observation_template.render(measure_observation_definition=row_dict["numerator_definition"], measure_observation_calculation=row_dict["numerator_definition"])
-            if row_dict["numerator_exclusions"] and row_dict["numerator_exclusions"] != "":
-                measure_population_exclusions = cql_file_measure_population_exclusions_template.render(measure_population_exclusions=row_dict["numerator_exclusions"])
+        elif row_dict["scoring_method"] == "continuous-variable":
+            measure_population = cql_file_measure_population_template.render(
+                measure_population_definition=row_dict["numerator_definition"],
+                measure_population_calculation=row_dict["numerator_definition"],
+            )
+            measure_observation = cql_file_measure_observation_template.render(
+                measure_observation_definition=row_dict["numerator_definition"],
+                measure_observation_calculation=row_dict["numerator_definition"],
+            )
+            if (
+                row_dict["numerator_exclusions"]
+                and row_dict["numerator_exclusions"] != ""
+            ):
+                measure_population_exclusions = (
+                    cql_file_measure_population_exclusions_template.render(
+                        measure_population_exclusions=row_dict["numerator_exclusions"]
+                    )
+                )
             else:
                 measure_population_exclusions = None
             continuous_variable = continuous_variable_template.render(
                 initial_population=initial_population,
                 measure_population=measure_population,
                 measure_observation=measure_observation,
-                measure_population_exclusions=measure_population_exclusions
+                measure_population_exclusions=measure_population_exclusions,
             )
-        dissagregations = cql_file_disaggregations_template.render(disaggregations=row_dict["disaggregation_data_elements"])
-
-        # Render master template
-        indicator_file_content = indicator_file_scaffold_template.render(
-            start_marker=start_marker,
-            end_marker=end_marker, 
-            header=header,
-            proportion=proportion,
-            continuous_variable=continuous_variable,
-            disaggregations=dissagregations
+        dissagregations = cql_file_disaggregations_template.render(
+            disaggregations=row_dict["disaggregation_data_elements"]
         )
 
+        default_content = default_content_template.render(
+            proportion=proportion,
+            continuous_variable=continuous_variable,
+            disaggregations=dissagregations,
+        )
+        indicator_file_content = {"header": header, "default_content": default_content}
         return row_content["DAK ID"], indicator_file_content

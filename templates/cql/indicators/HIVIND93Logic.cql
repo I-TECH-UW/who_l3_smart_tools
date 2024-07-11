@@ -1,4 +1,4 @@
-/*
+/**
  * Library: HIV.IND.93 Logic
  * Ref No: CCA.1
  * Short Name: Cervical cancer screening
@@ -14,25 +14,25 @@
  * Denominator Exclusions: 
  *
  * Disaggregations:
- * • Age (15–19, 20–24, 25–29, 30–49, 50+ years)
- * • Lifetime screening test number (First in lifetime, second in lifetime, etc.)
- * • Cities and other administrative areas of epidemiologic importance
- * 
+ * • Age (15–19, 20–24, 25–29, 30–49, 50+ years) 
+ *  • Lifetime screening test number (First in lifetime, second in lifetime, etc.) 
+ *  • Cities and other administrative areas of epidemiologic importance
+ *
  * Disaggregation Elements: Age | Lifetime screening test number
  *
  * Numerator and Denominator Elements:
- * Date of cervical cancer screening test | HIV status
+ * Date of cervical cancer screening test 
+ *  HIV status
  *
  * Reference: Consolidated guidelines on person-centred HIV strategic information: strengthening routine data for impact. Geneva: World Health Organization; 2022
  * 
  * Data Concepts:
- *  
- * HIV.A.DE17: Age | Calculated age (number of years) of the client based on date of birth 
- * HIV.B.DE115: HIV status | HIV status reported after applying the national HIV testing algorithm. No single HIV test can provide an HIV-positive diagnosis. 
- * HIV.B.DE116: HIV-positive | Client is HIV-positive 
- * HIV.B.DE117: HIV-negative | Client is HIV-negative 
- * HIV.B.DE118: Unknown | Client has unknown HIV status 
- * HIV.D.DE656: Date of cervical cancer screening test | Date of cervical cancer screening test 
+ * HIV.A.DE17: Age | Calculated age (number of years) of the client based on date of birth
+ * HIV.B.DE115: HIV status | HIV status reported after applying the national HIV testing algorithm. No single HIV test can provide an HIV-positive diagnosis.
+ * HIV.B.DE116: HIV-positive | Client is HIV-positive
+ * HIV.B.DE117: HIV-negative | Client is HIV-negative
+ * HIV.B.DE118: Unknown | Client has unknown HIV status
+ * HIV.D.DE656: Date of cervical cancer screening test | Date of cervical cancer screening test
  * HIV.D.DE657: Lifetime screening test number | Client's lifetime number of screenings for cervical cancer
  *
  * Additional Context
@@ -48,9 +48,42 @@ library HIVIND93Logic
 // Included Libraries
 using FHIR version '4.0.1'
 
-include HIVIndicatorCommon version '0.0.1' called HIC
+include HIVCommon version '0.0.1' called HIC
 include FHIRHelpers version '4.0.1'
-include WHOCommon called WCom
 include FHIRCommon called FC
+include WHOCommon called WCom
 
 // Indicator Definition
+parameter "Measurement Period" Interval<Date> default Interval[@2023-01-01, @2023-01-30]
+
+context Patient
+/* Populations */
+
+/*
+ *Initial Population
+ */
+
+define "Initial Population":
+  true
+
+/**
+ * Measure Population
+ *
+ * Definition: Number of women living with HIV who were screened for cervical cancer using any screening test (HPV DNA test, visual inspection with acetic acid, cytology, other)
+ * Calculation: Number of women living with HIV who were screened for cervical cancer using any screening test (HPV DNA test, visual inspection with acetic acid, cytology, other)
+ */
+                                                       
+define "Measure Population":
+  true
+
+
+/**
+ * Measure Observation
+ * Definition: Number of women living with HIV who were screened for cervical cancer using any screening test (HPV DNA test, visual inspection with acetic acid, cytology, other)
+ * Calculation: Number of women living with HIV who were screened for cervical cancer using any screening test (HPV DNA test, visual inspection with acetic acid, cytology, other)                                                      
+ */     
+
+define function "Measure Observation"(Patient "Patient"):
+  1
+/* end Populations */
+

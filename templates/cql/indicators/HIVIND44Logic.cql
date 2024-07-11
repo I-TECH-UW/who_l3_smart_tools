@@ -1,4 +1,4 @@
-/*
+/**
  * Library: HIV.IND.44 Logic
  * Ref No: TBH.1
  * Short Name: TPT initiation
@@ -14,40 +14,42 @@
  * Denominator Exclusions: 
  *
  * Disaggregations:
- * • Gender (female, male, other*)
- * • Age (0–4, 5–9, 10–14, 15–19, 20–24, 25–29, 30–34, 35–39, 40–44, 45–49, 50+ years)**
- * • Type of TPT regimen
- * • Cities and other administrative regions of epidemiologic importance
- * 
+ * • Gender (female, male, other*) 
+ *  • Age (0–4, 5–9, 10–14, 15–19, 20–24, 25–29, 30–34, 35–39, 40–44, 45–49, 50+ years)** 
+ *  • Type of TPT regimen 
+ *  • Cities and other administrative regions of epidemiologic importance
+ *
  * Disaggregation Elements: Gender | Age | TPT regimen type
  *
  * Numerator and Denominator Elements:
- * Eligible for TB preventive treatment | HIV status | On ART | TB preventive treatment (TPT) start date
+ * Eligible for TB preventive treatment 
+ *  HIV status 
+ *  On ART 
+ *  TB preventive treatment (TPT) start date
  *
  * Reference: Consolidated guidelines on person-centred HIV strategic information: strengthening routine data for impact. Geneva: World Health Organization; 2022
  * 
  * Data Concepts:
- *  
- * HIV.A.DE17: Age | Calculated age (number of years) of the client based on date of birth 
- * HIV.A.DE18: Gender* | Gender of the client* 
- * HIV.A.DE19: Female | Client identifies as female 
- * HIV.A.DE20: Male | Client identifies as male 
- * HIV.A.DE21: Transgender male | Client identifies as transgender male 
- * HIV.A.DE22: Transgender female | Client identifies as transgender female 
- * HIV.A.DE23: Other | Additional category 
- * HIV.B.DE115: HIV status | HIV status reported after applying the national HIV testing algorithm. No single HIV test can provide an HIV-positive diagnosis. 
- * HIV.B.DE116: HIV-positive | Client is HIV-positive 
- * HIV.B.DE117: HIV-negative | Client is HIV-negative 
- * HIV.B.DE118: Unknown | Client has unknown HIV status 
- * HIV.D.DE38: On ART | Client is currently taking ART 
- * HIV.D.DE954: TB preventive treatment (TPT) start date | The date on which the client began taking TPT 
- * HIV.D.DE1017: Eligible for TB preventive treatment | Client is eligible for tuberculosis preventive treatment (TPT) 
- * HIV.D.DE1028: TPT regimen type | Type of TPT regimen the client is currently on 
- * HIV.D.DE1029: 3HP | The client's current TPT regimen is 3HP 
- * HIV.D.DE1030: 1HP | The client's current TPT regimen is 1HP 
- * HIV.D.DE1031: 6H | The client's current TPT regimen is 6H 
- * HIV.D.DE1032: Six months of levofloxacin daily | The client's current TPT regimen is six months of levofloxacin daily 
- * HIV.D.DE1033: Other TB preventive treatment (TPT) regimen | The client's current TPT regimen is another regimen than those listed above 
+ * HIV.A.DE17: Age | Calculated age (number of years) of the client based on date of birth
+ * HIV.A.DE18: Gender* | Gender of the client*
+ * HIV.A.DE19: Female | Client identifies as female
+ * HIV.A.DE20: Male | Client identifies as male
+ * HIV.A.DE21: Transgender male | Client identifies as transgender male
+ * HIV.A.DE22: Transgender female | Client identifies as transgender female
+ * HIV.A.DE23: Other | Additional category
+ * HIV.B.DE115: HIV status | HIV status reported after applying the national HIV testing algorithm. No single HIV test can provide an HIV-positive diagnosis.
+ * HIV.B.DE116: HIV-positive | Client is HIV-positive
+ * HIV.B.DE117: HIV-negative | Client is HIV-negative
+ * HIV.B.DE118: Unknown | Client has unknown HIV status
+ * HIV.D.DE38: On ART | Client is currently taking ART
+ * HIV.D.DE954: TB preventive treatment (TPT) start date | The date on which the client began taking TPT
+ * HIV.D.DE1017: Eligible for TB preventive treatment | Client is eligible for tuberculosis preventive treatment (TPT)
+ * HIV.D.DE1028: TPT regimen type | Type of TPT regimen the client is currently on
+ * HIV.D.DE1029: 3HP | The client's current TPT regimen is 3HP
+ * HIV.D.DE1030: 1HP | The client's current TPT regimen is 1HP
+ * HIV.D.DE1031: 6H | The client's current TPT regimen is 6H
+ * HIV.D.DE1032: Six months of levofloxacin daily | The client's current TPT regimen is six months of levofloxacin daily
+ * HIV.D.DE1033: Other TB preventive treatment (TPT) regimen | The client's current TPT regimen is another regimen than those listed above
  * HIV.H.DE47: On ART | Client is currently taking ART 
  *
  * Additional Context
@@ -63,9 +65,45 @@ library HIVIND44Logic
 // Included Libraries
 using FHIR version '4.0.1'
 
-include HIVIndicatorCommon version '0.0.1' called HIC
+include HIVCommon version '0.0.1' called HIC
 include FHIRHelpers version '4.0.1'
-include WHOCommon called WCom
 include FHIRCommon called FC
+include WHOCommon called WCom
 
 // Indicator Definition
+parameter "Measurement Period" Interval<Date> default Interval[@2023-01-01, @2023-01-30]
+
+context Patient
+/* Populations */
+
+/*
+ *Initial Population
+ */
+
+define "Initial Population":
+  true
+
+/**
+ * Numerator
+ * 
+ * Definition: Number of ART patients who initiated TPT during the reporting period
+ * Calculation: COUNT of clients with "HIV status"='HIV-positive' AND "On ART"=True AND "TB preventive treatment (TPT) start date" in the reporting period
+ */
+
+define "Numerator":
+  true
+
+
+/**
+ * Denominator
+ *
+ * Definition: Number of ART patients who are eligible for TPT during the reporting period
+ * Calculation: COUNT of clients with "HIV status"='HIV-positive' AND "On ART"=True at end of last reporting period AND "Eligible for TB preventive treatment"=True
+ */
+
+define "Denominator":
+  true
+    
+
+/* end Populations */
+

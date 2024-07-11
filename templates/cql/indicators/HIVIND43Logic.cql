@@ -1,4 +1,4 @@
-/*
+/**
  * Library: HIV.IND.43 Logic
  * Ref No: VER.7
  * Short Name: HIV prevalence among women attending ANC
@@ -14,33 +14,40 @@
  * Denominator Exclusions: 
  *
  * Disaggregations:
- * • Age (<15, 15–19, 20–24, 25–29, 30–34, 35–39, 40–49, 50+ years)
- * • HIV status at first test during current pregnancy (known positive, tested HIV-negative, tested HIV-positive, not tested)
- * • Cities and other administrative regions of epidemiologic importance
- * 
+ * • Age (<15, 15–19, 20–24, 25–29, 30–34, 35–39, 40–49, 50+ years) 
+ *  • HIV status at first test during current pregnancy (known positive, tested HIV-negative, tested HIV-positive, not tested) 
+ *  • Cities and other administrative regions of epidemiologic importance
+ *
  * Disaggregation Elements: Age | HIV status at first HIV test during current pregnancy
  *
  * Numerator and Denominator Elements:
- * ANC contact date | Currently pregnant | HIV status | HIV test date | HIV test result
+ * ANC contact date 
+ *  Currently pregnant 
+ *  HIV status 
+ *  HIV test date 
+ *  HIV test result
  *
  * Reference: Consolidated guidelines on person-centred HIV strategic information: strengthening routine data for impact. Geneva: World Health Organization; 2022
  * 
  * Data Concepts:
- *  
- * HIV.A.DE17: Age | Calculated age (number of years) of the client based on date of birth 
- * HIV.B.DE29: Currently pregnant | Client is currently pregnant 
- * HIV.B.DE110: HIV test date | Date of the HIV test 
- * HIV.B.DE111: HIV test result | The result from HIV testing after applying the testing algorithm 
- * HIV.B.DE112: HIV-positive | Test result is HIV-positive 
- * HIV.B.DE113: HIV-negative | Test result is HIV-negative 
- * HIV.B.DE114: HIV-inconclusive | Test result is HIV-inconclusive 
- * HIV.B.DE115: HIV status | HIV status reported after applying the national HIV testing algorithm. No single HIV test can provide an HIV-positive diagnosis. 
- * HIV.B.DE116: HIV-positive | Client is HIV-positive 
- * HIV.B.DE117: HIV-negative | Client is HIV-negative 
- * HIV.B.DE118: Unknown | Client has unknown HIV status 
- * HIV.D.DE31: Currently pregnant | Client is currently pregnant 
- * HIV.E.DE85: ANC contact date | The date and time of the client's ANC contact (in the ANC DAK this is called 'Contact date') 
+ * HIV.A.DE17: Age | Calculated age (number of years) of the client based on date of birth
+ * HIV.B.DE29: Currently pregnant | Client is currently pregnant
+ * HIV.B.DE110: HIV test date | Date of the HIV test
+ * HIV.B.DE111: HIV test result | The result from HIV testing after applying the testing algorithm
+ * HIV.B.DE112: HIV-positive | Test result is HIV-positive
+ * HIV.B.DE113: HIV-negative | Test result is HIV-negative
+ * HIV.B.DE114: HIV-inconclusive | Test result is HIV-inconclusive
+ * HIV.B.DE115: HIV status | HIV status reported after applying the national HIV testing algorithm. No single HIV test can provide an HIV-positive diagnosis.
+ * HIV.B.DE116: HIV-positive | Client is HIV-positive
+ * HIV.B.DE117: HIV-negative | Client is HIV-negative
+ * HIV.B.DE118: Unknown | Client has unknown HIV status
+ * HIV.D.DE31: Currently pregnant | Client is currently pregnant
+ * HIV.E.DE85: ANC contact date | The date and time of the client's ANC contact (in the ANC DAK this is called 'Contact date')
  * HIV.E.DE224: HIV test date | Date of the HIV test
+ * HIV.SRV.DE1: HIV test date | Date of the HIV test
+ * HIV.SRV.DE2: HIV test result | The result from HIV testing after applying the testing algorithm
+ * HIV.SRV.DE7: Currently pregnant | Client is currently pregnant
+ * HIV.SRV.DE18: ANC contact date | The date and time of the client's ANC contact (in the ANC DAK this is called 'Contact date')
  *
  * Additional Context
  * - what it measures: HIV prevalence among pregnant women attending ANC, including those who were diagnosed with HIV before their first ANC visit and those testing positive during their current pregnancy.
@@ -55,9 +62,45 @@ library HIVIND43Logic
 // Included Libraries
 using FHIR version '4.0.1'
 
-include HIVIndicatorCommon version '0.0.1' called HIC
+include HIVCommon version '0.0.1' called HIC
 include FHIRHelpers version '4.0.1'
-include WHOCommon called WCom
 include FHIRCommon called FC
+include WHOCommon called WCom
 
 // Indicator Definition
+parameter "Measurement Period" Interval<Date> default Interval[@2023-01-01, @2023-01-30]
+
+context Patient
+/* Populations */
+
+/*
+ *Initial Population
+ */
+
+define "Initial Population":
+  true
+
+/**
+ * Numerator
+ * 
+ * Definition: Number of ANC attendees who tested HIV-positive at their first test during the current pregnancy plus number of ANC attendees known to be HIV-positive before their first ANC visit
+ * Calculation: COUNT of "Currently pregnant" clients with "HIV test result"='HIV-positive' AND "HIV test date" on "ANC contact date" is EARLIEST within current pregnancy | PLUS | COUNT of clients with "HIV status"='HIV-positive' on first "ANC contact date"
+ */
+
+define "Numerator":
+  true
+
+
+/**
+ * Denominator
+ *
+ * Definition: Number of ANC attendees receiving their first HIV test during pregnancy plus number of ANC attendees known to be HIV-positive before first ANC visit
+ * Calculation: COUNT of "Currently pregnant" clients with "HIV test date" on a "ANC contact date" during current pregnancy | PLUS | COUNT of clients with "HIV status"='HIV-positive' on first "ANC contact date"
+ */
+
+define "Denominator":
+  true
+    
+
+/* end Populations */
+

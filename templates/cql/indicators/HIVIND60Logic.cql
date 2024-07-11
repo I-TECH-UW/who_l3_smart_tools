@@ -1,4 +1,4 @@
-/*
+/**
  * Library: HIV.IND.60 Logic
  * Ref No: STI.1C1
  * Short Name: Syphilis testing coverage, pregnant women, first ANC visit
@@ -14,28 +14,29 @@
  * Denominator Exclusions: 
  *
  * Disaggregations:
- * • Age (15–19, 20–24, 25–29, 30–49, 50+ years)
- * • HIV status (HIV-positive, HIV-negative, unknown status)
- * • Cities and other administrative regions of epidemiologic importance
- * 
+ * • Age (15–19, 20–24, 25–29, 30–49, 50+ years) 
+ *  • HIV status (HIV-positive, HIV-negative, unknown status) 
+ *  • Cities and other administrative regions of epidemiologic importance
+ *
  * Disaggregation Elements: Age | HIV status
  *
  * Numerator and Denominator Elements:
- * ANC contact date | Syphilis test date
+ * ANC contact date 
+ *  Syphilis test date
  *
  * Reference: Consolidated guidelines on person-centred HIV strategic information: strengthening routine data for impact. Geneva: World Health Organization; 2022
  * 
  * Data Concepts:
- *  
- * HIV.A.DE17: Age | Calculated age (number of years) of the client based on date of birth 
- * HIV.B.DE115: HIV status | HIV status reported after applying the national HIV testing algorithm. No single HIV test can provide an HIV-positive diagnosis. 
- * HIV.B.DE116: HIV-positive | Client is HIV-positive 
- * HIV.B.DE117: HIV-negative | Client is HIV-negative 
- * HIV.B.DE118: Unknown | Client has unknown HIV status 
- * HIV.B.DE249: Syphilis test date | Date of syphilis test 
- * HIV.D.DE801: Syphilis test date | Date of syphilis test 
- * HIV.E.DE85: ANC contact date | The date and time of the client's ANC contact (in the ANC DAK this is called 'Contact date') 
+ * HIV.A.DE17: Age | Calculated age (number of years) of the client based on date of birth
+ * HIV.B.DE115: HIV status | HIV status reported after applying the national HIV testing algorithm. No single HIV test can provide an HIV-positive diagnosis.
+ * HIV.B.DE116: HIV-positive | Client is HIV-positive
+ * HIV.B.DE117: HIV-negative | Client is HIV-negative
+ * HIV.B.DE118: Unknown | Client has unknown HIV status
+ * HIV.B.DE249: Syphilis test date | Date of syphilis test
+ * HIV.D.DE801: Syphilis test date | Date of syphilis test
+ * HIV.E.DE85: ANC contact date | The date and time of the client's ANC contact (in the ANC DAK this is called 'Contact date')
  * HIV.G.DE69: Syphilis test date | Date of syphilis test
+ * HIV.SRV.DE18: ANC contact date | The date and time of the client's ANC contact (in the ANC DAK this is called 'Contact date')
  *
  * Additional Context
  * - what it measures: A: % of people attending HIV prevention services who were tested for syphilis during the reporting period | B: % of people living with HIV who were tested for syphilis during the reporting period  | C: % of pregnant women who were tested for syphilis during the reporting period
@@ -50,9 +51,45 @@ library HIVIND60Logic
 // Included Libraries
 using FHIR version '4.0.1'
 
-include HIVIndicatorCommon version '0.0.1' called HIC
+include HIVCommon version '0.0.1' called HIC
 include FHIRHelpers version '4.0.1'
-include WHOCommon called WCom
 include FHIRCommon called FC
+include WHOCommon called WCom
 
 // Indicator Definition
+parameter "Measurement Period" Interval<Date> default Interval[@2023-01-01, @2023-01-30]
+
+context Patient
+/* Populations */
+
+/*
+ *Initial Population
+ */
+
+define "Initial Population":
+  true
+
+/**
+ * Numerator
+ * 
+ * Definition: Number of pregnant women tested for syphilis while attending their first ANC services visit
+ * Calculation: COUNT of pregnant women with first "ANC contact date" for this pregnancy in reporting period AND "Syphilis test date" on first "ANC contact date"
+ */
+
+define "Numerator":
+  true
+
+
+/**
+ * Denominator
+ *
+ * Definition: Number of pregnant women attending first ANC services visit
+ * Calculation: COUNT of pregnant women with first "ANC contact date" in reporting period
+ */
+
+define "Denominator":
+  true
+    
+
+/* end Populations */
+

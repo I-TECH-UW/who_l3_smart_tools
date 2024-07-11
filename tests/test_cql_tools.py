@@ -3,18 +3,23 @@ import datetime
 import os
 import re
 from who_l3_smart_tools.core.cql_tools.cql_file_generator import CqlFileGenerator
-from who_l3_smart_tools.core.cql_tools.cql_resource_generator import CqlResourceGenerator
-from who_l3_smart_tools.core.cql_tools.cql_template_generator import CqlTemplateGenerator
+from who_l3_smart_tools.core.cql_tools.cql_resource_generator import (
+    CqlResourceGenerator,
+)
+from who_l3_smart_tools.core.cql_tools.cql_template_generator import (
+    CqlTemplateGenerator,
+)
 import pandas as pd
 import unittest
 import stringcase
+
 
 class TestCqlTools(unittest.TestCase):
     def test_generate_cql_indicator_scaffolds(self):
         input_indicators = "tests/data/l2/test_indicators.xlsx"
         input_dd = "tests/data/l2/test_dd.xlsx"
         output_dir = "templates/cql/indicators/"
-           
+
         # Make sure output directory exists
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
@@ -27,7 +32,6 @@ class TestCqlTools(unittest.TestCase):
 
         assert os.path.exists(os.path.join(output_dir, "HIVIND2Logic.cql"))
 
-
     def test_generate_concepts_cql(self):
         input_indicators = "tests/data/l2/test_indicators.xlsx"
         input_dd = "tests/data/l2/test_dd.xlsx"
@@ -35,7 +39,7 @@ class TestCqlTools(unittest.TestCase):
 
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
-        
+
         generator = CqlFileGenerator(input_indicators, input_dd)
 
         generator.generate_cql_concept_library(output_dir=output_dir)
@@ -46,7 +50,7 @@ class TestCqlTools(unittest.TestCase):
 class TestCqlResourceGenerator(unittest.TestCase):
     def setUp(self):
         # since we're comparing text, it's useful to have large diffs
-        self.maxDiff=5000
+        self.maxDiff = 5000
 
         # Load example CQL from data directory
         cql_file_path = "tests/data/example_cql_HIV27.cql"
@@ -60,11 +64,13 @@ class TestCqlResourceGenerator(unittest.TestCase):
             indicator_file_path, sheet_name="Indicator definitions"
         )
 
-        self.indicator_row = indicator_file[indicator_file['DAK ID'] == 'HIV.IND.27'].head(1).squeeze()
+        self.indicator_row = (
+            indicator_file[indicator_file["DAK ID"] == "HIV.IND.27"].head(1).squeeze()
+        )
 
-        self.generator = CqlResourceGenerator(self.cql_content, {
-            self.indicator_row['DAK ID']: self.indicator_row
-        })
+        self.generator = CqlResourceGenerator(
+            self.cql_content, {self.indicator_row["DAK ID"]: self.indicator_row}
+        )
 
     def test_parse_cql_with_valid_content(self):
         parsed_cql = self.generator.parsed_cql
@@ -103,7 +109,9 @@ class TestCqlResourceGenerator(unittest.TestCase):
 
         assert measure_fsh is not None
 
-        output_file = f"tests/output/fsh/{stringcase.alphanumcase(p["library_name"])}_measure.fsh"
+        output_file = (
+            f"tests/output/fsh/{stringcase.alphanumcase(p["library_name"])}_measure.fsh"
+        )
 
         if os.path.exists(output_file):
             os.remove(output_file)
@@ -116,11 +124,12 @@ class TestCqlResourceGenerator(unittest.TestCase):
         # The date is always the date the measure was generated, so we need to update it
         expected_measure_fsh = expected_measure_fsh.replace(
             '* date = "2024-06-14"',
-            f'* date = "{datetime.datetime.now(datetime.timezone.utc).date():%Y-%m-%d}"'
+            f'* date = "{datetime.datetime.now(datetime.timezone.utc).date():%Y-%m-%d}"',
         )
 
         self.assertIsNotNone(measure_fsh)
         self.assertEqual(expected_measure_fsh, measure_fsh)
+
 
 class TestCqlGeneratorOnAllFiles(unittest.TestCase):
 
@@ -144,7 +153,6 @@ class TestCqlGeneratorOnAllFiles(unittest.TestCase):
         for subfolder in ["measures", "libraries"]:
             if not os.path.exists(os.path.join(output_directory, subfolder)):
                 os.makedirs(os.path.join(output_directory, subfolder))
-
 
         # For each cql file, generate library resources. Only generate measures for
         # cql files with corresponding indicator definitions.
@@ -176,9 +184,14 @@ class TestCqlGeneratorOnAllFiles(unittest.TestCase):
             # Create Measure file and save to file
             measure_fsh = generator.generate_measure_fsh()
             if measure_fsh:
-                output_file = os.path.join(output_directory, "measures", f"{stringcase.alphanumcase(generator.get_library_name())}.fsh")
+                output_file = os.path.join(
+                    output_directory,
+                    "measures",
+                    f"{stringcase.alphanumcase(generator.get_library_name())}.fsh",
+                )
                 with open(output_file, "w") as f:
                     f.write(measure_fsh)
+
 
 if __name__ == "__main__":
     unittest.main()

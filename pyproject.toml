@@ -23,10 +23,15 @@ flake8 = ">=3.8"
 Sphinx = ">=3.2"
 stringcase = ">=1.2"
 pyright = "^1.1.367"
+black = "^24.4.2"
 
 [tool.pyright]
 venvPath = "."
 venv = ".venv"
+
+[tool.poetry.scripts]
+lint = "scripts.lint:main"
+format = "scripts.format:main"
 
 [build-system]
 requires = ["poetry-core"]

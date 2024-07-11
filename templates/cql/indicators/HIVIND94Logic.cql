@@ -1,4 +1,4 @@
-/*
+/**
  * Library: HIV.IND.94 Logic
  * Ref No: CCA.2
  * Short Name: Pre-invasive cervical disease treatment
@@ -14,28 +14,30 @@
  * Denominator Exclusions: 
  *
  * Disaggregations:
- * • Age (15–19, 20–24, 25–29, 30–49, 50+ years)
- * • Provider type (public-sector provider, private-sector provider)
- * • Cities and other administrative areas of epidemiologic importance
- * 
+ * • Age (15–19, 20–24, 25–29, 30–49, 50+ years) 
+ *  • Provider type (public-sector provider, private-sector provider) 
+ *  • Cities and other administrative areas of epidemiologic importance
+ *
  * Disaggregation Elements: Age
  *
  * Numerator and Denominator Elements:
- * Cervical cancer screening outcome | Date of cervical cancer screening test | Date of treatment for cervical precancer lesions | HIV status
+ * Cervical cancer screening outcome 
+ *  Date of cervical cancer screening test 
+ *  Date of treatment for cervical precancer lesions 
+ *  HIV status
  *
  * Reference: Consolidated guidelines on person-centred HIV strategic information: strengthening routine data for impact. Geneva: World Health Organization; 2022
  * 
  * Data Concepts:
- *  
- * HIV.A.DE17: Age | Calculated age (number of years) of the client based on date of birth 
- * HIV.B.DE115: HIV status | HIV status reported after applying the national HIV testing algorithm. No single HIV test can provide an HIV-positive diagnosis. 
- * HIV.B.DE116: HIV-positive | Client is HIV-positive 
- * HIV.B.DE117: HIV-negative | Client is HIV-negative 
- * HIV.B.DE118: Unknown | Client has unknown HIV status 
- * HIV.D.DE656: Date of cervical cancer screening test | Date of cervical cancer screening test 
- * HIV.D.DE706: Cervical cancer screening outcome | Client's screening outcome for cervical cancer 
- * HIV.D.DE707: Positive for cervical precancer lesions | Screening outcome for cervical precancer lesions is positive 
- * HIV.D.DE708: Negative for cervical precancer lesions | Screening outcome for cervical precancer lesions is negative 
+ * HIV.A.DE17: Age | Calculated age (number of years) of the client based on date of birth
+ * HIV.B.DE115: HIV status | HIV status reported after applying the national HIV testing algorithm. No single HIV test can provide an HIV-positive diagnosis.
+ * HIV.B.DE116: HIV-positive | Client is HIV-positive
+ * HIV.B.DE117: HIV-negative | Client is HIV-negative
+ * HIV.B.DE118: Unknown | Client has unknown HIV status
+ * HIV.D.DE656: Date of cervical cancer screening test | Date of cervical cancer screening test
+ * HIV.D.DE706: Cervical cancer screening outcome | Client's screening outcome for cervical cancer
+ * HIV.D.DE707: Positive for cervical precancer lesions | Screening outcome for cervical precancer lesions is positive
+ * HIV.D.DE708: Negative for cervical precancer lesions | Screening outcome for cervical precancer lesions is negative
  * HIV.D.DE718: Date of treatment for cervical precancer lesions | Date of treatment for cervical precancer lesions
  *
  * Additional Context
@@ -51,9 +53,45 @@ library HIVIND94Logic
 // Included Libraries
 using FHIR version '4.0.1'
 
-include HIVIndicatorCommon version '0.0.1' called HIC
+include HIVCommon version '0.0.1' called HIC
 include FHIRHelpers version '4.0.1'
-include WHOCommon called WCom
 include FHIRCommon called FC
+include WHOCommon called WCom
 
 // Indicator Definition
+parameter "Measurement Period" Interval<Date> default Interval[@2023-01-01, @2023-01-30]
+
+context Patient
+/* Populations */
+
+/*
+ *Initial Population
+ */
+
+define "Initial Population":
+  true
+
+/**
+ * Numerator
+ * 
+ * Definition: Number of women living with HIV who received treatment after screening positive for pre-invasive cervical disease and were deemed eligible for treatment in line with the WHO recommendations
+ * Calculation: COUNT of women with "HIV status"='HIV-positive' AND with a "Date of cervical cancer screening test" in the reporting period for "Cervical cancer screening outcome"='Positive for cervical precancer lesions' AND "Date of treatment for cervical precancer lesions" within 6 months of "Date of cervical cancer screening test"
+ */
+
+define "Numerator":
+  true
+
+
+/**
+ * Denominator
+ *
+ * Definition: Number of women living with HIV who screened positive for pre-invasive cervical disease.
+ * Calculation: COUNT of women with "HIV status"='HIV-positive' AND with a "Date of cervical cancer screening test" in the reporting period for "Cervical cancer screening outcome"='Positive for cervical precancer lesions'
+ */
+
+define "Denominator":
+  true
+    
+
+/* end Populations */
+

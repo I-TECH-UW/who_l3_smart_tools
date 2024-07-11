@@ -68,7 +68,9 @@ class QuestionnaireGenerator:
                 # handle an activity change
                 if type(activity_id) == str and activity_id != current_activity_id:
                     # write out any existing activity
-                    self._write_current_activity(current_activity_id, questionnaire_items)
+                    self._write_current_activity(
+                        current_activity_id, questionnaire_items
+                    )
 
                     # start a new activity
                     current_activity_id = activity_id
@@ -88,11 +90,15 @@ class QuestionnaireGenerator:
 
                 questionnaire_items.append(
                     questionnaire_item_template.format(
-                        data_element_id = data_element_id,
-                        data_element_label = str(row["Data Element Label"])\
-                            .replace("*", "").replace('[', '').replace(']', '').replace('"', "'").strip(),
-                        data_type = data_type_map[data_type],
-                        required = "true" if str(row["Required"]) == "R" else "false"
+                        data_element_id=data_element_id,
+                        data_element_label=str(row["Data Element Label"])
+                        .replace("*", "")
+                        .replace("[", "")
+                        .replace("]", "")
+                        .replace('"', "'")
+                        .strip(),
+                        data_type=data_type_map[data_type],
+                        required="true" if str(row["Required"]) == "R" else "false",
                     )
                 )
 
@@ -100,21 +106,28 @@ class QuestionnaireGenerator:
                 if data_type == "choice":
                     questionnaire_items.append(
                         questionnaire_item_valueset.format(
-                            data_element_id = data_element_id
+                            data_element_id=data_element_id
                         )
                     )
 
             self._write_current_activity(current_activity_id, questionnaire_items)
 
-        for (activity_code, activity) in self._activities.items():
+        for activity_code, activity in self._activities.items():
             questionnaire_items = activity.pop("questionnaire_items")
             with open(os.path.join(self.output_dir, f"{activity_code}.fsh"), "w") as f:
-                f.write(questionnaire_template.format(
-                    **activity
-                ) + ("\n" + "".join(questionnaire_items) if len(questionnaire_items) > 0 else "") + "\n")
+                f.write(
+                    questionnaire_template.format(**activity)
+                    + (
+                        "\n" + "".join(questionnaire_items)
+                        if len(questionnaire_items) > 0
+                        else ""
+                    )
+                    + "\n"
+                )
 
-
-    def _write_current_activity(self, current_activity_id: Union[str, None], questionnaire_items: List[str]):
+    def _write_current_activity(
+        self, current_activity_id: Union[str, None], questionnaire_items: List[str]
+    ):
         if current_activity_id is not None:
             if "\n" in current_activity_id:
                 activities = current_activity_id.split("\n")
@@ -126,17 +139,26 @@ class QuestionnaireGenerator:
                     if " " in activity:
                         activity_code, activity_description = activity.split(" ", 1)
                         activity_desc_camel = camel_case(activity_description)
-                        activity_desc_camel = activity_desc_camel[0].upper() + activity_desc_camel[1:]
+                        activity_desc_camel = (
+                            activity_desc_camel[0].upper() + activity_desc_camel[1:]
+                        )
                     else:
                         activity_code = activity
-                        activity_description = activity_desc_camel = activity.split(".", 1)[1]
+                        activity_description = activity_desc_camel = activity.split(
+                            ".", 1
+                        )[1]
 
                     if activity_code not in self._activities:
                         self._activities[activity_code] = {
                             "activity_id": f"{activity_code}{activity_desc_camel}",
                             "activity_title": activity_description,
-                            "activity_title_description": activity_description[0].lower() + activity_description[1:],
-                            "questionnaire_items": []
+                            "activity_title_description": activity_description[
+                                0
+                            ].lower()
+                            + activity_description[1:],
+                            "questionnaire_items": [],
                         }
 
-                    self._activities[activity_code]["questionnaire_items"] += questionnaire_items
+                    self._activities[activity_code][
+                        "questionnaire_items"
+                    ] += questionnaire_items
