@@ -20,19 +20,9 @@ end_marker = "/* AUTO-GENERATED END */"
 
 # Templates
 indicator_file_scaffold_template = env.from_string(
-    """{{start_marker}}
+    """
 {{ header }}
-                                  
-{% if proportion %}
-{{ proportion }}
-{% elif continuous_variable %}
-{{ continuous_variable }}
-{% endif %}
-
-{% if dissagrations %}
-{{ disaggregations }}
-{% endif %}
-{{end_marker}}
+{{ default_content}}
 """
 )
 
@@ -95,11 +85,22 @@ context Patient
 """
 )
 
-proportion_template = env.from_string(
-    """/**
- * Proportion Template
- */
+default_content_template = env.from_string("""
+/* Populations */
+{% if proportion %}
+{{ proportion }}
+{% elif continuous_variable %}
+{{ continuous_variable }}
+{% endif %}
+/* end Populations */
 
+{% if dissagrations %}
+{{ disaggregations }}
+{% endif %}
+""")
+
+proportion_template = env.from_string(
+    """
 {{ initial_population }}
 
 {{ numerator }}
@@ -117,10 +118,7 @@ proportion_template = env.from_string(
 )
 
 continuous_variable_template = env.from_string(
-    """/**
- * Continuous Variable Template
- */
-
+    """
 {{ initial_population }}
 
 {{ measure_population }}
@@ -235,6 +233,7 @@ cql_file_disaggregations_template = env.from_string(
 define "{{ disaggregation.name }}":
   HIC."{{ disaggregation.name }} Stratifier"
 {% endfor %}
+/* end Disaggregators */
 """
 )
 
@@ -256,7 +255,7 @@ class CqlTemplateGenerator:
     There is limited regeneration of existing CQL files. The header section up to the // AUTO-GENERATED END comment is updated.
 
     The other sections are updated only if the input file is empty after the AUTO-GENERATED END comment. Otherwise, a new file is created with a
-    -AG suffix.
+    .template suffix.
 
     """
 
@@ -291,14 +290,22 @@ class CqlTemplateGenerator:
             output_dir (str): The directory where the CQL files will be written.
             update_existing (bool, optional): Whether to update existing files or create new ones. Defaults to True.
         """
+        
+        ## TODO: Settle on updating existing file strategy
+        # last_generated_line = [
+        #     "include FHIRCommon called FC\n",
+        #     "using FHIR version '4.0.1'\n",
+        # ]
         last_generated_line = [
-            "include FHIRCommon called FC\n",
-            "using FHIR version '4.0.1'\n",
+            "context Patient\n",
+            "// Indicator Definition\n",
         ]
 
         for indicator_name, scaffold in self.cql_scaffolds.items():
             file_name = indicator_name.replace(".", "")
-            output_file_contents = scaffold
+            output_file_contents = ""
+            additional_template_file_contents = ""
+            create_template_file = False
 
             # Update existing files, replacing the header and keeping the content
             if update_existing:
@@ -314,12 +321,26 @@ class CqlTemplateGenerator:
                         raise ValueError(
                             f"Could not find last generated line in {file_name}Logic.cql"
                         )
-                    output_file_contents += "".join(
-                        lines[last_generated_line_index + 1 :]
-                    )
+
+                    output_file_contents += scaffold['header']
+                    # Check if the file is empty after the last generated line
+                    if len(lines) > last_generated_line_index + 1:
+                        # File is not empty after the last generated line - update header and generate .template file
+                        output_file_contents += "".join(
+                            lines[last_generated_line_index + 1 :]
+                        )
+                        create_template_file = True
+                        additional_template_file_contents += scaffold['header'] + scaffold['default_content']
+                    else:
+                        # File is empty after the last generated line
+                        output_file_contents += scaffold['default_content']
 
             with open(f"{output_dir}/{file_name}Logic.cql", "w") as file:
                 file.write(output_file_contents)
+            if create_template_file:
+                # Create or Overwrite the .template file
+                with open(f"{output_dir}/{file_name}Logic.cql.template", "w") as file:
+                    file.write(additional_template_file_contents)
 
     def generate_cql_scaffolds(self):
         """

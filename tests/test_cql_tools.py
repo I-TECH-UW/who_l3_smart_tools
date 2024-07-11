@@ -13,7 +13,7 @@ class TestCqlTools(unittest.TestCase):
     def test_generate_cql_indicator_scaffolds(self):
         input_indicators = "tests/data/l2/test_indicators.xlsx"
         input_dd = "tests/data/l2/test_dd.xlsx"
-        output_dir = "tests/output/cql/templates/"
+        output_dir = "templates/cql/indicators/"
            
         # Make sure output directory exists
         if not os.path.exists(output_dir):
