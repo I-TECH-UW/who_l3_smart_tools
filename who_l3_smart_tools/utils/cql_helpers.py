@@ -19,6 +19,84 @@ measure_required_elements = {
 }
 
 
+def create_cql_concept_dictionaries(dd_xls: dict, dak_name: str):
+    """
+    This method creates a dictionary of concepts from the data dictionary file to include in the CQL
+    templates
+    """
+
+    # Create a dictionary of concepts
+    indicator_concept_lookup = {}
+    cql_concept_dictionary = {}
+
+    # TODO: refactor to common method across logic/terminology/this file
+    for sheet_name in dd_xls.keys():
+        if re.match(rf"{dak_name}\.\w+", sheet_name):
+            df = dd_xls[sheet_name]
+            for i, row in df.iterrows():
+                # Grab Linkages to Decision Support Tables and Aggregate Indicators
+                data_type = row["Data Type"]
+                data_element_id = row["Data Element ID"]
+
+                cds = row["Linkages to Decision Support Tables"]
+                indicators = row["Linkages to Aggregate Indicators"]
+
+                # Handle label value == "None"
+                if row["Data Element Label"] is None or pd.isna(
+                    row["Data Element Label"]
+                ):
+                    print(f"Data Element Label is None for {data_element_id}")
+                    row["Data Element Label"] = "None"
+
+                linkages = []
+                ## TODO: refactor to remove duplicate code for cds and indicators
+
+                # Select row if Linkage to CDS or Indicator is not empty
+                if cds and type(cds) == str and not pd.isna(cds):
+                    # Grab: Data Element ID, Data Element Label, Description and Definition
+                    # and index by indicator / cds ids
+
+                    # Add to concept dictionary if not already present
+                    if data_element_id not in cql_concept_dictionary.keys():
+                        cql_concept_dictionary[data_element_id] = {
+                            "label": row["Data Element Label"],
+                            "sheet": sheet_name,
+                            "data_type": data_type,
+                            "description": row["Description and Definition"],
+                        }
+
+                    # Parse linkages
+                    linkages.extend([item.strip() for item in cds.split(",")])
+                if indicators and type(indicators) == str and not pd.isna(indicators):
+                    # Add to concept dictionary if not already present
+                    if data_element_id not in cql_concept_dictionary.keys():
+                        cql_concept_dictionary[data_element_id] = {
+                            "label": row["Data Element Label"],
+                            "sheet": sheet_name,
+                            "data_type": data_type,
+                            "description": row["Description and Definition"],
+                        }
+
+                    linkages.extend([item.strip() for item in indicators.split(",")])
+
+                # Add linkages as keys to concept dictionary, and add data element details
+                for linkage in linkages:
+                    # if linkage not in concept dictionary, add it
+                    if linkage not in indicator_concept_lookup.keys():
+                        indicator_concept_lookup[linkage] = []
+
+                    # Add data element details to linkage
+                    indicator_concept_lookup[linkage].append(
+                        {
+                            "id": row["Data Element ID"],
+                            "label": row["Data Element Label"],
+                            "description": row["Description and Definition"],
+                        }
+                    )
+
+    return indicator_concept_lookup, cql_concept_dictionary
+
+
 def determine_scoring_suggestion(denominator_val: str):
     # Determine Scoring Type and set proper values
     if (

@@ -4,6 +4,7 @@ import os
 import re
 from who_l3_smart_tools.core.cql_tools.cql_file_generator import CqlFileGenerator
 from who_l3_smart_tools.core.cql_tools.cql_resource_generator import CqlResourceGenerator
+from who_l3_smart_tools.core.cql_tools.cql_template_generator import CqlTemplateGenerator
 import pandas as pd
 import unittest
 import stringcase
@@ -18,7 +19,7 @@ class TestCqlTools(unittest.TestCase):
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        generator = CqlFileGenerator(input_indicators, input_dd)
+        generator = CqlTemplateGenerator(input_indicators, input_dd)
 
         generator.generate_cql_scaffolds()
 
@@ -37,7 +38,7 @@ class TestCqlTools(unittest.TestCase):
         
         generator = CqlFileGenerator(input_indicators, input_dd)
 
-        generator.generate_cql_concept_file(output_dir=output_dir)
+        generator.generate_cql_concept_library(output_dir=output_dir)
 
         assert os.path.exists(os.path.join(output_dir, "HIVConcepts.cql"))
 
