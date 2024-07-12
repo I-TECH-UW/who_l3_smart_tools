@@ -38,7 +38,7 @@ questionnaire_item_template = """
   * readOnly = false"""
 
 questionnaire_item_valueset = """
-  * answerValueSet = http://smart.who.int/hiv/ValueSet/{data_element_id}"""
+  * answerValueSet = "#{data_element_id}" """.rstrip()
 
 
 class QuestionnaireGenerator:
