@@ -275,7 +275,7 @@ class LogicalModelAndTerminologyGenerator:
                             "value_set": data_element_id,
                             "name": data_element_id.replace(".", ""),
                             "title": f"{label} ValueSet",
-                            "description": f"Value set of {description[0].lower() + description[1:] if description[0].isupper() and not description.startswith("HIV") else description}",
+                            "description": f"Value set of {description[0].lower() + description[1:] if description[0].isupper() and not description.startswith('HIV') else description}",
                             "codes": [],
                         }
                         valuesets.append(active_valueset)
@@ -405,7 +405,7 @@ class LogicalModelAndTerminologyGenerator:
                             vs_artifact += "\n"
 
                         output_file = os.path.join(
-                            self.valuesets_dir, f"{valueset["value_set"]}.fsh"
+                            self.valuesets_dir, f"{valueset['value_set']}.fsh"
                         )
 
                         with open(output_file, "w") as f:

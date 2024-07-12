@@ -6,25 +6,22 @@ from who_l3_smart_tools.core.cql_tools.cql_file_generator import CqlFileGenerato
 from who_l3_smart_tools.core.cql_tools.cql_resource_generator import (
     CqlResourceGenerator,
 )
-from who_l3_smart_tools.core.cql_tools.cql_template_generator import (
-    CqlTemplateGenerator,
-)
 import pandas as pd
 import unittest
 import stringcase
 
 
 class TestCqlTools(unittest.TestCase):
-    def test_generate_cql_indicator_scaffolds(self):
+    def test_generate_cql_file_headers(self):
         input_indicators = "tests/data/l2/test_indicators.xlsx"
         input_dd = "tests/data/l2/test_dd.xlsx"
-        output_dir = "templates/cql/indicators/"
+        output_dir = "tests/output/cql/templates/"
 
         # Make sure output directory exists
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        generator = CqlTemplateGenerator(input_indicators, input_dd)
+        generator = CqlFileGenerator(input_indicators, input_dd)
 
         generator.generate_cql_scaffolds()
 
@@ -42,7 +39,7 @@ class TestCqlTools(unittest.TestCase):
 
         generator = CqlFileGenerator(input_indicators, input_dd)
 
-        generator.generate_cql_concept_library(output_dir=output_dir)
+        generator.generate_cql_concept_file(output_dir=output_dir)
 
         assert os.path.exists(os.path.join(output_dir, "HIVConcepts.cql"))
 
@@ -89,6 +86,10 @@ class TestCqlResourceGenerator(unittest.TestCase):
     def test_generate_library_fsh(self):
         library_fsh = self.generator.generate_library_fsh().strip()
 
+        # Ensure directory exists
+        output_directory = "tests/output/fsh/"
+        os.makedirs(output_directory, exist_ok=True)
+
         output_file = "tests/output/fsh/HIV27_library.fsh"
 
         if os.path.exists(output_file):
@@ -110,7 +111,7 @@ class TestCqlResourceGenerator(unittest.TestCase):
         assert measure_fsh is not None
 
         output_file = (
-            f"tests/output/fsh/{stringcase.alphanumcase(p["library_name"])}_measure.fsh"
+            f"tests/output/fsh/{stringcase.alphanumcase(p['library_name'])}_measure.fsh"
         )
 
         if os.path.exists(output_file):
