@@ -7,13 +7,14 @@ import pandas as pd
 from who_l3_smart_tools.utils.cql_helpers import (
     determine_scoring_from_cql,
     determine_scoring_suggestion,
+    common_cql_filename_keywords,
+    parse_cql_library_name,
+    sanitize_description,
 )
 
-
-library_fsh_template = """
-Instance: {library_name}
+library_fsh_template = """Instance: {library_name}
 InstanceOf: Library
-Title: "{title} Logic"
+Title: "{title}"
 Description: "{description}"
 Usage: #definition
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-shareablelibrary"
@@ -32,8 +33,7 @@ Usage: #definition
 * content.id = "ig-loader-{library_name}.cql"
 """
 
-measure_fsh_template = """
-Instance: {measure_name}
+measure_fsh_template = """Instance: {measure_name}
 InstanceOf: {measure_instance}
 Title: "{title}"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-shareablemeasure"
@@ -47,7 +47,7 @@ Title: "{title}"
 * name = "{measure_name}"
 * title = "{title}"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/{dak_name}/Library/{measure_name}Logic"
+* library = "http://smart.who.int/{dak_name}/Library/{library_name}"
 """
 
 scoring_value_set: str = {"proportion", "continuous-variable"}
@@ -112,11 +112,6 @@ measure_stratifier_fsh_template = """
 """
 
 
-# Get indicator DAK ID from CQL file with first instance of DAK ID pattern HIV.IND.X
-# TODO: generalize this pattern to match any DAK
-DAK_INDICATOR_ID_PATTERN = re.compile(r"(HIV\.IND\.\d+)")
-
-
 class EmptyItem:
     def __getitem__(self, item) -> Any:
         return None
@@ -165,46 +160,14 @@ class CqlResourceGenerator:
             "measureObservation": False,
             "numerator": False,
             "denominator": False,
-            "library_name": None,
+            "full_library_name": None,
+            "file_library_name": None,
+            "file_type": None,
+            "dak_name": None,
         }
 
-        # Don't parse if CQL contents are generated only,
-        # without any content for the indicator definition itself
-
-        # Find where the indicator header location is
-        indicator_header_match = re.search(
-            r"// Indicator Definition(.*)", self.cql_content, re.DOTALL
-        )
-
-        if indicator_header_match:
-            content_after_match = indicator_header_match.group(1)
-
-            # Check if the content after the match is not just whitespace
-            if content_after_match.strip():
-                parsed_data["templateOnly"] = False
-            else:
-                parsed_data["templateOnly"] = True
-
-        indicator_match = DAK_INDICATOR_ID_PATTERN.search(self.cql_content)
-
-        if indicator_match:
-            parsed_data["library_name"] = indicator_match.group(1)
-            parsed_data["is_indicator"] = True
-        else:
-            parsed_data["is_indicator"] = False
-            non_indicator_name = non_indicator_name = re.search(
-                r"^library\s(\w+)\s.*$", self.cql_content, re.MULTILINE
-            )
-            parsed_data["library_name"] = (
-                non_indicator_name.group(1) if non_indicator_name else None
-            )
-
-        if not parsed_data["library_name"]:
-            raise ValueError("Could not find library name in CQL file.")
-
-        # chomp "Logic" off the ned of the library name
-        if parsed_data["library_name"].endswith("Logic"):
-            parsed_data["library_name"] = parsed_data["library_name"][:-5]
+        parsed_names = parse_cql_library_name(self.cql_content)
+        parsed_data.update(parsed_names)
 
         # Extract denominator, if exists:
         denominator_match = re.search(
@@ -263,24 +226,20 @@ class CqlResourceGenerator:
         Generate the Library FSH file content.
         """
 
-        raw_library_name: str = self.parsed_cql["library_name"]
-        dak_name = raw_library_name.split(".")[0]
-        library_name = f"{raw_library_name.replace('.', '')}Logic"
+        full_library_name: str = self.parsed_cql["full_library_name"]
+        dak_name: str = self.parsed_cql["dak_name"]
+        file_library_name: str = self.parsed_cql["file_library_name"]
 
-        # Treat as indicator
-        if raw_library_name in self.indicator_dictionary.keys():
-            header_variables = self.parseRow(
-                self.indicator_dictionary[raw_library_name]
-            )
-            title = raw_library_name
-            description = header_variables["Indicator definition"]
+        lookup_name = full_library_name.split(" ")[0]
+        if lookup_name in self.indicator_dictionary.keys():
+            header_variables = self.parseRow(self.indicator_dictionary[lookup_name])
+            description = sanitize_description(header_variables["Indicator definition"])
         else:
-            title = raw_library_name
-            description = f"Description not yet available for {library_name}."
+            description = f"Description not yet available for {full_library_name}."
 
         library_fsh = library_fsh_template.format(
-            library_name=library_name,
-            title=title,
+            library_name=file_library_name,
+            title=full_library_name,
             description=description,
             dak_name=dak_name,
         )
@@ -288,20 +247,24 @@ class CqlResourceGenerator:
         return library_fsh
 
     def generate_measure_fsh(self):
-        if not self.parsed_cql["is_indicator"] or self.parsed_cql["templateOnly"]:
+        if not self.is_indicator():
+            print(
+                f"Cannot generate measure FSH for non-indicator CQL file: {self.parsed_cql['full_library_name']}"
+            )
             return None
 
-        dak_name = self.parsed_cql["library_name"].split(".")[0]
+        dak_name = self.parsed_cql["dak_name"]
+        lookup_name = self.parsed_cql["full_library_name"].split(" ")[0]
 
-        header_variables = self.parseRow(
-            self.indicator_dictionary[self.parsed_cql["library_name"]]
-        )
-        indicator_row = self.indicator_dictionary[self.parsed_cql["library_name"]]
+        header_variables = self.parseRow(self.indicator_dictionary[lookup_name])
+        indicator_row = self.indicator_dictionary[lookup_name]
 
         dak_id = header_variables["DAK ID"]
         measure_name = header_variables["DAK ID"].replace(".", "")
         title = f"{header_variables['DAK ID']} {header_variables['Short name']}"
-        description = header_variables["Indicator definition"]
+        description = sanitize_description(header_variables["Indicator definition"])
+
+        self.parsed_cql["file_measure_name"] = measure_name
 
         # Determine scoring based on parsed cql entries
         scoring, scoring_title, scoring_instance = determine_scoring_from_cql(
@@ -315,6 +278,7 @@ class CqlResourceGenerator:
         # Generate the Measure FSH file content.
         measure_fsh = measure_fsh_template.format(
             measure_name=measure_name,
+            library_name=self.parsed_cql["file_library_name"],
             title=title,
             description=description,
             measure_instance=scoring_instance,
@@ -366,13 +330,17 @@ class CqlResourceGenerator:
             if self.parsed_cql["denominator"]:
                 measure_fsh += measure_denominator_fsh_template.format(
                     dak_id=dak_id,
-                    description=indicator_row["Denominator definition"],
+                    description=sanitize_description(
+                        indicator_row["Denominator definition"]
+                    ),
                 )
 
             if self.parsed_cql["numerator"]:
                 measure_fsh += measure_numerator_fsh_template.format(
                     dak_id=dak_id,
-                    description=indicator_row["Numerator definition"],
+                    description=sanitize_description(
+                        indicator_row["Numerator definition"]
+                    ),
                 )
 
             for index, stratifier in self.parsed_cql["stratifiers"].items():
@@ -389,8 +357,20 @@ class CqlResourceGenerator:
         )
         return measure_fsh
 
-    def get_library_name(self):
-        return self.parsed_cql["library_name"]
+    def get_full_library_name(self):
+        return self.parsed_cql["full_library_name"]
+
+    def get_file_library_name(self):
+        return self.parsed_cql["file_library_name"]
+
+    def get_file_measure_name(self):
+        return self.parsed_cql["file_measure_name"]
 
     def is_indicator(self):
-        return self.parsed_cql["is_indicator"]
+        return self.parsed_cql["file_type"] == "indicator"
+
+    def is_dt(self):
+        return self.parsed_cql["file_type"] == "dt"
+
+    def is_common(self):
+        return self.parsed_cql["file_type"] == "common"

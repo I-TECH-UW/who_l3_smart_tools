@@ -1,10 +1,18 @@
-/*
- * Library: HIV.B7.DT Test Using Algorithm
- * WHO standard testing strategy for HIV-1 diagnosis (among people ≥18 months of age)
- * HIV.B7 Test for HIV using testing algorithm, HIV.C4 Test for HIV using testing algorithm, HIV.D.11 Retest using HIV strategy
- */
+/**
+Library: HIV.B7.DT Logic
 
-library HIVB7DT
+@DecisionID: HIV.B7.DT
+@BusinessRule:
+@Trigger: 
+@Description: 
+
+Test Using Algorithm
+
+WHO standard testing strategy for HIV-1 diagnosis (among people ≥18 months of age)
+HIV.B7 Test for HIV using testing algorithm, HIV.C4 Test for HIV using testing algorithm, HIV.D.11 Retest using HIV strategy
+*/
+
+library HIVB7DTLogic
 
 using FHIR version '4.0.1'
 

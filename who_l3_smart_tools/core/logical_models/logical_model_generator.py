@@ -114,7 +114,7 @@ class LogicalModelAndTerminologyGenerator:
 
     def generate_fsh_from_excel(self):
         # create output structure
-        for dir in[self.models_dir, self.codesystem_dir, self.valuesets_dir]:
+        for dir in [self.models_dir, self.codesystem_dir, self.valuesets_dir]:
             if not os.path.exists(dir):
                 os.makedirs(dir)
 
@@ -164,7 +164,7 @@ class LogicalModelAndTerminologyGenerator:
                 validations = self.parse_validations(df)
 
                 # Template for invariants based on validation conditions
-                for (validation, data_ids) in validations.items():
+                for validation, data_ids in validations.items():
                     id = self.invariants_dict[short_name[1]].next
                     invariant_id = f"{short_name[0]}-{short_name[1]}-{id}"
                     if type(validation) == str:
@@ -173,21 +173,27 @@ class LogicalModelAndTerminologyGenerator:
                         description = ""
 
                     expression = "<NOT-IMPLEMENTED>"
-                    fsh_artifact += fsh_invariant_template.format(
-                        invariant_id=invariant_id,
-                        description=description,
-                        expression=expression,
-                    ) + "\n"
+                    fsh_artifact += (
+                        fsh_invariant_template.format(
+                            invariant_id=invariant_id,
+                            description=description,
+                            expression=expression,
+                        )
+                        + "\n"
+                    )
 
                     for data_element_id in data_ids:
                         validation_lookup[data_element_id] = invariant_id
 
                 # Generate the FSH logical model header based on the sheet name
-                fsh_header = fsh_lm_header_template.format(
-                    name=clean_name,
-                    title=sheet_name,
-                    description=cover_info[sheet_name.upper()],
-                ) + "\n"
+                fsh_header = (
+                    fsh_lm_header_template.format(
+                        name=clean_name,
+                        title=sheet_name,
+                        description=cover_info[sheet_name.upper()],
+                    )
+                    + "\n"
+                )
 
                 fsh_artifact += fsh_header
 
@@ -212,11 +218,17 @@ class LogicalModelAndTerminologyGenerator:
                         else:
 
                             # equalize spaces
-                            label = label.strip().replace('*', '').replace('[', '').replace(']', '').replace('"', "'")
+                            label = (
+                                label.strip()
+                                .replace("*", "")
+                                .replace("[", "")
+                                .replace("]", "")
+                                .replace('"', "'")
+                            )
 
                             # remove many special characters
-                            label_clean = (label
-                                .replace("(", "")
+                            label_clean = (
+                                label.replace("(", "")
                                 .replace(")", "")
                                 .replace("'s", "")
                                 .replace("-", "_")
@@ -227,7 +239,8 @@ class LogicalModelAndTerminologyGenerator:
                                 .replace("<=", "less than")
                                 .replace(">", "more than")
                                 .replace("<", "less than")
-                                .lower())
+                                .lower()
+                            )
                     else:
                         label = ""
                         label_clean = ""
@@ -245,11 +258,13 @@ class LogicalModelAndTerminologyGenerator:
                     if required == "C":
                         required_condition = row["Explain Conditionality"]
 
-                    codes.append({
-                        "code": data_element_id,
-                        "label": label,
-                        "description": description
-                    })
+                    codes.append(
+                        {
+                            "code": data_element_id,
+                            "label": label,
+                            "description": description,
+                        }
+                    )
 
                     # handle ValueSets
                     # First we identify a ValueSet
@@ -260,20 +275,26 @@ class LogicalModelAndTerminologyGenerator:
                             "value_set": data_element_id,
                             "name": data_element_id.replace(".", ""),
                             "title": f"{label} ValueSet",
-                            "description": f"Value set of {description[0].lower() + description[1:] if description[0].isupper() and not description.startswith('HIV') else description}",
-                            "codes": []
+                            "description": f"Value set of {description[0].lower() + description[1:] if description[0].isupper() and not description.startswith("HIV") else description}",
+                            "codes": [],
                         }
                         valuesets.append(active_valueset)
                     # Then we identify the codes for the ValueSet
-                    elif data_type == "Codes" and multiple_choice_type == "Input Option":
+                    elif (
+                        data_type == "Codes" and multiple_choice_type == "Input Option"
+                    ):
                         if active_valueset is None:
-                            print(f"Attempted to create a member of a ValueSet without a ValueSet context for code {data_element_id}", sys.stderr)
+                            print(
+                                f"Attempted to create a member of a ValueSet without a ValueSet context for code {data_element_id}",
+                                sys.stderr,
+                            )
                         else:
-                            active_valueset['codes'].append({
-                                "code": f"{code_system}#{data_element_id}",
-                                "label": f"{label}"
-                            })
-
+                            active_valueset["codes"].append(
+                                {
+                                    "code": f"{code_system}#{data_element_id}",
+                                    "label": f"{label}",
+                                }
+                            )
 
                     # If row is a value in a valueset, skip since the info is in Terminology
                     if data_type == "Codes":
@@ -291,21 +312,31 @@ class LogicalModelAndTerminologyGenerator:
                     # number, using the inflect library
                     if len(label_camel) > 0 and not label_camel[0].isalpha():
                         try:
-                            prefix, rest = re.split(r'(?=[a-zA-Z])', label_camel, 1)
+                            prefix, rest = re.split(r"(?=[a-zA-Z])", label_camel, 1)
                         except:
                             prefix, rest = label_camel, ""
 
                         if prefix.isnumeric():
-                            prefix = camel_case(inflect_engine.number_to_words(int(prefix)).replace("-", "_"))
+                            prefix = camel_case(
+                                inflect_engine.number_to_words(int(prefix)).replace(
+                                    "-", "_"
+                                )
+                            )
                         else:
-                            print("Did not know how to handle element prefix:", sheet_name, data_element_id, prefix, file=sys.stderr)
+                            print(
+                                "Did not know how to handle element prefix:",
+                                sheet_name,
+                                data_element_id,
+                                prefix,
+                                file=sys.stderr,
+                            )
 
                         label_camel = f"{prefix}{rest}"
 
                     # data elements can only be 64 characters
                     # note that the idea here is that we trim whole words until reaching the desired size
                     if len(label_camel) > 64:
-                        new_label_camel = ''
+                        new_label_camel = ""
                         for label_part in re.split("(?=[A-Z1-9])", label_camel):
                             if len(new_label_camel) + len(label_part) > 64:
                                 break
@@ -327,13 +358,14 @@ class LogicalModelAndTerminologyGenerator:
                             label_camel += suffix
                         # otherwise, shorten the name to include the suffix
                         else:
-                            label_camel = label_camel[:64 - len(suffix)] + suffix
-
+                            label_camel = label_camel[: 64 - len(suffix)] + suffix
 
                     # Process as a normal entry
                     fsh_artifact += fsh_lm_element_template.format(
                         element_name=label_camel,
-                        cardinality=self.map_cardinality(required, multiple_choice_type),
+                        cardinality=self.map_cardinality(
+                            required, multiple_choice_type
+                        ),
                         data_type=self.map_data_type(data_type),
                         label=label,
                         description=description,
@@ -381,9 +413,9 @@ class LogicalModelAndTerminologyGenerator:
 
         if len(codes) > 0:
             code_system_artifact = fsh_cs_header_template.format(
-                code_system = code_system,
-                title = "WHO SMART HIV Concepts CodeSystem",
-                description = "This code system defines the concepts used in the World Health Organization SMART HIV DAK"
+                code_system=code_system,
+                title="WHO SMART HIV Concepts CodeSystem",
+                description="This code system defines the concepts used in the World Health Organization SMART HIV DAK",
             )
 
             for code in codes:
@@ -403,16 +435,24 @@ class LogicalModelAndTerminologyGenerator:
         seen_header = False
         for i, row in cover_df.iterrows():
             if not seen_header:
-                if row.iloc[0] and type(row.iloc[0]) == str and re.match(r"sheet\s*name", row.iloc[0], re.IGNORECASE):
+                if (
+                    row.iloc[0]
+                    and type(row.iloc[0]) == str
+                    and re.match(r"sheet\s*name", row.iloc[0], re.IGNORECASE)
+                ):
                     seen_header = True
                 continue
 
             if type(row.iloc[0]) == str and row.iloc[0] != "":
                 key = row.iloc[0].upper()
-                first_dot_idx = key.find('.')
+                first_dot_idx = key.find(".")
                 if first_dot_idx >= 0 and first_dot_idx < len(key):
                     if key[first_dot_idx + 1].isspace():
-                        key = key[0:first_dot_idx] + '.' + key[first_dot_idx + 1:].lstrip()
+                        key = (
+                            key[0:first_dot_idx]
+                            + "."
+                            + key[first_dot_idx + 1 :].lstrip()
+                        )
 
                 cover_data[key] = row.iloc[1]
             else:
@@ -436,7 +476,6 @@ class LogicalModelAndTerminologyGenerator:
             maximum = "*"
 
         return f"{minimum}..{maximum}"
-
 
     def parse_validations(self, df):
         # unique_validations = set(df["Validation Condition"])
