@@ -25,7 +25,9 @@ class TestLogicalModelAndTerminologyGenerator(unittest.TestCase):
         with open(output_file, "r") as f:
             fsh_artifact = f.read()
 
-        with open(os.path.join("tests", "data", "example_fsh", "HIVARegistration.fsh"), "r") as f:
+        with open(
+            os.path.join("tests", "data", "example_fsh", "HIVARegistration.fsh"), "r"
+        ) as f:
             expected_fsh_artifact = f.read()
 
         self.assertEqual(expected_fsh_artifact, fsh_artifact)
@@ -37,7 +39,9 @@ class TestFullLogicalModelGeneration(unittest.TestCase):
         self.output_dir = os.path.join("tests", "output", "fsh")
 
     def test_full_data_dictionary(self):
-        generator = LogicalModelAndTerminologyGenerator(self.input_file, self.output_dir)
+        generator = LogicalModelAndTerminologyGenerator(
+            self.input_file, self.output_dir
+        )
 
         generator.generate_fsh_from_excel()
 
