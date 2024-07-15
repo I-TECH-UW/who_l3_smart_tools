@@ -1,5 +1,7 @@
 import slugify
 
+__all__ = ["dash_preserving_slugify"]
+
 
 def dash_preserving_slugify(text):
     """

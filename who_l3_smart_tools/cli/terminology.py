@@ -4,9 +4,7 @@ import json
 import os
 import sys
 
-sys.path.insert(0, os.getcwd())
-
-from who_l3_smart_tools.core.terminology.who.terminology import HIVTerminology
+from ..core.terminology.who.terminology import HIVTerminology
 
 
 def write_terminology_valuesets(terminology, valueset_file):

@@ -1,5 +1,5 @@
 import argparse
-from who_l3_smart_tools.core.logical_models.logical_model_generator import (
+from ..core.logical_models.logical_model_generator import (
     LogicalModelAndTerminologyGenerator,
 )
 
