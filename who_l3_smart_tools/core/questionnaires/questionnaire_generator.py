@@ -38,7 +38,7 @@ questionnaire_item_template = """
   * readOnly = false"""
 
 questionnaire_item_valueset = """
-  * answerValueSet = http://smart.who.int/hiv/ValueSet/{data_element_id}"""
+  * answerValueSet = "#{data_element_id}" """.rstrip()
 
 
 class QuestionnaireGenerator:
@@ -103,7 +103,7 @@ class QuestionnaireGenerator:
                 )
 
                 # coded answers should be bound to a dataset
-                if data_type == "choice":
+                if data_type == "Coding":
                     questionnaire_items.append(
                         questionnaire_item_valueset.format(
                             data_element_id=data_element_id

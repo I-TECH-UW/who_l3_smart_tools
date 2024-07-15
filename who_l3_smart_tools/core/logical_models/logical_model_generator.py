@@ -1,11 +1,12 @@
-from collections import defaultdict
-import inflect
-import pandas as pd
-import stringcase
 import os
 import re
 import sys
-import datetime
+from collections import defaultdict
+
+import inflect
+import pandas as pd
+import stringcase
+
 from who_l3_smart_tools.utils import camel_case
 from who_l3_smart_tools.utils.counter import Counter
 
@@ -275,8 +276,8 @@ class LogicalModelAndTerminologyGenerator:
                             "value_set": data_element_id,
                             "name": data_element_id.replace(".", ""),
                             "title": f"{label} ValueSet",
-                            "description": f"Value set of {description[0].lower() + description[1:] if description[0].isupper() and not description.startswith("HIV") else description}",
-                            "codes": [],
+                            "description": f"Value set of {description[0].lower() + description[1:] if description[0].isupper() and not description.startswith('HIV') else description}",
+                            "codes": []
                         }
                         valuesets.append(active_valueset)
                     # Then we identify the codes for the ValueSet
@@ -405,7 +406,7 @@ class LogicalModelAndTerminologyGenerator:
                             vs_artifact += "\n"
 
                         output_file = os.path.join(
-                            self.valuesets_dir, f"{valueset["value_set"]}.fsh"
+                            self.valuesets_dir, f"{valueset['value_set']}.fsh"
                         )
 
                         with open(output_file, "w") as f:
