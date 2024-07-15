@@ -3,7 +3,10 @@ from typing import Any
 import stringcase
 import pandas as pd
 
-from who_l3_smart_tools.utils.cql_helpers import determine_scoring_suggestion, get_dak_name
+from who_l3_smart_tools.utils.cql_helpers import (
+    determine_scoring_suggestion,
+    get_dak_name,
+)
 
 # Templates
 cql_file_header_template = """/*
@@ -81,7 +84,10 @@ class CqlFileGenerator:
         """
         This method writes the CQL scaffolds to files in the output directory.
         """
-        last_generated_line = ["include FHIRCommon called FC\n", "using FHIR version '4.0.1'\n"]
+        last_generated_line = [
+            "include FHIRCommon called FC\n",
+            "using FHIR version '4.0.1'\n",
+        ]
 
         for indicator_name, scaffold in self.cql_scaffolds.items():
             file_name = indicator_name.replace(".", "")
@@ -92,8 +98,12 @@ class CqlFileGenerator:
                 with open(f"{output_dir}/{file_name}Logic.cql", "r") as file:
                     # Read up to the last generated line
                     lines = file.readlines()
-                    last_generated_line_index = lines.index(last_generated_line[0]) if last_generated_line[0] in lines else lines.index(last_generated_line[1])
-                    if last_generated_line_index == -1:     
+                    last_generated_line_index = (
+                        lines.index(last_generated_line[0])
+                        if last_generated_line[0] in lines
+                        else lines.index(last_generated_line[1])
+                    )
+                    if last_generated_line_index == -1:
                         raise ValueError(
                             f"Could not find last generated line in {file_name}Logic.cql"
                         )

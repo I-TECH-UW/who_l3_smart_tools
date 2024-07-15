@@ -1,6 +1,8 @@
 import os
 import unittest
-from who_l3_smart_tools.core.questionnaires.questionnaire_generator import QuestionnaireGenerator
+from who_l3_smart_tools.core.questionnaires.questionnaire_generator import (
+    QuestionnaireGenerator,
+)
 
 
 class TestQuestionnaireGenerator(unittest.TestCase):
