@@ -1,9 +1,16 @@
 import os
 import unittest
-from who_l3_smart_tools.core.requirements.requirement_generator import RequirementGenerator
+
+from who_l3_smart_tools.core.requirements.requirement_generator import (
+    RequirementGenerator,
+)
 
 
 class TestRequirementGenerator(unittest.TestCase):
+    """
+    A test case class for testing the RequirementGenerator class.
+    """
+
     def setUp(self):
         self.input_file = os.path.join("tests", "data", "l2", "test_functional.xlsx")
         self.output_dir = os.path.join("tests", "output", "fsh", "requirements")

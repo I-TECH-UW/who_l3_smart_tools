@@ -6,6 +6,7 @@ This module defines schema classes for an OCL Concepts,
 from typing import Callable
 
 
+# pylint: disable=too-few-public-methods
 class ConceptSchema:
     """
     Represents the schema for a concept.
@@ -33,6 +34,7 @@ class ConceptSchema:
     additional_descriptions: list[str] = []
 
 
+# pylint: disable=too-few-public-methods
 class OrganizationSchema:
     """
     Represents the schema for an organization.
@@ -67,6 +69,7 @@ class OrganizationSchema:
     format_extras_for_csv: Callable = lambda key, type: f"attr:{key}:{type}".rstrip(":")
 
 
+# pylint: disable=too-few-public-methods
 class RepositorySchema:
     """
     Represents the schema for a repository.

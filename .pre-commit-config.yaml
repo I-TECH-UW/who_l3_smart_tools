@@ -3,3 +3,18 @@ repos:
     rev: 24.4.2
     hooks:
       - id: black
+
+  - repo: local
+    hooks:
+      - id: pylint
+        name: pylint
+        entry: pylint
+        language: system
+        types: [python]
+        require_serial: true
+        args:
+          [
+            "-rn",
+            "-sn",
+            "--rcfile=.pylintrc"
+          ]

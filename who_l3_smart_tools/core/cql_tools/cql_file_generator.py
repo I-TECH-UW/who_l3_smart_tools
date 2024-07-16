@@ -1,11 +1,11 @@
 import re
 from typing import Any
-import stringcase
+
 import pandas as pd
 
 from who_l3_smart_tools.utils.cql_helpers import (
-    get_dak_name,
     create_cql_concept_dictionaries,
+    get_dak_name,
 )
 
 
@@ -82,7 +82,8 @@ class CqlFileGenerator:
 
             file.write(f"library {library_name}\n")
             file.write(
-                f"codesystem \"{library_name}\": 'http://smart.who.int/{self.dak_name.lower()}/CodeSystem/{library_name}'\n\n"
+                f'codesystem "{library_name}": '
+                f"'http://smart.who.int/{self.dak_name.lower()}/CodeSystem/{library_name}'\n\n"
             )
 
             # Write valuesets for Coding data types, and label as `Grouping`
@@ -95,7 +96,8 @@ class CqlFileGenerator:
                         concept_details,
                     )
                     file.write(
-                        f"valueset \"{label_str} Choices\": 'http://smart.who.int/{self.dak_name.lower()}/ValueSet/{concept_id}'\n"
+                        f'valueset "{label_str} Choices": '
+                        f"'http://smart.who.int/{self.dak_name.lower()}/ValueSet/{concept_id}'\n"
                     )
             file.write("\n")
 
@@ -109,7 +111,8 @@ class CqlFileGenerator:
                 )
 
                 file.write(
-                    f"code \"{label_str}\": '{concept_id}' from \"{library_name}\" display '{concept_details['label']}'\n"
+                    f"code \"{label_str}\": '{concept_id}' "
+                    f"from \"{library_name}\" display '{concept_details['label']}'\n"
                 )
 
     def generate_cql_element_libraries(self, output_dir: str):
