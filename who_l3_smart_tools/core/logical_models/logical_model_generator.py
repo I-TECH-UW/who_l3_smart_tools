@@ -174,7 +174,7 @@ class LogicalModelAndTerminologyGenerator:
                 active_valueset = None
 
                 # Track element names
-                existing_elements = defaultdict(Counter())
+                existing_elements = defaultdict(Counter)
 
                 # For handling "Other (specify)"
                 previous_element_label = None

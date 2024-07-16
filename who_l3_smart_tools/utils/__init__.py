@@ -10,6 +10,6 @@ def camel_case(s: str) -> str:
     return "".join(
         [
             s.lower() if i == 0 else s.capitalize()
-            for i, s in enumerate(split_re.split(str))
+            for i, s in enumerate(split_re.split(s))
         ]
     )

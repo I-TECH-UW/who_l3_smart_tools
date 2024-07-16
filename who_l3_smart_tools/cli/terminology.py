@@ -2,7 +2,6 @@
 import argparse
 import json
 import os
-import sys
 
 from who_l3_smart_tools.core.terminology.who.terminology import HIVTerminology
 
@@ -81,4 +80,4 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()
