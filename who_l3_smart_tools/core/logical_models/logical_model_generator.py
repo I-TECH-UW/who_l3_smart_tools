@@ -118,8 +118,6 @@ class LogicalModelAndTerminologyGenerator:
             where the code systems will be saved.
         valuesets_dir (str): The directory within the output directory
             where the value sets will be saved.
-        invariants_dict (defaultdict): A dictionary to store the
-            invariants for each logical model.
     """
 
     def __init__(self, input_file, output_dir):

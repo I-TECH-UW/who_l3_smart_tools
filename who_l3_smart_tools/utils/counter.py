@@ -3,9 +3,6 @@ class Counter:
     A simple counter class that keeps track of a value and provides methods to access
     the current value and get the next value.
 
-    Attributes:
-        __value (int): The current value of the counter.
-
     Methods:
         current: Returns the current value of the counter.
         next: Returns the next value of the counter and increments the current value by 1.
