@@ -24,6 +24,8 @@ flake8 = ">=3.8"
 Sphinx = ">=3.2"
 stringcase = ">=1.2"
 pyright = "^1.1.367"
+pre-commit = "^3.7.1"
+pylint = "^3.2.5"
 black = "^24.4.2"
 
 [tool.pyright]

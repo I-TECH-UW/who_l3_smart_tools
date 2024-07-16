@@ -1,11 +1,12 @@
-from collections import defaultdict
-import inflect
-import pandas as pd
-import stringcase
 import os
 import re
 import sys
-import datetime
+from collections import defaultdict
+
+import inflect
+import pandas as pd
+import stringcase
+
 from who_l3_smart_tools.utils import camel_case
 from who_l3_smart_tools.utils.counter import Counter
 
@@ -103,20 +104,38 @@ fsh_vs_code_template = """
 inflect_engine = inflect.engine()
 
 
+# pylint: disable=too-many-locals,too-few-public-methods
 class LogicalModelAndTerminologyGenerator:
+    """
+    Class for generating FSH logical models and terminologies based on an input Excel file.
+
+    Attributes:
+        input_file (str): The path to the input Excel file.
+        output_dir (str): The directory where the generated FSH files will be saved.
+        models_dir (str): The directory within the output directory where the
+            logical models will be saved.
+        codesystem_dir (str): The directory within the output directory
+            where the code systems will be saved.
+        valuesets_dir (str): The directory within the output directory
+            where the value sets will be saved.
+    """
+
     def __init__(self, input_file, output_dir):
         self.input_file = input_file
         self.output_dir = output_dir
         self.models_dir = os.path.join(output_dir, "models")
         self.codesystem_dir = os.path.join(output_dir, "codesystems")
         self.valuesets_dir = os.path.join(output_dir, "valuesets")
-        self.invariants_dict = defaultdict(lambda: Counter())
+        self.invariants_dict = defaultdict(Counter)
 
+    # pylint: disable=too-many-branches,too-many-statements
     def generate_fsh_from_excel(self):
-        # create output structure
-        for dir in [self.models_dir, self.codesystem_dir, self.valuesets_dir]:
-            if not os.path.exists(dir):
-                os.makedirs(dir)
+        """
+        Generates FSH logical models and terminologies from the input Excel file.
+        """
+        for _dir in [self.models_dir, self.codesystem_dir, self.valuesets_dir]:
+            if not os.path.exists(_dir):
+                os.makedirs(_dir)
 
         # Load the Excel file
         dd_xls = pd.read_excel(self.input_file, sheet_name=None)
@@ -133,6 +152,7 @@ class LogicalModelAndTerminologyGenerator:
 
         # Iterate over each sheet in the Excel file and generate a FSH logical model for each one
 
+        # pylint: disable=too-many-nested-blocks
         for sheet_name in dd_xls.keys():
             if re.match(r"HIV\.\w+", sheet_name):
                 df = dd_xls[sheet_name]
@@ -154,7 +174,7 @@ class LogicalModelAndTerminologyGenerator:
                 active_valueset = None
 
                 # Track element names
-                existing_elements = defaultdict(lambda: Counter())
+                existing_elements = defaultdict(Counter)
 
                 # For handling "Other (specify)"
                 previous_element_label = None
@@ -165,9 +185,9 @@ class LogicalModelAndTerminologyGenerator:
 
                 # Template for invariants based on validation conditions
                 for validation, data_ids in validations.items():
-                    id = self.invariants_dict[short_name[1]].next
-                    invariant_id = f"{short_name[0]}-{short_name[1]}-{id}"
-                    if type(validation) == str:
+                    _id = self.invariants_dict[short_name[1]].next
+                    invariant_id = f"{short_name[0]}-{short_name[1]}-{_id}"
+                    if isinstance(validation, str):
                         description = validation.replace('"', "'")
                     else:
                         description = ""
@@ -197,9 +217,9 @@ class LogicalModelAndTerminologyGenerator:
 
                 fsh_artifact += fsh_header
 
-                for i, row in df.iterrows():
+                for _, row in df.iterrows():
                     data_element_id = row["Data Element ID"]
-                    if type(data_element_id) != str or not data_element_id:
+                    if not isinstance(data_element_id, str) or not data_element_id:
                         continue
 
                     # Process general fields
@@ -207,7 +227,7 @@ class LogicalModelAndTerminologyGenerator:
                     data_type = row["Data Type"]
                     label = row["Data Element Label"]
 
-                    if type(label) == str and label:
+                    if isinstance(label, str) and label:
                         # Other (specify) elements come after a list as a data element to
                         # contain a non-coded selection
                         if label.lower() == "other (specify)":
@@ -248,7 +268,7 @@ class LogicalModelAndTerminologyGenerator:
                     code_sys_ref = f"{code_system}#{data_element_id}"
                     description = row["Description and Definition"]
 
-                    if type(description) == str:
+                    if isinstance(description, str):
                         description = description.replace("*", "").replace('"', "'")
                     else:
                         description = ""
@@ -256,6 +276,7 @@ class LogicalModelAndTerminologyGenerator:
                     required = row["Required"]
 
                     if required == "C":
+                        # pylint: disable=unused-variable
                         required_condition = row["Explain Conditionality"]
 
                     codes.append(
@@ -268,14 +289,18 @@ class LogicalModelAndTerminologyGenerator:
 
                     # handle ValueSets
                     # First we identify a ValueSet
-                    # Originally, this looked at the Multiple Choice Type, but that doesn't seem to be
+                    # Originally, this looked at the Multiple Choice Type,
+                    # but that doesn't seem to be
                     # guaranteed to be meaningful
                     if data_type == "Coding":
                         active_valueset = {
                             "value_set": data_element_id,
                             "name": data_element_id.replace(".", ""),
                             "title": f"{label} ValueSet",
-                            "description": f"Value set of {description[0].lower() + description[1:] if description[0].isupper() and not description.startswith("HIV") else description}",
+                            "description": f"Value set of "
+                            f"{description[0].lower() + description[1:] \
+                               if description[0].isupper() \
+                                and not description.startswith("HIV") else description}",
                             "codes": [],
                         }
                         valuesets.append(active_valueset)
@@ -285,7 +310,8 @@ class LogicalModelAndTerminologyGenerator:
                     ):
                         if active_valueset is None:
                             print(
-                                f"Attempted to create a member of a ValueSet without a ValueSet context for code {data_element_id}",
+                                f"Attempted to create a member of a ValueSet without a "
+                                f"ValueSet context for code {data_element_id}",
                                 sys.stderr,
                             )
                         else:
@@ -313,7 +339,7 @@ class LogicalModelAndTerminologyGenerator:
                     if len(label_camel) > 0 and not label_camel[0].isalpha():
                         try:
                             prefix, rest = re.split(r"(?=[a-zA-Z])", label_camel, 1)
-                        except:
+                        except Exception:  # pylint: disable=broad-exception-caught
                             prefix, rest = label_camel, ""
 
                         if prefix.isnumeric():
@@ -372,7 +398,7 @@ class LogicalModelAndTerminologyGenerator:
                     )
 
                     # Add validation if needed
-                    if data_element_id in validation_lookup.keys():
+                    if data_element_id in validation_lookup:
                         fsh_artifact += fsh_lm_validation_element_template.format(
                             validation_id=validation_lookup[data_element_id]
                         )
@@ -415,7 +441,8 @@ class LogicalModelAndTerminologyGenerator:
             code_system_artifact = fsh_cs_header_template.format(
                 code_system=code_system,
                 title="WHO SMART HIV Concepts CodeSystem",
-                description="This code system defines the concepts used in the World Health Organization SMART HIV DAK",
+                description="This code system defines the concepts used in the World "
+                "Health Organization SMART HIV DAK",
             )
 
             for code in codes:
@@ -433,20 +460,20 @@ class LogicalModelAndTerminologyGenerator:
         cover_data = {}
 
         seen_header = False
-        for i, row in cover_df.iterrows():
+        for _, row in cover_df.iterrows():
             if not seen_header:
                 if (
                     row.iloc[0]
-                    and type(row.iloc[0]) == str
+                    and isinstance(row.iloc[0], str)
                     and re.match(r"sheet\s*name", row.iloc[0], re.IGNORECASE)
                 ):
                     seen_header = True
                 continue
 
-            if type(row.iloc[0]) == str and row.iloc[0] != "":
+            if isinstance(row.iloc[0], str) and row.iloc[0]:
                 key = row.iloc[0].upper()
                 first_dot_idx = key.find(".")
-                if first_dot_idx >= 0 and first_dot_idx < len(key):
+                if len(key) > first_dot_idx >= 0:
                     if key[first_dot_idx + 1].isspace():
                         key = (
                             key[0:first_dot_idx]

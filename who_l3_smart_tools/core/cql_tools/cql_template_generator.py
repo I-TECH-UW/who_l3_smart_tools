@@ -251,7 +251,7 @@ class CqlTemplateGenerator:
     Attributes:
         indicator_artifact_file (str): The path to the indicator artifact file.
         data_dictionary_file (str): The path to the data dictionary file.
-        cql_scaffolds (dict[str, str]): A dictionary containing the generated CQL scaffolds, with indicator names as 
+        cql_scaffolds (dict[str, str]): A dictionary containing the generated CQL scaffolds, with indicator names as
         keys and scaffolds as values.
         concept_lookup (dict[str, Any]): A dictionary containing the concept lookup data.
         cql_concept_dictionary (dict[str, Any]): A dictionary containing the CQL concept dictionary data.
@@ -259,10 +259,10 @@ class CqlTemplateGenerator:
         indicator_artifact (pd.DataFrame): The indicator artifact data frame.
         dak_name (str): The DAK name.
 
-    There is limited regeneration of existing CQL files. The header section up to the 
+    There is limited regeneration of existing CQL files. The header section up to the
     // AUTO-GENERATED END comment is updated.
 
-    The other sections are updated only if the input file is empty after the AUTO-GENERATED END comment. 
+    The other sections are updated only if the input file is empty after the AUTO-GENERATED END comment.
     Otherwise, a new file is created with a .template suffix.
 
     """
@@ -336,14 +336,14 @@ class CqlTemplateGenerator:
                     if len(lines) > last_generated_line_index + 1:
                         # File is not empty after the last generated line - update header and generate .template file
                         output_file_contents += "".join(
-                            lines[last_generated_line_index + 1:]
+                            lines[last_generated_line_index + 1 :]
                         )
                         create_template_file = True
                         additional_template_file_contents += (
                             scaffold["header"] + scaffold["default_content"]
                         )
                         additional_template_file_contents += "".join(
-                            lines[last_generated_line_index + 1:]
+                            lines[last_generated_line_index + 1 :]
                         )
                     else:
                         # File is empty after the last generated line
@@ -364,7 +364,7 @@ class CqlTemplateGenerator:
         This method generates CQL scaffolds for each indicator in the DAK.
 
         Returns:
-            dict[str, str]: A dictionary containing the generated CQL scaffolds, with indicator names 
+            dict[str, str]: A dictionary containing the generated CQL scaffolds, with indicator names
             as keys and scaffolds as values.
         """
 
