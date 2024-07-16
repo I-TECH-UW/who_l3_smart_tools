@@ -14,7 +14,7 @@ repos:
         require_serial: true
         args:
           [
-            "-rn",
-            "-sn",
+            "--reports=n",
+            "--score=n",
             "--rcfile=.pylintrc"
           ]
