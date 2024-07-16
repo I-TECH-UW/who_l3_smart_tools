@@ -1,8 +1,8 @@
+import argparse
 import datetime
 import os
-import argparse
 from pathlib import Path
-import pandas as pd
+
 from who_l3_smart_tools.core.indicator_testing.bundle_generator import BundleGenerator
 from who_l3_smart_tools.core.indicator_testing.data_generator import DataGenerator
 from who_l3_smart_tools.core.indicator_testing.scaffolding_generator import (
