@@ -1,3 +1,4 @@
+#! /usr/bin/env python
 import argparse
 import datetime
 import os
@@ -8,6 +9,7 @@ from who_l3_smart_tools.core.indicator_testing.data_generator import DataGenerat
 from who_l3_smart_tools.core.indicator_testing.scaffolding_generator import (
     ScaffoldingGenerator,
 )
+from who_l3_smart_tools.utils.fhirclient import send_to_fhir_server
 
 
 def generate_test_scaffold(input_file):
@@ -50,7 +52,10 @@ def generate_fhir_data(input_file, start_date, end_date, output_mode, fhir_serve
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Tool for generating FHIR patient bundles and scaffolding spreadsheets from Excel files."
+        description=(
+            "Tool for generating FHIR patient bundles and scaffolding "
+            "spreadsheets from Excel files."
+        )
     )
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
 

@@ -1,6 +1,7 @@
-import stringcase
 import re
+
 import pandas as pd
+import stringcase
 
 # Measure Profiles from http://hl7.org/fhir/us/cqfmeasures/STU4/index.html
 measure_instance = {
@@ -18,7 +19,8 @@ measure_required_elements = {
     ],
 }
 
-# CQL File name type keywords per https://worldhealthorganization.github.io/smart-ig-starter-kit/l3_cql.html
+# CQL File name type keywords per
+# https://worldhealthorganization.github.io/smart-ig-starter-kit/l3_cql.html
 common_cql_filename_keywords: list = [
     "Common",
     "Concepts",
@@ -57,7 +59,7 @@ def create_cql_concept_dictionaries(dd_xls: dict, dak_name: str):
     for sheet_name in dd_xls.keys():
         if re.match(rf"{dak_name}\.\w+", sheet_name):
             df = dd_xls[sheet_name]
-            for i, row in df.iterrows():
+            for _, row in df.iterrows():
                 # Grab Linkages to Decision Support Tables and Aggregate Indicators
                 data_type = row["Data Type"]
                 data_element_id = row["Data Element ID"]
@@ -76,12 +78,12 @@ def create_cql_concept_dictionaries(dd_xls: dict, dak_name: str):
                 ## TODO: refactor to remove duplicate code for cds and indicators
 
                 # Select row if Linkage to CDS or Indicator is not empty
-                if cds and type(cds) == str and not pd.isna(cds):
+                if cds and isinstance(cds, str) and not pd.isna(cds):
                     # Grab: Data Element ID, Data Element Label, Description and Definition
                     # and index by indicator / cds ids
 
                     # Add to concept dictionary if not already present
-                    if data_element_id not in cql_concept_dictionary.keys():
+                    if data_element_id not in cql_concept_dictionary:
                         cql_concept_dictionary[data_element_id] = {
                             "label": row["Data Element Label"],
                             "sheet": sheet_name,
@@ -91,9 +93,13 @@ def create_cql_concept_dictionaries(dd_xls: dict, dak_name: str):
 
                     # Parse linkages
                     linkages.extend([item.strip() for item in cds.split(",")])
-                if indicators and type(indicators) == str and not pd.isna(indicators):
+                if (
+                    indicators
+                    and isinstance(indicators, str)
+                    and not pd.isna(indicators)
+                ):
                     # Add to concept dictionary if not already present
-                    if data_element_id not in cql_concept_dictionary.keys():
+                    if data_element_id not in cql_concept_dictionary:
                         cql_concept_dictionary[data_element_id] = {
                             "label": row["Data Element Label"],
                             "sheet": sheet_name,
@@ -106,7 +112,7 @@ def create_cql_concept_dictionaries(dd_xls: dict, dak_name: str):
                 # Add linkages as keys to concept dictionary, and add data element details
                 for linkage in linkages:
                     # if linkage not in concept dictionary, add it
-                    if linkage not in indicator_concept_lookup.keys():
+                    if linkage not in indicator_concept_lookup:
                         indicator_concept_lookup[linkage] = []
 
                     # Add data element details to linkage
@@ -176,7 +182,8 @@ def get_dak_name(dd_xls: dict):
         if not sheet_name or pd.isna(sheet_name) or sheet_name is not str:
             continue
         matches = dak_name_pattern.search(sheet_name)
-        dak_name_matches.extend(matches.groups()) if matches else None
+        if matches:
+            dak_name_matches.extend(matches.groups())
 
     # Determine if all matches are the same
     if len(set(dak_name_matches)) == 1:
@@ -187,7 +194,7 @@ def get_dak_name(dd_xls: dict):
     return dak_name
 
 
-scoring_ip_template = """
+SCORING_IP_TEMPLATE = """
 /*
  * Generated template based on {denominator_definition}
  */
@@ -195,32 +202,33 @@ define "Initial Population":
   true
 """
 
-scoring_cv_mp_template = """
+SCORING_CV_MP_TEMPLATE = """
 define "measurePopulation":
   true
 """
 
-scoring_cv_mp_excl_template = """
+SCORING_CV_MP_EXCL_TEMPLATE = """
 define "measurePopulationExclusion
     false
 """
 
-scoring_cv_mo_template = """
+SCORING_CV_MO_TEMPLATE = """
 define "measureObservation":
   true
 """
 
-scoring_prop_num_template = """
+SCORING_PROP_NUM_TEMPLATE = """
 define "Numerator":
   true
 """
 
-scoring_prop_den_template = """
+SCORING_PROP_DEN_TEMPLATE = """
 define: "Denominator":
   true
 """
 
 
+# pylint: disable=unused-argument
 def generate_population_definitions(scoring, indicator_row):
     # Generate Population Definitions based on suggested scoring
     #
@@ -255,19 +263,23 @@ def parse_cql_library_name(cql_file_contents: str):
 
     if indicator_comment_match:
         parsed_data["full_library_name"] = (
-            f"{indicator_comment_match.group(1)}.{indicator_comment_match.group(2)}.{indicator_comment_match.group(3)} {indicator_comment_match.group(4)}"
+            f"{indicator_comment_match.group(1)}.{indicator_comment_match.group(2)}."
+            f"{indicator_comment_match.group(3)} {indicator_comment_match.group(4)}"
         )
         parsed_data["file_library_name"] = (
-            f"{indicator_comment_match.group(1)}{indicator_comment_match.group(2)}{indicator_comment_match.group(3)}{indicator_comment_match.group(4)}"
+            f"{indicator_comment_match.group(1)}{indicator_comment_match.group(2)}"
+            f"{indicator_comment_match.group(3)}{indicator_comment_match.group(4)}"
         )
         parsed_data["dak_name"] = indicator_comment_match.group(1)
         parsed_data["file_type"] = "indicator"
     elif dt_comment_match:
         parsed_data["full_library_name"] = (
-            f"{dt_comment_match.group(1)}.{dt_comment_match.group(2)}.{dt_comment_match.group(3)}{dt_comment_match.group(4)} {dt_comment_match.group(5)}"
+            f"{dt_comment_match.group(1)}.{dt_comment_match.group(2)}.{dt_comment_match.group(3)}"
+            f"{dt_comment_match.group(4)} {dt_comment_match.group(5)}"
         )
         parsed_data["file_library_name"] = (
-            f"{dt_comment_match.group(1)}{dt_comment_match.group(2)}{dt_comment_match.group(3)}{dt_comment_match.group(4)}{dt_comment_match.group(5)}"
+            f"{dt_comment_match.group(1)}{dt_comment_match.group(2)}{dt_comment_match.group(3)}"
+            f"{dt_comment_match.group(4)}{dt_comment_match.group(5)}"
         )
         parsed_data["dak_name"] = dt_comment_match.group(1)
         parsed_data["file_type"] = "dt"

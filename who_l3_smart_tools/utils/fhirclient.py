@@ -1,5 +1,6 @@
-from fhirpy import SyncFHIRClient
 import json
+
+from fhirpy import SyncFHIRClient
 
 
 def send_to_fhir_server(bundle, fhir_server_url):
@@ -24,5 +25,5 @@ def send_to_fhir_server(bundle, fhir_server_url):
         # This might need adjustment based on fhirpy's version or specific server requirements.
         fhir_bundle.save()
         print("Transaction bundle sent successfully to the FHIR server.")
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-except
         print(f"Failed to send transaction bundle to the FHIR server: {e}")
