@@ -244,7 +244,7 @@ define "{{ disaggregation.name }}":
 )
 
 
-class CqlIndicatorTemplateGenerator:
+class IndicatorTemplateGenerator:
     """
     This class represents a CQL template generator that is used to generate CQL scaffolds for each indicator in the DAK.
 

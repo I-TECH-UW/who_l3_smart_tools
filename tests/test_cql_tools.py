@@ -6,8 +6,8 @@ from who_l3_smart_tools.core.cql_tools.cql_file_generation.cql_file_generator im
 from who_l3_smart_tools.core.cql_tools.fsh_file_generation.fsh_resource_generator import (
     FshResourceGenerator,
 )
-from who_l3_smart_tools.core.cql_tools.template_generation.cql_indicator_template_generator import (
-    CqlIndicatorTemplateGenerator,
+from who_l3_smart_tools.core.cql_tools.template_generation.indicator_template_generator import (
+    IndicatorTemplateGenerator,
 )
 import pandas as pd
 import unittest
@@ -24,7 +24,7 @@ class TestCqlTools(unittest.TestCase):
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        generator = CqlIndicatorTemplateGenerator(input_indicators, input_dd)
+        generator = IndicatorTemplateGenerator(input_indicators, input_dd)
 
         generator.generate_cql_scaffolds()
 
