@@ -1,19 +1,128 @@
 import pandas as pd
+from jinja2 import Environment, FileSystemLoader
 
+from who_l3_smart_tools.utils.cql_helpers import (
+    create_cql_concept_dictionaries,
+    get_dak_name,
+)
 
-class ElementsTemplateGenerator:
+# Initialize Jinja2 environment
+env = Environment(
+    loader=FileSystemLoader("."), autoescape=False, trim_blocks=True, lstrip_blocks=True
+)
 
-    def __init__(self, data_dictionary_file: str, indicator_file: str):
+#
+# Templates
+#
+
+# Top-level Templates
+elements_library_template = env.from_string(
+    """library {{dak_name}}Elements
+
+{{ elements_library_includes }}
+
+context Patient
+
+/**
+ * {{dak_name}} Elements
+ */
+
+// Auto-generated Elements from DAK Data Dictionary
+//   Entries based on DAK Data Dictionary for Data Elements marked as used
+//   in at least one Decision Support Table or Aggregate Indicator
+
+{% for element in elements %}
+/*
+@dataElement: {{element['dak_id']}} - {{element['label']}}
+@activity: {{element['activity']}}
+@description: {{element['description']}}
+*/
+define "{{element['label']}}":
+{{element['suggested_cql']}}
+{% endfor %}
+
+// Custom Elements and Logic for use DT and IND cql files
+"""
+)
+
+indicator_elements_library_template = env.from_string(
+    """library {{ dak_name }}IndicatorElements
+
+{{ elements_library_includes }}
+
+parameter "Measurement Period" Interval<Date> default Interval[@2024-01-01, @2024-12-30]
+
+context Patient
+
+// Auto-generated Elements from DAK Data Dictionary
+//   Entries based on DAK Data Dictionary for Data Elements marked as used
+//   in at least one Decision Support Table or Aggregate Indicator
+
+{% for indicator_element in indicator_elements %}
+/*
+@dataElement: {{element['dak_id']}} - {{element['label']}}
+@activity: {{element['activity']}}
+@description: {{element['description']}}
+*/
+define "{{element['label']}}":
+    Elements."{{element['label']}}" O // TODO: Placeholder
+        where O.effective.ToInterval() starts during "Measurement Period"
+
+{% endfor %}
+"""
+)
+
+# Header Templates
+elements_library_includes_template = env.from_string(
+    """using FHIR version '4.0.1'
+
+include fhir.cqf.common.FHIRHelpers called FH
+include fhir.cqf.common.FHIRCommon called FC
+
+include WHOConcepts
+include WHOCommon called WC
+include WHOElements called WE
+
+include {{dak_name}}Concepts called Concepts
+include {{dak_name}}Common called Common
+"""
+)
+
+# Suggested CQL Templates
+collection_observation_template = env.from_string(
+    """[Observation: Concepts."{{element['label']}}"] // TODO: Placeholder"""
+)
+
+collection_condition_template = env.from_string(
+    """[Condition: Concepts."{{element['label']}}"] // TODO: Placeholder"""
+)
+
+collection
+class ElementsCqlGenerator:
+    """
+    Generates CQL element libraries based on data dictionary and indicator files.
+
+    Referenced SOPs:
+     - https://worldhealthorganization.github.io/smart-ig-starter-kit/l3_cql.html#elements-library
+     - https://worldhealthorganization.github.io/smart-ig-starter-kit/l3_cql.html#encounter-and-indicator-elements-libraries
+    """
+
+    def __init__(self, data_dictionary_file: str):
         self.dd_xlsx = pd.read_excel(data_dictionary_file, sheet_name=None)
-        self.indicator_xlsx = pd.read_excel(
-            indicator_file, sheet_name="Indicator definitions"
+
+        self.dak_name = get_dak_name(self.data_dictionary_xls)
+
+        self.concept_lookup, self.cql_concept_dictionary = (
+            create_cql_concept_dictionaries(self.data_dictionary_xls, self.dak_name)
         )
 
     def generate_cql_element_libraries(self, output_dir: str):
-        # Referenced SOPs:
-        # - https://worldhealthorganization.github.io/smart-ig-starter-kit/l3_cql.html#elements-library
-        # - https://worldhealthorganization.github.io/smart-ig-starter-kit/l3_cql.html#encounter-and-indicator-elements-libraries
+        """
+        Generates CQL element libraries and writes them to the specified output directory.
 
+        Args:
+            output_dir (str): The directory where the CQL element libraries will be written.
+        """
         encounter_library_name = f"{self.dak_name}EncounterElements"
         encounter_file_name = f"{encounter_library_name}.cql"
 

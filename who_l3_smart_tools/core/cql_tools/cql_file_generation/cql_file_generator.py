@@ -10,9 +10,8 @@ from who_l3_smart_tools.utils.cql_helpers import (
 
 
 class CqlFileGenerator:
-    def __init__(self, indicator_artifact_file: str, data_dictionary_file: str):
+    def __init__(self, data_dictionary_file: str):
         self.dak_name: str = None
-        self.indicator_artifact_file = indicator_artifact_file
         self.data_dictionary_file = data_dictionary_file
 
         self.concept_lookup: dict[str, Any] = {}
