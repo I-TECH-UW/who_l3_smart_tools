@@ -123,7 +123,7 @@ class EmptyItem:
 __empty__ = EmptyItem()
 
 
-class CqlResourceGenerator:
+class FshResourceGenerator:
     """
     This class assists in the translation of L2 DAK indicator artifacts into
     CQL and related resources for loading into the IG.

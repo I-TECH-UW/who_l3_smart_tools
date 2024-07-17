@@ -2,12 +2,12 @@
 import datetime
 import os
 import re
-from who_l3_smart_tools.core.cql_tools.cql_file_generator import CqlFileGenerator
-from who_l3_smart_tools.core.cql_tools.cql_resource_generator import (
-    CqlResourceGenerator,
+from who_l3_smart_tools.core.cql_tools.cql_file_generation.cql_file_generator import CqlFileGenerator
+from who_l3_smart_tools.core.cql_tools.fsh_file_generation.fsh_resource_generator import (
+    FshResourceGenerator,
 )
-from who_l3_smart_tools.core.cql_tools.cql_template_generator import (
-    CqlTemplateGenerator,
+from who_l3_smart_tools.core.cql_tools.template_generation.cql_indicator_template_generator import (
+    CqlIndicatorTemplateGenerator,
 )
 import pandas as pd
 import unittest
@@ -24,7 +24,7 @@ class TestCqlTools(unittest.TestCase):
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        generator = CqlTemplateGenerator(input_indicators, input_dd)
+        generator = CqlIndicatorTemplateGenerator(input_indicators, input_dd)
 
         generator.generate_cql_scaffolds()
 
@@ -68,7 +68,7 @@ class TestCqlResourceGenerator(unittest.TestCase):
             indicator_file[indicator_file["DAK ID"] == "HIV.IND.27"].head(1).squeeze()
         )
 
-        self.generator = CqlResourceGenerator(
+        self.generator = FshResourceGenerator(
             self.cql_content, {self.indicator_row["DAK ID"]: self.indicator_row}
         )
 
@@ -172,7 +172,7 @@ class TestCqlGeneratorOnAllFiles(unittest.TestCase):
             cql_content = cql_file.read()
             cql_file.close()
 
-            generator = CqlResourceGenerator(cql_content, indicator_dict)
+            generator = FshResourceGenerator(cql_content, indicator_dict)
 
             # Create Library file and save to file
             library_fsh = generator.generate_library_fsh()
