@@ -5,7 +5,9 @@ import pandas as pd
 
 from who_l3_smart_tools.utils.cql_helpers import (
     create_cql_concept_dictionaries,
+    get_concept_label,
     get_dak_name,
+    count_label_frequencies,
 )
 
 
@@ -40,31 +42,10 @@ class CqlFileGenerator:
         library_name = f"{self.dak_name}Concepts"
         concept_file_name = f"{library_name}.cql"
 
-        label_frequency: dict[str, int] = {}
-        label_sheet_frequency: dict[(str, str), int] = {}
+        label_frequency, label_sheet_frequency = count_label_frequencies(
+            self.cql_concept_dictionary
+        )
 
-        # Collapse concept_details["label"] to count frequency
-        for concept_id, concept_details in self.cql_concept_dictionary.items():
-            if pd.isna(concept_details["label"]) or not concept_details["label"]:
-                continue
-
-            concept_details["label"] = re.sub(r"[\'\"()]", "", concept_details["label"])
-            if concept_details["label"] not in label_frequency:
-                label_frequency[concept_details["label"]] = 1
-            else:
-                label_frequency[concept_details["label"]] += 1
-
-            if (
-                concept_details["label"],
-                concept_details["sheet"],
-            ) not in label_sheet_frequency:
-                label_sheet_frequency[
-                    concept_details["label"], concept_details["sheet"]
-                ] = 1
-            else:
-                label_sheet_frequency[
-                    concept_details["label"], concept_details["sheet"]
-                ] += 1
         with open(f"{output_dir}/{concept_file_name}", "w") as file:
             file.write("// **Automatically generated from DAK Data Dictionary**\n")
             file.write(
@@ -88,7 +69,7 @@ class CqlFileGenerator:
             # Write valuesets for Coding data types, and label as `Grouping`
             for concept_id, concept_details in self.cql_concept_dictionary.items():
                 if concept_details["data_type"] == "Coding":
-                    label_str = self.get_concept_label(
+                    label_str = get_concept_label(
                         label_frequency,
                         label_sheet_frequency,
                         concept_id,
@@ -102,7 +83,7 @@ class CqlFileGenerator:
 
             # Write codes
             for concept_id, concept_details in self.cql_concept_dictionary.items():
-                label_str = self.get_concept_label(
+                label_str = get_concept_label(
                     label_frequency,
                     label_sheet_frequency,
                     concept_id,
@@ -113,18 +94,3 @@ class CqlFileGenerator:
                     f"code \"{label_str}\": '{concept_id}' "
                     f"from \"{library_name}\" display '{concept_details['label']}'\n"
                 )
-
-    def get_concept_label(
-        self, label_frequency, label_sheet_frequency, concept_id, concept_details
-    ):
-        if label_frequency[concept_details["label"]] == 1:
-            label_str = concept_details["label"]
-        else:
-            label_str = f"{concept_details['label']} - {concept_id}"
-
-        # if (
-        #     label_sheet_frequency[concept_details["label"], concept_details["sheet"]]
-        #     > 1
-        # ):
-        #     label_str += f" - {concept_id}"
-        return label_str

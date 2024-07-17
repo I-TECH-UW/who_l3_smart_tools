@@ -90,14 +90,18 @@ include {{dak_name}}Common called Common
 
 # Suggested CQL Templates
 collection_observation_template = env.from_string(
-    """[Observation: Concepts."{{element['label']}}"] // TODO: Placeholder"""
+    """[Observation: Concepts."{{element['label']}}"] O // TODO: Placeholder
+    where O.status in { 'final', 'amended', 'corrected' }
+    """
 )
+
+element_observation_template = env.from_string(""" // TODO: Placeholder""")
 
 collection_condition_template = env.from_string(
     """[Condition: Concepts."{{element['label']}}"] // TODO: Placeholder"""
 )
 
-collection
+
 class ElementsCqlGenerator:
     """
     Generates CQL element libraries based on data dictionary and indicator files.

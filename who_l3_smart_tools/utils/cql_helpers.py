@@ -325,3 +325,48 @@ def parse_cql_library_name(cql_file_contents: str):
         raise ValueError("Keys missing when parsing CQL library name")
 
     return parsed_data
+
+
+def count_label_frequencies(cql_concept_dictionary):
+    label_frequency: dict[str, int] = {}
+    label_sheet_frequency: dict[(str, str), int] = {}
+
+    # Collapse concept_details["label"] to count frequency
+    for concept_id, concept_details in cql_concept_dictionary.items():
+        if pd.isna(concept_details["label"]) or not concept_details["label"]:
+            continue
+
+        concept_details["label"] = re.sub(r"[\'\"()]", "", concept_details["label"])
+        if concept_details["label"] not in label_frequency:
+            label_frequency[concept_details["label"]] = 1
+        else:
+            label_frequency[concept_details["label"]] += 1
+
+        if (
+            concept_details["label"],
+            concept_details["sheet"],
+        ) not in label_sheet_frequency:
+            label_sheet_frequency[
+                concept_details["label"], concept_details["sheet"]
+            ] = 1
+        else:
+            label_sheet_frequency[
+                concept_details["label"], concept_details["sheet"]
+            ] += 1
+    return label_frequency, label_sheet_frequency
+
+
+def get_concept_label(
+    label_frequency, label_sheet_frequency, concept_id, concept_details
+):
+    if label_frequency[concept_details["label"]] == 1:
+        label_str = concept_details["label"]
+    else:
+        label_str = f"{concept_details['label']} - {concept_id}"
+
+    # if (
+    #     label_sheet_frequency[concept_details["label"], concept_details["sheet"]]
+    #     > 1
+    # ):
+    #     label_str += f" - {concept_id}"
+    return label_str
