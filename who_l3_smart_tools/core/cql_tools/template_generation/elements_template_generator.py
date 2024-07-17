@@ -37,8 +37,11 @@ context Patient
 @activity: {{element['activity']}}
 @description: {{element['description']}}
 */
-define "{{element['label']}}":
-{{element['suggested_cql']}}
+// TODO: Replace placeholder with relevant CQL logic
+{{data_element_define}}
+{{observation_define}}
+{{condition_define}}
+// End of {{element['label']}}
 {% endfor %}
 
 // Custom Elements and Logic for use DT and IND cql files
@@ -90,16 +93,19 @@ include {{dak_name}}Common called Common
 
 # Suggested CQL Templates
 collection_observation_template = env.from_string(
-    """[Observation: Concepts."{{element['label']}}"] O // TODO: Placeholder
+    """define "{{element['label']}} Observation":
+    [Observation: Concepts."{{element['label']}}"] O 
     where O.status in { 'final', 'amended', 'corrected' }
-    """
+"""
 )
 
-element_observation_template = env.from_string(""" // TODO: Placeholder""")
-
-collection_condition_template = env.from_string(
-    """[Condition: Concepts."{{element['label']}}"] // TODO: Placeholder"""
+element_observation_template = env.from_string(
+    """"{{element['collection_label']}} O
+    where O.value ~ Concepts."{{element['label']}}"
+"""
 )
+
+condition_template = env.from_string("""[Condition: Concepts."{{element['label']}}"]""")
 
 
 class ElementsCqlGenerator:
@@ -109,6 +115,22 @@ class ElementsCqlGenerator:
     Referenced SOPs:
      - https://worldhealthorganization.github.io/smart-ig-starter-kit/l3_cql.html#elements-library
      - https://worldhealthorganization.github.io/smart-ig-starter-kit/l3_cql.html#encounter-and-indicator-elements-libraries
+
+    This class creates template CQL for data elements in the DAK Data Dictionary (DAK_DD)
+
+    Example CQL is generated  CQL for DAK_DD Coding and Codes elements with the contrived assumption that
+    the data would be stored as a FHIR observation or condition, and the base element would be a OR
+    expression of the condition or observation.
+
+    IndicatorElements file is generated with the contrived assumption that the entries
+    only differ from the base entries by adding a filter to the base elements
+    against the provided measurement period.
+
+    EncounterElements file is generated with the contrived assumption that Encounter definitions
+    only differ from the base entries by adding a filter to the base elements
+    for the provider encounter and date.
+
+    These templates should be replaced with the relevant CQL logic during the authoring process.
     """
 
     def __init__(self, data_dictionary_file: str):
