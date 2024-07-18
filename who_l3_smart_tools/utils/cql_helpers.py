@@ -90,7 +90,6 @@ def create_cql_concept_dictionaries(dd_xls: dict, dak_name: str):
                     # Add to concept dictionary if not already present
                     if data_element_id not in cql_concept_dictionary:
                         cql_concept_dictionary[data_element_id] = to_concept_dictionary(
-                            data_element_id,
                             row["Data Element Label"],
                             sheet_name,
                             data_type,
@@ -110,7 +109,6 @@ def create_cql_concept_dictionaries(dd_xls: dict, dak_name: str):
                     # Add to concept dictionary if not already present
                     if data_element_id not in cql_concept_dictionary:
                         cql_concept_dictionary[data_element_id] = to_concept_dictionary(
-                            data_element_id,
                             row["Data Element Label"],
                             sheet_name,
                             data_type,
@@ -166,6 +164,8 @@ def to_concept_dictionary(
             raise ValueError("Last Coding ID not found for Data Element ID")
         return_dict["parent_coding_id"] = lastCodingId
 
+    return return_dict
+
 
 def determine_scoring_suggestion(denominator_val: str):
     # Determine Scoring Type and set proper values
@@ -219,7 +219,7 @@ def get_dak_name(dd_xls: dict):
     dak_name = None
 
     for sheet_name in dd_xls.keys():
-        if not sheet_name or pd.isna(sheet_name) or sheet_name is not str:
+        if not sheet_name or pd.isna(sheet_name) or not isinstance(sheet_name, str):
             continue
         matches = dak_name_pattern.search(sheet_name)
         if matches:

@@ -55,6 +55,13 @@ class TestCqlTools(unittest.TestCase):
 
         generator = ElementsCqlGenerator(input_dd)
 
+        generator.generate_cql_element_libraries(output_dir=output_dir)
+
+        assert os.path.exists(os.path.join(output_dir, "HIVElements.cql"))
+        assert os.path.exists(os.path.join(output_dir, "HIVIndicatorElements.cql"))
+        assert os.path.exists(os.path.join(output_dir, "HIVEncounterElements.cql"))
+
+
 class TestCqlResourceGenerator(unittest.TestCase):
     def setUp(self):
         # since we're comparing text, it's useful to have large diffs
@@ -108,7 +115,7 @@ class TestCqlResourceGenerator(unittest.TestCase):
         with open(output_file, "w") as f:
             f.write(library_fsh)
 
-        expected_lib_file = f"tests/data/example_fsh/HIV27_library.fsh"
+        expected_lib_file = "tests/data/example_fsh/HIV27_library.fsh"
         with open(expected_lib_file, "r") as expected_lib_fsh_file:
             expected_library_fsh = expected_lib_fsh_file.read().rstrip()
 
