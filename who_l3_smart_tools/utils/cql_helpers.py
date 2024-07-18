@@ -67,6 +67,14 @@ def create_cql_concept_dictionaries(dd_xls: dict, dak_name: str):
 
                 linkages = []
 
+                update_concepts_and_linkages(
+                    row,
+                    sheet_name,
+                    lastCodingId,
+                    linkages,
+                    cql_concept_dictionary,
+                )
+
                 # Add linkages as keys to concept dictionary, and add data element details
                 for linkage in linkages:
                     # if linkage not in concept dictionary, add it
