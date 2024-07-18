@@ -17,22 +17,29 @@ Faker = ">=25.0"
 inflect = "^7.3.0"
 python-slugify = ">=8.0.4"
 stringcase = ">=1.2"
+jinja2 = "^3.1.4"
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=6"
 flake8 = ">=3.8"
 Sphinx = ">=3.2"
 pyright = "^1.1.367"
+pre-commit = "^3.7.1"
+pylint = "^3.2.5"
+black = "^24.4.2"
 
 [tool.pyright]
 venvPath = "."
 venv = ".venv"
 
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
 [tool.poetry.scripts]
+lint = "scripts.lint:main"
+format = "scripts.format:main"
 logical_model_gen = "who_l3_smart_tools.cli.logical_model_gen:main"
 indicator_testing = "who_l3_smart_tools.cli.indicator_testing:main"
 terminology = "who_l3_smart_tools.cli.terminology:main"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

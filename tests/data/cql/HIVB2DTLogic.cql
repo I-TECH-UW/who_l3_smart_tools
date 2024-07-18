@@ -1,17 +1,23 @@
-/*
- * Library: HIV.B2.DT
- * Check for signs of serious illness
- * Consolidated guidelines on HIV prevention, testing, treatment, service delivery and monitoring: recommendations for a public health approach (2021) Chapter 5: Advanced HIV Disease. Figure 5.1: Algorithm for providing a package of care for people with advanced HIV disease.  
- * Should this just be for anyone with HIV? 
- * Wouldn't other  disease domains also code for general exam?
- */
+/**
+Library: HIV.B2.DT Logic
 
-library HIVB2DT
+@DecisionID: HIV.B2.DT
+@BusinessRule:
+@Trigger: 
+@Description: 
+
+Check for signs of serious illness
+Consolidated guidelines on HIV prevention, testing, treatment, service delivery and monitoring: recommendations for a public health approach (2021) Chapter 5: Advanced HIV Disease. Figure 5.1: Algorithm for providing a package of care for people with advanced HIV disease.  
+Should this just be for anyone with HIV? 
+Wouldn't other  disease domains also code for general exam?
+*/
+
+library HIVB2DTLogic
 
  using FHIR version '4.0.1'
  
 
- include HIVIndicatorCommon version '0.0.1' called HIC
+ include HIVCommon version '0.0.1' called HIC
  include FHIRHelpers version '4.0.1'
  include WHOCommon called WCom
  include FHIRCommon called FC

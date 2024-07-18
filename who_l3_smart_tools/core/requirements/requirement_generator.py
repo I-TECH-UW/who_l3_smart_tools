@@ -5,7 +5,7 @@ import os
 from who_l3_smart_tools.utils import camel_case
 
 
-requirement_template ="""Instance: {id}
+requirement_template = """Instance: {id}
 InstanceOf: Requirements
 Title: "{title}"
 Description: "Functional Requirements For {title}"
@@ -19,7 +19,7 @@ functional_requirement_item_template = """
    As a {actor}
    I want {action}
    So that {reason}  \"\"\""""
- 
+
 
 non_functional_requirement_template = """Instance: HIVNonFunctionalRequirements
 InstanceOf: Requirements
@@ -34,7 +34,7 @@ non_functional_requirement_item_template = """
   * requirement = \"\"\"
     For {category} ,
     {action} \"\"\""""
-  
+
 
 class RequirementGenerator:
     def __init__(self, input_file, output_dir):
@@ -45,58 +45,60 @@ class RequirementGenerator:
         if not os.path.exists(self.output_dir):
             os.makedirs(self.output_dir)
 
-         # Load the Excel file
+        # Load the Excel file
         dd_xls = pd.read_excel(self.input_file, sheet_name=None)
         fileName = None
         for sheet_name in dd_xls.keys():
 
-            if sheet_name == "Functional" :
+            if sheet_name == "Functional":
 
                 df = dd_xls[sheet_name]
                 current_requirement_template = ""
-                
+
                 for i, row in df.iterrows():
                     requirement_id = str(row["Requirement ID"])
                     description = row["Activity ID and Description"]
-                    if not isinstance(description, str) :
-                         element_id ,title  = requirement_id.split(" ", 1)
-                         fileName = element_id.rstrip('.')
-                         current_requirement_template = requirement_template.format(
-                              id  =  requirement_id.replace(" ", ""),
-                              title = title
-                          )
-                         
-                    if isinstance(description, str) :
-                          current_requirement_template += functional_requirement_item_template.format(
-                              data_element_id = requirement_id ,
-                              actor = row["As a…"] ,
-                              action = str(row["I want…"]).strip('…').strip('...') ,
-                              reason = str(row["So that…"]).strip('…').strip('...')
-                           )
-                          
-                          self._write_current_activity(fileName , current_requirement_template)
+                    if not isinstance(description, str):
+                        element_id, title = requirement_id.split(" ", 1)
+                        fileName = element_id.rstrip(".")
+                        current_requirement_template = requirement_template.format(
+                            id=requirement_id.replace(" ", ""), title=title
+                        )
 
-            elif  sheet_name == "Non-functional" :   
-                  fileName = "HIV.Non_Functional"
-                  df = dd_xls[sheet_name]
-                  current_requirement_template = non_functional_requirement_template
-                  for i, row in df.iterrows():
-                       requirement_id = row["Requirement ID"]
-                       category = row["Category"]
-                       action = row["Non-Functional Requirement"]
-                       current_requirement_template += non_functional_requirement_item_template.format(
-                          data_element_id = requirement_id ,
-                          category = category ,
-                          action = action
-                      )
-                  self._write_current_activity(fileName , current_requirement_template)    
-                       
-                       
-                        
-    def _write_current_activity(self, file: Union[str, None], current_requirement_template: str):
+                    if isinstance(description, str):
+                        current_requirement_template += (
+                            functional_requirement_item_template.format(
+                                data_element_id=requirement_id,
+                                actor=row["As a…"],
+                                action=str(row["I want…"]).strip("…").strip("..."),
+                                reason=str(row["So that…"]).strip("…").strip("..."),
+                            )
+                        )
+
+                        self._write_current_activity(
+                            fileName, current_requirement_template
+                        )
+
+            elif sheet_name == "Non-functional":
+                fileName = "HIV.Non_Functional"
+                df = dd_xls[sheet_name]
+                current_requirement_template = non_functional_requirement_template
+                for i, row in df.iterrows():
+                    requirement_id = row["Requirement ID"]
+                    category = row["Category"]
+                    action = row["Non-Functional Requirement"]
+                    current_requirement_template += (
+                        non_functional_requirement_item_template.format(
+                            data_element_id=requirement_id,
+                            category=category,
+                            action=action,
+                        )
+                    )
+                self._write_current_activity(fileName, current_requirement_template)
+
+    def _write_current_activity(
+        self, file: Union[str, None], current_requirement_template: str
+    ):
         if file is not None:
             with open(os.path.join(self.output_dir, f"{file}.fsh"), "w") as f:
-                 f.write(current_requirement_template)    
-                    
-                   
-    
+                f.write(current_requirement_template)

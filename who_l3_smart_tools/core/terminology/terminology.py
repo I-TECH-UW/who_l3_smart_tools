@@ -7,6 +7,7 @@ from openpyxl import load_workbook
 from who_l3_smart_tools.core.terminology.schema import ConceptSchema
 
 
+# pylint: disable=too-few-public-methods
 class ConceptRow:
     """
     Represents a concept row.

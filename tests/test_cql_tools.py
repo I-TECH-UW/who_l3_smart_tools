@@ -10,19 +10,22 @@ from who_l3_smart_tools.core.cql_tools.cql_file_generator import CqlFileGenerato
 from who_l3_smart_tools.core.cql_tools.cql_resource_generator import (
     CqlResourceGenerator,
 )
+from who_l3_smart_tools.core.cql_tools.cql_template_generator import (
+    CqlTemplateGenerator,
+)
 
 
 class TestCqlTools(unittest.TestCase):
-    def test_generate_cql_file_headers(self):
+    def test_generate_cql_indicator_scaffolds(self):
         input_indicators = "tests/data/l2/test_indicators.xlsx"
         input_dd = "tests/data/l2/test_dd.xlsx"
-        output_dir = "tests/output/cql/templates/"
+        output_dir = "templates/cql/indicators/"
 
         # Make sure output directory exists
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        generator = CqlFileGenerator(input_indicators, input_dd)
+        generator = CqlTemplateGenerator(input_indicators, input_dd)
 
         generator.generate_cql_scaffolds()
 
@@ -40,7 +43,7 @@ class TestCqlTools(unittest.TestCase):
 
         generator = CqlFileGenerator(input_indicators, input_dd)
 
-        generator.generate_cql_concept_file(output_dir=output_dir)
+        generator.generate_cql_concept_library(output_dir=output_dir)
 
         assert os.path.exists(os.path.join(output_dir, "HIVConcepts.cql"))
 
@@ -111,7 +114,9 @@ class TestCqlResourceGenerator(unittest.TestCase):
 
         assert measure_fsh is not None
 
-        output_file = f"tests/output/fsh/{stringcase.alphanumcase(p['library_name'])}_measure.fsh"
+        output_file = (
+            f"tests/output/fsh/{stringcase.alphanumcase(p["library_name"])}_measure.fsh"
+        )
         if os.path.exists(output_file):
             os.remove(output_file)
         with open(output_file, "w") as f:
@@ -172,9 +177,7 @@ class TestCqlGeneratorOnAllFiles(unittest.TestCase):
             # Create Library file and save to file
             library_fsh = generator.generate_library_fsh()
             if library_fsh:
-                file_name = f"{stringcase.alphanumcase(generator.get_library_name())}"
-                if generator.is_indicator():
-                    file_name += "Logic"
+                file_name = generator.get_file_library_name()
                 file_name += ".fsh"
                 output_file = os.path.join(output_directory, "libraries", file_name)
                 with open(output_file, "w") as f:
@@ -186,7 +189,7 @@ class TestCqlGeneratorOnAllFiles(unittest.TestCase):
                 output_file = os.path.join(
                     output_directory,
                     "measures",
-                    f"{stringcase.alphanumcase(generator.get_library_name())}.fsh",
+                    f"{generator.get_file_measure_name()}.fsh",
                 )
                 with open(output_file, "w") as f:
                     f.write(measure_fsh)
