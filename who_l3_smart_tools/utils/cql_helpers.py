@@ -52,13 +52,13 @@ def create_cql_concept_dictionaries(dd_xls: dict, dak_name: str):
     """
 
     # Create a dictionary of concepts
-    indicator_concept_lookup = {}
-    cql_concept_dictionary = {}
+    indicator_concept_lookup: dict[str, list[dict[str, str]]] = {}
+    cql_concept_dictionary: dict[str, dict[str, str]] = {}
 
-    # TODO: refactor to common method across logic/terminology/this file
     for sheet_name in dd_xls.keys():
         if re.match(rf"{dak_name}\.\w+", sheet_name):
-            df = dd_xls[sheet_name]
+            df: pd.DataFrame = dd_xls[sheet_name]
+            lastCodingId = None
             for _, row in df.iterrows():
                 # Grab Linkages to Decision Support Tables and Aggregate Indicators
                 data_type = row["Data Type"]
@@ -75,7 +75,12 @@ def create_cql_concept_dictionaries(dd_xls: dict, dak_name: str):
                     row["Data Element Label"] = "None"
 
                 linkages = []
-                ## TODO: refactor to remove duplicate code for cds and indicators
+
+                # Save last coding label for use in following codings
+                if data_type == "Coding":
+                    lastCodingId = row["Data Element ID"]
+
+                # TODO: refactor to remove duplicate code for cds and indicators
 
                 # Select row if Linkage to CDS or Indicator is not empty
                 if cds and isinstance(cds, str) and not pd.isna(cds):
@@ -84,12 +89,16 @@ def create_cql_concept_dictionaries(dd_xls: dict, dak_name: str):
 
                     # Add to concept dictionary if not already present
                     if data_element_id not in cql_concept_dictionary:
-                        cql_concept_dictionary[data_element_id] = {
-                            "label": row["Data Element Label"],
-                            "sheet": sheet_name,
-                            "data_type": data_type,
-                            "description": row["Description and Definition"],
-                        }
+                        cql_concept_dictionary[data_element_id] = to_concept_dictionary(
+                            data_element_id,
+                            row["Data Element Label"],
+                            sheet_name,
+                            data_type,
+                            row["Activity ID"],
+                            row["Description and Definition"],
+                            lastCodingId,
+                            "dt",
+                        )
 
                     # Parse linkages
                     linkages.extend([item.strip() for item in cds.split(",")])
@@ -100,12 +109,18 @@ def create_cql_concept_dictionaries(dd_xls: dict, dak_name: str):
                 ):
                     # Add to concept dictionary if not already present
                     if data_element_id not in cql_concept_dictionary:
-                        cql_concept_dictionary[data_element_id] = {
-                            "label": row["Data Element Label"],
-                            "sheet": sheet_name,
-                            "data_type": data_type,
-                            "description": row["Description and Definition"],
-                        }
+                        cql_concept_dictionary[data_element_id] = to_concept_dictionary(
+                            data_element_id,
+                            row["Data Element Label"],
+                            sheet_name,
+                            data_type,
+                            row["Activity ID"],
+                            row["Description and Definition"],
+                            lastCodingId,
+                            "indicator",
+                        )
+                    else:
+                        cql_concept_dictionary[data_element_id]["linkage_type"] = "both"
 
                     linkages.extend([item.strip() for item in indicators.split(",")])
 
@@ -125,6 +140,31 @@ def create_cql_concept_dictionaries(dd_xls: dict, dak_name: str):
                     )
 
     return indicator_concept_lookup, cql_concept_dictionary
+
+
+# TODO: Refactor to use row as input and parse all data from row
+def to_concept_dictionary(
+    data_element_label: str,
+    sheet_name: str,
+    data_type: str,
+    activity: str,
+    description: str,
+    lastCodingId: str,
+    linkage_type: str,
+):
+    return_dict = {
+        "label": data_element_label,
+        "sheet": sheet_name,
+        "data_type": data_type,
+        "activity": activity,
+        "description": description,
+        "linkage_type": linkage_type,
+    }
+
+    if data_type == "Codes":
+        if not lastCodingId:
+            raise ValueError("Last Coding ID not found for Data Element ID")
+        return_dict["parent_coding_id"] = lastCodingId
 
 
 def determine_scoring_suggestion(denominator_val: str):
