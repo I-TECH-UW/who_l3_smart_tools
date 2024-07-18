@@ -60,67 +60,12 @@ def create_cql_concept_dictionaries(dd_xls: dict, dak_name: str):
             df: pd.DataFrame = dd_xls[sheet_name]
             lastCodingId = None
             for _, row in df.iterrows():
-                # Grab Linkages to Decision Support Tables and Aggregate Indicators
-                data_type = row["Data Type"]
-                data_element_id = row["Data Element ID"]
-
-                cds = row["Linkages to Decision Support Tables"]
-                indicators = row["Linkages to Aggregate Indicators"]
-
-                # Handle label value == "None"
-                if row["Data Element Label"] is None or pd.isna(
-                    row["Data Element Label"]
-                ):
-                    print(f"Data Element Label is None for {data_element_id}")
-                    row["Data Element Label"] = "None"
-
-                linkages = []
-
+                linkages: list = []
                 # Save last coding label for use in following codings
-                if data_type == "Coding":
+                if row["Data Type"] == "Coding":
                     lastCodingId = row["Data Element ID"]
 
-                # TODO: refactor to remove duplicate code for cds and indicators
-
-                # Select row if Linkage to CDS or Indicator is not empty
-                if cds and isinstance(cds, str) and not pd.isna(cds):
-                    # Grab: Data Element ID, Data Element Label, Description and Definition
-                    # and index by indicator / cds ids
-
-                    # Add to concept dictionary if not already present
-                    if data_element_id not in cql_concept_dictionary:
-                        cql_concept_dictionary[data_element_id] = to_concept_dictionary(
-                            row["Data Element Label"],
-                            sheet_name,
-                            data_type,
-                            row["Activity ID"],
-                            row["Description and Definition"],
-                            lastCodingId,
-                            "dt",
-                        )
-
-                    # Parse linkages
-                    linkages.extend([item.strip() for item in cds.split(",")])
-                if (
-                    indicators
-                    and isinstance(indicators, str)
-                    and not pd.isna(indicators)
-                ):
-                    # Add to concept dictionary if not already present
-                    if data_element_id not in cql_concept_dictionary:
-                        cql_concept_dictionary[data_element_id] = to_concept_dictionary(
-                            row["Data Element Label"],
-                            sheet_name,
-                            data_type,
-                            row["Activity ID"],
-                            row["Description and Definition"],
-                            lastCodingId,
-                            "indicator",
-                        )
-                    else:
-                        cql_concept_dictionary[data_element_id]["linkage_type"] = "both"
-
-                    linkages.extend([item.strip() for item in indicators.split(",")])
+                linkages = []
 
                 # Add linkages as keys to concept dictionary, and add data element details
                 for linkage in linkages:
@@ -140,31 +85,93 @@ def create_cql_concept_dictionaries(dd_xls: dict, dak_name: str):
     return indicator_concept_lookup, cql_concept_dictionary
 
 
-# TODO: Refactor to use row as input and parse all data from row
-def to_concept_dictionary(
-    data_element_label: str,
+def update_concepts_and_linkages(
+    row: pd.Series,
     sheet_name: str,
-    data_type: str,
-    activity: str,
-    description: str,
     lastCodingId: str,
-    linkage_type: str,
+    linkages: list,
+    cql_concept_dictionary: dict,
 ):
-    return_dict = {
-        "label": data_element_label,
+    """
+    This method creates a dictionary of concepts from the data dictionary file to include in the CQL
+    templates.
+
+    It takes in a row of data from the data dictionary file, the sheet name, and the last coding ID, and
+    modifies the linkages list and the cql_concept_dictionary dictionary in place.
+
+    Parameters:
+    - row: pd.Series
+        The row of data from the data dictionary file
+    - sheet_name: str
+        The name of the sheet in the data dictionary file
+    - lastCodingId: str
+        The last coding ID
+    - linkages: list
+        The list of linkages that will be updated
+    - cql_concept_dictionary: dict
+        The dictionary of concepts that will be updated
+
+    Returns: None
+    """
+    sheet_name_pattern = re.compile(r"(\w+)\.(\w+)\s(\w+)")
+    sheet_readable_name = None
+
+    # Parse row data
+    data_element_id = row["Data Element ID"]
+    cds = row["Linkages to Decision Support Tables"]
+    indicators = row["Linkages to Aggregate Indicators"]
+
+    # Get human-readable part of sheet name
+    sheet_name_match = sheet_name_pattern.search(sheet_name)
+
+    if sheet_name_match:
+        sheet_readable_name = sheet_name_match.group(3)
+    else:
+        raise ValueError("Sheet name does not match expected pattern")
+
+    # Handle label value == "None"
+    if row["Data Element Label"] is None or pd.isna(row["Data Element Label"]):
+        print(f"Data Element Label is None for {data_element_id}")
+        row["Data Element Label"] = "None"
+
+    concept_dict_entry = {
+        "label": row["Data Element Label"],
+        "sheet_name": sheet_readable_name,
         "sheet": sheet_name,
-        "data_type": data_type,
-        "activity": activity,
-        "description": description,
-        "linkage_type": linkage_type,
+        "data_type": row["Data Type"],
+        "activity": row["Activity ID"],
+        "description": row["Description and Definition"],
     }
 
-    if data_type == "Codes":
+    if row["Data Type"] == "Codes":
         if not lastCodingId:
             raise ValueError("Last Coding ID not found for Data Element ID")
-        return_dict["parent_coding_id"] = lastCodingId
+        concept_dict_entry["parent_coding_id"] = lastCodingId
 
-    return return_dict
+    # Select row if Linkage to CDS or Indicator is not empty
+    if cds and isinstance(cds, str) and not pd.isna(cds):
+        # Grab: Data Element ID, Data Element Label, Description and Definition
+        # and index by indicator / cds ids
+
+        # Add to concept dictionary if not already present
+        if data_element_id not in cql_concept_dictionary:
+            concept_dict_entry["linkage_type"] = "dt"
+            cql_concept_dictionary[data_element_id] = concept_dict_entry
+
+        # Parse linkages
+        linkages.extend([item.strip() for item in cds.split(",")])
+
+    if indicators and isinstance(indicators, str) and not pd.isna(indicators):
+        # Add to concept dictionary if not already present
+        if data_element_id not in cql_concept_dictionary:
+            concept_dict_entry["linkage_type"] = "indicator"
+            cql_concept_dictionary[data_element_id] = concept_dict_entry
+        else:
+            # If already added during CDS, update linkage type to both
+            cql_concept_dictionary[data_element_id]["linkage_type"] = "both"
+
+        linkages.extend([item.strip() for item in indicators.split(",")])
+    return None
 
 
 def determine_scoring_suggestion(denominator_val: str):
@@ -409,4 +416,17 @@ def get_concept_label(
     #     > 1
     # ):
     #     label_str += f" - {concept_id}"
+    return label_str
+
+
+def get_element_label(
+    label_frequency, label_sheet_frequency, concept_id, concept_details
+):
+    if label_frequency[concept_details["label"]] == 1:
+        label_str = concept_details["label"]
+    else:
+        label_str = f"{concept_details['label']} - {concept_id}"
+
+    if label_sheet_frequency[concept_details["label"], concept_details["sheet"]] > 1:
+        label_str += f" - {concept_id}"
     return label_str

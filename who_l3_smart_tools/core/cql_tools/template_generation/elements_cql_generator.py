@@ -6,6 +6,7 @@ from who_l3_smart_tools.utils.cql_helpers import (
     create_cql_concept_dictionaries,
     get_concept_label,
     get_dak_name,
+    get_element_label,
     sanitize_description,
 )
 
@@ -36,28 +37,28 @@ context Patient
 
 {% for element in elements %}
 /*
-@dataElement: {{element['dak_id']}} - {{element['label']}}
+@dataElement: {{element['dak_id']}} - {{element['name']}}
 @activity: {{element['activity']}}
 @description: {{element['description']}}
 */
 // TODO: Replace placeholder with relevant CQL logic
 {% if element['data_type'] == 'Coding' %}
 define "{{element['label']}} Observation":
-  [Observation: Concepts."{{element['label']}}"] O
+  [Observation: Concepts."{{element['concept_label']}}"] O
     where O.status in { 'final', 'amended', 'corrected' }
 {% elif element['data_type'] == 'Codes' %}
 define "{{element['label']}}":
   exists "{{element['label']}} Condition"
     or exists "{{element['label']}} Observation"
 define "{{element['label']}} Condition":
-  [Condition: Concepts."{{element['label']}}"]
+  [Condition: Concepts."{{element['concept_label']}}"]
 define "{{element['label']}} Observation":
-  [Observation: Concepts."{{element['collection_label']}}"] O
+  [Observation: Concepts."{{element['collection_concept_label']}}"] O
     where O.status in { 'final', 'amended', 'corrected' }
-      and O.value ~ Concepts."{{element['label']}}"
+      and O.value ~ Concepts."{{element['concept_label']}}"
 {% else %}
 define "{{element['label']}}":
-  [Observation: Concepts."{{element['label']}}"] O
+  [Observation: Concepts."{{element['concept_label']}}"] O
     where O.status in { 'final', 'amended', 'corrected' }
     return O.value
 {% endif %}
@@ -278,30 +279,39 @@ class ElementsCqlGenerator:
         encounter_elements: list[dict] = []
 
         for concept_id, concept_details in self.cql_concept_dictionary.items():
-            label_str = get_concept_label(
+            element_label = get_element_label(
                 label_frequency,
                 label_sheet_frequency,
                 concept_id,
                 concept_details,
             )
 
+            concept_label = get_concept_label(
+                label_frequency,
+                label_sheet_frequency,
+                concept_details["concept_id"],
+                concept_details,
+            )
+
             if concept_details["data_type"] == "Codes":
-                collection_label_str = get_concept_label(
+                collection_concept_label = get_concept_label(
                     label_frequency,
                     label_sheet_frequency,
                     concept_details["parent_coding_id"],
                     concept_details,
                 )
             else:
-                collection_label_str = None
+                collection_concept_label = None
 
             element_dict = {
                 "dak_id": concept_id,
-                "label": label_str,
+                "element_label": element_label,
+                "concept_label": concept_label,
+                "name": concept_details["name"],
                 "activity": sanitize_description(concept_details["activity"]),
                 "description": sanitize_description(concept_details["description"]),
                 "data_type": concept_details["data_type"],
-                "collection_label": collection_label_str,
+                "collection_label": collection_concept_label,
             }
 
             elements.append(element_dict)

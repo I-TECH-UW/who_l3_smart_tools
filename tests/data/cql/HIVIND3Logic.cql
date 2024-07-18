@@ -96,7 +96,6 @@ using FHIR version '4.0.1'
 
 include HIVCommon version '0.0.1' called HIC
 include FHIRHelpers version '4.0.1'
-include FHIRCommon called FC
 include WHOCommon called WCom
 
 // Indicator Definition
@@ -159,6 +158,10 @@ define "prep_dosing":
 
 define "Stratification":
  HIC."By Administrative Gender Stratifier".code 
-  + ':' + HIC."By Age Stratifier"
+  + ':' + HIC."By Age Stratifier 3"
 + ':' + HIC."By Geographic Region Stratifier"
-// how to add list
++ Combine(HIC.patientGroups, ':')
++ Combine(HIC.setting, ':')
++ Combine(HIC.prep_product, ':')
++ Combine(HIC.prep_experience, ':')
++ Combine(HIC.prep_dosing, ':')

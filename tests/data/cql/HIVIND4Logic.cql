@@ -77,7 +77,7 @@ using FHIR version '4.0.1'
 
 include HIVCommon version '0.0.1' called HIC
 include FHIRHelpers version '4.0.1'
-include FHIRCommon called FC
+//include FHIRCommon called FC
 include WHOCommon called WCom
 
 // Indicator Definition
@@ -133,7 +133,8 @@ define "Setting":
 
 define "Stratification":
  HIC."By Administrative Gender Stratifier".code 
-  + ':' + HIC."By Age Stratifier"
+  + ':' + HIC."By Age Stratifier 3"
 + ':' + HIC."By Geographic Region Stratifier"
-//Need to discuss how to add list
-//+ ':' +HIC."patientGroups"
++ Combine(HIC.patientGroups, ':')
++ Combine(HIC.setting, ':')
++ Combine(HIC.prep_product, ':')

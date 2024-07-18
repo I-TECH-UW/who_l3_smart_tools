@@ -54,7 +54,6 @@ using FHIR version '4.0.1'
 
 include HIVCommon version '0.0.1' called HIC
 include FHIRHelpers version '4.0.1'
-include FHIRCommon called FC
 include WHOCommon called WCom
 
 // Indicator Definition
@@ -78,7 +77,7 @@ define "Initial Population":
  */
 
 define "Numerator":
-  true
+  HIC.OAMT_retained
 
 
 /**
@@ -89,8 +88,35 @@ define "Numerator":
  */
 
 define "Denominator":
-  true
+  HIC.OAMT_initiated
     
 
 /* end Populations */
 
+/*
+ * Disaggregators
+ */
+
+define "Administrative Gender Stratifier":
+	HIC."By Administrative Gender Stratifier"
+
+define "Age Stratifier":
+	HIC."By Age Stratifier 3"
+
+define "Geographic Region Stratifier":
+	HIC."By Geographic Region Stratifier"
+
+define "patientGroups Stratifier":
+	HIC."patientGroups"
+
+define "Setting":
+    HIC."setting"
+
+//provider type not provided?
+
+define "Stratification":
+ HIC."By Administrative Gender Stratifier".code 
+  + ':' + HIC."By Age Stratifier"
++ ':' + HIC."By Geographic Region Stratifier"
++ Combine(HIC.patientGroups, ':')
++ Combine(HIC.setting, ':')

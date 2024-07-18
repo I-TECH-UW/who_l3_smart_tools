@@ -166,7 +166,7 @@ class TestCqlGeneratorOnAllFiles(unittest.TestCase):
             indicator_dict[row["DAK ID"]] = row
 
         # Create output dir if not exists
-        output_directory = os.path.join("tests", "output", "fsh")
+        output_directory = os.path.join("generated_fsh")
         if not os.path.exists(output_directory):
             os.makedirs(output_directory)
         for subfolder in ["measures", "libraries"]:

@@ -50,7 +50,6 @@ using FHIR version '4.0.1'
 
 include HIVCommon version '0.0.1' called HIC
 include FHIRHelpers version '4.0.1'
-include FHIRCommon called FC
 include WHOCommon called WCom
 
 // Indicator Definition
@@ -74,7 +73,9 @@ define "Initial Population":
  */
                                                        
 define "Measure Population":
-  true
+  exists(HIC."VMMC_done" VM
+        where (VM.performed during "Measurement Period")
+  )
 
 
 /**
@@ -87,3 +88,31 @@ define function "Measure Observation"(Patient "Patient"):
   1
 /* end Populations */
 
+
+/*
+ * Disaggregators
+ */
+
+define "Administrative Gender Stratifier":
+	HIC."By Administrative Gender Stratifier"
+
+define "Age Stratifier":
+	HIC."By Age Stratifier 3"
+
+define "Geographic Region Stratifier":
+	HIC."By Geographic Region Stratifier"
+
+define "Setting":
+    HIC."setting"
+
+define "HIV Status":
+    HIC."HIV Status"
+
+//provider type not provided?
+
+define "Stratification":
+ HIC."By Administrative Gender Stratifier".code 
+  + ':' + HIC."By Age Stratifier"
++ ':' + HIC."By Geographic Region Stratifier"
++ Combine(HIC.setting, ':')
++ ':' + HIC."HIV Status".code 

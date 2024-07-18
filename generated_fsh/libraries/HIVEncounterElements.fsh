@@ -1,0 +1,19 @@
+Instance: HIVEncounterElements
+InstanceOf: Library
+Title: "HIVEncounterElements"
+Description: "Description not yet available for HIVEncounterElements."
+Usage: #definition
+* meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-shareablelibrary"
+* meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablelibrary"
+* meta.profile[+] = "http://hl7.org/fhir/uv/cql/StructureDefinition/cql-library"
+* meta.profile[+] = "http://hl7.org/fhir/uv/cql/StructureDefinition/cql-module"
+* url = "http://smart.who.int/HIVEncounter/Library/HIVEncounterElements"
+* extension[+]
+  * url = "http://hl7.org/fhir/StructureDefinition/cqf-knowledgeCapability"
+  * valueCode = #computable
+* name = "HIVEncounterElements"
+* status = #draft
+* experimental = true
+* publisher = "World Health Organization (WHO)"
+* type = $library-type#logic-library
+* content.id = "ig-loader-HIVEncounterElements.cql"

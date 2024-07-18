@@ -143,9 +143,9 @@ define "Transgender female Observation":
 @description: Additional category
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Other - HIV.A.DE23":
-  exists "Other - HIV.A.DE23 Condition"
-    or exists "Other - HIV.A.DE23 Observation"
+define "Other (Registration)":
+  exists "Other (Registration) Condition"
+    or exists "Other (Registration) Observation"
 define "Other - HIV.A.DE23 Condition":
   [Condition: Concepts."Other - HIV.A.DE23"]
 define "Other - HIV.A.DE23 Observation":
