@@ -38,13 +38,93 @@ context Patient
 @description: {{element['description']}}
 */
 // TODO: Replace placeholder with relevant CQL logic
-{{data_element_define}}
-{{observation_define}}
-{{condition_define}}
+{% if element['data_type'] == 'Coding' %}
+define "{{element['label']}} Observation":
+  [Observation: Concepts."{{element['label']}}"] O
+    where O.status in { 'final', 'amended', 'corrected' }
+{% elif element['data_type'] == 'Codes' %}
+define "{{element['label']}}":
+  exists "{{element['label']}} Condition"
+    or exists "{{element['label']}} Observation"
+define "{{element['label']}} Condition":
+  [Condition: Concepts."{{element['label']}}"]
+define "{{element['label']}} Observation":
+  "{{element['collection_label']}} Observation" O
+    where O.status in { 'final', 'amended', 'corrected' }
+      and O.value ~ Concepts."{{element['label']}}"
+{% else %}
+define "{{element['label']}}":
+  exists "{{element['label']}} Observation"
+    or exists "{{element['label']}} Condition"
+define "{{element['label']}} Condition":
+  [Condition: Concepts."{{element['label']}}"]
+define "{{element['label']}} Observation":
+  [Observation: Concepts."{{element['label']}}"] O
+    where O.status in { 'final', 'amended', 'corrected' }
+{% endif %}
 // End of {{element['label']}}
 {% endfor %}
 
-// Custom Elements and Logic for use DT and IND cql files
+/*
+ * Custom elements and logic for use DT and IND CQL Libraries
+ */
+"""
+)
+indicator_elements_library_template = env.from_string(
+    """library {{dak_name}}Elements
+
+{{ elements_library_includes }}
+include {{dak_name}}Elements called Elements
+
+parameter "Measurement Period" Interval<Date> default Interval[@2024-01-01, @2024-12-30]
+
+context Patient
+
+/**
+ * {{dak_name}} Elements
+ */
+
+// Auto-generated Elements from DAK Data Dictionary
+//   Entries based on DAK Data Dictionary for Data Elements marked as used
+//   in at least one Decision Support Table or Aggregate Indicator
+
+{% for element in elements %}
+/*
+@dataElement: {{element['dak_id']}} - {{element['label']}}
+@activity: {{element['activity']}}
+@description: {{element['description']}}
+*/
+// TODO: Replace placeholder with relevant CQL logic
+{% if element['data_type'] == 'Coding' %}
+define "{{element['label']}} Observation":
+  [Observation: Concepts."{{element['label']}}"] O
+    where O.status in { 'final', 'amended', 'corrected' }
+{% elif element['data_type'] == 'Codes' %}
+define "{{element['label']}}":
+  exists "{{element['label']}} Condition"
+    or exists "{{element['label']}} Observation"
+define "{{element['label']}} Condition":
+  [Condition: Concepts."{{element['label']}}"]
+define "{{element['label']}} Observation":
+  "{{element['collection_label']}} Observation" O
+    where O.status in { 'final', 'amended', 'corrected' }
+      and O.value ~ Concepts."{{element['label']}}"
+{% else %}
+define "{{element['label']}}":
+  exists "{{element['label']}} Observation"
+    or exists "{{element['label']}} Condition"
+define "{{element['label']}} Condition":
+  [Condition: Concepts."{{element['label']}}"]
+define "{{element['label']}} Observation":
+  [Observation: Concepts."{{element['label']}}"] O
+    where O.status in { 'final', 'amended', 'corrected' }
+{% endif %}
+// End of {{element['label']}}
+{% endfor %}
+
+/*
+ * Custom elements and logic for use DT and IND CQL Libraries
+ */
 """
 )
 
@@ -94,7 +174,7 @@ include {{dak_name}}Common called Common
 # Suggested CQL Templates
 collection_observation_template = env.from_string(
     """define "{{element['label']}} Observation":
-    [Observation: Concepts."{{element['label']}}"] O 
+    [Observation: Concepts."{{element['label']}}"] O
     where O.status in { 'final', 'amended', 'corrected' }
 """
 )
@@ -118,7 +198,7 @@ class ElementsCqlGenerator:
 
     This class creates template CQL for data elements in the DAK Data Dictionary (DAK_DD)
 
-    Example CQL is generated  CQL for DAK_DD Coding and Codes elements with the contrived assumption that
+    Example CQL is generated  CQL for DAK_DD Date Elements with the contrived assumption that
     the data would be stored as a FHIR observation or condition, and the base element would be a OR
     expression of the condition or observation.
 
@@ -129,6 +209,16 @@ class ElementsCqlGenerator:
     EncounterElements file is generated with the contrived assumption that Encounter definitions
     only differ from the base entries by adding a filter to the base elements
     for the provider encounter and date.
+
+    Example CQL is also based on the Data Type of the DAK_DD element:
+    1. Boolean: Observation of given code
+    2. Coding: Observation of given code
+    3. Codes: Condition of given code and Observation of parent Coding and value of given code
+    4. String: Observation of given code
+    5. Date: Observation of given code
+    6. DateTime: Observation of given code
+    7. Quantity: Observation of given code
+    8. ID: Not implemented
 
     These templates should be replaced with the relevant CQL logic during the authoring process.
     """
