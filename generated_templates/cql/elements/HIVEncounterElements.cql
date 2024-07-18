@@ -28,22 +28,17 @@ context Patient
 
 /*
 @dataElement: HIV.A.DE16 - Estimated age
-@activity: HIV.A6.1 Review sociodemographic data with client
-HIV.A5 Create new client record
+@activity: HIV.A6.1 Review sociodemographic data with client | HIV.A5 Create new client record
 @description: If DOB is unknown, enter the client's estimated age. Display client's age in number of years.
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Estimated age":
-  exists "Estimated age Observation"
-    or exists "Estimated age Condition"
-define "Estimated age Condition":
-  Elements."Estimated age Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Estimated age Observation":
-  Elements."Estimated age Observation" O
+  Elements."Estimated age" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Estimated age
+    return O.value
+/* End of Estimated age */
+
 /*
 @dataElement: HIV.B.DE1 - Reason for visit - HIV.B.DE1
 @activity: HIV.B1 Determine reason for visit
@@ -54,7 +49,8 @@ define "Reason for visit - HIV.B.DE1 Observation":
   Elements."Reason for visit - HIV.B.DE1 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Reason for visit - HIV.B.DE1
+/* End of Reason for visit - HIV.B.DE1 */
+
 /*
 @dataElement: HIV.B.DE2 - First-time HIV test
 @activity: HIV.B1 Determine reason for visit
@@ -71,7 +67,8 @@ define "First-time HIV test Observation":
   Elements."First-time HIV test Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of First-time HIV test
+/* End of First-time HIV test */
+
 /*
 @dataElement: HIV.B.DE3 - Retesting for HIV - HIV.B.DE3
 @activity: HIV.B1 Determine reason for visit
@@ -88,7 +85,8 @@ define "Retesting for HIV - HIV.B.DE3 Observation":
   Elements."Retesting for HIV - HIV.B.DE3 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Retesting for HIV - HIV.B.DE3
+/* End of Retesting for HIV - HIV.B.DE3 */
+
 /*
 @dataElement: HIV.B.DE4 - HIV testing services visit
 @activity: HIV.B1 Determine reason for visit
@@ -105,58 +103,47 @@ define "HIV testing services visit Observation":
   Elements."HIV testing services visit Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of HIV testing services visit
+/* End of HIV testing services visit */
+
 /*
 @dataElement: HIV.B.DE14 - Date/time of suspected exposure to HIV - HIV.B.DE14
 @activity: HIV.B1 Determine reason for visit
 @description: Date and time when the client had suspected exposure to HIV
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Date/time of suspected exposure to HIV - HIV.B.DE14":
-  exists "Date/time of suspected exposure to HIV - HIV.B.DE14 Observation"
-    or exists "Date/time of suspected exposure to HIV - HIV.B.DE14 Condition"
-define "Date/time of suspected exposure to HIV - HIV.B.DE14 Condition":
-  Elements."Date/time of suspected exposure to HIV - HIV.B.DE14 Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Date/time of suspected exposure to HIV - HIV.B.DE14 Observation":
-  Elements."Date/time of suspected exposure to HIV - HIV.B.DE14 Observation" O
+  Elements."Date/time of suspected exposure to HIV - HIV.B.DE14" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Date/time of suspected exposure to HIV - HIV.B.DE14
+    return O.value
+/* End of Date/time of suspected exposure to HIV - HIV.B.DE14 */
+
 /*
 @dataElement: HIV.B.DE49 - Key population member* - HIV.B.DE49
 @activity: HIV.B6 Capture or update client history
 @description: Client is a member of a key population that has an increased risk of HIV
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Key population member* - HIV.B.DE49":
-  exists "Key population member* - HIV.B.DE49 Observation"
-    or exists "Key population member* - HIV.B.DE49 Condition"
-define "Key population member* - HIV.B.DE49 Condition":
-  Elements."Key population member* - HIV.B.DE49 Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Key population member* - HIV.B.DE49 Observation":
-  Elements."Key population member* - HIV.B.DE49 Observation" O
+  Elements."Key population member* - HIV.B.DE49" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Key population member* - HIV.B.DE49
+    return O.value
+/* End of Key population member* - HIV.B.DE49 */
+
 /*
 @dataElement: HIV.B.DE80 - HIV test conducted
 @activity: HIV.B7 Test for HIV using testing algorithm
 @description: An HIV test was performed on the client during the visit
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "HIV test conducted":
-  exists "HIV test conducted Observation"
-    or exists "HIV test conducted Condition"
-define "HIV test conducted Condition":
-  Elements."HIV test conducted Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "HIV test conducted Observation":
-  Elements."HIV test conducted Observation" O
+  Elements."HIV test conducted" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of HIV test conducted
+    return O.value
+/* End of HIV test conducted */
+
 /*
 @dataElement: HIV.B.DE88 - Assay number in testing strategy - HIV.B.DE88
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -167,7 +154,8 @@ define "Assay number in testing strategy - HIV.B.DE88 Observation":
   Elements."Assay number in testing strategy - HIV.B.DE88 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Assay number in testing strategy - HIV.B.DE88
+/* End of Assay number in testing strategy - HIV.B.DE88 */
+
 /*
 @dataElement: HIV.B.DE89 - Assay 0 - HIV.B.DE89
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -184,7 +172,8 @@ define "Assay 0 - HIV.B.DE89 Observation":
   Elements."Assay 0 - HIV.B.DE89 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Assay 0 - HIV.B.DE89
+/* End of Assay 0 - HIV.B.DE89 */
+
 /*
 @dataElement: HIV.B.DE90 - Assay 1 - HIV.B.DE90
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -201,7 +190,8 @@ define "Assay 1 - HIV.B.DE90 Observation":
   Elements."Assay 1 - HIV.B.DE90 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Assay 1 - HIV.B.DE90
+/* End of Assay 1 - HIV.B.DE90 */
+
 /*
 @dataElement: HIV.B.DE91 - Assay 2 - HIV.B.DE91
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -218,7 +208,8 @@ define "Assay 2 - HIV.B.DE91 Observation":
   Elements."Assay 2 - HIV.B.DE91 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Assay 2 - HIV.B.DE91
+/* End of Assay 2 - HIV.B.DE91 */
+
 /*
 @dataElement: HIV.B.DE92 - Assay 3 - HIV.B.DE92
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -235,7 +226,8 @@ define "Assay 3 - HIV.B.DE92 Observation":
   Elements."Assay 3 - HIV.B.DE92 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Assay 3 - HIV.B.DE92
+/* End of Assay 3 - HIV.B.DE92 */
+
 /*
 @dataElement: HIV.B.DE93 - Assay 1 repeated - HIV.B.DE93
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -252,7 +244,8 @@ define "Assay 1 repeated - HIV.B.DE93 Observation":
   Elements."Assay 1 repeated - HIV.B.DE93 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Assay 1 repeated - HIV.B.DE93
+/* End of Assay 1 repeated - HIV.B.DE93 */
+
 /*
 @dataElement: HIV.B.DE94 - Test result of HIV assay 1 - HIV.B.DE94
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -263,7 +256,8 @@ define "Test result of HIV assay 1 - HIV.B.DE94 Observation":
   Elements."Test result of HIV assay 1 - HIV.B.DE94 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Test result of HIV assay 1 - HIV.B.DE94
+/* End of Test result of HIV assay 1 - HIV.B.DE94 */
+
 /*
 @dataElement: HIV.B.DE95 - Reactive - HIV.B.DE95
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -280,7 +274,8 @@ define "Reactive - HIV.B.DE95 Observation":
   Elements."Reactive - HIV.B.DE95 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Reactive - HIV.B.DE95
+/* End of Reactive - HIV.B.DE95 */
+
 /*
 @dataElement: HIV.B.DE96 - Non-reactive - HIV.B.DE96
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -297,7 +292,8 @@ define "Non-reactive - HIV.B.DE96 Observation":
   Elements."Non-reactive - HIV.B.DE96 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Non-reactive - HIV.B.DE96
+/* End of Non-reactive - HIV.B.DE96 */
+
 /*
 @dataElement: HIV.B.DE97 - Invalid - HIV.B.DE97
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -314,7 +310,8 @@ define "Invalid - HIV.B.DE97 Observation":
   Elements."Invalid - HIV.B.DE97 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Invalid - HIV.B.DE97
+/* End of Invalid - HIV.B.DE97 */
+
 /*
 @dataElement: HIV.B.DE98 - Test result of HIV assay 2 - HIV.B.DE98
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -325,7 +322,8 @@ define "Test result of HIV assay 2 - HIV.B.DE98 Observation":
   Elements."Test result of HIV assay 2 - HIV.B.DE98 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Test result of HIV assay 2 - HIV.B.DE98
+/* End of Test result of HIV assay 2 - HIV.B.DE98 */
+
 /*
 @dataElement: HIV.B.DE99 - Reactive - HIV.B.DE99
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -342,7 +340,8 @@ define "Reactive - HIV.B.DE99 Observation":
   Elements."Reactive - HIV.B.DE99 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Reactive - HIV.B.DE99
+/* End of Reactive - HIV.B.DE99 */
+
 /*
 @dataElement: HIV.B.DE100 - Non-reactive - HIV.B.DE100
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -359,7 +358,8 @@ define "Non-reactive - HIV.B.DE100 Observation":
   Elements."Non-reactive - HIV.B.DE100 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Non-reactive - HIV.B.DE100
+/* End of Non-reactive - HIV.B.DE100 */
+
 /*
 @dataElement: HIV.B.DE101 - Invalid - HIV.B.DE101
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -376,7 +376,8 @@ define "Invalid - HIV.B.DE101 Observation":
   Elements."Invalid - HIV.B.DE101 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Invalid - HIV.B.DE101
+/* End of Invalid - HIV.B.DE101 */
+
 /*
 @dataElement: HIV.B.DE102 - Test result of HIV assay 3 - HIV.B.DE102
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -387,7 +388,8 @@ define "Test result of HIV assay 3 - HIV.B.DE102 Observation":
   Elements."Test result of HIV assay 3 - HIV.B.DE102 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Test result of HIV assay 3 - HIV.B.DE102
+/* End of Test result of HIV assay 3 - HIV.B.DE102 */
+
 /*
 @dataElement: HIV.B.DE103 - Reactive - HIV.B.DE103
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -404,7 +406,8 @@ define "Reactive - HIV.B.DE103 Observation":
   Elements."Reactive - HIV.B.DE103 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Reactive - HIV.B.DE103
+/* End of Reactive - HIV.B.DE103 */
+
 /*
 @dataElement: HIV.B.DE104 - Non-reactive - HIV.B.DE104
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -421,7 +424,8 @@ define "Non-reactive - HIV.B.DE104 Observation":
   Elements."Non-reactive - HIV.B.DE104 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Non-reactive - HIV.B.DE104
+/* End of Non-reactive - HIV.B.DE104 */
+
 /*
 @dataElement: HIV.B.DE105 - Invalid - HIV.B.DE105
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -438,7 +442,8 @@ define "Invalid - HIV.B.DE105 Observation":
   Elements."Invalid - HIV.B.DE105 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Invalid - HIV.B.DE105
+/* End of Invalid - HIV.B.DE105 */
+
 /*
 @dataElement: HIV.B.DE106 - Test result of HIV assay 1 repeated - HIV.B.DE106
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -449,7 +454,8 @@ define "Test result of HIV assay 1 repeated - HIV.B.DE106 Observation":
   Elements."Test result of HIV assay 1 repeated - HIV.B.DE106 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Test result of HIV assay 1 repeated - HIV.B.DE106
+/* End of Test result of HIV assay 1 repeated - HIV.B.DE106 */
+
 /*
 @dataElement: HIV.B.DE107 - Reactive - HIV.B.DE107
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -466,7 +472,8 @@ define "Reactive - HIV.B.DE107 Observation":
   Elements."Reactive - HIV.B.DE107 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Reactive - HIV.B.DE107
+/* End of Reactive - HIV.B.DE107 */
+
 /*
 @dataElement: HIV.B.DE108 - Non-reactive - HIV.B.DE108
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -483,7 +490,8 @@ define "Non-reactive - HIV.B.DE108 Observation":
   Elements."Non-reactive - HIV.B.DE108 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Non-reactive - HIV.B.DE108
+/* End of Non-reactive - HIV.B.DE108 */
+
 /*
 @dataElement: HIV.B.DE109 - Invalid - HIV.B.DE109
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -500,24 +508,21 @@ define "Invalid - HIV.B.DE109 Observation":
   Elements."Invalid - HIV.B.DE109 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Invalid - HIV.B.DE109
+/* End of Invalid - HIV.B.DE109 */
+
 /*
 @dataElement: HIV.B.DE141 - Partner virally suppressed on ART
 @activity: HIV.B6 Capture or update client history
 @description: ART and virally suppression status of a partner of the client
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Partner virally suppressed on ART":
-  exists "Partner virally suppressed on ART Observation"
-    or exists "Partner virally suppressed on ART Condition"
-define "Partner virally suppressed on ART Condition":
-  Elements."Partner virally suppressed on ART Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Partner virally suppressed on ART Observation":
-  Elements."Partner virally suppressed on ART Observation" O
+  Elements."Partner virally suppressed on ART" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Partner virally suppressed on ART
+    return O.value
+/* End of Partner virally suppressed on ART */
+
 /*
 @dataElement: HIV.B.DE142 - Counselling provided
 @activity: HIV.B8 Provide post-test counselling
@@ -528,7 +533,8 @@ define "Counselling provided Observation":
   Elements."Counselling provided Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Counselling provided
+/* End of Counselling provided */
+
 /*
 @dataElement: HIV.B.DE143 - HIV-positive counselling conducted
 @activity: HIV.B8 Provide post-test counselling
@@ -545,7 +551,8 @@ define "HIV-positive counselling conducted Observation":
   Elements."HIV-positive counselling conducted Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of HIV-positive counselling conducted
+/* End of HIV-positive counselling conducted */
+
 /*
 @dataElement: HIV.B.DE144 - Hepatitis B positive counselling conducted
 @activity: HIV.B8 Provide post-test counselling
@@ -562,7 +569,8 @@ define "Hepatitis B positive counselling conducted Observation":
   Elements."Hepatitis B positive counselling conducted Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Hepatitis B positive counselling conducted
+/* End of Hepatitis B positive counselling conducted */
+
 /*
 @dataElement: HIV.B.DE145 - Hepatitis C positive counselling conducted
 @activity: HIV.B8 Provide post-test counselling
@@ -579,7 +587,8 @@ define "Hepatitis C positive counselling conducted Observation":
   Elements."Hepatitis C positive counselling conducted Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Hepatitis C positive counselling conducted
+/* End of Hepatitis C positive counselling conducted */
+
 /*
 @dataElement: HIV.B.DE146 - Syphilis counselling, treatment and further testing
 @activity: HIV.B8 Provide post-test counselling
@@ -596,7 +605,8 @@ define "Syphilis counselling, treatment and further testing Observation":
   Elements."Syphilis counselling, treatment and further testing Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Syphilis counselling, treatment and further testing
+/* End of Syphilis counselling, treatment and further testing */
+
 /*
 @dataElement: HIV.B.DE147 - Linked to enrolment in care and ART initiation
 @activity: HIV.B8 Provide post-test counselling
@@ -613,7 +623,8 @@ define "Linked to enrolment in care and ART initiation Observation":
   Elements."Linked to enrolment in care and ART initiation Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Linked to enrolment in care and ART initiation
+/* End of Linked to enrolment in care and ART initiation */
+
 /*
 @dataElement: HIV.B.DE148 - VMMC counselling provided
 @activity: HIV.B8 Provide post-test counselling
@@ -630,7 +641,8 @@ define "VMMC counselling provided Observation":
   Elements."VMMC counselling provided Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of VMMC counselling provided
+/* End of VMMC counselling provided */
+
 /*
 @dataElement: HIV.B.DE149 - Prevention services offered and referrals - HIV.B.DE149
 @activity: HIV.B9 Determine recommended services
@@ -641,7 +653,8 @@ define "Prevention services offered and referrals - HIV.B.DE149 Observation":
   Elements."Prevention services offered and referrals - HIV.B.DE149 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Prevention services offered and referrals - HIV.B.DE149
+/* End of Prevention services offered and referrals - HIV.B.DE149 */
+
 /*
 @dataElement: HIV.B.DE150 - Offer male and female condoms and condom-compatible lubricants - HIV.B.DE150
 @activity: HIV.B9 Determine recommended services
@@ -658,7 +671,8 @@ define "Offer male and female condoms and condom-compatible lubricants - HIV.B.D
   Elements."Offer male and female condoms and condom-compatible lubricants - HIV.B.DE150 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Offer male and female condoms and condom-compatible lubricants - HIV.B.DE150
+/* End of Offer male and female condoms and condom-compatible lubricants - HIV.B.DE150 */
+
 /*
 @dataElement: HIV.B.DE151 - Offer pre-exposure prophylaxis PrEP for people at elevated risk for HIV acquisition
 @activity: HIV.B9 Determine recommended services
@@ -675,7 +689,8 @@ define "Offer pre-exposure prophylaxis PrEP for people at elevated risk for HIV 
   Elements."Offer pre-exposure prophylaxis PrEP for people at elevated risk for HIV acquisition Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Offer pre-exposure prophylaxis PrEP for people at elevated risk for HIV acquisition
+/* End of Offer pre-exposure prophylaxis PrEP for people at elevated risk for HIV acquisition */
+
 /*
 @dataElement: HIV.B.DE152 - Offer post-exposure prophylaxis PEP following suspected exposure
 @activity: HIV.B9 Determine recommended services
@@ -692,7 +707,8 @@ define "Offer post-exposure prophylaxis PEP following suspected exposure Observa
   Elements."Offer post-exposure prophylaxis PEP following suspected exposure Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Offer post-exposure prophylaxis PEP following suspected exposure
+/* End of Offer post-exposure prophylaxis PEP following suspected exposure */
+
 /*
 @dataElement: HIV.B.DE153 - Voluntary medical male circumcision VMMC
 @activity: HIV.B9 Determine recommended services
@@ -709,7 +725,8 @@ define "Voluntary medical male circumcision VMMC Observation":
   Elements."Voluntary medical male circumcision VMMC Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Voluntary medical male circumcision VMMC
+/* End of Voluntary medical male circumcision VMMC */
+
 /*
 @dataElement: HIV.B.DE154 - Harm reduction for people who inject drugs - HIV.B.DE154
 @activity: HIV.B9 Determine recommended services
@@ -726,7 +743,8 @@ define "Harm reduction for people who inject drugs - HIV.B.DE154 Observation":
   Elements."Harm reduction for people who inject drugs - HIV.B.DE154 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Harm reduction for people who inject drugs - HIV.B.DE154
+/* End of Harm reduction for people who inject drugs - HIV.B.DE154 */
+
 /*
 @dataElement: HIV.B.DE155 - Behavioural interventions to support risk reduction, particularly for people with HIV and members of key populations
 @activity: HIV.B9 Determine recommended services
@@ -743,7 +761,8 @@ define "Behavioural interventions to support risk reduction, particularly for pe
   Elements."Behavioural interventions to support risk reduction, particularly for people with HIV and members of key populations Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Behavioural interventions to support risk reduction, particularly for people with HIV and members of key populations
+/* End of Behavioural interventions to support risk reduction, particularly for people with HIV and members of key populations */
+
 /*
 @dataElement: HIV.B.DE156 - HIV testing for partners and biological children - HIV.B.DE156
 @activity: HIV.B9 Determine recommended services
@@ -760,7 +779,8 @@ define "HIV testing for partners and biological children - HIV.B.DE156 Observati
   Elements."HIV testing for partners and biological children - HIV.B.DE156 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of HIV testing for partners and biological children - HIV.B.DE156
+/* End of HIV testing for partners and biological children - HIV.B.DE156 */
+
 /*
 @dataElement: HIV.B.DE157 - HIV testing for partners and social contacts of people from key populations, where appropriate
 @activity: HIV.B9 Determine recommended services
@@ -777,7 +797,8 @@ define "HIV testing for partners and social contacts of people from key populati
   Elements."HIV testing for partners and social contacts of people from key populations, where appropriate Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of HIV testing for partners and social contacts of people from key populations, where appropriate
+/* End of HIV testing for partners and social contacts of people from key populations, where appropriate */
+
 /*
 @dataElement: HIV.B.DE158 - Sexual and reproductive health integrated services - HIV.B.DE158
 @activity: HIV.B9 Determine recommended services
@@ -788,7 +809,8 @@ define "Sexual and reproductive health integrated services - HIV.B.DE158 Observa
   Elements."Sexual and reproductive health integrated services - HIV.B.DE158 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Sexual and reproductive health integrated services - HIV.B.DE158
+/* End of Sexual and reproductive health integrated services - HIV.B.DE158 */
+
 /*
 @dataElement: HIV.B.DE159 - Contraception and family planning - HIV.B.DE159
 @activity: HIV.B9 Determine recommended services
@@ -805,7 +827,8 @@ define "Contraception and family planning - HIV.B.DE159 Observation":
   Elements."Contraception and family planning - HIV.B.DE159 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Contraception and family planning - HIV.B.DE159
+/* End of Contraception and family planning - HIV.B.DE159 */
+
 /*
 @dataElement: HIV.B.DE160 - Check pregnancy status - HIV.B.DE160
 @activity: HIV.B9 Determine recommended services
@@ -822,7 +845,8 @@ define "Check pregnancy status - HIV.B.DE160 Observation":
   Elements."Check pregnancy status - HIV.B.DE160 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Check pregnancy status - HIV.B.DE160
+/* End of Check pregnancy status - HIV.B.DE160 */
+
 /*
 @dataElement: HIV.B.DE161 - Prevention of mother-to-child transmission counselling
 @activity: HIV.B9 Determine recommended services
@@ -839,7 +863,8 @@ define "Prevention of mother-to-child transmission counselling Observation":
   Elements."Prevention of mother-to-child transmission counselling Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Prevention of mother-to-child transmission counselling
+/* End of Prevention of mother-to-child transmission counselling */
+
 /*
 @dataElement: HIV.B.DE162 - Cervical cancer screening and treatment counselling
 @activity: HIV.B9 Determine recommended services
@@ -856,7 +881,8 @@ define "Cervical cancer screening and treatment counselling Observation":
   Elements."Cervical cancer screening and treatment counselling Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Cervical cancer screening and treatment counselling
+/* End of Cervical cancer screening and treatment counselling */
+
 /*
 @dataElement: HIV.B.DE163 - Anal cancer screening for men who have sex with men - HIV.B.DE163
 @activity: HIV.B9 Determine recommended services
@@ -873,7 +899,8 @@ define "Anal cancer screening for men who have sex with men - HIV.B.DE163 Observ
   Elements."Anal cancer screening for men who have sex with men - HIV.B.DE163 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Anal cancer screening for men who have sex with men - HIV.B.DE163
+/* End of Anal cancer screening for men who have sex with men - HIV.B.DE163 */
+
 /*
 @dataElement: HIV.B.DE164 - STI testing and treatment services
 @activity: HIV.B9 Determine recommended services
@@ -890,7 +917,8 @@ define "STI testing and treatment services Observation":
   Elements."STI testing and treatment services Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of STI testing and treatment services
+/* End of STI testing and treatment services */
+
 /*
 @dataElement: HIV.B.DE165 - Offer other clinical services - HIV.B.DE165
 @activity: HIV.B9 Determine recommended services
@@ -901,7 +929,8 @@ define "Offer other clinical services - HIV.B.DE165 Observation":
   Elements."Offer other clinical services - HIV.B.DE165 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Offer other clinical services - HIV.B.DE165
+/* End of Offer other clinical services - HIV.B.DE165 */
+
 /*
 @dataElement: HIV.B.DE166 - Assessment and provision of vaccinations - HIV.B.DE166
 @activity: HIV.B9 Determine recommended services
@@ -918,7 +947,8 @@ define "Assessment and provision of vaccinations - HIV.B.DE166 Observation":
   Elements."Assessment and provision of vaccinations - HIV.B.DE166 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Assessment and provision of vaccinations - HIV.B.DE166
+/* End of Assessment and provision of vaccinations - HIV.B.DE166 */
+
 /*
 @dataElement: HIV.B.DE167 - Hepatitis B HBV and hepatitis C virus HCV testing and treatment provided
 @activity: HIV.B9 Determine recommended services
@@ -935,7 +965,8 @@ define "Hepatitis B HBV and hepatitis C virus HCV testing and treatment provided
   Elements."Hepatitis B HBV and hepatitis C virus HCV testing and treatment provided Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Hepatitis B HBV and hepatitis C virus HCV testing and treatment provided
+/* End of Hepatitis B HBV and hepatitis C virus HCV testing and treatment provided */
+
 /*
 @dataElement: HIV.B.DE168 - Co-trimoxazole chemoprophylaxis to prevent Pneumocystis carinii pneumonia provided
 @activity: HIV.B9 Determine recommended services
@@ -952,7 +983,8 @@ define "Co-trimoxazole chemoprophylaxis to prevent Pneumocystis carinii pneumoni
   Elements."Co-trimoxazole chemoprophylaxis to prevent Pneumocystis carinii pneumonia provided Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Co-trimoxazole chemoprophylaxis to prevent Pneumocystis carinii pneumonia provided
+/* End of Co-trimoxazole chemoprophylaxis to prevent Pneumocystis carinii pneumonia provided */
+
 /*
 @dataElement: HIV.B.DE169 - Intensified TB case finding and linkage to TB treatment provided
 @activity: HIV.B9 Determine recommended services
@@ -969,7 +1001,8 @@ define "Intensified TB case finding and linkage to TB treatment provided Observa
   Elements."Intensified TB case finding and linkage to TB treatment provided Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Intensified TB case finding and linkage to TB treatment provided
+/* End of Intensified TB case finding and linkage to TB treatment provided */
+
 /*
 @dataElement: HIV.B.DE170 - Provision of isoniazid preventive therapy if person does not have TB - HIV.B.DE170
 @activity: HIV.B9 Determine recommended services
@@ -986,7 +1019,8 @@ define "Provision of isoniazid preventive therapy if person does not have TB - H
   Elements."Provision of isoniazid preventive therapy if person does not have TB - HIV.B.DE170 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Provision of isoniazid preventive therapy if person does not have TB - HIV.B.DE170
+/* End of Provision of isoniazid preventive therapy if person does not have TB - HIV.B.DE170 */
+
 /*
 @dataElement: HIV.B.DE171 - Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.B.DE171
 @activity: HIV.B9 Determine recommended services
@@ -1003,7 +1037,8 @@ define "Malaria prevention such as bed nets and prophylaxis, depending on epidem
   Elements."Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.B.DE171 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.B.DE171
+/* End of Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.B.DE171 */
+
 /*
 @dataElement: HIV.B.DE172 - Other support services - HIV.B.DE172
 @activity: HIV.B9 Determine recommended services
@@ -1014,7 +1049,8 @@ define "Other support services - HIV.B.DE172 Observation":
   Elements."Other support services - HIV.B.DE172 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Other support services - HIV.B.DE172
+/* End of Other support services - HIV.B.DE172 */
+
 /*
 @dataElement: HIV.B.DE173 - Mental health services - HIV.B.DE173
 @activity: HIV.B9 Determine recommended services
@@ -1031,7 +1067,8 @@ define "Mental health services - HIV.B.DE173 Observation":
   Elements."Mental health services - HIV.B.DE173 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Mental health services - HIV.B.DE173
+/* End of Mental health services - HIV.B.DE173 */
+
 /*
 @dataElement: HIV.B.DE174 - Psychosocial counselling, support and treatment adherence counselling - HIV.B.DE174
 @activity: HIV.B9 Determine recommended services
@@ -1048,7 +1085,8 @@ define "Psychosocial counselling, support and treatment adherence counselling - 
   Elements."Psychosocial counselling, support and treatment adherence counselling - HIV.B.DE174 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Psychosocial counselling, support and treatment adherence counselling - HIV.B.DE174
+/* End of Psychosocial counselling, support and treatment adherence counselling - HIV.B.DE174 */
+
 /*
 @dataElement: HIV.B.DE175 - Support for disclosure and partner services - HIV.B.DE175
 @activity: HIV.B9 Determine recommended services
@@ -1065,7 +1103,8 @@ define "Support for disclosure and partner services - HIV.B.DE175 Observation":
   Elements."Support for disclosure and partner services - HIV.B.DE175 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Support for disclosure and partner services - HIV.B.DE175
+/* End of Support for disclosure and partner services - HIV.B.DE175 */
+
 /*
 @dataElement: HIV.B.DE176 - Legal and social services - HIV.B.DE176
 @activity: HIV.B9 Determine recommended services
@@ -1082,7 +1121,8 @@ define "Legal and social services - HIV.B.DE176 Observation":
   Elements."Legal and social services - HIV.B.DE176 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Legal and social services - HIV.B.DE176
+/* End of Legal and social services - HIV.B.DE176 */
+
 /*
 @dataElement: HIV.B.DE177 - Services for responding to violence against women - HIV.B.DE177
 @activity: HIV.B9 Determine recommended services
@@ -1099,7 +1139,8 @@ define "Services for responding to violence against women - HIV.B.DE177 Observat
   Elements."Services for responding to violence against women - HIV.B.DE177 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Services for responding to violence against women - HIV.B.DE177
+/* End of Services for responding to violence against women - HIV.B.DE177 */
+
 /*
 @dataElement: HIV.B.DE191 - Type of follow-up appointment - HIV.B.DE191
 @activity: HIV.B20 Schedule retest
@@ -1110,7 +1151,8 @@ define "Type of follow-up appointment - HIV.B.DE191 Observation":
   Elements."Type of follow-up appointment - HIV.B.DE191 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Type of follow-up appointment - HIV.B.DE191
+/* End of Type of follow-up appointment - HIV.B.DE191 */
+
 /*
 @dataElement: HIV.B.DE192 - Retesting for HIV - HIV.B.DE192
 @activity: HIV.B20 Schedule retest
@@ -1127,7 +1169,8 @@ define "Retesting for HIV - HIV.B.DE192 Observation":
   Elements."Retesting for HIV - HIV.B.DE192 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Retesting for HIV - HIV.B.DE192
+/* End of Retesting for HIV - HIV.B.DE192 */
+
 /*
 @dataElement: HIV.B.DE193 - Other - HIV.B.DE193
 @activity: HIV.B20 Schedule retest
@@ -1144,75 +1187,60 @@ define "Other - HIV.B.DE193 Observation":
   Elements."Other - HIV.B.DE193 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Other - HIV.B.DE193
+/* End of Other - HIV.B.DE193 */
+
 /*
 @dataElement: HIV.B.DE195 - Date/time of follow-up appointment - HIV.B.DE195
 @activity: HIV.B20 Schedule retest
 @description: Date the patient is to return for monitoring, re-supply or any other reason
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Date/time of follow-up appointment - HIV.B.DE195":
-  exists "Date/time of follow-up appointment - HIV.B.DE195 Observation"
-    or exists "Date/time of follow-up appointment - HIV.B.DE195 Condition"
-define "Date/time of follow-up appointment - HIV.B.DE195 Condition":
-  Elements."Date/time of follow-up appointment - HIV.B.DE195 Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Date/time of follow-up appointment - HIV.B.DE195 Observation":
-  Elements."Date/time of follow-up appointment - HIV.B.DE195 Observation" O
+  Elements."Date/time of follow-up appointment - HIV.B.DE195" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Date/time of follow-up appointment - HIV.B.DE195
+    return O.value
+/* End of Date/time of follow-up appointment - HIV.B.DE195 */
+
 /*
 @dataElement: HIV.B.DE224 - HIV retest prior to starting ART conducted
 @activity: HIV.B20 Schedule retest
 @description: HIV retest prior to starting ART conducted
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "HIV retest prior to starting ART conducted":
-  exists "HIV retest prior to starting ART conducted Observation"
-    or exists "HIV retest prior to starting ART conducted Condition"
-define "HIV retest prior to starting ART conducted Condition":
-  Elements."HIV retest prior to starting ART conducted Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "HIV retest prior to starting ART conducted Observation":
-  Elements."HIV retest prior to starting ART conducted Observation" O
+  Elements."HIV retest prior to starting ART conducted" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of HIV retest prior to starting ART conducted
+    return O.value
+/* End of HIV retest prior to starting ART conducted */
+
 /*
 @dataElement: HIV.C.DE9 - Date/time of suspected exposure to HIV - HIV.C.DE9
 @activity: HIV.C3 Capture or update client history
 @description: When the suspect exposure to HIV took place
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Date/time of suspected exposure to HIV - HIV.C.DE9":
-  exists "Date/time of suspected exposure to HIV - HIV.C.DE9 Observation"
-    or exists "Date/time of suspected exposure to HIV - HIV.C.DE9 Condition"
-define "Date/time of suspected exposure to HIV - HIV.C.DE9 Condition":
-  Elements."Date/time of suspected exposure to HIV - HIV.C.DE9 Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Date/time of suspected exposure to HIV - HIV.C.DE9 Observation":
-  Elements."Date/time of suspected exposure to HIV - HIV.C.DE9 Observation" O
+  Elements."Date/time of suspected exposure to HIV - HIV.C.DE9" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Date/time of suspected exposure to HIV - HIV.C.DE9
+    return O.value
+/* End of Date/time of suspected exposure to HIV - HIV.C.DE9 */
+
 /*
 @dataElement: HIV.C.DE10 - Currently on PrEP
 @activity: HIV.C3 Capture or update client history
 @description: The client is currently taking PrEP. Oral pre-exposure prophylaxis (PrEP) of HIV is the use of ARV drugs by people who are not infected with HIV to block the acquisition of HIV.
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Currently on PrEP":
-  exists "Currently on PrEP Observation"
-    or exists "Currently on PrEP Condition"
-define "Currently on PrEP Condition":
-  Elements."Currently on PrEP Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Currently on PrEP Observation":
-  Elements."Currently on PrEP Observation" O
+  Elements."Currently on PrEP" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Currently on PrEP
+    return O.value
+/* End of Currently on PrEP */
+
 /*
 @dataElement: HIV.C.DE17 - Current PrEP regimen
 @activity: HIV.C3 Capture or update client history
@@ -1223,7 +1251,8 @@ define "Current PrEP regimen Observation":
   Elements."Current PrEP regimen Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Current PrEP regimen
+/* End of Current PrEP regimen */
+
 /*
 @dataElement: HIV.C.DE18 - TDF + FTC - HIV.C.DE18
 @activity: HIV.C3 Capture or update client history
@@ -1240,7 +1269,8 @@ define "TDF + FTC - HIV.C.DE18 Observation":
   Elements."TDF + FTC - HIV.C.DE18 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of TDF + FTC - HIV.C.DE18
+/* End of TDF + FTC - HIV.C.DE18 */
+
 /*
 @dataElement: HIV.C.DE19 - TDF - HIV.C.DE19
 @activity: HIV.C3 Capture or update client history
@@ -1257,7 +1287,8 @@ define "TDF - HIV.C.DE19 Observation":
   Elements."TDF - HIV.C.DE19 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of TDF - HIV.C.DE19
+/* End of TDF - HIV.C.DE19 */
+
 /*
 @dataElement: HIV.C.DE20 - TDF + 3TC - HIV.C.DE20
 @activity: HIV.C3 Capture or update client history
@@ -1274,7 +1305,8 @@ define "TDF + 3TC - HIV.C.DE20 Observation":
   Elements."TDF + 3TC - HIV.C.DE20 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of TDF + 3TC - HIV.C.DE20
+/* End of TDF + 3TC - HIV.C.DE20 */
+
 /*
 @dataElement: HIV.C.DE21 - Other TDF-based regimen
 @activity: HIV.C3 Capture or update client history
@@ -1291,7 +1323,8 @@ define "Other TDF-based regimen Observation":
   Elements."Other TDF-based regimen Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Other TDF-based regimen
+/* End of Other TDF-based regimen */
+
 /*
 @dataElement: HIV.C.DE22 - Dapivirine vaginal ring DVR - HIV.C.DE22
 @activity: HIV.C3 Capture or update client history
@@ -1308,7 +1341,8 @@ define "Dapivirine vaginal ring DVR - HIV.C.DE22 Observation":
   Elements."Dapivirine vaginal ring DVR - HIV.C.DE22 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Dapivirine vaginal ring DVR - HIV.C.DE22
+/* End of Dapivirine vaginal ring DVR - HIV.C.DE22 */
+
 /*
 @dataElement: HIV.C.DE23 - CAB-LA - HIV.C.DE23
 @activity: HIV.C3 Capture or update client history
@@ -1325,7 +1359,8 @@ define "CAB-LA - HIV.C.DE23 Observation":
   Elements."CAB-LA - HIV.C.DE23 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of CAB-LA - HIV.C.DE23
+/* End of CAB-LA - HIV.C.DE23 */
+
 /*
 @dataElement: HIV.C.DE31 - PEP history
 @activity: HIV.C3 Capture or update client history
@@ -1336,7 +1371,8 @@ define "PEP history Observation":
   Elements."PEP history Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of PEP history
+/* End of PEP history */
+
 /*
 @dataElement: HIV.C.DE32 - First-time user - HIV.C.DE32
 @activity: HIV.C3 Capture or update client history
@@ -1353,7 +1389,8 @@ define "First-time user - HIV.C.DE32 Observation":
   Elements."First-time user - HIV.C.DE32 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of First-time user - HIV.C.DE32
+/* End of First-time user - HIV.C.DE32 */
+
 /*
 @dataElement: HIV.C.DE33 - Repeat user
 @activity: HIV.C3 Capture or update client history
@@ -1370,7 +1407,8 @@ define "Repeat user Observation":
   Elements."Repeat user Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Repeat user
+/* End of Repeat user */
+
 /*
 @dataElement: HIV.C.DE36 - Signs of substantial risk of HIV infection - HIV.C.DE36
 @activity: HIV.C3 Capture or update client history
@@ -1381,7 +1419,8 @@ define "Signs of substantial risk of HIV infection - HIV.C.DE36 Observation":
   Elements."Signs of substantial risk of HIV infection - HIV.C.DE36 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Signs of substantial risk of HIV infection - HIV.C.DE36
+/* End of Signs of substantial risk of HIV infection - HIV.C.DE36 */
+
 /*
 @dataElement: HIV.C.DE37 - No condom use during sex with more than one partner in the past 6 months - HIV.C.DE37
 @activity: HIV.C3 Capture or update client history
@@ -1398,7 +1437,8 @@ define "No condom use during sex with more than one partner in the past 6 months
   Elements."No condom use during sex with more than one partner in the past 6 months - HIV.C.DE37 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of No condom use during sex with more than one partner in the past 6 months - HIV.C.DE37
+/* End of No condom use during sex with more than one partner in the past 6 months - HIV.C.DE37 */
+
 /*
 @dataElement: HIV.C.DE38 - STI in the past 6 months - HIV.C.DE38
 @activity: HIV.C3 Capture or update client history
@@ -1415,7 +1455,8 @@ define "STI in the past 6 months - HIV.C.DE38 Observation":
   Elements."STI in the past 6 months - HIV.C.DE38 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of STI in the past 6 months - HIV.C.DE38
+/* End of STI in the past 6 months - HIV.C.DE38 */
+
 /*
 @dataElement: HIV.C.DE39 - A sexual partner in the past 6 months had one or more HIV risk factors - HIV.C.DE39
 @activity: HIV.C3 Capture or update client history
@@ -1432,7 +1473,8 @@ define "A sexual partner in the past 6 months had one or more HIV risk factors -
   Elements."A sexual partner in the past 6 months had one or more HIV risk factors - HIV.C.DE39 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of A sexual partner in the past 6 months had one or more HIV risk factors - HIV.C.DE39
+/* End of A sexual partner in the past 6 months had one or more HIV risk factors - HIV.C.DE39 */
+
 /*
 @dataElement: HIV.C.DE40 - PrEP requested by client - HIV.C.DE40
 @activity: HIV.C3 Capture or update client history
@@ -1449,7 +1491,8 @@ define "PrEP requested by client - HIV.C.DE40 Observation":
   Elements."PrEP requested by client - HIV.C.DE40 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of PrEP requested by client - HIV.C.DE40
+/* End of PrEP requested by client - HIV.C.DE40 */
+
 /*
 @dataElement: HIV.C.DE46 - Acute HIV infection symptoms - HIV.C.DE46
 @activity: HIV.C3 Capture or update client history
@@ -1460,7 +1503,8 @@ define "Acute HIV infection symptoms - HIV.C.DE46 Observation":
   Elements."Acute HIV infection symptoms - HIV.C.DE46 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Acute HIV infection symptoms - HIV.C.DE46
+/* End of Acute HIV infection symptoms - HIV.C.DE46 */
+
 /*
 @dataElement: HIV.C.DE47 - Fever
 @activity: HIV.C3 Capture or update client history
@@ -1477,7 +1521,8 @@ define "Fever Observation":
   Elements."Fever Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Fever
+/* End of Fever */
+
 /*
 @dataElement: HIV.C.DE48 - Sore throat
 @activity: HIV.C3 Capture or update client history
@@ -1494,7 +1539,8 @@ define "Sore throat Observation":
   Elements."Sore throat Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Sore throat
+/* End of Sore throat */
+
 /*
 @dataElement: HIV.C.DE49 - Aches
 @activity: HIV.C3 Capture or update client history
@@ -1511,7 +1557,8 @@ define "Aches Observation":
   Elements."Aches Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Aches
+/* End of Aches */
+
 /*
 @dataElement: HIV.C.DE50 - Pains
 @activity: HIV.C3 Capture or update client history
@@ -1528,7 +1575,8 @@ define "Pains Observation":
   Elements."Pains Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Pains
+/* End of Pains */
+
 /*
 @dataElement: HIV.C.DE51 - Swollen glands
 @activity: HIV.C3 Capture or update client history
@@ -1545,7 +1593,8 @@ define "Swollen glands Observation":
   Elements."Swollen glands Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Swollen glands
+/* End of Swollen glands */
+
 /*
 @dataElement: HIV.C.DE52 - Mouth sores
 @activity: HIV.C3 Capture or update client history
@@ -1562,7 +1611,8 @@ define "Mouth sores Observation":
   Elements."Mouth sores Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Mouth sores
+/* End of Mouth sores */
+
 /*
 @dataElement: HIV.C.DE53 - Headaches
 @activity: HIV.C3 Capture or update client history
@@ -1579,7 +1629,8 @@ define "Headaches Observation":
   Elements."Headaches Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Headaches
+/* End of Headaches */
+
 /*
 @dataElement: HIV.C.DE54 - Rash
 @activity: HIV.C3 Capture or update client history
@@ -1596,7 +1647,8 @@ define "Rash Observation":
   Elements."Rash Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Rash
+/* End of Rash */
+
 /*
 @dataElement: HIV.C.DE55 - Sex partners HIV treatment status
 @activity: HIV.C3 Capture or update client history
@@ -1607,7 +1659,8 @@ define "Sex partners HIV treatment status Observation":
   Elements."Sex partners HIV treatment status Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Sex partners HIV treatment status
+/* End of Sex partners HIV treatment status */
+
 /*
 @dataElement: HIV.C.DE56 - Not on ART
 @activity: HIV.C3 Capture or update client history
@@ -1624,7 +1677,8 @@ define "Not on ART Observation":
   Elements."Not on ART Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Not on ART
+/* End of Not on ART */
+
 /*
 @dataElement: HIV.C.DE57 - On ART less than 6 months
 @activity: HIV.C3 Capture or update client history
@@ -1641,7 +1695,8 @@ define "On ART less than 6 months Observation":
   Elements."On ART less than 6 months Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of On ART less than 6 months
+/* End of On ART less than 6 months */
+
 /*
 @dataElement: HIV.C.DE58 - Partner has suspected low adherence to ART
 @activity: HIV.C3 Capture or update client history
@@ -1658,7 +1713,8 @@ define "Partner has suspected low adherence to ART Observation":
   Elements."Partner has suspected low adherence to ART Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Partner has suspected low adherence to ART
+/* End of Partner has suspected low adherence to ART */
+
 /*
 @dataElement: HIV.C.DE59 - Partner is not virally suppressed
 @activity: HIV.C3 Capture or update client history
@@ -1675,7 +1731,8 @@ define "Partner is not virally suppressed Observation":
   Elements."Partner is not virally suppressed Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Partner is not virally suppressed
+/* End of Partner is not virally suppressed */
+
 /*
 @dataElement: HIV.C.DE60 - Partner is virally suppressed and has been on ART for 6 months or more
 @activity: HIV.C3 Capture or update client history
@@ -1692,24 +1749,21 @@ define "Partner is virally suppressed and has been on ART for 6 months or more O
   Elements."Partner is virally suppressed and has been on ART for 6 months or more Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Partner is virally suppressed and has been on ART for 6 months or more
+/* End of Partner is virally suppressed and has been on ART for 6 months or more */
+
 /*
 @dataElement: HIV.C.DE61 - Suitable for PrEP
 @activity: HIV.C8 Suitable for PrEP or PEP?
 @description: The client is suitable for PrEP
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Suitable for PrEP":
-  exists "Suitable for PrEP Observation"
-    or exists "Suitable for PrEP Condition"
-define "Suitable for PrEP Condition":
-  Elements."Suitable for PrEP Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Suitable for PrEP Observation":
-  Elements."Suitable for PrEP Observation" O
+  Elements."Suitable for PrEP" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Suitable for PrEP
+    return O.value
+/* End of Suitable for PrEP */
+
 /*
 @dataElement: HIV.C.DE91 - Preferred PEP backbone regimen
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -1720,7 +1774,8 @@ define "Preferred PEP backbone regimen Observation":
   Elements."Preferred PEP backbone regimen Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Preferred PEP backbone regimen
+/* End of Preferred PEP backbone regimen */
+
 /*
 @dataElement: HIV.C.DE92 - TDF + 3TC - HIV.C.DE92
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -1737,7 +1792,8 @@ define "TDF + 3TC - HIV.C.DE92 Observation":
   Elements."TDF + 3TC - HIV.C.DE92 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of TDF + 3TC - HIV.C.DE92
+/* End of TDF + 3TC - HIV.C.DE92 */
+
 /*
 @dataElement: HIV.C.DE93 - TDF + FTC - HIV.C.DE93
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -1754,7 +1810,8 @@ define "TDF + FTC - HIV.C.DE93 Observation":
   Elements."TDF + FTC - HIV.C.DE93 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of TDF + FTC - HIV.C.DE93
+/* End of TDF + FTC - HIV.C.DE93 */
+
 /*
 @dataElement: HIV.C.DE94 - AZT + 3TC
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -1771,7 +1828,8 @@ define "AZT + 3TC Observation":
   Elements."AZT + 3TC Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of AZT + 3TC
+/* End of AZT + 3TC */
+
 /*
 @dataElement: HIV.C.DE95 - Alternative PEP backbone regimen
 @activity: HIV.C3 Capture or update client history
@@ -1782,7 +1840,8 @@ define "Alternative PEP backbone regimen Observation":
   Elements."Alternative PEP backbone regimen Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Alternative PEP backbone regimen
+/* End of Alternative PEP backbone regimen */
+
 /*
 @dataElement: HIV.C.DE96 - ABC + 3TC
 @activity: HIV.C3 Capture or update client history
@@ -1799,7 +1858,8 @@ define "ABC + 3TC Observation":
   Elements."ABC + 3TC Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of ABC + 3TC
+/* End of ABC + 3TC */
+
 /*
 @dataElement: HIV.C.DE97 - TDF + 3TC - HIV.C.DE97
 @activity: HIV.C3 Capture or update client history
@@ -1816,7 +1876,8 @@ define "TDF + 3TC - HIV.C.DE97 Observation":
   Elements."TDF + 3TC - HIV.C.DE97 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of TDF + 3TC - HIV.C.DE97
+/* End of TDF + 3TC - HIV.C.DE97 */
+
 /*
 @dataElement: HIV.C.DE98 - TDF + FTC - HIV.C.DE98
 @activity: HIV.C3 Capture or update client history
@@ -1833,7 +1894,8 @@ define "TDF + FTC - HIV.C.DE98 Observation":
   Elements."TDF + FTC - HIV.C.DE98 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of TDF + FTC - HIV.C.DE98
+/* End of TDF + FTC - HIV.C.DE98 */
+
 /*
 @dataElement: HIV.C.DE99 - Preferred third PEP drug
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -1844,7 +1906,8 @@ define "Preferred third PEP drug Observation":
   Elements."Preferred third PEP drug Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Preferred third PEP drug
+/* End of Preferred third PEP drug */
+
 /*
 @dataElement: HIV.C.DE100 - DTG - HIV.C.DE100
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -1861,7 +1924,8 @@ define "DTG - HIV.C.DE100 Observation":
   Elements."DTG - HIV.C.DE100 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of DTG - HIV.C.DE100
+/* End of DTG - HIV.C.DE100 */
+
 /*
 @dataElement: HIV.C.DE101 - Alternative third PEP drug
 @activity: HIV.C3 Capture or update client history
@@ -1872,7 +1936,8 @@ define "Alternative third PEP drug Observation":
   Elements."Alternative third PEP drug Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Alternative third PEP drug
+/* End of Alternative third PEP drug */
+
 /*
 @dataElement: HIV.C.DE102 - ATV/r - HIV.C.DE102
 @activity: HIV.C3 Capture or update client history
@@ -1889,7 +1954,8 @@ define "ATV/r - HIV.C.DE102 Observation":
   Elements."ATV/r - HIV.C.DE102 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of ATV/r - HIV.C.DE102
+/* End of ATV/r - HIV.C.DE102 */
+
 /*
 @dataElement: HIV.C.DE103 - DRV/r - HIV.C.DE103
 @activity: HIV.C3 Capture or update client history
@@ -1906,7 +1972,8 @@ define "DRV/r - HIV.C.DE103 Observation":
   Elements."DRV/r - HIV.C.DE103 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of DRV/r - HIV.C.DE103
+/* End of DRV/r - HIV.C.DE103 */
+
 /*
 @dataElement: HIV.C.DE104 - LPV/r - HIV.C.DE104
 @activity: HIV.C3 Capture or update client history
@@ -1923,7 +1990,8 @@ define "LPV/r - HIV.C.DE104 Observation":
   Elements."LPV/r - HIV.C.DE104 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of LPV/r - HIV.C.DE104
+/* End of LPV/r - HIV.C.DE104 */
+
 /*
 @dataElement: HIV.C.DE105 - RAL - HIV.C.DE105
 @activity: HIV.C3 Capture or update client history
@@ -1940,24 +2008,21 @@ define "RAL - HIV.C.DE105 Observation":
   Elements."RAL - HIV.C.DE105 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of RAL - HIV.C.DE105
+/* End of RAL - HIV.C.DE105 */
+
 /*
 @dataElement: HIV.C.DE106 - Estimated creatinine clearance
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
 @description: Estimated creatinine clearance of the client returned from lab in mL/min
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Estimated creatinine clearance":
-  exists "Estimated creatinine clearance Observation"
-    or exists "Estimated creatinine clearance Condition"
-define "Estimated creatinine clearance Condition":
-  Elements."Estimated creatinine clearance Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Estimated creatinine clearance Observation":
-  Elements."Estimated creatinine clearance Observation" O
+  Elements."Estimated creatinine clearance" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Estimated creatinine clearance
+    return O.value
+/* End of Estimated creatinine clearance */
+
 /*
 @dataElement: HIV.C.DE112 - Contraindications to PrEP usage
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -1968,7 +2033,8 @@ define "Contraindications to PrEP usage Observation":
   Elements."Contraindications to PrEP usage Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Contraindications to PrEP usage
+/* End of Contraindications to PrEP usage */
+
 /*
 @dataElement: HIV.C.DE113 - Tenofovir disoproxil fumarate TDF allergy or contraindication
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -1985,7 +2051,8 @@ define "Tenofovir disoproxil fumarate TDF allergy or contraindication Observatio
   Elements."Tenofovir disoproxil fumarate TDF allergy or contraindication Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Tenofovir disoproxil fumarate TDF allergy or contraindication
+/* End of Tenofovir disoproxil fumarate TDF allergy or contraindication */
+
 /*
 @dataElement: HIV.C.DE114 - HIV-positive - HIV.C.DE114
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -2002,7 +2069,8 @@ define "HIV-positive - HIV.C.DE114 Observation":
   Elements."HIV-positive - HIV.C.DE114 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of HIV-positive - HIV.C.DE114
+/* End of HIV-positive - HIV.C.DE114 */
+
 /*
 @dataElement: HIV.C.DE115 - Low estimated creatinine clearance
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -2019,7 +2087,8 @@ define "Low estimated creatinine clearance Observation":
   Elements."Low estimated creatinine clearance Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Low estimated creatinine clearance
+/* End of Low estimated creatinine clearance */
+
 /*
 @dataElement: HIV.C.DE116 - Acute HIV infection symptoms - HIV.C.DE116
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -2036,7 +2105,8 @@ define "Acute HIV infection symptoms - HIV.C.DE116 Observation":
   Elements."Acute HIV infection symptoms - HIV.C.DE116 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Acute HIV infection symptoms - HIV.C.DE116
+/* End of Acute HIV infection symptoms - HIV.C.DE116 */
+
 /*
 @dataElement: HIV.C.DE117 - Probable recent exposure to HIV
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -2053,7 +2123,8 @@ define "Probable recent exposure to HIV Observation":
   Elements."Probable recent exposure to HIV Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Probable recent exposure to HIV
+/* End of Probable recent exposure to HIV */
+
 /*
 @dataElement: HIV.C.DE118 - Other allergy or contraindication to a medicine in the PrEP regimen
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -2070,41 +2141,34 @@ define "Other allergy or contraindication to a medicine in the PrEP regimen Obse
   Elements."Other allergy or contraindication to a medicine in the PrEP regimen Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Other allergy or contraindication to a medicine in the PrEP regimen
+/* End of Other allergy or contraindication to a medicine in the PrEP regimen */
+
 /*
 @dataElement: HIV.C.DE123 - Adherence counselling provided - HIV.C.DE123
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
 @description: Whether adherence counselling was provided
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Adherence counselling provided - HIV.C.DE123":
-  exists "Adherence counselling provided - HIV.C.DE123 Observation"
-    or exists "Adherence counselling provided - HIV.C.DE123 Condition"
-define "Adherence counselling provided - HIV.C.DE123 Condition":
-  Elements."Adherence counselling provided - HIV.C.DE123 Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Adherence counselling provided - HIV.C.DE123 Observation":
-  Elements."Adherence counselling provided - HIV.C.DE123 Observation" O
+  Elements."Adherence counselling provided - HIV.C.DE123" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Adherence counselling provided - HIV.C.DE123
+    return O.value
+/* End of Adherence counselling provided - HIV.C.DE123 */
+
 /*
 @dataElement: HIV.C.DE124 - Date/time of follow-up appointment - HIV.C.DE124
 @activity: HIV.C24 Schedule follow-up
 @description: Date the client is to return for monitoring, re-supply, or any other reason
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Date/time of follow-up appointment - HIV.C.DE124":
-  exists "Date/time of follow-up appointment - HIV.C.DE124 Observation"
-    or exists "Date/time of follow-up appointment - HIV.C.DE124 Condition"
-define "Date/time of follow-up appointment - HIV.C.DE124 Condition":
-  Elements."Date/time of follow-up appointment - HIV.C.DE124 Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Date/time of follow-up appointment - HIV.C.DE124 Observation":
-  Elements."Date/time of follow-up appointment - HIV.C.DE124 Observation" O
+  Elements."Date/time of follow-up appointment - HIV.C.DE124" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Date/time of follow-up appointment - HIV.C.DE124
+    return O.value
+/* End of Date/time of follow-up appointment - HIV.C.DE124 */
+
 /*
 @dataElement: HIV.C.DE125 - Type of follow-up appointment - HIV.C.DE125
 @activity: HIV.C24 Schedule follow-up
@@ -2115,7 +2179,8 @@ define "Type of follow-up appointment - HIV.C.DE125 Observation":
   Elements."Type of follow-up appointment - HIV.C.DE125 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Type of follow-up appointment - HIV.C.DE125
+/* End of Type of follow-up appointment - HIV.C.DE125 */
+
 /*
 @dataElement: HIV.C.DE126 - Retesting for HIV - HIV.C.DE126
 @activity: HIV.C24 Schedule follow-up
@@ -2132,7 +2197,8 @@ define "Retesting for HIV - HIV.C.DE126 Observation":
   Elements."Retesting for HIV - HIV.C.DE126 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Retesting for HIV - HIV.C.DE126
+/* End of Retesting for HIV - HIV.C.DE126 */
+
 /*
 @dataElement: HIV.C.DE127 - Follow-up appointment for PrEP
 @activity: HIV.C24 Schedule follow-up
@@ -2149,7 +2215,8 @@ define "Follow-up appointment for PrEP Observation":
   Elements."Follow-up appointment for PrEP Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Follow-up appointment for PrEP
+/* End of Follow-up appointment for PrEP */
+
 /*
 @dataElement: HIV.C.DE128 - Other - HIV.C.DE128
 @activity: HIV.C24 Schedule follow-up
@@ -2166,7 +2233,8 @@ define "Other - HIV.C.DE128 Observation":
   Elements."Other - HIV.C.DE128 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Other - HIV.C.DE128
+/* End of Other - HIV.C.DE128 */
+
 /*
 @dataElement: HIV.C.DE131 - Prevention services offered and referrals - HIV.C.DE131
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2177,7 +2245,8 @@ define "Prevention services offered and referrals - HIV.C.DE131 Observation":
   Elements."Prevention services offered and referrals - HIV.C.DE131 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Prevention services offered and referrals - HIV.C.DE131
+/* End of Prevention services offered and referrals - HIV.C.DE131 */
+
 /*
 @dataElement: HIV.C.DE132 - Male and female condoms and condom-compatible lubricants offered
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2194,7 +2263,8 @@ define "Male and female condoms and condom-compatible lubricants offered Observa
   Elements."Male and female condoms and condom-compatible lubricants offered Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Male and female condoms and condom-compatible lubricants offered
+/* End of Male and female condoms and condom-compatible lubricants offered */
+
 /*
 @dataElement: HIV.C.DE133 - Voluntary medical male circumcision VMMC referral
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2211,7 +2281,8 @@ define "Voluntary medical male circumcision VMMC referral Observation":
   Elements."Voluntary medical male circumcision VMMC referral Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Voluntary medical male circumcision VMMC referral
+/* End of Voluntary medical male circumcision VMMC referral */
+
 /*
 @dataElement: HIV.C.DE134 - Harm reduction for people who inject drugs - HIV.C.DE134
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2228,7 +2299,8 @@ define "Harm reduction for people who inject drugs - HIV.C.DE134 Observation":
   Elements."Harm reduction for people who inject drugs - HIV.C.DE134 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Harm reduction for people who inject drugs - HIV.C.DE134
+/* End of Harm reduction for people who inject drugs - HIV.C.DE134 */
+
 /*
 @dataElement: HIV.C.DE135 - Behavioural interventions to support risk reduction - HIV.C.DE135
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2245,7 +2317,8 @@ define "Behavioural interventions to support risk reduction - HIV.C.DE135 Observ
   Elements."Behavioural interventions to support risk reduction - HIV.C.DE135 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Behavioural interventions to support risk reduction - HIV.C.DE135
+/* End of Behavioural interventions to support risk reduction - HIV.C.DE135 */
+
 /*
 @dataElement: HIV.C.DE149 - Sexual and reproductive health integrated services - HIV.C.DE149
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2256,7 +2329,8 @@ define "Sexual and reproductive health integrated services - HIV.C.DE149 Observa
   Elements."Sexual and reproductive health integrated services - HIV.C.DE149 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Sexual and reproductive health integrated services - HIV.C.DE149
+/* End of Sexual and reproductive health integrated services - HIV.C.DE149 */
+
 /*
 @dataElement: HIV.C.DE150 - Contraception and family planning - HIV.C.DE150
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2273,7 +2347,8 @@ define "Contraception and family planning - HIV.C.DE150 Observation":
   Elements."Contraception and family planning - HIV.C.DE150 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Contraception and family planning - HIV.C.DE150
+/* End of Contraception and family planning - HIV.C.DE150 */
+
 /*
 @dataElement: HIV.C.DE151 - Check pregnancy status - HIV.C.DE151
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2290,7 +2365,8 @@ define "Check pregnancy status - HIV.C.DE151 Observation":
   Elements."Check pregnancy status - HIV.C.DE151 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Check pregnancy status - HIV.C.DE151
+/* End of Check pregnancy status - HIV.C.DE151 */
+
 /*
 @dataElement: HIV.C.DE152 - Prevent mother-to-child transmission
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2307,7 +2383,8 @@ define "Prevent mother-to-child transmission Observation":
   Elements."Prevent mother-to-child transmission Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Prevent mother-to-child transmission
+/* End of Prevent mother-to-child transmission */
+
 /*
 @dataElement: HIV.C.DE153 - Cervical cancer screening and treatment
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2324,7 +2401,8 @@ define "Cervical cancer screening and treatment Observation":
   Elements."Cervical cancer screening and treatment Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Cervical cancer screening and treatment
+/* End of Cervical cancer screening and treatment */
+
 /*
 @dataElement: HIV.C.DE154 - Anal cancer screening for men who have sex with men - HIV.C.DE154
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2341,7 +2419,8 @@ define "Anal cancer screening for men who have sex with men - HIV.C.DE154 Observ
   Elements."Anal cancer screening for men who have sex with men - HIV.C.DE154 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Anal cancer screening for men who have sex with men - HIV.C.DE154
+/* End of Anal cancer screening for men who have sex with men - HIV.C.DE154 */
+
 /*
 @dataElement: HIV.C.DE155 - STI testing and treatment - HIV.C.DE155
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2358,7 +2437,8 @@ define "STI testing and treatment - HIV.C.DE155 Observation":
   Elements."STI testing and treatment - HIV.C.DE155 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of STI testing and treatment - HIV.C.DE155
+/* End of STI testing and treatment - HIV.C.DE155 */
+
 /*
 @dataElement: HIV.C.DE156 - HIV testing for partners and biological children - HIV.C.DE156
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2375,7 +2455,8 @@ define "HIV testing for partners and biological children - HIV.C.DE156 Observati
   Elements."HIV testing for partners and biological children - HIV.C.DE156 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of HIV testing for partners and biological children - HIV.C.DE156
+/* End of HIV testing for partners and biological children - HIV.C.DE156 */
+
 /*
 @dataElement: HIV.C.DE157 - Offer other clinical services - HIV.C.DE157
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2386,7 +2467,8 @@ define "Offer other clinical services - HIV.C.DE157 Observation":
   Elements."Offer other clinical services - HIV.C.DE157 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Offer other clinical services - HIV.C.DE157
+/* End of Offer other clinical services - HIV.C.DE157 */
+
 /*
 @dataElement: HIV.C.DE158 - Assessment and provision of vaccinations - HIV.C.DE158
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2403,7 +2485,8 @@ define "Assessment and provision of vaccinations - HIV.C.DE158 Observation":
   Elements."Assessment and provision of vaccinations - HIV.C.DE158 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Assessment and provision of vaccinations - HIV.C.DE158
+/* End of Assessment and provision of vaccinations - HIV.C.DE158 */
+
 /*
 @dataElement: HIV.C.DE159 - Hepatitis B virus HBV and hepatitis C virus HCV testing and treatment
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2420,7 +2503,8 @@ define "Hepatitis B virus HBV and hepatitis C virus HCV testing and treatment Ob
   Elements."Hepatitis B virus HBV and hepatitis C virus HCV testing and treatment Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Hepatitis B virus HBV and hepatitis C virus HCV testing and treatment
+/* End of Hepatitis B virus HBV and hepatitis C virus HCV testing and treatment */
+
 /*
 @dataElement: HIV.C.DE160 - Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.C.DE160
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2437,7 +2521,8 @@ define "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumoni
   Elements."Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.C.DE160 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.C.DE160
+/* End of Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.C.DE160 */
+
 /*
 @dataElement: HIV.C.DE161 - Intensified TB case finding and linkage to TB treatment - HIV.C.DE161
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2454,7 +2539,8 @@ define "Intensified TB case finding and linkage to TB treatment - HIV.C.DE161 Ob
   Elements."Intensified TB case finding and linkage to TB treatment - HIV.C.DE161 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Intensified TB case finding and linkage to TB treatment - HIV.C.DE161
+/* End of Intensified TB case finding and linkage to TB treatment - HIV.C.DE161 */
+
 /*
 @dataElement: HIV.C.DE162 - Provision of isoniazid preventive therapy if person does not have TB - HIV.C.DE162
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2471,7 +2557,8 @@ define "Provision of isoniazid preventive therapy if person does not have TB - H
   Elements."Provision of isoniazid preventive therapy if person does not have TB - HIV.C.DE162 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Provision of isoniazid preventive therapy if person does not have TB - HIV.C.DE162
+/* End of Provision of isoniazid preventive therapy if person does not have TB - HIV.C.DE162 */
+
 /*
 @dataElement: HIV.C.DE163 - Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.C.DE163
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2488,7 +2575,8 @@ define "Malaria prevention such as bed nets and prophylaxis, depending on epidem
   Elements."Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.C.DE163 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.C.DE163
+/* End of Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.C.DE163 */
+
 /*
 @dataElement: HIV.C.DE164 - Other support services - HIV.C.DE164
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2499,7 +2587,8 @@ define "Other support services - HIV.C.DE164 Observation":
   Elements."Other support services - HIV.C.DE164 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Other support services - HIV.C.DE164
+/* End of Other support services - HIV.C.DE164 */
+
 /*
 @dataElement: HIV.C.DE165 - Mental health services - HIV.C.DE165
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2516,7 +2605,8 @@ define "Mental health services - HIV.C.DE165 Observation":
   Elements."Mental health services - HIV.C.DE165 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Mental health services - HIV.C.DE165
+/* End of Mental health services - HIV.C.DE165 */
+
 /*
 @dataElement: HIV.C.DE166 - Psychosocial counselling, support and treatment adherence counselling - HIV.C.DE166
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2533,7 +2623,8 @@ define "Psychosocial counselling, support and treatment adherence counselling - 
   Elements."Psychosocial counselling, support and treatment adherence counselling - HIV.C.DE166 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Psychosocial counselling, support and treatment adherence counselling - HIV.C.DE166
+/* End of Psychosocial counselling, support and treatment adherence counselling - HIV.C.DE166 */
+
 /*
 @dataElement: HIV.C.DE167 - Support for disclosure and partner services - HIV.C.DE167
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2550,7 +2641,8 @@ define "Support for disclosure and partner services - HIV.C.DE167 Observation":
   Elements."Support for disclosure and partner services - HIV.C.DE167 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Support for disclosure and partner services - HIV.C.DE167
+/* End of Support for disclosure and partner services - HIV.C.DE167 */
+
 /*
 @dataElement: HIV.C.DE168 - Legal and social services - HIV.C.DE168
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2567,7 +2659,8 @@ define "Legal and social services - HIV.C.DE168 Observation":
   Elements."Legal and social services - HIV.C.DE168 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Legal and social services - HIV.C.DE168
+/* End of Legal and social services - HIV.C.DE168 */
+
 /*
 @dataElement: HIV.C.DE169 - Services for responding to violence against women - HIV.C.DE169
 @activity: HIV.C10 Counsel on risk and prevention
@@ -2584,7 +2677,8 @@ define "Services for responding to violence against women - HIV.C.DE169 Observat
   Elements."Services for responding to violence against women - HIV.C.DE169 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Services for responding to violence against women - HIV.C.DE169
+/* End of Services for responding to violence against women - HIV.C.DE169 */
+
 /*
 @dataElement: HIV.D.DE1 - Reason for visit - HIV.D.DE1
 @activity: HIV.D1 Determine reason for visit
@@ -2595,7 +2689,8 @@ define "Reason for visit - HIV.D.DE1 Observation":
   Elements."Reason for visit - HIV.D.DE1 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Reason for visit - HIV.D.DE1
+/* End of Reason for visit - HIV.D.DE1 */
+
 /*
 @dataElement: HIV.D.DE2 - First clinical visit
 @activity: HIV.D1 Determine reason for visit
@@ -2612,7 +2707,8 @@ define "First clinical visit Observation":
   Elements."First clinical visit Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of First clinical visit
+/* End of First clinical visit */
+
 /*
 @dataElement: HIV.D.DE3 - Clinical visit - HIV.D.DE3
 @activity: HIV.D1 Determine reason for visit
@@ -2629,7 +2725,8 @@ define "Clinical visit - HIV.D.DE3 Observation":
   Elements."Clinical visit - HIV.D.DE3 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Clinical visit - HIV.D.DE3
+/* End of Clinical visit - HIV.D.DE3 */
+
 /*
 @dataElement: HIV.D.DE4 - ART initiation
 @activity: HIV.D1 Determine reason for visit
@@ -2646,7 +2743,8 @@ define "ART initiation Observation":
   Elements."ART initiation Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of ART initiation
+/* End of ART initiation */
+
 /*
 @dataElement: HIV.D.DE5 - ART drug pick up
 @activity: HIV.D1 Determine reason for visit
@@ -2663,7 +2761,8 @@ define "ART drug pick up Observation":
   Elements."ART drug pick up Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of ART drug pick up
+/* End of ART drug pick up */
+
 /*
 @dataElement: HIV.D.DE6 - Issues and concerns
 @activity: HIV.D1 Determine reason for visit
@@ -2680,7 +2779,8 @@ define "Issues and concerns Observation":
   Elements."Issues and concerns Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Issues and concerns
+/* End of Issues and concerns */
+
 /*
 @dataElement: HIV.D.DE7 - Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE7
 @activity: HIV.D1 Determine reason for visit
@@ -2697,41 +2797,34 @@ define "Post-treatment follow-up visit for cervical precancer lesions or invasiv
   Elements."Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE7 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE7
+/* End of Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE7 */
+
 /*
 @dataElement: HIV.D.DE9 - Body temperature
 @activity: HIV.D2 Take vital signs
 @description: Temperature of the client in Celsius
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Body temperature":
-  exists "Body temperature Observation"
-    or exists "Body temperature Condition"
-define "Body temperature Condition":
-  Elements."Body temperature Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Body temperature Observation":
-  Elements."Body temperature Observation" O
+  Elements."Body temperature" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Body temperature
+    return O.value
+/* End of Body temperature */
+
 /*
 @dataElement: HIV.D.DE13 - Body weight
 @activity: HIV.D2 Take vital signs
 @description: The client's current weight in kilograms
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Body weight":
-  exists "Body weight Observation"
-    or exists "Body weight Condition"
-define "Body weight Condition":
-  Elements."Body weight Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Body weight Observation":
-  Elements."Body weight Observation" O
+  Elements."Body weight" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Body weight
+    return O.value
+/* End of Body weight */
+
 /*
 @dataElement: HIV.D.DE17 - Signs of serious illness
 @activity: HIV.D3 Check for signs of serious illness
@@ -2742,7 +2835,8 @@ define "Signs of serious illness Observation":
   Elements."Signs of serious illness Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Signs of serious illness
+/* End of Signs of serious illness */
+
 /*
 @dataElement: HIV.D.DE18 - Fever of 39 C or greater
 @activity: HIV.D3 Check for signs of serious illness
@@ -2759,7 +2853,8 @@ define "Fever of 39 C or greater Observation":
   Elements."Fever of 39 C or greater Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Fever of 39 C or greater
+/* End of Fever of 39 C or greater */
+
 /*
 @dataElement: HIV.D.DE19 - Tachycardia
 @activity: HIV.D3 Check for signs of serious illness
@@ -2776,7 +2871,8 @@ define "Tachycardia Observation":
   Elements."Tachycardia Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Tachycardia
+/* End of Tachycardia */
+
 /*
 @dataElement: HIV.D.DE20 - Tachypnea
 @activity: HIV.D3 Check for signs of serious illness
@@ -2793,7 +2889,8 @@ define "Tachypnea Observation":
   Elements."Tachypnea Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Tachypnea
+/* End of Tachypnea */
+
 /*
 @dataElement: HIV.D.DE21 - Unable to walk unaided
 @activity: HIV.D3 Check for signs of serious illness
@@ -2810,7 +2907,8 @@ define "Unable to walk unaided Observation":
   Elements."Unable to walk unaided Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Unable to walk unaided
+/* End of Unable to walk unaided */
+
 /*
 @dataElement: HIV.D.DE22 - Lethargy - HIV.D.DE22
 @activity: HIV.D3 Check for signs of serious illness
@@ -2827,7 +2925,8 @@ define "Lethargy - HIV.D.DE22 Observation":
   Elements."Lethargy - HIV.D.DE22 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Lethargy - HIV.D.DE22
+/* End of Lethargy - HIV.D.DE22 */
+
 /*
 @dataElement: HIV.D.DE23 - Unconsciousness
 @activity: HIV.D3 Check for signs of serious illness
@@ -2844,7 +2943,8 @@ define "Unconsciousness Observation":
   Elements."Unconsciousness Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Unconsciousness
+/* End of Unconsciousness */
+
 /*
 @dataElement: HIV.D.DE24 - Convulsions
 @activity: HIV.D3 Check for signs of serious illness
@@ -2861,7 +2961,8 @@ define "Convulsions Observation":
   Elements."Convulsions Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Convulsions
+/* End of Convulsions */
+
 /*
 @dataElement: HIV.D.DE25 - Unable to drink
 @activity: HIV.D3 Check for signs of serious illness
@@ -2878,7 +2979,8 @@ define "Unable to drink Observation":
   Elements."Unable to drink Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Unable to drink
+/* End of Unable to drink */
+
 /*
 @dataElement: HIV.D.DE26 - Unable to breastfeed
 @activity: HIV.D3 Check for signs of serious illness
@@ -2895,7 +2997,8 @@ define "Unable to breastfeed Observation":
   Elements."Unable to breastfeed Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Unable to breastfeed
+/* End of Unable to breastfeed */
+
 /*
 @dataElement: HIV.D.DE27 - Repeated vomiting
 @activity: HIV.D3 Check for signs of serious illness
@@ -2912,7 +3015,8 @@ define "Repeated vomiting Observation":
   Elements."Repeated vomiting Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Repeated vomiting
+/* End of Repeated vomiting */
+
 /*
 @dataElement: HIV.D.DE28 - Headache - HIV.D.DE28
 @activity: HIV.D3 Check for signs of serious illness
@@ -2929,7 +3033,8 @@ define "Headache - HIV.D.DE28 Observation":
   Elements."Headache - HIV.D.DE28 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Headache - HIV.D.DE28
+/* End of Headache - HIV.D.DE28 */
+
 /*
 @dataElement: HIV.D.DE29 - Other sign of serious illness
 @activity: HIV.D3 Check for signs of serious illness
@@ -2946,41 +3051,34 @@ define "Other sign of serious illness Observation":
   Elements."Other sign of serious illness Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Other sign of serious illness
+/* End of Other sign of serious illness */
+
 /*
 @dataElement: HIV.D.DE37 - Serodiscordant partner - HIV.D.DE37
 @activity: HIV.D8 Capture or update client history
 @description: Client's HIV status is different from a current partner's HIV status
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Serodiscordant partner - HIV.D.DE37":
-  exists "Serodiscordant partner - HIV.D.DE37 Observation"
-    or exists "Serodiscordant partner - HIV.D.DE37 Condition"
-define "Serodiscordant partner - HIV.D.DE37 Condition":
-  Elements."Serodiscordant partner - HIV.D.DE37 Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Serodiscordant partner - HIV.D.DE37 Observation":
-  Elements."Serodiscordant partner - HIV.D.DE37 Observation" O
+  Elements."Serodiscordant partner - HIV.D.DE37" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Serodiscordant partner - HIV.D.DE37
+    return O.value
+/* End of Serodiscordant partner - HIV.D.DE37 */
+
 /*
 @dataElement: HIV.D.DE42 - Established on ART
 @activity: HIV.D8 Capture or update client history
 @description: Is the client successfully established on ART?
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Established on ART":
-  exists "Established on ART Observation"
-    or exists "Established on ART Condition"
-define "Established on ART Condition":
-  Elements."Established on ART Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Established on ART Observation":
-  Elements."Established on ART Observation" O
+  Elements."Established on ART" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Established on ART
+    return O.value
+/* End of Established on ART */
+
 /*
 @dataElement: HIV.D.DE77 - Preferred first-line ART regimen
 @activity: HIV.D8 Capture or update client history
@@ -2991,7 +3089,8 @@ define "Preferred first-line ART regimen Observation":
   Elements."Preferred first-line ART regimen Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Preferred first-line ART regimen
+/* End of Preferred first-line ART regimen */
+
 /*
 @dataElement: HIV.D.DE78 - Alternative first-line ART regimen
 @activity: HIV.D8 Capture or update client history
@@ -3002,7 +3101,8 @@ define "Alternative first-line ART regimen Observation":
   Elements."Alternative first-line ART regimen Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Alternative first-line ART regimen
+/* End of Alternative first-line ART regimen */
+
 /*
 @dataElement: HIV.D.DE79 - First-line ART regimen under special circumstances
 @activity: HIV.D8 Capture or update client history
@@ -3013,7 +3113,8 @@ define "First-line ART regimen under special circumstances Observation":
   Elements."First-line ART regimen under special circumstances Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of First-line ART regimen under special circumstances
+/* End of First-line ART regimen under special circumstances */
+
 /*
 @dataElement: HIV.D.DE80 - Preferred second-line ART regimen
 @activity: HIV.D8 Capture or update client history
@@ -3024,7 +3125,8 @@ define "Preferred second-line ART regimen Observation":
   Elements."Preferred second-line ART regimen Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Preferred second-line ART regimen
+/* End of Preferred second-line ART regimen */
+
 /*
 @dataElement: HIV.D.DE81 - Alternative second-line ART regimen
 @activity: HIV.D8 Capture or update client history
@@ -3035,7 +3137,8 @@ define "Alternative second-line ART regimen Observation":
   Elements."Alternative second-line ART regimen Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Alternative second-line ART regimen
+/* End of Alternative second-line ART regimen */
+
 /*
 @dataElement: HIV.D.DE82 - Optimal regimen for transition
 @activity: HIV.D8 Capture or update client history
@@ -3046,7 +3149,8 @@ define "Optimal regimen for transition Observation":
   Elements."Optimal regimen for transition Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Optimal regimen for transition
+/* End of Optimal regimen for transition */
+
 /*
 @dataElement: HIV.D.DE83 - Current ART regimen first-, second-, or third-line
 @activity: HIV.D8 Capture or update client history
@@ -3057,7 +3161,8 @@ define "Current ART regimen first-, second-, or third-line Observation":
   Elements."Current ART regimen first-, second-, or third-line Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Current ART regimen first-, second-, or third-line
+/* End of Current ART regimen first-, second-, or third-line */
+
 /*
 @dataElement: HIV.D.DE84 - First-line ART regimen for adults and adolescents
 @activity: HIV.D8 Capture or update client history
@@ -3074,7 +3179,8 @@ define "First-line ART regimen for adults and adolescents Observation":
   Elements."First-line ART regimen for adults and adolescents Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of First-line ART regimen for adults and adolescents
+/* End of First-line ART regimen for adults and adolescents */
+
 /*
 @dataElement: HIV.D.DE85 - First-line ART regimen for children
 @activity: HIV.D8 Capture or update client history
@@ -3091,7 +3197,8 @@ define "First-line ART regimen for children Observation":
   Elements."First-line ART regimen for children Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of First-line ART regimen for children
+/* End of First-line ART regimen for children */
+
 /*
 @dataElement: HIV.D.DE86 - First-line ART regimen for neonates
 @activity: HIV.D8 Capture or update client history
@@ -3108,7 +3215,8 @@ define "First-line ART regimen for neonates Observation":
   Elements."First-line ART regimen for neonates Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of First-line ART regimen for neonates
+/* End of First-line ART regimen for neonates */
+
 /*
 @dataElement: HIV.D.DE87 - Second-line ART regimen for adults and adolescents
 @activity: HIV.D8 Capture or update client history
@@ -3125,7 +3233,8 @@ define "Second-line ART regimen for adults and adolescents Observation":
   Elements."Second-line ART regimen for adults and adolescents Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Second-line ART regimen for adults and adolescents
+/* End of Second-line ART regimen for adults and adolescents */
+
 /*
 @dataElement: HIV.D.DE88 - Second-line ART regimen for children
 @activity: HIV.D8 Capture or update client history
@@ -3142,7 +3251,8 @@ define "Second-line ART regimen for children Observation":
   Elements."Second-line ART regimen for children Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Second-line ART regimen for children
+/* End of Second-line ART regimen for children */
+
 /*
 @dataElement: HIV.D.DE89 - Third-line ART regimen
 @activity: HIV.D8 Capture or update client history
@@ -3159,7 +3269,8 @@ define "Third-line ART regimen Observation":
   Elements."Third-line ART regimen Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Third-line ART regimen
+/* End of Third-line ART regimen */
+
 /*
 @dataElement: HIV.D.DE128 - ART regimen composition
 @activity: HIV.D8 Capture or update client history
@@ -3170,7 +3281,8 @@ define "ART regimen composition Observation":
   Elements."ART regimen composition Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of ART regimen composition
+/* End of ART regimen composition */
+
 /*
 @dataElement: HIV.D.DE129 - ABC
 @activity: HIV.D8 Capture or update client history
@@ -3187,7 +3299,8 @@ define "ABC Observation":
   Elements."ABC Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of ABC
+/* End of ABC */
+
 /*
 @dataElement: HIV.D.DE130 - FTC
 @activity: HIV.D8 Capture or update client history
@@ -3204,7 +3317,8 @@ define "FTC Observation":
   Elements."FTC Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of FTC
+/* End of FTC */
+
 /*
 @dataElement: HIV.D.DE131 - 3TC
 @activity: HIV.D8 Capture or update client history
@@ -3221,7 +3335,8 @@ define "3TC Observation":
   Elements."3TC Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of 3TC
+/* End of 3TC */
+
 /*
 @dataElement: HIV.D.DE132 - AZT
 @activity: HIV.D8 Capture or update client history
@@ -3238,7 +3353,8 @@ define "AZT Observation":
   Elements."AZT Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of AZT
+/* End of AZT */
+
 /*
 @dataElement: HIV.D.DE133 - DDI
 @activity: HIV.D8 Capture or update client history
@@ -3255,7 +3371,8 @@ define "DDI Observation":
   Elements."DDI Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of DDI
+/* End of DDI */
+
 /*
 @dataElement: HIV.D.DE134 - D4T
 @activity: HIV.D8 Capture or update client history
@@ -3272,7 +3389,8 @@ define "D4T Observation":
   Elements."D4T Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of D4T
+/* End of D4T */
+
 /*
 @dataElement: HIV.D.DE135 - TDF - HIV.D.DE135
 @activity: HIV.D8 Capture or update client history
@@ -3289,7 +3407,8 @@ define "TDF - HIV.D.DE135 Observation":
   Elements."TDF - HIV.D.DE135 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of TDF - HIV.D.DE135
+/* End of TDF - HIV.D.DE135 */
+
 /*
 @dataElement: HIV.D.DE136 - EFV
 @activity: HIV.D8 Capture or update client history
@@ -3306,7 +3425,8 @@ define "EFV Observation":
   Elements."EFV Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of EFV
+/* End of EFV */
+
 /*
 @dataElement: HIV.D.DE137 - ETV
 @activity: HIV.D8 Capture or update client history
@@ -3323,7 +3443,8 @@ define "ETV Observation":
   Elements."ETV Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of ETV
+/* End of ETV */
+
 /*
 @dataElement: HIV.D.DE138 - NVP
 @activity: HIV.D8 Capture or update client history
@@ -3340,7 +3461,8 @@ define "NVP Observation":
   Elements."NVP Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of NVP
+/* End of NVP */
+
 /*
 @dataElement: HIV.D.DE139 - RIL
 @activity: HIV.D8 Capture or update client history
@@ -3357,7 +3479,8 @@ define "RIL Observation":
   Elements."RIL Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of RIL
+/* End of RIL */
+
 /*
 @dataElement: HIV.D.DE140 - ATV/r - HIV.D.DE140
 @activity: HIV.D8 Capture or update client history
@@ -3374,7 +3497,8 @@ define "ATV/r - HIV.D.DE140 Observation":
   Elements."ATV/r - HIV.D.DE140 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of ATV/r - HIV.D.DE140
+/* End of ATV/r - HIV.D.DE140 */
+
 /*
 @dataElement: HIV.D.DE141 - LPV/r - HIV.D.DE141
 @activity: HIV.D8 Capture or update client history
@@ -3391,7 +3515,8 @@ define "LPV/r - HIV.D.DE141 Observation":
   Elements."LPV/r - HIV.D.DE141 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of LPV/r - HIV.D.DE141
+/* End of LPV/r - HIV.D.DE141 */
+
 /*
 @dataElement: HIV.D.DE142 - DRV/r - HIV.D.DE142
 @activity: HIV.D8 Capture or update client history
@@ -3408,7 +3533,8 @@ define "DRV/r - HIV.D.DE142 Observation":
   Elements."DRV/r - HIV.D.DE142 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of DRV/r - HIV.D.DE142
+/* End of DRV/r - HIV.D.DE142 */
+
 /*
 @dataElement: HIV.D.DE143 - RTV
 @activity: HIV.D8 Capture or update client history
@@ -3425,7 +3551,8 @@ define "RTV Observation":
   Elements."RTV Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of RTV
+/* End of RTV */
+
 /*
 @dataElement: HIV.D.DE144 - DTG - HIV.D.DE144
 @activity: HIV.D8 Capture or update client history
@@ -3442,7 +3569,8 @@ define "DTG - HIV.D.DE144 Observation":
   Elements."DTG - HIV.D.DE144 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of DTG - HIV.D.DE144
+/* End of DTG - HIV.D.DE144 */
+
 /*
 @dataElement: HIV.D.DE145 - RAL - HIV.D.DE145
 @activity: HIV.D8 Capture or update client history
@@ -3459,7 +3587,8 @@ define "RAL - HIV.D.DE145 Observation":
   Elements."RAL - HIV.D.DE145 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of RAL - HIV.D.DE145
+/* End of RAL - HIV.D.DE145 */
+
 /*
 @dataElement: HIV.D.DE152 - Prevention services offered and referrals - HIV.D.DE152
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -3470,7 +3599,8 @@ define "Prevention services offered and referrals - HIV.D.DE152 Observation":
   Elements."Prevention services offered and referrals - HIV.D.DE152 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Prevention services offered and referrals - HIV.D.DE152
+/* End of Prevention services offered and referrals - HIV.D.DE152 */
+
 /*
 @dataElement: HIV.D.DE153 - Offer male and female condoms and condom-compatible lubricants - HIV.D.DE153
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -3487,7 +3617,8 @@ define "Offer male and female condoms and condom-compatible lubricants - HIV.D.D
   Elements."Offer male and female condoms and condom-compatible lubricants - HIV.D.DE153 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Offer male and female condoms and condom-compatible lubricants - HIV.D.DE153
+/* End of Offer male and female condoms and condom-compatible lubricants - HIV.D.DE153 */
+
 /*
 @dataElement: HIV.D.DE154 - Harm reduction for people who inject drugs - HIV.D.DE154
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -3504,7 +3635,8 @@ define "Harm reduction for people who inject drugs - HIV.D.DE154 Observation":
   Elements."Harm reduction for people who inject drugs - HIV.D.DE154 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Harm reduction for people who inject drugs - HIV.D.DE154
+/* End of Harm reduction for people who inject drugs - HIV.D.DE154 */
+
 /*
 @dataElement: HIV.D.DE155 - Behavioural interventions to support risk reduction - HIV.D.DE155
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -3521,7 +3653,8 @@ define "Behavioural interventions to support risk reduction - HIV.D.DE155 Observ
   Elements."Behavioural interventions to support risk reduction - HIV.D.DE155 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Behavioural interventions to support risk reduction - HIV.D.DE155
+/* End of Behavioural interventions to support risk reduction - HIV.D.DE155 */
+
 /*
 @dataElement: HIV.D.DE156 - Sexual and reproductive health integrated services - HIV.D.DE156
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -3532,7 +3665,8 @@ define "Sexual and reproductive health integrated services - HIV.D.DE156 Observa
   Elements."Sexual and reproductive health integrated services - HIV.D.DE156 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Sexual and reproductive health integrated services - HIV.D.DE156
+/* End of Sexual and reproductive health integrated services - HIV.D.DE156 */
+
 /*
 @dataElement: HIV.D.DE157 - Contraception and family planning - HIV.D.DE157
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -3549,7 +3683,8 @@ define "Contraception and family planning - HIV.D.DE157 Observation":
   Elements."Contraception and family planning - HIV.D.DE157 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Contraception and family planning - HIV.D.DE157
+/* End of Contraception and family planning - HIV.D.DE157 */
+
 /*
 @dataElement: HIV.D.DE158 - Check pregnancy status - HIV.D.DE158
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -3566,7 +3701,8 @@ define "Check pregnancy status - HIV.D.DE158 Observation":
   Elements."Check pregnancy status - HIV.D.DE158 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Check pregnancy status - HIV.D.DE158
+/* End of Check pregnancy status - HIV.D.DE158 */
+
 /*
 @dataElement: HIV.D.DE159 - Prevention of mother-to-child transmission
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -3583,7 +3719,8 @@ define "Prevention of mother-to-child transmission Observation":
   Elements."Prevention of mother-to-child transmission Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Prevention of mother-to-child transmission
+/* End of Prevention of mother-to-child transmission */
+
 /*
 @dataElement: HIV.D.DE160 - STI testing and treatment - HIV.D.DE160
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -3600,7 +3737,8 @@ define "STI testing and treatment - HIV.D.DE160 Observation":
   Elements."STI testing and treatment - HIV.D.DE160 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of STI testing and treatment - HIV.D.DE160
+/* End of STI testing and treatment - HIV.D.DE160 */
+
 /*
 @dataElement: HIV.D.DE186 - HIV clinical stage - HIV.D.DE186
 @activity: HIV.D8 Capture or update client history
@@ -3611,7 +3749,8 @@ define "HIV clinical stage - HIV.D.DE186 Observation":
   Elements."HIV clinical stage - HIV.D.DE186 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of HIV clinical stage - HIV.D.DE186
+/* End of HIV clinical stage - HIV.D.DE186 */
+
 /*
 @dataElement: HIV.D.DE187 - WHO HIV clinical stage 1
 @activity: HIV.D8 Capture or update client history
@@ -3628,7 +3767,8 @@ define "WHO HIV clinical stage 1 Observation":
   Elements."WHO HIV clinical stage 1 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of WHO HIV clinical stage 1
+/* End of WHO HIV clinical stage 1 */
+
 /*
 @dataElement: HIV.D.DE188 - WHO HIV clinical stage 2
 @activity: HIV.D8 Capture or update client history
@@ -3645,7 +3785,8 @@ define "WHO HIV clinical stage 2 Observation":
   Elements."WHO HIV clinical stage 2 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of WHO HIV clinical stage 2
+/* End of WHO HIV clinical stage 2 */
+
 /*
 @dataElement: HIV.D.DE189 - WHO HIV clinical stage 3
 @activity: HIV.D8 Capture or update client history
@@ -3662,7 +3803,8 @@ define "WHO HIV clinical stage 3 Observation":
   Elements."WHO HIV clinical stage 3 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of WHO HIV clinical stage 3
+/* End of WHO HIV clinical stage 3 */
+
 /*
 @dataElement: HIV.D.DE190 - WHO HIV clinical stage 4
 @activity: HIV.D8 Capture or update client history
@@ -3679,24 +3821,21 @@ define "WHO HIV clinical stage 4 Observation":
   Elements."WHO HIV clinical stage 4 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of WHO HIV clinical stage 4
+/* End of WHO HIV clinical stage 4 */
+
 /*
 @dataElement: HIV.D.DE195 - Date of scheduled review of viral load test results
 @activity: HIV.D10 Counsel returning client
 @description: Expected date when client's viral load test results will be returned and reviewed
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Date of scheduled review of viral load test results":
-  exists "Date of scheduled review of viral load test results Observation"
-    or exists "Date of scheduled review of viral load test results Condition"
-define "Date of scheduled review of viral load test results Condition":
-  Elements."Date of scheduled review of viral load test results Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Date of scheduled review of viral load test results Observation":
-  Elements."Date of scheduled review of viral load test results Observation" O
+  Elements."Date of scheduled review of viral load test results" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Date of scheduled review of viral load test results
+    return O.value
+/* End of Date of scheduled review of viral load test results */
+
 /*
 @dataElement: HIV.D.DE225 - Treatment failure
 @activity: HIV.D17 Check for signs of treatment failure
@@ -3707,7 +3846,8 @@ define "Treatment failure Observation":
   Elements."Treatment failure Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Treatment failure
+/* End of Treatment failure */
+
 /*
 @dataElement: HIV.D.DE226 - Clinical failure
 @activity: HIV.D17 Check for signs of treatment failure
@@ -3724,7 +3864,8 @@ define "Clinical failure Observation":
   Elements."Clinical failure Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Clinical failure
+/* End of Clinical failure */
+
 /*
 @dataElement: HIV.D.DE227 - Immunological failure
 @activity: HIV.D17 Check for signs of treatment failure
@@ -3741,7 +3882,8 @@ define "Immunological failure Observation":
   Elements."Immunological failure Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Immunological failure
+/* End of Immunological failure */
+
 /*
 @dataElement: HIV.D.DE228 - Virological failure
 @activity: HIV.D17 Check for signs of treatment failure
@@ -3758,7 +3900,8 @@ define "Virological failure Observation":
   Elements."Virological failure Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Virological failure
+/* End of Virological failure */
+
 /*
 @dataElement: HIV.D.DE289 - WHO HIV clinical stage condition or symptom - HIV.D.DE289
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -3769,7 +3912,8 @@ define "WHO HIV clinical stage condition or symptom - HIV.D.DE289 Observation":
   Elements."WHO HIV clinical stage condition or symptom - HIV.D.DE289 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of WHO HIV clinical stage condition or symptom - HIV.D.DE289
+/* End of WHO HIV clinical stage condition or symptom - HIV.D.DE289 */
+
 /*
 @dataElement: HIV.D.DE290 - Asymptomatic
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -3786,7 +3930,8 @@ define "Asymptomatic Observation":
   Elements."Asymptomatic Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Asymptomatic
+/* End of Asymptomatic */
+
 /*
 @dataElement: HIV.D.DE291 - Persistent generalized lymphadenopathy
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -3803,7 +3948,8 @@ define "Persistent generalized lymphadenopathy Observation":
   Elements."Persistent generalized lymphadenopathy Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Persistent generalized lymphadenopathy
+/* End of Persistent generalized lymphadenopathy */
+
 /*
 @dataElement: HIV.D.DE292 - Moderate unexplained weight loss
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -3820,7 +3966,8 @@ define "Moderate unexplained weight loss Observation":
   Elements."Moderate unexplained weight loss Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Moderate unexplained weight loss
+/* End of Moderate unexplained weight loss */
+
 /*
 @dataElement: HIV.D.DE293 - Recurrent respiratory tract infections
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -3837,7 +3984,8 @@ define "Recurrent respiratory tract infections Observation":
   Elements."Recurrent respiratory tract infections Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Recurrent respiratory tract infections
+/* End of Recurrent respiratory tract infections */
+
 /*
 @dataElement: HIV.D.DE294 - Unexplained persistent hepatosplenomegaly
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -3854,7 +4002,8 @@ define "Unexplained persistent hepatosplenomegaly Observation":
   Elements."Unexplained persistent hepatosplenomegaly Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Unexplained persistent hepatosplenomegaly
+/* End of Unexplained persistent hepatosplenomegaly */
+
 /*
 @dataElement: HIV.D.DE295 - Herpes zoster
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -3871,7 +4020,8 @@ define "Herpes zoster Observation":
   Elements."Herpes zoster Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Herpes zoster
+/* End of Herpes zoster */
+
 /*
 @dataElement: HIV.D.DE296 - Angular cheilitis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -3888,7 +4038,8 @@ define "Angular cheilitis Observation":
   Elements."Angular cheilitis Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Angular cheilitis
+/* End of Angular cheilitis */
+
 /*
 @dataElement: HIV.D.DE297 - Linear gingival erythema
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -3905,7 +4056,8 @@ define "Linear gingival erythema Observation":
   Elements."Linear gingival erythema Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Linear gingival erythema
+/* End of Linear gingival erythema */
+
 /*
 @dataElement: HIV.D.DE298 - Recurrent oral ulceration
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -3922,7 +4074,8 @@ define "Recurrent oral ulceration Observation":
   Elements."Recurrent oral ulceration Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Recurrent oral ulceration
+/* End of Recurrent oral ulceration */
+
 /*
 @dataElement: HIV.D.DE299 - Papular pruritic eruption
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -3939,7 +4092,8 @@ define "Papular pruritic eruption Observation":
   Elements."Papular pruritic eruption Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Papular pruritic eruption
+/* End of Papular pruritic eruption */
+
 /*
 @dataElement: HIV.D.DE300 - Fungal nail infections
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -3956,7 +4110,8 @@ define "Fungal nail infections Observation":
   Elements."Fungal nail infections Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Fungal nail infections
+/* End of Fungal nail infections */
+
 /*
 @dataElement: HIV.D.DE301 - Seborrhoeic dermatitis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -3973,7 +4128,8 @@ define "Seborrhoeic dermatitis Observation":
   Elements."Seborrhoeic dermatitis Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Seborrhoeic dermatitis
+/* End of Seborrhoeic dermatitis */
+
 /*
 @dataElement: HIV.D.DE302 - Extensive wart virus infection
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -3990,7 +4146,8 @@ define "Extensive wart virus infection Observation":
   Elements."Extensive wart virus infection Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Extensive wart virus infection
+/* End of Extensive wart virus infection */
+
 /*
 @dataElement: HIV.D.DE303 - Extensive molluscum contagiosum
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4007,7 +4164,8 @@ define "Extensive molluscum contagiosum Observation":
   Elements."Extensive molluscum contagiosum Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Extensive molluscum contagiosum
+/* End of Extensive molluscum contagiosum */
+
 /*
 @dataElement: HIV.D.DE304 - Unexplained persistent parotid enlargement
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4024,7 +4182,8 @@ define "Unexplained persistent parotid enlargement Observation":
   Elements."Unexplained persistent parotid enlargement Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Unexplained persistent parotid enlargement
+/* End of Unexplained persistent parotid enlargement */
+
 /*
 @dataElement: HIV.D.DE305 - Unexplained severe weight loss in adults
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4041,7 +4200,8 @@ define "Unexplained severe weight loss in adults Observation":
   Elements."Unexplained severe weight loss in adults Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Unexplained severe weight loss in adults
+/* End of Unexplained severe weight loss in adults */
+
 /*
 @dataElement: HIV.D.DE306 - Unexplained moderate malnutrition not adequately responding to standard therapy
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4058,7 +4218,8 @@ define "Unexplained moderate malnutrition not adequately responding to standard 
   Elements."Unexplained moderate malnutrition not adequately responding to standard therapy Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Unexplained moderate malnutrition not adequately responding to standard therapy
+/* End of Unexplained moderate malnutrition not adequately responding to standard therapy */
+
 /*
 @dataElement: HIV.D.DE307 - Unexplained chronic diarrhoea for longer than 1 month
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4075,7 +4236,8 @@ define "Unexplained chronic diarrhoea for longer than 1 month Observation":
   Elements."Unexplained chronic diarrhoea for longer than 1 month Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Unexplained chronic diarrhoea for longer than 1 month
+/* End of Unexplained chronic diarrhoea for longer than 1 month */
+
 /*
 @dataElement: HIV.D.DE308 - Unexplained persistent diarrhoea 14 days or more
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4092,7 +4254,8 @@ define "Unexplained persistent diarrhoea 14 days or more Observation":
   Elements."Unexplained persistent diarrhoea 14 days or more Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Unexplained persistent diarrhoea 14 days or more
+/* End of Unexplained persistent diarrhoea 14 days or more */
+
 /*
 @dataElement: HIV.D.DE309 - Unexplained persistent fever above 37.5 C, intermittent or constant, for longer than one 1 month
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4109,7 +4272,8 @@ define "Unexplained persistent fever above 37.5 C, intermittent or constant, for
   Elements."Unexplained persistent fever above 37.5 C, intermittent or constant, for longer than one 1 month Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Unexplained persistent fever above 37.5 C, intermittent or constant, for longer than one 1 month
+/* End of Unexplained persistent fever above 37.5 C, intermittent or constant, for longer than one 1 month */
+
 /*
 @dataElement: HIV.D.DE310 - Persistent oral candidiasis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4126,7 +4290,8 @@ define "Persistent oral candidiasis Observation":
   Elements."Persistent oral candidiasis Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Persistent oral candidiasis
+/* End of Persistent oral candidiasis */
+
 /*
 @dataElement: HIV.D.DE311 - Oral hairy leukoplakia
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4143,7 +4308,8 @@ define "Oral hairy leukoplakia Observation":
   Elements."Oral hairy leukoplakia Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Oral hairy leukoplakia
+/* End of Oral hairy leukoplakia */
+
 /*
 @dataElement: HIV.D.DE312 - Pulmonary TB - HIV.D.DE312
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4160,7 +4326,8 @@ define "Pulmonary TB - HIV.D.DE312 Observation":
   Elements."Pulmonary TB - HIV.D.DE312 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Pulmonary TB - HIV.D.DE312
+/* End of Pulmonary TB - HIV.D.DE312 */
+
 /*
 @dataElement: HIV.D.DE313 - Lymph node TB - HIV.D.DE313
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4177,7 +4344,8 @@ define "Lymph node TB - HIV.D.DE313 Observation":
   Elements."Lymph node TB - HIV.D.DE313 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Lymph node TB - HIV.D.DE313
+/* End of Lymph node TB - HIV.D.DE313 */
+
 /*
 @dataElement: HIV.D.DE314 - Severe bacterial infections such as pneumonia, empyema, pyomyositis, bone or joint infection, meningitis, bacteraemia
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4194,7 +4362,8 @@ define "Severe bacterial infections such as pneumonia, empyema, pyomyositis, bon
   Elements."Severe bacterial infections such as pneumonia, empyema, pyomyositis, bone or joint infection, meningitis, bacteraemia Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Severe bacterial infections such as pneumonia, empyema, pyomyositis, bone or joint infection, meningitis, bacteraemia
+/* End of Severe bacterial infections such as pneumonia, empyema, pyomyositis, bone or joint infection, meningitis, bacteraemia */
+
 /*
 @dataElement: HIV.D.DE315 - Severe recurrent bacterial pneumonia
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4211,7 +4380,8 @@ define "Severe recurrent bacterial pneumonia Observation":
   Elements."Severe recurrent bacterial pneumonia Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Severe recurrent bacterial pneumonia
+/* End of Severe recurrent bacterial pneumonia */
+
 /*
 @dataElement: HIV.D.DE316 - Acute necrotizing ulcerative stomatitis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4228,7 +4398,8 @@ define "Acute necrotizing ulcerative stomatitis Observation":
   Elements."Acute necrotizing ulcerative stomatitis Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Acute necrotizing ulcerative stomatitis
+/* End of Acute necrotizing ulcerative stomatitis */
+
 /*
 @dataElement: HIV.D.DE317 - Acute necrotizing ulcerative gingivitis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4245,7 +4416,8 @@ define "Acute necrotizing ulcerative gingivitis Observation":
   Elements."Acute necrotizing ulcerative gingivitis Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Acute necrotizing ulcerative gingivitis
+/* End of Acute necrotizing ulcerative gingivitis */
+
 /*
 @dataElement: HIV.D.DE318 - Acute necrotizing ulcerative periodontitis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4262,7 +4434,8 @@ define "Acute necrotizing ulcerative periodontitis Observation":
   Elements."Acute necrotizing ulcerative periodontitis Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Acute necrotizing ulcerative periodontitis
+/* End of Acute necrotizing ulcerative periodontitis */
+
 /*
 @dataElement: HIV.D.DE319 - Unexplained anaemia <8 g/dL
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4279,7 +4452,8 @@ define "Unexplained anaemia <8 g/dL Observation":
   Elements."Unexplained anaemia <8 g/dL Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Unexplained anaemia <8 g/dL
+/* End of Unexplained anaemia <8 g/dL */
+
 /*
 @dataElement: HIV.D.DE320 - Neutropaenia <0.5 x 10^9/L
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4296,7 +4470,8 @@ define "Neutropaenia <0.5 x 10^9/L Observation":
   Elements."Neutropaenia <0.5 x 10^9/L Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Neutropaenia <0.5 x 10^9/L
+/* End of Neutropaenia <0.5 x 10^9/L */
+
 /*
 @dataElement: HIV.D.DE321 - Chronic thrombocytopaenia <50 x 10^9/L
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4313,7 +4488,8 @@ define "Chronic thrombocytopaenia <50 x 10^9/L Observation":
   Elements."Chronic thrombocytopaenia <50 x 10^9/L Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Chronic thrombocytopaenia <50 x 10^9/L
+/* End of Chronic thrombocytopaenia <50 x 10^9/L */
+
 /*
 @dataElement: HIV.D.DE322 - Symptomatic lymphoid interstitial pneumonitis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4330,7 +4506,8 @@ define "Symptomatic lymphoid interstitial pneumonitis Observation":
   Elements."Symptomatic lymphoid interstitial pneumonitis Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Symptomatic lymphoid interstitial pneumonitis
+/* End of Symptomatic lymphoid interstitial pneumonitis */
+
 /*
 @dataElement: HIV.D.DE323 - Chronic HIV-associated lung disease, including bronchiectasis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4347,7 +4524,8 @@ define "Chronic HIV-associated lung disease, including bronchiectasis Observatio
   Elements."Chronic HIV-associated lung disease, including bronchiectasis Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Chronic HIV-associated lung disease, including bronchiectasis
+/* End of Chronic HIV-associated lung disease, including bronchiectasis */
+
 /*
 @dataElement: HIV.D.DE324 - HIV wasting syndrome
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4364,7 +4542,8 @@ define "HIV wasting syndrome Observation":
   Elements."HIV wasting syndrome Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of HIV wasting syndrome
+/* End of HIV wasting syndrome */
+
 /*
 @dataElement: HIV.D.DE325 - Unexplained severe wasting not responding to standard therapy
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4381,7 +4560,8 @@ define "Unexplained severe wasting not responding to standard therapy Observatio
   Elements."Unexplained severe wasting not responding to standard therapy Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Unexplained severe wasting not responding to standard therapy
+/* End of Unexplained severe wasting not responding to standard therapy */
+
 /*
 @dataElement: HIV.D.DE326 - Unexplained stunting not responding to standard therapy
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4398,7 +4578,8 @@ define "Unexplained stunting not responding to standard therapy Observation":
   Elements."Unexplained stunting not responding to standard therapy Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Unexplained stunting not responding to standard therapy
+/* End of Unexplained stunting not responding to standard therapy */
+
 /*
 @dataElement: HIV.D.DE327 - Unexplained severe malnutrition not responding to standard therapy
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4415,7 +4596,8 @@ define "Unexplained severe malnutrition not responding to standard therapy Obser
   Elements."Unexplained severe malnutrition not responding to standard therapy Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Unexplained severe malnutrition not responding to standard therapy
+/* End of Unexplained severe malnutrition not responding to standard therapy */
+
 /*
 @dataElement: HIV.D.DE328 - Pneumocystis jirovecii pneumonia
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4432,7 +4614,8 @@ define "Pneumocystis jirovecii pneumonia Observation":
   Elements."Pneumocystis jirovecii pneumonia Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Pneumocystis jirovecii pneumonia
+/* End of Pneumocystis jirovecii pneumonia */
+
 /*
 @dataElement: HIV.D.DE329 - Recurrent severe bacterial pneumonia
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4449,7 +4632,8 @@ define "Recurrent severe bacterial pneumonia Observation":
   Elements."Recurrent severe bacterial pneumonia Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Recurrent severe bacterial pneumonia
+/* End of Recurrent severe bacterial pneumonia */
+
 /*
 @dataElement: HIV.D.DE330 - Recurrent severe bacterial infections such as empyema, pyomyositis, bone or joint infection, meningitis, but excluding pneumonia
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4466,7 +4650,8 @@ define "Recurrent severe bacterial infections such as empyema, pyomyositis, bone
   Elements."Recurrent severe bacterial infections such as empyema, pyomyositis, bone or joint infection, meningitis, but excluding pneumonia Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Recurrent severe bacterial infections such as empyema, pyomyositis, bone or joint infection, meningitis, but excluding pneumonia
+/* End of Recurrent severe bacterial infections such as empyema, pyomyositis, bone or joint infection, meningitis, but excluding pneumonia */
+
 /*
 @dataElement: HIV.D.DE331 - Empyema
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4483,7 +4668,8 @@ define "Empyema Observation":
   Elements."Empyema Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Empyema
+/* End of Empyema */
+
 /*
 @dataElement: HIV.D.DE332 - Pyomyositis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4500,7 +4686,8 @@ define "Pyomyositis Observation":
   Elements."Pyomyositis Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Pyomyositis
+/* End of Pyomyositis */
+
 /*
 @dataElement: HIV.D.DE333 - Bone or joint infection
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4517,7 +4704,8 @@ define "Bone or joint infection Observation":
   Elements."Bone or joint infection Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Bone or joint infection
+/* End of Bone or joint infection */
+
 /*
 @dataElement: HIV.D.DE334 - Meningitis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4534,7 +4722,8 @@ define "Meningitis Observation":
   Elements."Meningitis Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Meningitis
+/* End of Meningitis */
+
 /*
 @dataElement: HIV.D.DE335 - Chronic herpes simplex infection orolabial or cutaneous of more than 1 month duration or visceral at any site
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4551,7 +4740,8 @@ define "Chronic herpes simplex infection orolabial or cutaneous of more than 1 m
   Elements."Chronic herpes simplex infection orolabial or cutaneous of more than 1 month duration or visceral at any site Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Chronic herpes simplex infection orolabial or cutaneous of more than 1 month duration or visceral at any site
+/* End of Chronic herpes simplex infection orolabial or cutaneous of more than 1 month duration or visceral at any site */
+
 /*
 @dataElement: HIV.D.DE336 - Chronic herpes simplex infection orolabial, genital or anorectal of more than 1 month in duration or visceral at any site
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4568,7 +4758,8 @@ define "Chronic herpes simplex infection orolabial, genital or anorectal of more
   Elements."Chronic herpes simplex infection orolabial, genital or anorectal of more than 1 month in duration or visceral at any site Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Chronic herpes simplex infection orolabial, genital or anorectal of more than 1 month in duration or visceral at any site
+/* End of Chronic herpes simplex infection orolabial, genital or anorectal of more than 1 month in duration or visceral at any site */
+
 /*
 @dataElement: HIV.D.DE337 - Oesophageal candidiasis or candidiasis of trachea, bronchi or lungs
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4585,7 +4776,8 @@ define "Oesophageal candidiasis or candidiasis of trachea, bronchi or lungs Obse
   Elements."Oesophageal candidiasis or candidiasis of trachea, bronchi or lungs Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Oesophageal candidiasis or candidiasis of trachea, bronchi or lungs
+/* End of Oesophageal candidiasis or candidiasis of trachea, bronchi or lungs */
+
 /*
 @dataElement: HIV.D.DE338 - Extrapulmonary TB - HIV.D.DE338
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4602,7 +4794,8 @@ define "Extrapulmonary TB - HIV.D.DE338 Observation":
   Elements."Extrapulmonary TB - HIV.D.DE338 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Extrapulmonary TB - HIV.D.DE338
+/* End of Extrapulmonary TB - HIV.D.DE338 */
+
 /*
 @dataElement: HIV.D.DE339 - Kaposi sarcoma
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4619,7 +4812,8 @@ define "Kaposi sarcoma Observation":
   Elements."Kaposi sarcoma Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Kaposi sarcoma
+/* End of Kaposi sarcoma */
+
 /*
 @dataElement: HIV.D.DE340 - Cytomegalovirus infection retinitis or infection of other organs
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4636,7 +4830,8 @@ define "Cytomegalovirus infection retinitis or infection of other organs Observa
   Elements."Cytomegalovirus infection retinitis or infection of other organs Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Cytomegalovirus infection retinitis or infection of other organs
+/* End of Cytomegalovirus infection retinitis or infection of other organs */
+
 /*
 @dataElement: HIV.D.DE341 - Central nervous system toxoplasmosis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4653,7 +4848,8 @@ define "Central nervous system toxoplasmosis Observation":
   Elements."Central nervous system toxoplasmosis Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Central nervous system toxoplasmosis
+/* End of Central nervous system toxoplasmosis */
+
 /*
 @dataElement: HIV.D.DE342 - HIV encephalopathy
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4670,7 +4866,8 @@ define "HIV encephalopathy Observation":
   Elements."HIV encephalopathy Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of HIV encephalopathy
+/* End of HIV encephalopathy */
+
 /*
 @dataElement: HIV.D.DE343 - Extrapulmonary cryptococcosis, including meningitis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4687,7 +4884,8 @@ define "Extrapulmonary cryptococcosis, including meningitis Observation":
   Elements."Extrapulmonary cryptococcosis, including meningitis Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Extrapulmonary cryptococcosis, including meningitis
+/* End of Extrapulmonary cryptococcosis, including meningitis */
+
 /*
 @dataElement: HIV.D.DE344 - Disseminated nontuberculous mycobacterial infection
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4704,7 +4902,8 @@ define "Disseminated nontuberculous mycobacterial infection Observation":
   Elements."Disseminated nontuberculous mycobacterial infection Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Disseminated nontuberculous mycobacterial infection
+/* End of Disseminated nontuberculous mycobacterial infection */
+
 /*
 @dataElement: HIV.D.DE345 - Progressive multifocal leukoencephalopathy
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4721,7 +4920,8 @@ define "Progressive multifocal leukoencephalopathy Observation":
   Elements."Progressive multifocal leukoencephalopathy Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Progressive multifocal leukoencephalopathy
+/* End of Progressive multifocal leukoencephalopathy */
+
 /*
 @dataElement: HIV.D.DE346 - Chronic cryptosporidiosis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4738,7 +4938,8 @@ define "Chronic cryptosporidiosis Observation":
   Elements."Chronic cryptosporidiosis Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Chronic cryptosporidiosis
+/* End of Chronic cryptosporidiosis */
+
 /*
 @dataElement: HIV.D.DE347 - Chronic cryptosporidiosis with diarrhoea
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4755,7 +4956,8 @@ define "Chronic cryptosporidiosis with diarrhoea Observation":
   Elements."Chronic cryptosporidiosis with diarrhoea Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Chronic cryptosporidiosis with diarrhoea
+/* End of Chronic cryptosporidiosis with diarrhoea */
+
 /*
 @dataElement: HIV.D.DE348 - Chronic isosporiasis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4772,7 +4974,8 @@ define "Chronic isosporiasis Observation":
   Elements."Chronic isosporiasis Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Chronic isosporiasis
+/* End of Chronic isosporiasis */
+
 /*
 @dataElement: HIV.D.DE349 - Disseminated mycosis extrapulmonary histoplasmosis, coccidioidomycosis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4789,7 +4992,8 @@ define "Disseminated mycosis extrapulmonary histoplasmosis, coccidioidomycosis O
   Elements."Disseminated mycosis extrapulmonary histoplasmosis, coccidioidomycosis Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Disseminated mycosis extrapulmonary histoplasmosis, coccidioidomycosis
+/* End of Disseminated mycosis extrapulmonary histoplasmosis, coccidioidomycosis */
+
 /*
 @dataElement: HIV.D.DE350 - Disseminated endemic mycosis extrapulmonary histoplasmosis, coccidioidomycosis, penicilliosis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4806,7 +5010,8 @@ define "Disseminated endemic mycosis extrapulmonary histoplasmosis, coccidioidom
   Elements."Disseminated endemic mycosis extrapulmonary histoplasmosis, coccidioidomycosis, penicilliosis Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Disseminated endemic mycosis extrapulmonary histoplasmosis, coccidioidomycosis, penicilliosis
+/* End of Disseminated endemic mycosis extrapulmonary histoplasmosis, coccidioidomycosis, penicilliosis */
+
 /*
 @dataElement: HIV.D.DE351 - Cerebral lymphoma
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4823,7 +5028,8 @@ define "Cerebral lymphoma Observation":
   Elements."Cerebral lymphoma Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Cerebral lymphoma
+/* End of Cerebral lymphoma */
+
 /*
 @dataElement: HIV.D.DE352 - B-cell non-Hodgkin lymphoma
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4840,7 +5046,8 @@ define "B-cell non-Hodgkin lymphoma Observation":
   Elements."B-cell non-Hodgkin lymphoma Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of B-cell non-Hodgkin lymphoma
+/* End of B-cell non-Hodgkin lymphoma */
+
 /*
 @dataElement: HIV.D.DE353 - HIV-associated nephropathy or cardiomyopathy
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4857,7 +5064,8 @@ define "HIV-associated nephropathy or cardiomyopathy Observation":
   Elements."HIV-associated nephropathy or cardiomyopathy Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of HIV-associated nephropathy or cardiomyopathy
+/* End of HIV-associated nephropathy or cardiomyopathy */
+
 /*
 @dataElement: HIV.D.DE354 - Recurrent septicaemia including nontyphoidal Salmonella
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4874,7 +5082,8 @@ define "Recurrent septicaemia including nontyphoidal Salmonella Observation":
   Elements."Recurrent septicaemia including nontyphoidal Salmonella Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Recurrent septicaemia including nontyphoidal Salmonella
+/* End of Recurrent septicaemia including nontyphoidal Salmonella */
+
 /*
 @dataElement: HIV.D.DE355 - Invasive cervical carcinoma
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4891,7 +5100,8 @@ define "Invasive cervical carcinoma Observation":
   Elements."Invasive cervical carcinoma Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Invasive cervical carcinoma
+/* End of Invasive cervical carcinoma */
+
 /*
 @dataElement: HIV.D.DE356 - Atypical disseminated leishmaniasis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4908,7 +5118,8 @@ define "Atypical disseminated leishmaniasis Observation":
   Elements."Atypical disseminated leishmaniasis Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Atypical disseminated leishmaniasis
+/* End of Atypical disseminated leishmaniasis */
+
 /*
 @dataElement: HIV.D.DE357 - Neutropenia
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -4925,24 +5136,21 @@ define "Neutropenia Observation":
   Elements."Neutropenia Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Neutropenia
+/* End of Neutropenia */
+
 /*
 @dataElement: HIV.D.DE364 - CD4 count - HIV.D.DE364
 @activity: HIV.D20 Diagnostics
 @description: CD4 cell count in cells/mm^3
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "CD4 count - HIV.D.DE364":
-  exists "CD4 count - HIV.D.DE364 Observation"
-    or exists "CD4 count - HIV.D.DE364 Condition"
-define "CD4 count - HIV.D.DE364 Condition":
-  Elements."CD4 count - HIV.D.DE364 Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "CD4 count - HIV.D.DE364 Observation":
-  Elements."CD4 count - HIV.D.DE364 Observation" O
+  Elements."CD4 count - HIV.D.DE364" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of CD4 count - HIV.D.DE364
+    return O.value
+/* End of CD4 count - HIV.D.DE364 */
+
 /*
 @dataElement: HIV.D.DE399 - Monitoring examinations
 @activity: HIV.D20 Diagnostics
@@ -4953,7 +5161,8 @@ define "Monitoring examinations Observation":
   Elements."Monitoring examinations Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Monitoring examinations
+/* End of Monitoring examinations */
+
 /*
 @dataElement: HIV.D.DE400 - Haemoglobin Hb
 @activity: HIV.D20 Diagnostics
@@ -4970,7 +5179,8 @@ define "Haemoglobin Hb Observation":
   Elements."Haemoglobin Hb Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Haemoglobin Hb
+/* End of Haemoglobin Hb */
+
 /*
 @dataElement: HIV.D.DE401 - Pregnancy test
 @activity: HIV.D20 Diagnostics
@@ -4987,7 +5197,8 @@ define "Pregnancy test Observation":
   Elements."Pregnancy test Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Pregnancy test
+/* End of Pregnancy test */
+
 /*
 @dataElement: HIV.D.DE402 - Syphilis test
 @activity: HIV.D20 Diagnostics
@@ -5004,7 +5215,8 @@ define "Syphilis test Observation":
   Elements."Syphilis test Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Syphilis test
+/* End of Syphilis test */
+
 /*
 @dataElement: HIV.D.DE403 - Chest X-ray CXR
 @activity: HIV.D20 Diagnostics
@@ -5021,7 +5233,8 @@ define "Chest X-ray CXR Observation":
   Elements."Chest X-ray CXR Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Chest X-ray CXR
+/* End of Chest X-ray CXR */
+
 /*
 @dataElement: HIV.D.DE404 - Sputum or culture for TB
 @activity: HIV.D20 Diagnostics
@@ -5038,7 +5251,8 @@ define "Sputum or culture for TB Observation":
   Elements."Sputum or culture for TB Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Sputum or culture for TB
+/* End of Sputum or culture for TB */
+
 /*
 @dataElement: HIV.D.DE405 - HBsAg test HBV
 @activity: HIV.D20 Diagnostics
@@ -5055,7 +5269,8 @@ define "HBsAg test HBV Observation":
   Elements."HBsAg test HBV Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of HBsAg test HBV
+/* End of HBsAg test HBV */
+
 /*
 @dataElement: HIV.D.DE406 - HIV viral load test ordered
 @activity: HIV.D20 Diagnostics
@@ -5072,7 +5287,8 @@ define "HIV viral load test ordered Observation":
   Elements."HIV viral load test ordered Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of HIV viral load test ordered
+/* End of HIV viral load test ordered */
+
 /*
 @dataElement: HIV.D.DE407 - HIV viral load test scheduled
 @activity: HIV.D20 Diagnostics
@@ -5089,7 +5305,8 @@ define "HIV viral load test scheduled Observation":
   Elements."HIV viral load test scheduled Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of HIV viral load test scheduled
+/* End of HIV viral load test scheduled */
+
 /*
 @dataElement: HIV.D.DE408 - CD4 count ordered
 @activity: HIV.D20 Diagnostics
@@ -5106,7 +5323,8 @@ define "CD4 count ordered Observation":
   Elements."CD4 count ordered Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of CD4 count ordered
+/* End of CD4 count ordered */
+
 /*
 @dataElement: HIV.D.DE409 - CD4 count test scheduled
 @activity: HIV.D20 Diagnostics
@@ -5123,7 +5341,8 @@ define "CD4 count test scheduled Observation":
   Elements."CD4 count test scheduled Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of CD4 count test scheduled
+/* End of CD4 count test scheduled */
+
 /*
 @dataElement: HIV.D.DE410 - Cryptococcal antigen test
 @activity: HIV.D20 Diagnostics
@@ -5140,7 +5359,8 @@ define "Cryptococcal antigen test Observation":
   Elements."Cryptococcal antigen test Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Cryptococcal antigen test
+/* End of Cryptococcal antigen test */
+
 /*
 @dataElement: HIV.D.DE411 - Histoplasmosis antigen test
 @activity: HIV.D20 Diagnostics
@@ -5157,7 +5377,8 @@ define "Histoplasmosis antigen test Observation":
   Elements."Histoplasmosis antigen test Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Histoplasmosis antigen test
+/* End of Histoplasmosis antigen test */
+
 /*
 @dataElement: HIV.D.DE412 - Cervical cancer screening scheduled
 @activity: HIV.D28 Offer other services
@@ -5174,143 +5395,112 @@ define "Cervical cancer screening scheduled Observation":
   Elements."Cervical cancer screening scheduled Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Cervical cancer screening scheduled
+/* End of Cervical cancer screening scheduled */
+
 /*
 @dataElement: HIV.D.DE413 - Date of scheduled monitoring examination
 @activity: HIV.D28 Offer other services
 @description: Date of scheduled monitoring examination
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Date of scheduled monitoring examination":
-  exists "Date of scheduled monitoring examination Observation"
-    or exists "Date of scheduled monitoring examination Condition"
-define "Date of scheduled monitoring examination Condition":
-  Elements."Date of scheduled monitoring examination Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Date of scheduled monitoring examination Observation":
-  Elements."Date of scheduled monitoring examination Observation" O
+  Elements."Date of scheduled monitoring examination" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Date of scheduled monitoring examination
+    return O.value
+/* End of Date of scheduled monitoring examination */
+
 /*
 @dataElement: HIV.D.DE427 - Switch to second-line ART regimen recommended
 @activity: HIV.D21 Determine regimen and treatment options
 @description: A switch to second-line ART regimen is recommended
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Switch to second-line ART regimen recommended":
-  exists "Switch to second-line ART regimen recommended Observation"
-    or exists "Switch to second-line ART regimen recommended Condition"
-define "Switch to second-line ART regimen recommended Condition":
-  Elements."Switch to second-line ART regimen recommended Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Switch to second-line ART regimen recommended Observation":
-  Elements."Switch to second-line ART regimen recommended Observation" O
+  Elements."Switch to second-line ART regimen recommended" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Switch to second-line ART regimen recommended
+    return O.value
+/* End of Switch to second-line ART regimen recommended */
+
 /*
 @dataElement: HIV.D.DE436 - Regimen substitution recommended
 @activity: HIV.D23 Prescribe
 @description: A drug substitution is recommended
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Regimen substitution recommended":
-  exists "Regimen substitution recommended Observation"
-    or exists "Regimen substitution recommended Condition"
-define "Regimen substitution recommended Condition":
-  Elements."Regimen substitution recommended Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Regimen substitution recommended Observation":
-  Elements."Regimen substitution recommended Observation" O
+  Elements."Regimen substitution recommended" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Regimen substitution recommended
+    return O.value
+/* End of Regimen substitution recommended */
+
 /*
 @dataElement: HIV.D.DE437 - Dose adjustment recommended
 @activity: HIV.D23 Prescribe
 @description: A dosage change is recommended
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Dose adjustment recommended":
-  exists "Dose adjustment recommended Observation"
-    or exists "Dose adjustment recommended Condition"
-define "Dose adjustment recommended Condition":
-  Elements."Dose adjustment recommended Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Dose adjustment recommended Observation":
-  Elements."Dose adjustment recommended Observation" O
+  Elements."Dose adjustment recommended" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Dose adjustment recommended
+    return O.value
+/* End of Dose adjustment recommended */
+
 /*
 @dataElement: HIV.D.DE443 - Suspicion of treatment failure or interruption
 @activity: HIV.D23 Prescribe
 @description: Client has been on ART, but has stopped taking it or a treatment failure is suspected
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Suspicion of treatment failure or interruption":
-  exists "Suspicion of treatment failure or interruption Observation"
-    or exists "Suspicion of treatment failure or interruption Condition"
-define "Suspicion of treatment failure or interruption Condition":
-  Elements."Suspicion of treatment failure or interruption Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Suspicion of treatment failure or interruption Observation":
-  Elements."Suspicion of treatment failure or interruption Observation" O
+  Elements."Suspicion of treatment failure or interruption" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Suspicion of treatment failure or interruption
+    return O.value
+/* End of Suspicion of treatment failure or interruption */
+
 /*
 @dataElement: HIV.D.DE465 - Adherence counselling provided - HIV.D.DE465
 @activity: HIV.D24 Counsel
 @description: Counselling was carried out during visit
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Adherence counselling provided - HIV.D.DE465":
-  exists "Adherence counselling provided - HIV.D.DE465 Observation"
-    or exists "Adherence counselling provided - HIV.D.DE465 Condition"
-define "Adherence counselling provided - HIV.D.DE465 Condition":
-  Elements."Adherence counselling provided - HIV.D.DE465 Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Adherence counselling provided - HIV.D.DE465 Observation":
-  Elements."Adherence counselling provided - HIV.D.DE465 Observation" O
+  Elements."Adherence counselling provided - HIV.D.DE465" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Adherence counselling provided - HIV.D.DE465
+    return O.value
+/* End of Adherence counselling provided - HIV.D.DE465 */
+
 /*
 @dataElement: HIV.D.DE507 - Counselling provided on diagnoses
 @activity: HIV.D24 Counsel
 @description: Counselling provided on diagnoses
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Counselling provided on diagnoses":
-  exists "Counselling provided on diagnoses Observation"
-    or exists "Counselling provided on diagnoses Condition"
-define "Counselling provided on diagnoses Condition":
-  Elements."Counselling provided on diagnoses Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Counselling provided on diagnoses Observation":
-  Elements."Counselling provided on diagnoses Observation" O
+  Elements."Counselling provided on diagnoses" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Counselling provided on diagnoses
+    return O.value
+/* End of Counselling provided on diagnoses */
+
 /*
 @dataElement: HIV.D.DE510 - Syphilis counselling and treatment
 @activity: HIV.D24 Counsel
 @description: Whether counselling and treatment was provided to a client who has been diagnosed with syphilis
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Syphilis counselling and treatment":
-  exists "Syphilis counselling and treatment Observation"
-    or exists "Syphilis counselling and treatment Condition"
-define "Syphilis counselling and treatment Condition":
-  Elements."Syphilis counselling and treatment Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Syphilis counselling and treatment Observation":
-  Elements."Syphilis counselling and treatment Observation" O
+  Elements."Syphilis counselling and treatment" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Syphilis counselling and treatment
+    return O.value
+/* End of Syphilis counselling and treatment */
+
 /*
 @dataElement: HIV.D.DE519 - Other support services - HIV.D.DE519
 @activity: HIV.D28 Offer other services
@@ -5321,7 +5511,8 @@ define "Other support services - HIV.D.DE519 Observation":
   Elements."Other support services - HIV.D.DE519 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Other support services - HIV.D.DE519
+/* End of Other support services - HIV.D.DE519 */
+
 /*
 @dataElement: HIV.D.DE520 - Mental health services - HIV.D.DE520
 @activity: HIV.D28 Offer other services
@@ -5338,7 +5529,8 @@ define "Mental health services - HIV.D.DE520 Observation":
   Elements."Mental health services - HIV.D.DE520 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Mental health services - HIV.D.DE520
+/* End of Mental health services - HIV.D.DE520 */
+
 /*
 @dataElement: HIV.D.DE521 - Psychosocial counselling, support and treatment adherence counselling - HIV.D.DE521
 @activity: HIV.D28 Offer other services
@@ -5355,7 +5547,8 @@ define "Psychosocial counselling, support and treatment adherence counselling - 
   Elements."Psychosocial counselling, support and treatment adherence counselling - HIV.D.DE521 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Psychosocial counselling, support and treatment adherence counselling - HIV.D.DE521
+/* End of Psychosocial counselling, support and treatment adherence counselling - HIV.D.DE521 */
+
 /*
 @dataElement: HIV.D.DE522 - Legal and social services - HIV.D.DE522
 @activity: HIV.D28 Offer other services
@@ -5372,7 +5565,8 @@ define "Legal and social services - HIV.D.DE522 Observation":
   Elements."Legal and social services - HIV.D.DE522 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Legal and social services - HIV.D.DE522
+/* End of Legal and social services - HIV.D.DE522 */
+
 /*
 @dataElement: HIV.D.DE523 - Services for responding to violence against women - HIV.D.DE523
 @activity: HIV.D28 Offer other services
@@ -5389,24 +5583,21 @@ define "Services for responding to violence against women - HIV.D.DE523 Observat
   Elements."Services for responding to violence against women - HIV.D.DE523 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Services for responding to violence against women - HIV.D.DE523
+/* End of Services for responding to violence against women - HIV.D.DE523 */
+
 /*
 @dataElement: HIV.D.DE524 - Date/time of follow-up appointment - HIV.D.DE524
 @activity: HIV.D29 Schedule follow-up
 @description: Date the client is to return for monitoring, re-supply or any other reason
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Date/time of follow-up appointment - HIV.D.DE524":
-  exists "Date/time of follow-up appointment - HIV.D.DE524 Observation"
-    or exists "Date/time of follow-up appointment - HIV.D.DE524 Condition"
-define "Date/time of follow-up appointment - HIV.D.DE524 Condition":
-  Elements."Date/time of follow-up appointment - HIV.D.DE524 Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Date/time of follow-up appointment - HIV.D.DE524 Observation":
-  Elements."Date/time of follow-up appointment - HIV.D.DE524 Observation" O
+  Elements."Date/time of follow-up appointment - HIV.D.DE524" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Date/time of follow-up appointment - HIV.D.DE524
+    return O.value
+/* End of Date/time of follow-up appointment - HIV.D.DE524 */
+
 /*
 @dataElement: HIV.D.DE525 - Type of follow-up appointment - HIV.D.DE525
 @activity: HIV.D29 Schedule follow-up
@@ -5417,7 +5608,8 @@ define "Type of follow-up appointment - HIV.D.DE525 Observation":
   Elements."Type of follow-up appointment - HIV.D.DE525 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Type of follow-up appointment - HIV.D.DE525
+/* End of Type of follow-up appointment - HIV.D.DE525 */
+
 /*
 @dataElement: HIV.D.DE526 - Clinical visit - HIV.D.DE526
 @activity: HIV.D29 Schedule follow-up
@@ -5434,7 +5626,8 @@ define "Clinical visit - HIV.D.DE526 Observation":
   Elements."Clinical visit - HIV.D.DE526 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Clinical visit - HIV.D.DE526
+/* End of Clinical visit - HIV.D.DE526 */
+
 /*
 @dataElement: HIV.D.DE527 - Antiretroviral drug pick up
 @activity: HIV.D29 Schedule follow-up
@@ -5451,7 +5644,8 @@ define "Antiretroviral drug pick up Observation":
   Elements."Antiretroviral drug pick up Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Antiretroviral drug pick up
+/* End of Antiretroviral drug pick up */
+
 /*
 @dataElement: HIV.D.DE528 - Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE528
 @activity: HIV.D29 Schedule follow-up
@@ -5468,7 +5662,8 @@ define "Post-treatment follow-up visit for cervical precancer lesions or invasiv
   Elements."Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE528 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE528
+/* End of Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE528 */
+
 /*
 @dataElement: HIV.D.DE529 - Other - HIV.D.DE529
 @activity: HIV.D29 Schedule follow-up
@@ -5485,24 +5680,21 @@ define "Other - HIV.D.DE529 Observation":
   Elements."Other - HIV.D.DE529 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Other - HIV.D.DE529
+/* End of Other - HIV.D.DE529 */
+
 /*
 @dataElement: HIV.D.DE531 - Follow-up test recommended date
 @activity: HIV.D29 Schedule follow-up
 @description: A test or screening recommended for the client's care plan at a future date
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Follow-up test recommended date":
-  exists "Follow-up test recommended date Observation"
-    or exists "Follow-up test recommended date Condition"
-define "Follow-up test recommended date Condition":
-  Elements."Follow-up test recommended date Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Follow-up test recommended date Observation":
-  Elements."Follow-up test recommended date Observation" O
+  Elements."Follow-up test recommended date" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Follow-up test recommended date
+    return O.value
+/* End of Follow-up test recommended date */
+
 /*
 @dataElement: HIV.D.DE537 - Current medications
 @activity: HIV.D8 Capture or update client history
@@ -5513,7 +5705,8 @@ define "Current medications Observation":
   Elements."Current medications Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Current medications
+/* End of Current medications */
+
 /*
 @dataElement: HIV.D.DE538 - No medications
 @activity: HIV.D8 Capture or update client history
@@ -5530,7 +5723,8 @@ define "No medications Observation":
   Elements."No medications Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of No medications
+/* End of No medications */
+
 /*
 @dataElement: HIV.D.DE539 - Dont know of any current medications
 @activity: HIV.D8 Capture or update client history
@@ -5547,7 +5741,8 @@ define "Dont know of any current medications Observation":
   Elements."Dont know of any current medications Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Dont know of any current medications
+/* End of Dont know of any current medications */
+
 /*
 @dataElement: HIV.D.DE540 - Analgesic
 @activity: HIV.D8 Capture or update client history
@@ -5564,7 +5759,8 @@ define "Analgesic Observation":
   Elements."Analgesic Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Analgesic
+/* End of Analgesic */
+
 /*
 @dataElement: HIV.D.DE541 - Antacids
 @activity: HIV.D8 Capture or update client history
@@ -5581,7 +5777,8 @@ define "Antacids Observation":
   Elements."Antacids Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Antacids
+/* End of Antacids */
+
 /*
 @dataElement: HIV.D.DE542 - Antibiotics broad-spectrum
 @activity: HIV.D8 Capture or update client history
@@ -5598,7 +5795,8 @@ define "Antibiotics broad-spectrum Observation":
   Elements."Antibiotics broad-spectrum Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Antibiotics broad-spectrum
+/* End of Antibiotics broad-spectrum */
+
 /*
 @dataElement: HIV.D.DE543 - Anticonvulsive
 @activity: HIV.D8 Capture or update client history
@@ -5615,7 +5813,8 @@ define "Anticonvulsive Observation":
   Elements."Anticonvulsive Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Anticonvulsive
+/* End of Anticonvulsive */
+
 /*
 @dataElement: HIV.D.DE544 - Antidiabetic
 @activity: HIV.D8 Capture or update client history
@@ -5632,7 +5831,8 @@ define "Antidiabetic Observation":
   Elements."Antidiabetic Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Antidiabetic
+/* End of Antidiabetic */
+
 /*
 @dataElement: HIV.D.DE545 - Antifungals
 @activity: HIV.D8 Capture or update client history
@@ -5649,7 +5849,8 @@ define "Antifungals Observation":
   Elements."Antifungals Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Antifungals
+/* End of Antifungals */
+
 /*
 @dataElement: HIV.D.DE546 - Antihelmintic
 @activity: HIV.D8 Capture or update client history
@@ -5666,7 +5867,8 @@ define "Antihelmintic Observation":
   Elements."Antihelmintic Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Antihelmintic
+/* End of Antihelmintic */
+
 /*
 @dataElement: HIV.D.DE547 - Antihypertensive
 @activity: HIV.D8 Capture or update client history
@@ -5683,7 +5885,8 @@ define "Antihypertensive Observation":
   Elements."Antihypertensive Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Antihypertensive
+/* End of Antihypertensive */
+
 /*
 @dataElement: HIV.D.DE548 - Antimalarials
 @activity: HIV.D8 Capture or update client history
@@ -5700,7 +5903,8 @@ define "Antimalarials Observation":
   Elements."Antimalarials Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Antimalarials
+/* End of Antimalarials */
+
 /*
 @dataElement: HIV.D.DE549 - Antiretrovirals ARVs
 @activity: HIV.D8 Capture or update client history
@@ -5717,7 +5921,8 @@ define "Antiretrovirals ARVs Observation":
   Elements."Antiretrovirals ARVs Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Antiretrovirals ARVs
+/* End of Antiretrovirals ARVs */
+
 /*
 @dataElement: HIV.D.DE550 - Antiparasitics
 @activity: HIV.D8 Capture or update client history
@@ -5734,7 +5939,8 @@ define "Antiparasitics Observation":
   Elements."Antiparasitics Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Antiparasitics
+/* End of Antiparasitics */
+
 /*
 @dataElement: HIV.D.DE551 - Antivirals
 @activity: HIV.D8 Capture or update client history
@@ -5751,7 +5957,8 @@ define "Antivirals Observation":
   Elements."Antivirals Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Antivirals
+/* End of Antivirals */
+
 /*
 @dataElement: HIV.D.DE552 - Buprenorphine - HIV.D.DE552
 @activity: HIV.D8 Capture or update client history
@@ -5768,7 +5975,8 @@ define "Buprenorphine - HIV.D.DE552 Observation":
   Elements."Buprenorphine - HIV.D.DE552 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Buprenorphine - HIV.D.DE552
+/* End of Buprenorphine - HIV.D.DE552 */
+
 /*
 @dataElement: HIV.D.DE553 - Co-trimoxazole preventive therapy CPT
 @activity: HIV.D8 Capture or update client history
@@ -5785,7 +5993,8 @@ define "Co-trimoxazole preventive therapy CPT Observation":
   Elements."Co-trimoxazole preventive therapy CPT Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Co-trimoxazole preventive therapy CPT
+/* End of Co-trimoxazole preventive therapy CPT */
+
 /*
 @dataElement: HIV.D.DE554 - Hormonal family planning method
 @activity: HIV.D8 Capture or update client history
@@ -5802,7 +6011,8 @@ define "Hormonal family planning method Observation":
   Elements."Hormonal family planning method Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Hormonal family planning method
+/* End of Hormonal family planning method */
+
 /*
 @dataElement: HIV.D.DE555 - Methadone - HIV.D.DE555
 @activity: HIV.D8 Capture or update client history
@@ -5819,7 +6029,8 @@ define "Methadone - HIV.D.DE555 Observation":
   Elements."Methadone - HIV.D.DE555 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Methadone - HIV.D.DE555
+/* End of Methadone - HIV.D.DE555 */
+
 /*
 @dataElement: HIV.D.DE556 - PrEP to prevent HIV
 @activity: HIV.D8 Capture or update client history
@@ -5836,7 +6047,8 @@ define "PrEP to prevent HIV Observation":
   Elements."PrEP to prevent HIV Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of PrEP to prevent HIV
+/* End of PrEP to prevent HIV */
+
 /*
 @dataElement: HIV.D.DE557 - Other antibiotics
 @activity: HIV.D8 Capture or update client history
@@ -5853,7 +6065,8 @@ define "Other antibiotics Observation":
   Elements."Other antibiotics Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Other antibiotics
+/* End of Other antibiotics */
+
 /*
 @dataElement: HIV.D.DE558 - Other medications
 @activity: HIV.D8 Capture or update client history
@@ -5870,7 +6083,8 @@ define "Other medications Observation":
   Elements."Other medications Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Other medications
+/* End of Other medications */
+
 /*
 @dataElement: HIV.D.DE658 - Cervical cancer primary screening test type
 @activity: HIV.D28 Offer other services
@@ -5881,7 +6095,8 @@ define "Cervical cancer primary screening test type Observation":
   Elements."Cervical cancer primary screening test type Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Cervical cancer primary screening test type
+/* End of Cervical cancer primary screening test type */
+
 /*
 @dataElement: HIV.D.DE659 - HPV-DNA
 @activity: HIV.D28 Offer other services
@@ -5898,7 +6113,8 @@ define "HPV-DNA Observation":
   Elements."HPV-DNA Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of HPV-DNA
+/* End of HPV-DNA */
+
 /*
 @dataElement: HIV.D.DE660 - VIA
 @activity: HIV.D28 Offer other services
@@ -5915,7 +6131,8 @@ define "VIA Observation":
   Elements."VIA Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of VIA
+/* End of VIA */
+
 /*
 @dataElement: HIV.D.DE661 - Cervical cytology
 @activity: HIV.D28 Offer other services
@@ -5932,7 +6149,8 @@ define "Cervical cytology Observation":
   Elements."Cervical cytology Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Cervical cytology
+/* End of Cervical cytology */
+
 /*
 @dataElement: HIV.D.DE662 - Other - HIV.D.DE662
 @activity: HIV.D28 Offer other services
@@ -5949,24 +6167,21 @@ define "Other - HIV.D.DE662 Observation":
   Elements."Other - HIV.D.DE662 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Other - HIV.D.DE662
+/* End of Other - HIV.D.DE662 */
+
 /*
 @dataElement: HIV.D.DE745 - Cervical cancer screening interval amongst WLHIV
 @activity: HIV.D28 Offer other services
 @description: Country-specific interval between cancer screenings amongst women living with HIV (typically 3 or 5 years)
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Cervical cancer screening interval amongst WLHIV":
-  exists "Cervical cancer screening interval amongst WLHIV Observation"
-    or exists "Cervical cancer screening interval amongst WLHIV Condition"
-define "Cervical cancer screening interval amongst WLHIV Condition":
-  Elements."Cervical cancer screening interval amongst WLHIV Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Cervical cancer screening interval amongst WLHIV Observation":
-  Elements."Cervical cancer screening interval amongst WLHIV Observation" O
+  Elements."Cervical cancer screening interval amongst WLHIV" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Cervical cancer screening interval amongst WLHIV
+    return O.value
+/* End of Cervical cancer screening interval amongst WLHIV */
+
 /*
 @dataElement: HIV.D.DE753 - Offer other clinical services - HIV.D.DE753
 @activity: HIV.D28 Offer other services
@@ -5977,7 +6192,8 @@ define "Offer other clinical services - HIV.D.DE753 Observation":
   Elements."Offer other clinical services - HIV.D.DE753 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Offer other clinical services - HIV.D.DE753
+/* End of Offer other clinical services - HIV.D.DE753 */
+
 /*
 @dataElement: HIV.D.DE754 - Assessment and provision of vaccinations - HIV.D.DE754
 @activity: HIV.D28 Offer other services
@@ -5994,7 +6210,8 @@ define "Assessment and provision of vaccinations - HIV.D.DE754 Observation":
   Elements."Assessment and provision of vaccinations - HIV.D.DE754 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Assessment and provision of vaccinations - HIV.D.DE754
+/* End of Assessment and provision of vaccinations - HIV.D.DE754 */
+
 /*
 @dataElement: HIV.D.DE755 - Hepatitis B HBV and hepatitis C virus HCV testing and treatment
 @activity: HIV.D28 Offer other services
@@ -6011,7 +6228,8 @@ define "Hepatitis B HBV and hepatitis C virus HCV testing and treatment Observat
   Elements."Hepatitis B HBV and hepatitis C virus HCV testing and treatment Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Hepatitis B HBV and hepatitis C virus HCV testing and treatment
+/* End of Hepatitis B HBV and hepatitis C virus HCV testing and treatment */
+
 /*
 @dataElement: HIV.D.DE756 - Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.D.DE756
 @activity: HIV.D28 Offer other services
@@ -6028,7 +6246,8 @@ define "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumoni
   Elements."Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.D.DE756 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.D.DE756
+/* End of Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.D.DE756 */
+
 /*
 @dataElement: HIV.D.DE757 - Intensified TB case finding and linkage to TB treatment - HIV.D.DE757
 @activity: HIV.D28 Offer other services
@@ -6045,7 +6264,8 @@ define "Intensified TB case finding and linkage to TB treatment - HIV.D.DE757 Ob
   Elements."Intensified TB case finding and linkage to TB treatment - HIV.D.DE757 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Intensified TB case finding and linkage to TB treatment - HIV.D.DE757
+/* End of Intensified TB case finding and linkage to TB treatment - HIV.D.DE757 */
+
 /*
 @dataElement: HIV.D.DE758 - Provision of isoniazid preventive therapy if person does not have TB - HIV.D.DE758
 @activity: HIV.D28 Offer other services
@@ -6062,7 +6282,8 @@ define "Provision of isoniazid preventive therapy if person does not have TB - H
   Elements."Provision of isoniazid preventive therapy if person does not have TB - HIV.D.DE758 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Provision of isoniazid preventive therapy if person does not have TB - HIV.D.DE758
+/* End of Provision of isoniazid preventive therapy if person does not have TB - HIV.D.DE758 */
+
 /*
 @dataElement: HIV.D.DE759 - Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.D.DE759
 @activity: HIV.D28 Offer other services
@@ -6079,7 +6300,8 @@ define "Malaria prevention such as bed nets and prophylaxis, depending on epidem
   Elements."Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.D.DE759 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.D.DE759
+/* End of Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.D.DE759 */
+
 /*
 @dataElement: HIV.D.DE903 - Medication/drug
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6090,7 +6312,8 @@ define "Medication/drug Observation":
   Elements."Medication/drug Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Medication/drug
+/* End of Medication/drug */
+
 /*
 @dataElement: HIV.D.DE904 - Rifampicin
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6107,7 +6330,8 @@ define "Rifampicin Observation":
   Elements."Rifampicin Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Rifampicin
+/* End of Rifampicin */
+
 /*
 @dataElement: HIV.D.DE905 - Halofantrine
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6124,7 +6348,8 @@ define "Halofantrine Observation":
   Elements."Halofantrine Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Halofantrine
+/* End of Halofantrine */
+
 /*
 @dataElement: HIV.D.DE906 - Lovastatin
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6141,7 +6366,8 @@ define "Lovastatin Observation":
   Elements."Lovastatin Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Lovastatin
+/* End of Lovastatin */
+
 /*
 @dataElement: HIV.D.DE907 - Simvastatin
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6158,7 +6384,8 @@ define "Simvastatin Observation":
   Elements."Simvastatin Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Simvastatin
+/* End of Simvastatin */
+
 /*
 @dataElement: HIV.D.DE908 - Hormonal contraception
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6175,7 +6402,8 @@ define "Hormonal contraception Observation":
   Elements."Hormonal contraception Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Hormonal contraception
+/* End of Hormonal contraception */
+
 /*
 @dataElement: HIV.D.DE909 - Metformin
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6192,7 +6420,8 @@ define "Metformin Observation":
   Elements."Metformin Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Metformin
+/* End of Metformin */
+
 /*
 @dataElement: HIV.D.DE910 - Astemizole
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6209,7 +6438,8 @@ define "Astemizole Observation":
   Elements."Astemizole Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Astemizole
+/* End of Astemizole */
+
 /*
 @dataElement: HIV.D.DE911 - Terfenadine
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6226,7 +6456,8 @@ define "Terfenadine Observation":
   Elements."Terfenadine Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Terfenadine
+/* End of Terfenadine */
+
 /*
 @dataElement: HIV.D.DE912 - TDF - HIV.D.DE912
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6243,7 +6474,8 @@ define "TDF - HIV.D.DE912 Observation":
   Elements."TDF - HIV.D.DE912 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of TDF - HIV.D.DE912
+/* End of TDF - HIV.D.DE912 */
+
 /*
 @dataElement: HIV.D.DE913 - Simeprevir
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6260,7 +6492,8 @@ define "Simeprevir Observation":
   Elements."Simeprevir Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Simeprevir
+/* End of Simeprevir */
+
 /*
 @dataElement: HIV.D.DE914 - Ombitasvir + paritaprevir/ritonavir + dasabuvir
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6277,7 +6510,8 @@ define "Ombitasvir + paritaprevir/ritonavir + dasabuvir Observation":
   Elements."Ombitasvir + paritaprevir/ritonavir + dasabuvir Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Ombitasvir + paritaprevir/ritonavir + dasabuvir
+/* End of Ombitasvir + paritaprevir/ritonavir + dasabuvir */
+
 /*
 @dataElement: HIV.D.DE915 - Methadone - HIV.D.DE915
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6294,7 +6528,8 @@ define "Methadone - HIV.D.DE915 Observation":
   Elements."Methadone - HIV.D.DE915 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Methadone - HIV.D.DE915
+/* End of Methadone - HIV.D.DE915 */
+
 /*
 @dataElement: HIV.D.DE916 - Buprenorphine - HIV.D.DE916
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6311,7 +6546,8 @@ define "Buprenorphine - HIV.D.DE916 Observation":
   Elements."Buprenorphine - HIV.D.DE916 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Buprenorphine - HIV.D.DE916
+/* End of Buprenorphine - HIV.D.DE916 */
+
 /*
 @dataElement: HIV.D.DE917 - Dofetilide
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6328,7 +6564,8 @@ define "Dofetilide Observation":
   Elements."Dofetilide Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Dofetilide
+/* End of Dofetilide */
+
 /*
 @dataElement: HIV.D.DE918 - Carbamazepine
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6345,7 +6582,8 @@ define "Carbamazepine Observation":
   Elements."Carbamazepine Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Carbamazepine
+/* End of Carbamazepine */
+
 /*
 @dataElement: HIV.D.DE919 - Phenobarbital
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6362,7 +6600,8 @@ define "Phenobarbital Observation":
   Elements."Phenobarbital Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Phenobarbital
+/* End of Phenobarbital */
+
 /*
 @dataElement: HIV.D.DE920 - Phenytoin
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6379,7 +6618,8 @@ define "Phenytoin Observation":
   Elements."Phenytoin Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Phenytoin
+/* End of Phenytoin */
+
 /*
 @dataElement: HIV.D.DE921 - Polyvalent cation products containing Mg, Al, Fe, Ca and Zn
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6396,7 +6636,8 @@ define "Polyvalent cation products containing Mg, Al, Fe, Ca and Zn Observation"
   Elements."Polyvalent cation products containing Mg, Al, Fe, Ca and Zn Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Polyvalent cation products containing Mg, Al, Fe, Ca and Zn
+/* End of Polyvalent cation products containing Mg, Al, Fe, Ca and Zn */
+
 /*
 @dataElement: HIV.D.DE922 - Amodiaquine
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6413,7 +6654,8 @@ define "Amodiaquine Observation":
   Elements."Amodiaquine Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Amodiaquine
+/* End of Amodiaquine */
+
 /*
 @dataElement: HIV.D.DE923 - Cisapride
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6430,7 +6672,8 @@ define "Cisapride Observation":
   Elements."Cisapride Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Cisapride
+/* End of Cisapride */
+
 /*
 @dataElement: HIV.D.DE924 - Ergotamine
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6447,7 +6690,8 @@ define "Ergotamine Observation":
   Elements."Ergotamine Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Ergotamine
+/* End of Ergotamine */
+
 /*
 @dataElement: HIV.D.DE925 - Dihydroergotamine
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6464,7 +6708,8 @@ define "Dihydroergotamine Observation":
   Elements."Dihydroergotamine Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Dihydroergotamine
+/* End of Dihydroergotamine */
+
 /*
 @dataElement: HIV.D.DE926 - Midazolam
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6481,7 +6726,8 @@ define "Midazolam Observation":
   Elements."Midazolam Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Midazolam
+/* End of Midazolam */
+
 /*
 @dataElement: HIV.D.DE927 - Triazolam
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6498,7 +6744,8 @@ define "Triazolam Observation":
   Elements."Triazolam Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Triazolam
+/* End of Triazolam */
+
 /*
 @dataElement: HIV.D.DE928 - Estrogen-based hormonal contraception
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6515,7 +6762,8 @@ define "Estrogen-based hormonal contraception Observation":
   Elements."Estrogen-based hormonal contraception Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Estrogen-based hormonal contraception
+/* End of Estrogen-based hormonal contraception */
+
 /*
 @dataElement: HIV.D.DE929 - Ribavirin
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6532,7 +6780,8 @@ define "Ribavirin Observation":
   Elements."Ribavirin Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Ribavirin
+/* End of Ribavirin */
+
 /*
 @dataElement: HIV.D.DE930 - Peginterferon alfa-2a
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6549,7 +6798,8 @@ define "Peginterferon alfa-2a Observation":
   Elements."Peginterferon alfa-2a Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Peginterferon alfa-2a
+/* End of Peginterferon alfa-2a */
+
 /*
 @dataElement: HIV.D.DE931 - Other - HIV.D.DE931
 @activity: HIV.D21 Determine regimen and treatment options
@@ -6566,24 +6816,21 @@ define "Other - HIV.D.DE931 Observation":
   Elements."Other - HIV.D.DE931 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Other - HIV.D.DE931
+/* End of Other - HIV.D.DE931 */
+
 /*
 @dataElement: HIV.D.DE933 - Medication change recommended
 @activity: HIV.D21 Determine regimen and treatment options
 @description: A medication change is recommended for the client based upon current or considered medications
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Medication change recommended":
-  exists "Medication change recommended Observation"
-    or exists "Medication change recommended Condition"
-define "Medication change recommended Condition":
-  Elements."Medication change recommended Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Medication change recommended Observation":
-  Elements."Medication change recommended Observation" O
+  Elements."Medication change recommended" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Medication change recommended
+    return O.value
+/* End of Medication change recommended */
+
 /*
 @dataElement: HIV.D.DE934 - WHO HIV clinical stage condition or symptom - HIV.D.DE934
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6594,7 +6841,8 @@ define "WHO HIV clinical stage condition or symptom - HIV.D.DE934 Observation":
   Elements."WHO HIV clinical stage condition or symptom - HIV.D.DE934 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of WHO HIV clinical stage condition or symptom - HIV.D.DE934
+/* End of WHO HIV clinical stage condition or symptom - HIV.D.DE934 */
+
 /*
 @dataElement: HIV.D.DE935 - Pulmonary TB - HIV.D.DE935
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6611,7 +6859,8 @@ define "Pulmonary TB - HIV.D.DE935 Observation":
   Elements."Pulmonary TB - HIV.D.DE935 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Pulmonary TB - HIV.D.DE935
+/* End of Pulmonary TB - HIV.D.DE935 */
+
 /*
 @dataElement: HIV.D.DE936 - Lymph node TB - HIV.D.DE936
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6628,7 +6877,8 @@ define "Lymph node TB - HIV.D.DE936 Observation":
   Elements."Lymph node TB - HIV.D.DE936 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Lymph node TB - HIV.D.DE936
+/* End of Lymph node TB - HIV.D.DE936 */
+
 /*
 @dataElement: HIV.D.DE937 - Extrapulmonary TB - HIV.D.DE937
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6645,7 +6895,8 @@ define "Extrapulmonary TB - HIV.D.DE937 Observation":
   Elements."Extrapulmonary TB - HIV.D.DE937 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Extrapulmonary TB - HIV.D.DE937
+/* End of Extrapulmonary TB - HIV.D.DE937 */
+
 /*
 @dataElement: HIV.D.DE956 - TB screening algorithm
 @activity: HIV.D4 Screen for TB
@@ -6656,7 +6907,8 @@ define "TB screening algorithm Observation":
   Elements."TB screening algorithm Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of TB screening algorithm
+/* End of TB screening algorithm */
+
 /*
 @dataElement: HIV.D.DE957 - Screening with cough
 @activity: HIV.D4 Screen for TB
@@ -6673,7 +6925,8 @@ define "Screening with cough Observation":
   Elements."Screening with cough Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Screening with cough
+/* End of Screening with cough */
+
 /*
 @dataElement: HIV.D.DE958 - Screening with any TB symptom
 @activity: HIV.D4 Screen for TB
@@ -6690,7 +6943,8 @@ define "Screening with any TB symptom Observation":
   Elements."Screening with any TB symptom Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Screening with any TB symptom
+/* End of Screening with any TB symptom */
+
 /*
 @dataElement: HIV.D.DE959 - W4SS single screening algorithm
 @activity: HIV.D4 Screen for TB
@@ -6707,7 +6961,8 @@ define "W4SS single screening algorithm Observation":
   Elements."W4SS single screening algorithm Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of W4SS single screening algorithm
+/* End of W4SS single screening algorithm */
+
 /*
 @dataElement: HIV.D.DE960 - CRP single screening algorithm
 @activity: HIV.D4 Screen for TB
@@ -6724,7 +6979,8 @@ define "CRP single screening algorithm Observation":
   Elements."CRP single screening algorithm Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of CRP single screening algorithm
+/* End of CRP single screening algorithm */
+
 /*
 @dataElement: HIV.D.DE961 - CXR single screening algorithm
 @activity: HIV.D4 Screen for TB
@@ -6741,7 +6997,8 @@ define "CXR single screening algorithm Observation":
   Elements."CXR single screening algorithm Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of CXR single screening algorithm
+/* End of CXR single screening algorithm */
+
 /*
 @dataElement: HIV.D.DE962 - Parallel screening algorithm with W4SS and CRP
 @activity: HIV.D4 Screen for TB
@@ -6758,7 +7015,8 @@ define "Parallel screening algorithm with W4SS and CRP Observation":
   Elements."Parallel screening algorithm with W4SS and CRP Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Parallel screening algorithm with W4SS and CRP
+/* End of Parallel screening algorithm with W4SS and CRP */
+
 /*
 @dataElement: HIV.D.DE963 - Sequential positive screening algorithm with W4SS and CRP
 @activity: HIV.D4 Screen for TB
@@ -6775,7 +7033,8 @@ define "Sequential positive screening algorithm with W4SS and CRP Observation":
   Elements."Sequential positive screening algorithm with W4SS and CRP Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Sequential positive screening algorithm with W4SS and CRP
+/* End of Sequential positive screening algorithm with W4SS and CRP */
+
 /*
 @dataElement: HIV.D.DE964 - Sequential negative screening algorithm with W4SS and CRP
 @activity: HIV.D4 Screen for TB
@@ -6792,7 +7051,8 @@ define "Sequential negative screening algorithm with W4SS and CRP Observation":
   Elements."Sequential negative screening algorithm with W4SS and CRP Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Sequential negative screening algorithm with W4SS and CRP
+/* End of Sequential negative screening algorithm with W4SS and CRP */
+
 /*
 @dataElement: HIV.D.DE965 - Parallel screening algorithm with W4SS and CXR
 @activity: HIV.D4 Screen for TB
@@ -6809,7 +7069,8 @@ define "Parallel screening algorithm with W4SS and CXR Observation":
   Elements."Parallel screening algorithm with W4SS and CXR Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Parallel screening algorithm with W4SS and CXR
+/* End of Parallel screening algorithm with W4SS and CXR */
+
 /*
 @dataElement: HIV.D.DE966 - Sequential positive screening algorithm with W4SS and CXR
 @activity: HIV.D4 Screen for TB
@@ -6826,7 +7087,8 @@ define "Sequential positive screening algorithm with W4SS and CXR Observation":
   Elements."Sequential positive screening algorithm with W4SS and CXR Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Sequential positive screening algorithm with W4SS and CXR
+/* End of Sequential positive screening algorithm with W4SS and CXR */
+
 /*
 @dataElement: HIV.D.DE967 - Sequential negative screening algorithm with W4SS and CXR
 @activity: HIV.D4 Screen for TB
@@ -6843,7 +7105,8 @@ define "Sequential negative screening algorithm with W4SS and CXR Observation":
   Elements."Sequential negative screening algorithm with W4SS and CXR Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Sequential negative screening algorithm with W4SS and CXR
+/* End of Sequential negative screening algorithm with W4SS and CXR */
+
 /*
 @dataElement: HIV.D.DE968 - Screening with mWRD
 @activity: HIV.D4 Screen for TB
@@ -6860,7 +7123,8 @@ define "Screening with mWRD Observation":
   Elements."Screening with mWRD Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Screening with mWRD
+/* End of Screening with mWRD */
+
 /*
 @dataElement: HIV.D.DE969 - Clinical assessment
 @activity: HIV.D4 Screen for TB
@@ -6877,7 +7141,8 @@ define "Clinical assessment Observation":
   Elements."Clinical assessment Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Clinical assessment
+/* End of Clinical assessment */
+
 /*
 @dataElement: HIV.D.DE970 - Other TB screening algorithm
 @activity: HIV.D4 Screen for TB
@@ -6894,7 +7159,8 @@ define "Other TB screening algorithm Observation":
   Elements."Other TB screening algorithm Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Other TB screening algorithm
+/* End of Other TB screening algorithm */
+
 /*
 @dataElement: HIV.D.DE973 - Symptoms of TB
 @activity: HIV.D4 Screen for TB
@@ -6905,7 +7171,8 @@ define "Symptoms of TB Observation":
   Elements."Symptoms of TB Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Symptoms of TB
+/* End of Symptoms of TB */
+
 /*
 @dataElement: HIV.D.DE974 - Current cough
 @activity: HIV.D4 Screen for TB
@@ -6922,7 +7189,8 @@ define "Current cough Observation":
   Elements."Current cough Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Current cough
+/* End of Current cough */
+
 /*
 @dataElement: HIV.D.DE975 - Prolonged cough >=2w
 @activity: HIV.D4 Screen for TB
@@ -6939,7 +7207,8 @@ define "Prolonged cough >=2w Observation":
   Elements."Prolonged cough >=2w Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Prolonged cough >=2w
+/* End of Prolonged cough >=2w */
+
 /*
 @dataElement: HIV.D.DE976 - Fever of 39 °C or greater
 @activity: HIV.D4 Screen for TB
@@ -6956,7 +7225,8 @@ define "Fever of 39 °C or greater Observation":
   Elements."Fever of 39 °C or greater Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Fever of 39 °C or greater
+/* End of Fever of 39 °C or greater */
+
 /*
 @dataElement: HIV.D.DE977 - Weight loss reported
 @activity: HIV.D4 Screen for TB
@@ -6973,7 +7243,8 @@ define "Weight loss reported Observation":
   Elements."Weight loss reported Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Weight loss reported
+/* End of Weight loss reported */
+
 /*
 @dataElement: HIV.D.DE978 - Night sweats
 @activity: HIV.D4 Screen for TB
@@ -6990,7 +7261,8 @@ define "Night sweats Observation":
   Elements."Night sweats Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Night sweats
+/* End of Night sweats */
+
 /*
 @dataElement: HIV.D.DE979 - Poor weight gain
 @activity: HIV.D4 Screen for TB
@@ -7007,7 +7279,8 @@ define "Poor weight gain Observation":
   Elements."Poor weight gain Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Poor weight gain
+/* End of Poor weight gain */
+
 /*
 @dataElement: HIV.D.DE980 - Reduced playfulness
 @activity: HIV.D4 Screen for TB
@@ -7024,7 +7297,8 @@ define "Reduced playfulness Observation":
   Elements."Reduced playfulness Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Reduced playfulness
+/* End of Reduced playfulness */
+
 /*
 @dataElement: HIV.D.DE981 - Chest pain
 @activity: HIV.D4 Screen for TB
@@ -7041,7 +7315,8 @@ define "Chest pain Observation":
   Elements."Chest pain Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Chest pain
+/* End of Chest pain */
+
 /*
 @dataElement: HIV.D.DE982 - Haemoptysis
 @activity: HIV.D4 Screen for TB
@@ -7058,7 +7333,8 @@ define "Haemoptysis Observation":
   Elements."Haemoptysis Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Haemoptysis
+/* End of Haemoptysis */
+
 /*
 @dataElement: HIV.D.DE983 - Lethargy - HIV.D.DE983
 @activity: HIV.D4 Screen for TB
@@ -7075,7 +7351,8 @@ define "Lethargy - HIV.D.DE983 Observation":
   Elements."Lethargy - HIV.D.DE983 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Lethargy - HIV.D.DE983
+/* End of Lethargy - HIV.D.DE983 */
+
 /*
 @dataElement: HIV.D.DE984 - None
 @activity: HIV.D4 Screen for TB
@@ -7092,75 +7369,60 @@ define "None Observation":
   Elements."None Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of None
+/* End of None */
+
 /*
 @dataElement: HIV.D.DE985 - History of contact with a person with TB
 @activity: HIV.D4 Screen for TB
 @description: Client had a history of a contact with a person with TB
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "History of contact with a person with TB":
-  exists "History of contact with a person with TB Observation"
-    or exists "History of contact with a person with TB Condition"
-define "History of contact with a person with TB Condition":
-  Elements."History of contact with a person with TB Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "History of contact with a person with TB Observation":
-  Elements."History of contact with a person with TB Observation" O
+  Elements."History of contact with a person with TB" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of History of contact with a person with TB
+    return O.value
+/* End of History of contact with a person with TB */
+
 /*
 @dataElement: HIV.D.DE1023 - TB prevention services accepted
 @activity: HIV.D21 Determine regimen and treatment options
 @description: Indicates if the client accepts to be evaluated for TB infection and to take the treatment in case he/she is eligible
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "TB prevention services accepted":
-  exists "TB prevention services accepted Observation"
-    or exists "TB prevention services accepted Condition"
-define "TB prevention services accepted Condition":
-  Elements."TB prevention services accepted Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "TB prevention services accepted Observation":
-  Elements."TB prevention services accepted Observation" O
+  Elements."TB prevention services accepted" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of TB prevention services accepted
+    return O.value
+/* End of TB prevention services accepted */
+
 /*
 @dataElement: HIV.D.DE1026 - C reactive protein test result
 @activity: HIV.D4 Screen for TB
 @description: Test result of the client's C reactive protein test result in mg/L
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "C reactive protein test result":
-  exists "C reactive protein test result Observation"
-    or exists "C reactive protein test result Condition"
-define "C reactive protein test result Condition":
-  Elements."C reactive protein test result Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "C reactive protein test result Observation":
-  Elements."C reactive protein test result Observation" O
+  Elements."C reactive protein test result" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of C reactive protein test result
+    return O.value
+/* End of C reactive protein test result */
+
 /*
 @dataElement: HIV.E.DE113 - Key population member* - HIV.E.DE113
 @activity: HIV.E1 Capture or update mother's history
 @description: Mother is a member of a key population which has an increased risk of HIV
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Key population member* - HIV.E.DE113":
-  exists "Key population member* - HIV.E.DE113 Observation"
-    or exists "Key population member* - HIV.E.DE113 Condition"
-define "Key population member* - HIV.E.DE113 Condition":
-  Elements."Key population member* - HIV.E.DE113 Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Key population member* - HIV.E.DE113 Observation":
-  Elements."Key population member* - HIV.E.DE113 Observation" O
+  Elements."Key population member* - HIV.E.DE113" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Key population member* - HIV.E.DE113
+    return O.value
+/* End of Key population member* - HIV.E.DE113 */
+
 /*
 @dataElement: HIV.E.DE155 - Signs of substantial risk of HIV infection - HIV.E.DE155
 @activity: HIV.E1 Capture or update mother's history
@@ -7171,7 +7433,8 @@ define "Signs of substantial risk of HIV infection - HIV.E.DE155 Observation":
   Elements."Signs of substantial risk of HIV infection - HIV.E.DE155 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Signs of substantial risk of HIV infection - HIV.E.DE155
+/* End of Signs of substantial risk of HIV infection - HIV.E.DE155 */
+
 /*
 @dataElement: HIV.E.DE156 - No condom use during sex with more than one partner in the past 6 months - HIV.E.DE156
 @activity: HIV.E1 Capture or update mother's history
@@ -7188,7 +7451,8 @@ define "No condom use during sex with more than one partner in the past 6 months
   Elements."No condom use during sex with more than one partner in the past 6 months - HIV.E.DE156 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of No condom use during sex with more than one partner in the past 6 months - HIV.E.DE156
+/* End of No condom use during sex with more than one partner in the past 6 months - HIV.E.DE156 */
+
 /*
 @dataElement: HIV.E.DE157 - STI in the past 6 months - HIV.E.DE157
 @activity: HIV.E1 Capture or update mother's history
@@ -7205,7 +7469,8 @@ define "STI in the past 6 months - HIV.E.DE157 Observation":
   Elements."STI in the past 6 months - HIV.E.DE157 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of STI in the past 6 months - HIV.E.DE157
+/* End of STI in the past 6 months - HIV.E.DE157 */
+
 /*
 @dataElement: HIV.E.DE158 - A sexual partner in the past 6 months had one or more HIV risk factors - HIV.E.DE158
 @activity: HIV.E1 Capture or update mother's history
@@ -7222,7 +7487,8 @@ define "A sexual partner in the past 6 months had one or more HIV risk factors -
   Elements."A sexual partner in the past 6 months had one or more HIV risk factors - HIV.E.DE158 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of A sexual partner in the past 6 months had one or more HIV risk factors - HIV.E.DE158
+/* End of A sexual partner in the past 6 months had one or more HIV risk factors - HIV.E.DE158 */
+
 /*
 @dataElement: HIV.E.DE159 - PrEP requested by client - HIV.E.DE159
 @activity: HIV.E1 Capture or update mother's history
@@ -7239,24 +7505,21 @@ define "PrEP requested by client - HIV.E.DE159 Observation":
   Elements."PrEP requested by client - HIV.E.DE159 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of PrEP requested by client - HIV.E.DE159
+/* End of PrEP requested by client - HIV.E.DE159 */
+
 /*
 @dataElement: HIV.E.DE160 - Serodiscordant partner - HIV.E.DE160
 @activity: HIV.E1 Capture or update mother's history
 @description: Mother's HIV status is different from a current partner's HIV status
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Serodiscordant partner - HIV.E.DE160":
-  exists "Serodiscordant partner - HIV.E.DE160 Observation"
-    or exists "Serodiscordant partner - HIV.E.DE160 Condition"
-define "Serodiscordant partner - HIV.E.DE160 Condition":
-  Elements."Serodiscordant partner - HIV.E.DE160 Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Serodiscordant partner - HIV.E.DE160 Observation":
-  Elements."Serodiscordant partner - HIV.E.DE160 Observation" O
+  Elements."Serodiscordant partner - HIV.E.DE160" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Serodiscordant partner - HIV.E.DE160
+    return O.value
+/* End of Serodiscordant partner - HIV.E.DE160 */
+
 /*
 @dataElement: HIV.E.DE180 - EID sample number
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -7267,7 +7530,8 @@ define "EID sample number Observation":
   Elements."EID sample number Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of EID sample number
+/* End of EID sample number */
+
 /*
 @dataElement: HIV.E.DE181 - EID sample 1
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -7284,7 +7548,8 @@ define "EID sample 1 Observation":
   Elements."EID sample 1 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of EID sample 1
+/* End of EID sample 1 */
+
 /*
 @dataElement: HIV.E.DE182 - EID sample 2
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -7301,7 +7566,8 @@ define "EID sample 2 Observation":
   Elements."EID sample 2 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of EID sample 2
+/* End of EID sample 2 */
+
 /*
 @dataElement: HIV.E.DE183 - EID test number
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -7312,7 +7578,8 @@ define "EID test number Observation":
   Elements."EID test number Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of EID test number
+/* End of EID test number */
+
 /*
 @dataElement: HIV.E.DE184 - EID test number 1
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -7329,7 +7596,8 @@ define "EID test number 1 Observation":
   Elements."EID test number 1 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of EID test number 1
+/* End of EID test number 1 */
+
 /*
 @dataElement: HIV.E.DE185 - EID test number 2
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -7346,7 +7614,8 @@ define "EID test number 2 Observation":
   Elements."EID test number 2 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of EID test number 2
+/* End of EID test number 2 */
+
 /*
 @dataElement: HIV.E.DE186 - EID test number 1 test result
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -7357,7 +7626,8 @@ define "EID test number 1 test result Observation":
   Elements."EID test number 1 test result Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of EID test number 1 test result
+/* End of EID test number 1 test result */
+
 /*
 @dataElement: HIV.E.DE187 - Positive - HIV.E.DE187
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -7374,7 +7644,8 @@ define "Positive - HIV.E.DE187 Observation":
   Elements."Positive - HIV.E.DE187 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Positive - HIV.E.DE187
+/* End of Positive - HIV.E.DE187 */
+
 /*
 @dataElement: HIV.E.DE188 - Negative - HIV.E.DE188
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -7391,7 +7662,8 @@ define "Negative - HIV.E.DE188 Observation":
   Elements."Negative - HIV.E.DE188 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Negative - HIV.E.DE188
+/* End of Negative - HIV.E.DE188 */
+
 /*
 @dataElement: HIV.E.DE189 - Indeterminate - HIV.E.DE189
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -7408,7 +7680,8 @@ define "Indeterminate - HIV.E.DE189 Observation":
   Elements."Indeterminate - HIV.E.DE189 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Indeterminate - HIV.E.DE189
+/* End of Indeterminate - HIV.E.DE189 */
+
 /*
 @dataElement: HIV.E.DE190 - EID test number 2 test result
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -7419,7 +7692,8 @@ define "EID test number 2 test result Observation":
   Elements."EID test number 2 test result Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of EID test number 2 test result
+/* End of EID test number 2 test result */
+
 /*
 @dataElement: HIV.E.DE191 - Positive - HIV.E.DE191
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -7436,7 +7710,8 @@ define "Positive - HIV.E.DE191 Observation":
   Elements."Positive - HIV.E.DE191 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Positive - HIV.E.DE191
+/* End of Positive - HIV.E.DE191 */
+
 /*
 @dataElement: HIV.E.DE192 - Negative - HIV.E.DE192
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -7453,7 +7728,8 @@ define "Negative - HIV.E.DE192 Observation":
   Elements."Negative - HIV.E.DE192 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Negative - HIV.E.DE192
+/* End of Negative - HIV.E.DE192 */
+
 /*
 @dataElement: HIV.E.DE193 - Indeterminate - HIV.E.DE193
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -7470,7 +7746,8 @@ define "Indeterminate - HIV.E.DE193 Observation":
   Elements."Indeterminate - HIV.E.DE193 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Indeterminate - HIV.E.DE193
+/* End of Indeterminate - HIV.E.DE193 */
+
 /*
 @dataElement: HIV.E.DE194 - Assay number in testing strategy - HIV.E.DE194
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7481,7 +7758,8 @@ define "Assay number in testing strategy - HIV.E.DE194 Observation":
   Elements."Assay number in testing strategy - HIV.E.DE194 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Assay number in testing strategy - HIV.E.DE194
+/* End of Assay number in testing strategy - HIV.E.DE194 */
+
 /*
 @dataElement: HIV.E.DE195 - Assay 0 - HIV.E.DE195
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7498,7 +7776,8 @@ define "Assay 0 - HIV.E.DE195 Observation":
   Elements."Assay 0 - HIV.E.DE195 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Assay 0 - HIV.E.DE195
+/* End of Assay 0 - HIV.E.DE195 */
+
 /*
 @dataElement: HIV.E.DE196 - Assay 1 - HIV.E.DE196
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7515,7 +7794,8 @@ define "Assay 1 - HIV.E.DE196 Observation":
   Elements."Assay 1 - HIV.E.DE196 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Assay 1 - HIV.E.DE196
+/* End of Assay 1 - HIV.E.DE196 */
+
 /*
 @dataElement: HIV.E.DE197 - Assay 2 - HIV.E.DE197
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7532,7 +7812,8 @@ define "Assay 2 - HIV.E.DE197 Observation":
   Elements."Assay 2 - HIV.E.DE197 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Assay 2 - HIV.E.DE197
+/* End of Assay 2 - HIV.E.DE197 */
+
 /*
 @dataElement: HIV.E.DE198 - Assay 3 - HIV.E.DE198
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7549,7 +7830,8 @@ define "Assay 3 - HIV.E.DE198 Observation":
   Elements."Assay 3 - HIV.E.DE198 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Assay 3 - HIV.E.DE198
+/* End of Assay 3 - HIV.E.DE198 */
+
 /*
 @dataElement: HIV.E.DE199 - Assay 1 repeated - HIV.E.DE199
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7566,7 +7848,8 @@ define "Assay 1 repeated - HIV.E.DE199 Observation":
   Elements."Assay 1 repeated - HIV.E.DE199 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Assay 1 repeated - HIV.E.DE199
+/* End of Assay 1 repeated - HIV.E.DE199 */
+
 /*
 @dataElement: HIV.E.DE200 - Test result of HIV assay 1 - HIV.E.DE200
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7577,7 +7860,8 @@ define "Test result of HIV assay 1 - HIV.E.DE200 Observation":
   Elements."Test result of HIV assay 1 - HIV.E.DE200 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Test result of HIV assay 1 - HIV.E.DE200
+/* End of Test result of HIV assay 1 - HIV.E.DE200 */
+
 /*
 @dataElement: HIV.E.DE201 - Reactive - HIV.E.DE201
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7594,7 +7878,8 @@ define "Reactive - HIV.E.DE201 Observation":
   Elements."Reactive - HIV.E.DE201 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Reactive - HIV.E.DE201
+/* End of Reactive - HIV.E.DE201 */
+
 /*
 @dataElement: HIV.E.DE202 - Non-reactive - HIV.E.DE202
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7611,7 +7896,8 @@ define "Non-reactive - HIV.E.DE202 Observation":
   Elements."Non-reactive - HIV.E.DE202 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Non-reactive - HIV.E.DE202
+/* End of Non-reactive - HIV.E.DE202 */
+
 /*
 @dataElement: HIV.E.DE203 - Invalid - HIV.E.DE203
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7628,7 +7914,8 @@ define "Invalid - HIV.E.DE203 Observation":
   Elements."Invalid - HIV.E.DE203 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Invalid - HIV.E.DE203
+/* End of Invalid - HIV.E.DE203 */
+
 /*
 @dataElement: HIV.E.DE204 - Test result of HIV assay 2 - HIV.E.DE204
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7639,7 +7926,8 @@ define "Test result of HIV assay 2 - HIV.E.DE204 Observation":
   Elements."Test result of HIV assay 2 - HIV.E.DE204 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Test result of HIV assay 2 - HIV.E.DE204
+/* End of Test result of HIV assay 2 - HIV.E.DE204 */
+
 /*
 @dataElement: HIV.E.DE205 - Reactive - HIV.E.DE205
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7656,7 +7944,8 @@ define "Reactive - HIV.E.DE205 Observation":
   Elements."Reactive - HIV.E.DE205 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Reactive - HIV.E.DE205
+/* End of Reactive - HIV.E.DE205 */
+
 /*
 @dataElement: HIV.E.DE206 - Non-reactive - HIV.E.DE206
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7673,7 +7962,8 @@ define "Non-reactive - HIV.E.DE206 Observation":
   Elements."Non-reactive - HIV.E.DE206 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Non-reactive - HIV.E.DE206
+/* End of Non-reactive - HIV.E.DE206 */
+
 /*
 @dataElement: HIV.E.DE207 - Invalid - HIV.E.DE207
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7690,7 +7980,8 @@ define "Invalid - HIV.E.DE207 Observation":
   Elements."Invalid - HIV.E.DE207 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Invalid - HIV.E.DE207
+/* End of Invalid - HIV.E.DE207 */
+
 /*
 @dataElement: HIV.E.DE208 - Test result of HIV assay 3 - HIV.E.DE208
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7701,7 +7992,8 @@ define "Test result of HIV assay 3 - HIV.E.DE208 Observation":
   Elements."Test result of HIV assay 3 - HIV.E.DE208 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Test result of HIV assay 3 - HIV.E.DE208
+/* End of Test result of HIV assay 3 - HIV.E.DE208 */
+
 /*
 @dataElement: HIV.E.DE209 - Reactive - HIV.E.DE209
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7718,7 +8010,8 @@ define "Reactive - HIV.E.DE209 Observation":
   Elements."Reactive - HIV.E.DE209 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Reactive - HIV.E.DE209
+/* End of Reactive - HIV.E.DE209 */
+
 /*
 @dataElement: HIV.E.DE210 - Non-reactive - HIV.E.DE210
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7735,7 +8028,8 @@ define "Non-reactive - HIV.E.DE210 Observation":
   Elements."Non-reactive - HIV.E.DE210 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Non-reactive - HIV.E.DE210
+/* End of Non-reactive - HIV.E.DE210 */
+
 /*
 @dataElement: HIV.E.DE211 - Invalid - HIV.E.DE211
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7752,7 +8046,8 @@ define "Invalid - HIV.E.DE211 Observation":
   Elements."Invalid - HIV.E.DE211 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Invalid - HIV.E.DE211
+/* End of Invalid - HIV.E.DE211 */
+
 /*
 @dataElement: HIV.E.DE212 - Test result of HIV assay 1 repeated - HIV.E.DE212
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7763,7 +8058,8 @@ define "Test result of HIV assay 1 repeated - HIV.E.DE212 Observation":
   Elements."Test result of HIV assay 1 repeated - HIV.E.DE212 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Test result of HIV assay 1 repeated - HIV.E.DE212
+/* End of Test result of HIV assay 1 repeated - HIV.E.DE212 */
+
 /*
 @dataElement: HIV.E.DE213 - Reactive - HIV.E.DE213
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7780,7 +8076,8 @@ define "Reactive - HIV.E.DE213 Observation":
   Elements."Reactive - HIV.E.DE213 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Reactive - HIV.E.DE213
+/* End of Reactive - HIV.E.DE213 */
+
 /*
 @dataElement: HIV.E.DE214 - Non-reactive - HIV.E.DE214
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7797,7 +8094,8 @@ define "Non-reactive - HIV.E.DE214 Observation":
   Elements."Non-reactive - HIV.E.DE214 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Non-reactive - HIV.E.DE214
+/* End of Non-reactive - HIV.E.DE214 */
+
 /*
 @dataElement: HIV.E.DE215 - Invalid - HIV.E.DE215
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7814,7 +8112,8 @@ define "Invalid - HIV.E.DE215 Observation":
   Elements."Invalid - HIV.E.DE215 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Invalid - HIV.E.DE215
+/* End of Invalid - HIV.E.DE215 */
+
 /*
 @dataElement: HIV.E.DE216 - Test result of syphilis assay 1
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7825,7 +8124,8 @@ define "Test result of syphilis assay 1 Observation":
   Elements."Test result of syphilis assay 1 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Test result of syphilis assay 1
+/* End of Test result of syphilis assay 1 */
+
 /*
 @dataElement: HIV.E.DE217 - Reactive - HIV.E.DE217
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7842,7 +8142,8 @@ define "Reactive - HIV.E.DE217 Observation":
   Elements."Reactive - HIV.E.DE217 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Reactive - HIV.E.DE217
+/* End of Reactive - HIV.E.DE217 */
+
 /*
 @dataElement: HIV.E.DE218 - Non-reactive - HIV.E.DE218
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7859,7 +8160,8 @@ define "Non-reactive - HIV.E.DE218 Observation":
   Elements."Non-reactive - HIV.E.DE218 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Non-reactive - HIV.E.DE218
+/* End of Non-reactive - HIV.E.DE218 */
+
 /*
 @dataElement: HIV.E.DE219 - Invalid - HIV.E.DE219
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7876,7 +8178,8 @@ define "Invalid - HIV.E.DE219 Observation":
   Elements."Invalid - HIV.E.DE219 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Invalid - HIV.E.DE219
+/* End of Invalid - HIV.E.DE219 */
+
 /*
 @dataElement: HIV.E.DE220 - Test result of syphilis assay 1 repeated
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7887,7 +8190,8 @@ define "Test result of syphilis assay 1 repeated Observation":
   Elements."Test result of syphilis assay 1 repeated Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Test result of syphilis assay 1 repeated
+/* End of Test result of syphilis assay 1 repeated */
+
 /*
 @dataElement: HIV.E.DE221 - Reactive - HIV.E.DE221
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7904,7 +8208,8 @@ define "Reactive - HIV.E.DE221 Observation":
   Elements."Reactive - HIV.E.DE221 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Reactive - HIV.E.DE221
+/* End of Reactive - HIV.E.DE221 */
+
 /*
 @dataElement: HIV.E.DE222 - Non-reactive - HIV.E.DE222
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7921,7 +8226,8 @@ define "Non-reactive - HIV.E.DE222 Observation":
   Elements."Non-reactive - HIV.E.DE222 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Non-reactive - HIV.E.DE222
+/* End of Non-reactive - HIV.E.DE222 */
+
 /*
 @dataElement: HIV.E.DE223 - Invalid - HIV.E.DE223
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -7938,24 +8244,21 @@ define "Invalid - HIV.E.DE223 Observation":
   Elements."Invalid - HIV.E.DE223 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Invalid - HIV.E.DE223
+/* End of Invalid - HIV.E.DE223 */
+
 /*
 @dataElement: HIV.G.DE1 - CD4 count - HIV.G.DE1
 @activity: HIV.D20 Diagnostics
 @description: CD4 cell count in cells/mm^3
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "CD4 count - HIV.G.DE1":
-  exists "CD4 count - HIV.G.DE1 Observation"
-    or exists "CD4 count - HIV.G.DE1 Condition"
-define "CD4 count - HIV.G.DE1 Condition":
-  Elements."CD4 count - HIV.G.DE1 Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "CD4 count - HIV.G.DE1 Observation":
-  Elements."CD4 count - HIV.G.DE1 Observation" O
+  Elements."CD4 count - HIV.G.DE1" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of CD4 count - HIV.G.DE1
+    return O.value
+/* End of CD4 count - HIV.G.DE1 */
+
 /*
 @dataElement: HIV.H.DE34 - HIV status of partner or contact
 @activity: HIV.B6 Capture or update client history
@@ -7966,7 +8269,8 @@ define "HIV status of partner or contact Observation":
   Elements."HIV status of partner or contact Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of HIV status of partner or contact
+/* End of HIV status of partner or contact */
+
 /*
 @dataElement: HIV.H.DE35 - Already knew positive
 @activity: HIV.B6 Capture or update client history
@@ -7983,7 +8287,8 @@ define "Already knew positive Observation":
   Elements."Already knew positive Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Already knew positive
+/* End of Already knew positive */
+
 /*
 @dataElement: HIV.H.DE36 - Newly diagnosed
 @activity: HIV.B6 Capture or update client history
@@ -8000,7 +8305,8 @@ define "Newly diagnosed Observation":
   Elements."Newly diagnosed Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Newly diagnosed
+/* End of Newly diagnosed */
+
 /*
 @dataElement: HIV.H.DE37 - Negative - HIV.H.DE37
 @activity: HIV.B6 Capture or update client history
@@ -8017,7 +8323,8 @@ define "Negative - HIV.H.DE37 Observation":
   Elements."Negative - HIV.H.DE37 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Negative - HIV.H.DE37
+/* End of Negative - HIV.H.DE37 */
+
 /*
 @dataElement: HIV.SRV.DE5 - HIV clinical stage - HIV.SRV.DE5
 @activity: HIV.D8 Capture or update client history
@@ -8028,24 +8335,21 @@ define "HIV clinical stage - HIV.SRV.DE5 Observation":
   Elements."HIV clinical stage - HIV.SRV.DE5 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of HIV clinical stage - HIV.SRV.DE5
+/* End of HIV clinical stage - HIV.SRV.DE5 */
+
 /*
 @dataElement: HIV.SRV.DE8 - CD4 count - HIV.SRV.DE8
 @activity: HIV.D20 Diagnostics
 @description: CD4 cell count in cells/mm^3
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "CD4 count - HIV.SRV.DE8":
-  exists "CD4 count - HIV.SRV.DE8 Observation"
-    or exists "CD4 count - HIV.SRV.DE8 Condition"
-define "CD4 count - HIV.SRV.DE8 Condition":
-  Elements."CD4 count - HIV.SRV.DE8 Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "CD4 count - HIV.SRV.DE8 Observation":
-  Elements."CD4 count - HIV.SRV.DE8 Observation" O
+  Elements."CD4 count - HIV.SRV.DE8" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of CD4 count - HIV.SRV.DE8
+    return O.value
+/* End of CD4 count - HIV.SRV.DE8 */
+
 /*
 @dataElement: HIV.SRV.DE21 - Test result of HIV assay 1 - HIV.SRV.DE21
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -8056,24 +8360,21 @@ define "Test result of HIV assay 1 - HIV.SRV.DE21 Observation":
   Elements."Test result of HIV assay 1 - HIV.SRV.DE21 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Test result of HIV assay 1 - HIV.SRV.DE21
+/* End of Test result of HIV assay 1 - HIV.SRV.DE21 */
+
 /*
 @dataElement: HIV.Config.DE6 - Malaria-endemic setting
 @activity: HIV.Configuration
 @description: Whether the setting is a malaria-endemic setting
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Malaria-endemic setting":
-  exists "Malaria-endemic setting Observation"
-    or exists "Malaria-endemic setting Condition"
-define "Malaria-endemic setting Condition":
-  Elements."Malaria-endemic setting Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "Malaria-endemic setting Observation":
-  Elements."Malaria-endemic setting Observation" O
+  Elements."Malaria-endemic setting" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Malaria-endemic setting
+    return O.value
+/* End of Malaria-endemic setting */
+
 /*
 @dataElement: HIV.Config.DE12 - HIV burden of the setting
 @activity: HIV.Configuration
@@ -8084,7 +8385,8 @@ define "HIV burden of the setting Observation":
   Elements."HIV burden of the setting Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of HIV burden of the setting
+/* End of HIV burden of the setting */
+
 /*
 @dataElement: HIV.Config.DE13 - High HIV burden setting
 @activity: HIV.Configuration
@@ -8101,7 +8403,8 @@ define "High HIV burden setting Observation":
   Elements."High HIV burden setting Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of High HIV burden setting
+/* End of High HIV burden setting */
+
 /*
 @dataElement: HIV.Config.DE14 - Low HIV burden setting
 @activity: HIV.Configuration
@@ -8118,24 +8421,21 @@ define "Low HIV burden setting Observation":
   Elements."Low HIV burden setting Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of Low HIV burden setting
+/* End of Low HIV burden setting */
+
 /*
 @dataElement: HIV.Config.DE15 - HPV DNA testing operational at the health facility
 @activity: HIV.Configuration
 @description: Is HPV DNA testing operational at the health facility for cervical cancer screening?
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "HPV DNA testing operational at the health facility":
-  exists "HPV DNA testing operational at the health facility Observation"
-    or exists "HPV DNA testing operational at the health facility Condition"
-define "HPV DNA testing operational at the health facility Condition":
-  Elements."HPV DNA testing operational at the health facility Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "HPV DNA testing operational at the health facility Observation":
-  Elements."HPV DNA testing operational at the health facility Observation" O
+  Elements."HPV DNA testing operational at the health facility" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-// End of HPV DNA testing operational at the health facility
+    return O.value
+/* End of HPV DNA testing operational at the health facility */
+
 
 /*
  * Custom elements and logic for use DT and IND CQL Libraries

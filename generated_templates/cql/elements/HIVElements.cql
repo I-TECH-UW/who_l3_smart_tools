@@ -29,61 +29,49 @@ context Patient
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Visit date - HIV.A.DE3":
-  exists "Visit date - HIV.A.DE3 Observation"
-    or exists "Visit date - HIV.A.DE3 Condition"
-define "Visit date - HIV.A.DE3 Condition":
-  [Condition: Concepts."Visit date - HIV.A.DE3"]
-define "Visit date - HIV.A.DE3 Observation":
   [Observation: Concepts."Visit date - HIV.A.DE3"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Visit date - HIV.A.DE3
+    return O.value
+/* End of Visit date - HIV.A.DE3 */
+
 /*
 @dataElement: HIV.A.DE16 - Estimated age
-@activity: HIV.A6.1 Review sociodemographic data with client
-HIV.A5 Create new client record
+@activity: HIV.A6.1 Review sociodemographic data with client | HIV.A5 Create new client record
 @description: If DOB is unknown, enter the client's estimated age. Display client's age in number of years.
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Estimated age":
-  exists "Estimated age Observation"
-    or exists "Estimated age Condition"
-define "Estimated age Condition":
-  [Condition: Concepts."Estimated age"]
-define "Estimated age Observation":
   [Observation: Concepts."Estimated age"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Estimated age
+    return O.value
+/* End of Estimated age */
+
 /*
 @dataElement: HIV.A.DE17 - Age
-@activity: HIV.A6.1 Review sociodemographic data with client
-HIV.A5 Create new client record
+@activity: HIV.A6.1 Review sociodemographic data with client | HIV.A5 Create new client record
 @description: Calculated age (number of years) of the client based on date of birth
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Age":
-  exists "Age Observation"
-    or exists "Age Condition"
-define "Age Condition":
-  [Condition: Concepts."Age"]
-define "Age Observation":
   [Observation: Concepts."Age"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Age
+    return O.value
+/* End of Age */
+
 /*
 @dataElement: HIV.A.DE18 - Gender*
-@activity: HIV.A6.1 Review sociodemographic data with client
-HIV.A5 Create new client record
+@activity: HIV.A6.1 Review sociodemographic data with client | HIV.A5 Create new client record
 @description: Gender of the client*
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Gender* Observation":
   [Observation: Concepts."Gender*"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Gender*
+/* End of Gender* */
+
 /*
 @dataElement: HIV.A.DE19 - Female
-@activity: HIV.A6.1 Review sociodemographic data with client
-HIV.A5 Create new client record
+@activity: HIV.A6.1 Review sociodemographic data with client | HIV.A5 Create new client record
 @description: Client identifies as female
 */
 // TODO: Replace placeholder with relevant CQL logic
@@ -93,14 +81,14 @@ define "Female":
 define "Female Condition":
   [Condition: Concepts."Female"]
 define "Female Observation":
-  "Female Observation" O
+  [Observation: Concepts."Female"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Female"
-// End of Female
+/* End of Female */
+
 /*
 @dataElement: HIV.A.DE20 - Male
-@activity: HIV.A6.1 Review sociodemographic data with client
-HIV.A5 Create new client record
+@activity: HIV.A6.1 Review sociodemographic data with client | HIV.A5 Create new client record
 @description: Client identifies as male
 */
 // TODO: Replace placeholder with relevant CQL logic
@@ -110,14 +98,14 @@ define "Male":
 define "Male Condition":
   [Condition: Concepts."Male"]
 define "Male Observation":
-  "Male Observation" O
+  [Observation: Concepts."Male"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Male"
-// End of Male
+/* End of Male */
+
 /*
 @dataElement: HIV.A.DE21 - Transgender male
-@activity: HIV.A6.1 Review sociodemographic data with client
-HIV.A5 Create new client record
+@activity: HIV.A6.1 Review sociodemographic data with client | HIV.A5 Create new client record
 @description: Client identifies as transgender male
 */
 // TODO: Replace placeholder with relevant CQL logic
@@ -127,14 +115,14 @@ define "Transgender male":
 define "Transgender male Condition":
   [Condition: Concepts."Transgender male"]
 define "Transgender male Observation":
-  "Transgender male Observation" O
+  [Observation: Concepts."Transgender male"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Transgender male"
-// End of Transgender male
+/* End of Transgender male */
+
 /*
 @dataElement: HIV.A.DE22 - Transgender female
-@activity: HIV.A6.1 Review sociodemographic data with client
-HIV.A5 Create new client record
+@activity: HIV.A6.1 Review sociodemographic data with client | HIV.A5 Create new client record
 @description: Client identifies as transgender female
 */
 // TODO: Replace placeholder with relevant CQL logic
@@ -144,14 +132,14 @@ define "Transgender female":
 define "Transgender female Condition":
   [Condition: Concepts."Transgender female"]
 define "Transgender female Observation":
-  "Transgender female Observation" O
+  [Observation: Concepts."Transgender female"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Transgender female"
-// End of Transgender female
+/* End of Transgender female */
+
 /*
 @dataElement: HIV.A.DE23 - Other - HIV.A.DE23
-@activity: HIV.A6.1 Review sociodemographic data with client
-HIV.A5 Create new client record
+@activity: HIV.A6.1 Review sociodemographic data with client | HIV.A5 Create new client record
 @description: Additional category
 */
 // TODO: Replace placeholder with relevant CQL logic
@@ -161,10 +149,11 @@ define "Other - HIV.A.DE23":
 define "Other - HIV.A.DE23 Condition":
   [Condition: Concepts."Other - HIV.A.DE23"]
 define "Other - HIV.A.DE23 Observation":
-  "Other - HIV.A.DE18 Observation" O
+  [Observation: Concepts."Other - HIV.A.DE18"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other - HIV.A.DE23"
-// End of Other - HIV.A.DE23
+/* End of Other - HIV.A.DE23 */
+
 /*
 @dataElement: HIV.B.DE1 - Reason for visit - HIV.B.DE1
 @activity: HIV.B1 Determine reason for visit
@@ -174,7 +163,8 @@ define "Other - HIV.A.DE23 Observation":
 define "Reason for visit - HIV.B.DE1 Observation":
   [Observation: Concepts."Reason for visit - HIV.B.DE1"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Reason for visit - HIV.B.DE1
+/* End of Reason for visit - HIV.B.DE1 */
+
 /*
 @dataElement: HIV.B.DE2 - First-time HIV test
 @activity: HIV.B1 Determine reason for visit
@@ -187,10 +177,11 @@ define "First-time HIV test":
 define "First-time HIV test Condition":
   [Condition: Concepts."First-time HIV test"]
 define "First-time HIV test Observation":
-  "First-time HIV test Observation" O
+  [Observation: Concepts."First-time HIV test"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."First-time HIV test"
-// End of First-time HIV test
+/* End of First-time HIV test */
+
 /*
 @dataElement: HIV.B.DE3 - Retesting for HIV - HIV.B.DE3
 @activity: HIV.B1 Determine reason for visit
@@ -203,10 +194,11 @@ define "Retesting for HIV - HIV.B.DE3":
 define "Retesting for HIV - HIV.B.DE3 Condition":
   [Condition: Concepts."Retesting for HIV - HIV.B.DE3"]
 define "Retesting for HIV - HIV.B.DE3 Observation":
-  "Retesting for HIV - HIV.B.DE1 Observation" O
+  [Observation: Concepts."Retesting for HIV - HIV.B.DE1"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Retesting for HIV - HIV.B.DE3"
-// End of Retesting for HIV - HIV.B.DE3
+/* End of Retesting for HIV - HIV.B.DE3 */
+
 /*
 @dataElement: HIV.B.DE4 - HIV testing services visit
 @activity: HIV.B1 Determine reason for visit
@@ -219,10 +211,11 @@ define "HIV testing services visit":
 define "HIV testing services visit Condition":
   [Condition: Concepts."HIV testing services visit"]
 define "HIV testing services visit Observation":
-  "HIV testing services visit Observation" O
+  [Observation: Concepts."HIV testing services visit"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV testing services visit"
-// End of HIV testing services visit
+/* End of HIV testing services visit */
+
 /*
 @dataElement: HIV.B.DE5 - Referred through partner services
 @activity: HIV.B1 Determine reason for visit
@@ -232,7 +225,8 @@ define "HIV testing services visit Observation":
 define "Referred through partner services Observation":
   [Observation: Concepts."Referred through partner services"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Referred through partner services
+/* End of Referred through partner services */
+
 /*
 @dataElement: HIV.B.DE6 - Partner or contact of an index case
 @activity: HIV.B1 Determine reason for visit
@@ -245,10 +239,11 @@ define "Partner or contact of an index case":
 define "Partner or contact of an index case Condition":
   [Condition: Concepts."Partner or contact of an index case"]
 define "Partner or contact of an index case Observation":
-  "Partner or contact of an index case Observation" O
+  [Observation: Concepts."Partner or contact of an index case"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Partner or contact of an index case"
-// End of Partner or contact of an index case
+/* End of Partner or contact of an index case */
+
 /*
 @dataElement: HIV.B.DE7 - Partner or contact of an HIV testing client non-index case
 @activity: HIV.B1 Determine reason for visit
@@ -261,10 +256,11 @@ define "Partner or contact of an HIV testing client non-index case":
 define "Partner or contact of an HIV testing client non-index case Condition":
   [Condition: Concepts."Partner or contact of an HIV testing client non-index case"]
 define "Partner or contact of an HIV testing client non-index case Observation":
-  "Partner or contact of an HIV testing client non-index case Observation" O
+  [Observation: Concepts."Partner or contact of an HIV testing client non-index case"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Partner or contact of an HIV testing client non-index case"
-// End of Partner or contact of an HIV testing client non-index case
+/* End of Partner or contact of an HIV testing client non-index case */
+
 /*
 @dataElement: HIV.B.DE8 - Type of contact or partner for partner services
 @activity: HIV.B1 Determine reason for visit
@@ -274,7 +270,8 @@ define "Partner or contact of an HIV testing client non-index case Observation":
 define "Type of contact or partner for partner services Observation":
   [Observation: Concepts."Type of contact or partner for partner services"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Type of contact or partner for partner services
+/* End of Type of contact or partner for partner services */
+
 /*
 @dataElement: HIV.B.DE9 - Biological child
 @activity: HIV.B1 Determine reason for visit
@@ -287,10 +284,11 @@ define "Biological child":
 define "Biological child Condition":
   [Condition: Concepts."Biological child"]
 define "Biological child Observation":
-  "Biological child Observation" O
+  [Observation: Concepts."Biological child"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Biological child"
-// End of Biological child
+/* End of Biological child */
+
 /*
 @dataElement: HIV.B.DE10 - Drug-injecting partner - HIV.B.DE10
 @activity: HIV.B1 Determine reason for visit
@@ -303,10 +301,11 @@ define "Drug-injecting partner - HIV.B.DE10":
 define "Drug-injecting partner - HIV.B.DE10 Condition":
   [Condition: Concepts."Drug-injecting partner - HIV.B.DE10"]
 define "Drug-injecting partner - HIV.B.DE10 Observation":
-  "Drug-injecting partner - HIV.B.DE8 Observation" O
+  [Observation: Concepts."Drug-injecting partner - HIV.B.DE8"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Drug-injecting partner - HIV.B.DE10"
-// End of Drug-injecting partner - HIV.B.DE10
+/* End of Drug-injecting partner - HIV.B.DE10 */
+
 /*
 @dataElement: HIV.B.DE11 - Sexual partner - HIV.B.DE11
 @activity: HIV.B1 Determine reason for visit
@@ -319,10 +318,11 @@ define "Sexual partner - HIV.B.DE11":
 define "Sexual partner - HIV.B.DE11 Condition":
   [Condition: Concepts."Sexual partner - HIV.B.DE11"]
 define "Sexual partner - HIV.B.DE11 Observation":
-  "Sexual partner - HIV.B.DE8 Observation" O
+  [Observation: Concepts."Sexual partner - HIV.B.DE8"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Sexual partner - HIV.B.DE11"
-// End of Sexual partner - HIV.B.DE11
+/* End of Sexual partner - HIV.B.DE11 */
+
 /*
 @dataElement: HIV.B.DE12 - Social contact - HIV.B.DE12
 @activity: HIV.B1 Determine reason for visit
@@ -335,10 +335,11 @@ define "Social contact - HIV.B.DE12":
 define "Social contact - HIV.B.DE12 Condition":
   [Condition: Concepts."Social contact - HIV.B.DE12"]
 define "Social contact - HIV.B.DE12 Observation":
-  "Social contact - HIV.B.DE8 Observation" O
+  [Observation: Concepts."Social contact - HIV.B.DE8"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Social contact - HIV.B.DE12"
-// End of Social contact - HIV.B.DE12
+/* End of Social contact - HIV.B.DE12 */
+
 /*
 @dataElement: HIV.B.DE14 - Date/time of suspected exposure to HIV - HIV.B.DE14
 @activity: HIV.B1 Determine reason for visit
@@ -346,14 +347,11 @@ define "Social contact - HIV.B.DE12 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date/time of suspected exposure to HIV - HIV.B.DE14":
-  exists "Date/time of suspected exposure to HIV - HIV.B.DE14 Observation"
-    or exists "Date/time of suspected exposure to HIV - HIV.B.DE14 Condition"
-define "Date/time of suspected exposure to HIV - HIV.B.DE14 Condition":
-  [Condition: Concepts."Date/time of suspected exposure to HIV - HIV.B.DE14"]
-define "Date/time of suspected exposure to HIV - HIV.B.DE14 Observation":
   [Observation: Concepts."Date/time of suspected exposure to HIV - HIV.B.DE14"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date/time of suspected exposure to HIV - HIV.B.DE14
+    return O.value
+/* End of Date/time of suspected exposure to HIV - HIV.B.DE14 */
+
 /*
 @dataElement: HIV.B.DE15 - Testing entry point
 @activity: HIV.B1 Determine reason for visit
@@ -363,7 +361,8 @@ define "Date/time of suspected exposure to HIV - HIV.B.DE14 Observation":
 define "Testing entry point Observation":
   [Observation: Concepts."Testing entry point"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Testing entry point
+/* End of Testing entry point */
+
 /*
 @dataElement: HIV.B.DE16 - Community-level testing
 @activity: HIV.B1 Determine reason for visit
@@ -376,10 +375,11 @@ define "Community-level testing":
 define "Community-level testing Condition":
   [Condition: Concepts."Community-level testing"]
 define "Community-level testing Observation":
-  "Community-level testing Observation" O
+  [Observation: Concepts."Community-level testing"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Community-level testing"
-// End of Community-level testing
+/* End of Community-level testing */
+
 /*
 @dataElement: HIV.B.DE17 - Facility-level testing
 @activity: HIV.B1 Determine reason for visit
@@ -392,10 +392,11 @@ define "Facility-level testing":
 define "Facility-level testing Condition":
   [Condition: Concepts."Facility-level testing"]
 define "Facility-level testing Observation":
-  "Facility-level testing Observation" O
+  [Observation: Concepts."Facility-level testing"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Facility-level testing"
-// End of Facility-level testing
+/* End of Facility-level testing */
+
 /*
 @dataElement: HIV.B.DE29 - Currently pregnant - HIV.B.DE29
 @activity: HIV.B6 Capture or update client history
@@ -403,14 +404,11 @@ define "Facility-level testing Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Currently pregnant - HIV.B.DE29":
-  exists "Currently pregnant - HIV.B.DE29 Observation"
-    or exists "Currently pregnant - HIV.B.DE29 Condition"
-define "Currently pregnant - HIV.B.DE29 Condition":
-  [Condition: Concepts."Currently pregnant - HIV.B.DE29"]
-define "Currently pregnant - HIV.B.DE29 Observation":
   [Observation: Concepts."Currently pregnant - HIV.B.DE29"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Currently pregnant - HIV.B.DE29
+    return O.value
+/* End of Currently pregnant - HIV.B.DE29 */
+
 /*
 @dataElement: HIV.B.DE32 - Breastfeeding - HIV.B.DE32
 @activity: HIV.B6 Capture or update client history
@@ -418,14 +416,11 @@ define "Currently pregnant - HIV.B.DE29 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Breastfeeding - HIV.B.DE32":
-  exists "Breastfeeding - HIV.B.DE32 Observation"
-    or exists "Breastfeeding - HIV.B.DE32 Condition"
-define "Breastfeeding - HIV.B.DE32 Condition":
-  [Condition: Concepts."Breastfeeding - HIV.B.DE32"]
-define "Breastfeeding - HIV.B.DE32 Observation":
   [Observation: Concepts."Breastfeeding - HIV.B.DE32"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Breastfeeding - HIV.B.DE32
+    return O.value
+/* End of Breastfeeding - HIV.B.DE32 */
+
 /*
 @dataElement: HIV.B.DE33 - Partner HIV status reported
 @activity: HIV.B6 Capture or update client history
@@ -435,7 +430,8 @@ define "Breastfeeding - HIV.B.DE32 Observation":
 define "Partner HIV status reported Observation":
   [Observation: Concepts."Partner HIV status reported"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Partner HIV status reported
+/* End of Partner HIV status reported */
+
 /*
 @dataElement: HIV.B.DE34 - HIV-positive - HIV.B.DE34
 @activity: HIV.B6 Capture or update client history
@@ -448,10 +444,11 @@ define "HIV-positive - HIV.B.DE34":
 define "HIV-positive - HIV.B.DE34 Condition":
   [Condition: Concepts."HIV-positive - HIV.B.DE34"]
 define "HIV-positive - HIV.B.DE34 Observation":
-  "HIV-positive - HIV.B.DE33 Observation" O
+  [Observation: Concepts."HIV-positive - HIV.B.DE33"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV-positive - HIV.B.DE34"
-// End of HIV-positive - HIV.B.DE34
+/* End of HIV-positive - HIV.B.DE34 */
+
 /*
 @dataElement: HIV.B.DE35 - HIV-negative - HIV.B.DE35
 @activity: HIV.B6 Capture or update client history
@@ -464,10 +461,11 @@ define "HIV-negative - HIV.B.DE35":
 define "HIV-negative - HIV.B.DE35 Condition":
   [Condition: Concepts."HIV-negative - HIV.B.DE35"]
 define "HIV-negative - HIV.B.DE35 Observation":
-  "HIV-negative - HIV.B.DE33 Observation" O
+  [Observation: Concepts."HIV-negative - HIV.B.DE33"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV-negative - HIV.B.DE35"
-// End of HIV-negative - HIV.B.DE35
+/* End of HIV-negative - HIV.B.DE35 */
+
 /*
 @dataElement: HIV.B.DE36 - Unknown - HIV.B.DE36
 @activity: HIV.B6 Capture or update client history
@@ -480,10 +478,11 @@ define "Unknown - HIV.B.DE36":
 define "Unknown - HIV.B.DE36 Condition":
   [Condition: Concepts."Unknown - HIV.B.DE36"]
 define "Unknown - HIV.B.DE36 Observation":
-  "Unknown - HIV.B.DE33 Observation" O
+  [Observation: Concepts."Unknown - HIV.B.DE33"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Unknown - HIV.B.DE36"
-// End of Unknown - HIV.B.DE36
+/* End of Unknown - HIV.B.DE36 */
+
 /*
 @dataElement: HIV.B.DE49 - Key population member* - HIV.B.DE49
 @activity: HIV.B6 Capture or update client history
@@ -491,14 +490,11 @@ define "Unknown - HIV.B.DE36 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Key population member* - HIV.B.DE49":
-  exists "Key population member* - HIV.B.DE49 Observation"
-    or exists "Key population member* - HIV.B.DE49 Condition"
-define "Key population member* - HIV.B.DE49 Condition":
-  [Condition: Concepts."Key population member* - HIV.B.DE49"]
-define "Key population member* - HIV.B.DE49 Observation":
   [Observation: Concepts."Key population member* - HIV.B.DE49"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Key population member* - HIV.B.DE49
+    return O.value
+/* End of Key population member* - HIV.B.DE49 */
+
 /*
 @dataElement: HIV.B.DE50 - Key population member type* - HIV.B.DE50
 @activity: HIV.B6 Capture or update client history
@@ -508,7 +504,8 @@ define "Key population member* - HIV.B.DE49 Observation":
 define "Key population member type* - HIV.B.DE50 Observation":
   [Observation: Concepts."Key population member type* - HIV.B.DE50"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Key population member type* - HIV.B.DE50
+/* End of Key population member type* - HIV.B.DE50 */
+
 /*
 @dataElement: HIV.B.DE51 - Sex worker - HIV.B.DE51
 @activity: HIV.B6 Capture or update client history
@@ -521,10 +518,11 @@ define "Sex worker - HIV.B.DE51":
 define "Sex worker - HIV.B.DE51 Condition":
   [Condition: Concepts."Sex worker - HIV.B.DE51"]
 define "Sex worker - HIV.B.DE51 Observation":
-  "Sex worker - HIV.B.DE50 Observation" O
+  [Observation: Concepts."Sex worker - HIV.B.DE50"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Sex worker - HIV.B.DE51"
-// End of Sex worker - HIV.B.DE51
+/* End of Sex worker - HIV.B.DE51 */
+
 /*
 @dataElement: HIV.B.DE52 - Men who have sex with men
 @activity: HIV.B6 Capture or update client history
@@ -537,10 +535,11 @@ define "Men who have sex with men":
 define "Men who have sex with men Condition":
   [Condition: Concepts."Men who have sex with men"]
 define "Men who have sex with men Observation":
-  "Men who have sex with men Observation" O
+  [Observation: Concepts."Men who have sex with men"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Men who have sex with men"
-// End of Men who have sex with men
+/* End of Men who have sex with men */
+
 /*
 @dataElement: HIV.B.DE53 - Trans and gender-diverse people - HIV.B.DE53
 @activity: HIV.B6 Capture or update client history
@@ -553,10 +552,11 @@ define "Trans and gender-diverse people - HIV.B.DE53":
 define "Trans and gender-diverse people - HIV.B.DE53 Condition":
   [Condition: Concepts."Trans and gender-diverse people - HIV.B.DE53"]
 define "Trans and gender-diverse people - HIV.B.DE53 Observation":
-  "Trans and gender-diverse people - HIV.B.DE50 Observation" O
+  [Observation: Concepts."Trans and gender-diverse people - HIV.B.DE50"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Trans and gender-diverse people - HIV.B.DE53"
-// End of Trans and gender-diverse people - HIV.B.DE53
+/* End of Trans and gender-diverse people - HIV.B.DE53 */
+
 /*
 @dataElement: HIV.B.DE54 - People who inject drugs - HIV.B.DE54
 @activity: HIV.B6 Capture or update client history
@@ -569,10 +569,11 @@ define "People who inject drugs - HIV.B.DE54":
 define "People who inject drugs - HIV.B.DE54 Condition":
   [Condition: Concepts."People who inject drugs - HIV.B.DE54"]
 define "People who inject drugs - HIV.B.DE54 Observation":
-  "People who inject drugs - HIV.B.DE50 Observation" O
+  [Observation: Concepts."People who inject drugs - HIV.B.DE50"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."People who inject drugs - HIV.B.DE54"
-// End of People who inject drugs - HIV.B.DE54
+/* End of People who inject drugs - HIV.B.DE54 */
+
 /*
 @dataElement: HIV.B.DE55 - People living in prisons and other closed settings
 @activity: HIV.B6 Capture or update client history
@@ -585,10 +586,11 @@ define "People living in prisons and other closed settings":
 define "People living in prisons and other closed settings Condition":
   [Condition: Concepts."People living in prisons and other closed settings"]
 define "People living in prisons and other closed settings Observation":
-  "People living in prisons and other closed settings Observation" O
+  [Observation: Concepts."People living in prisons and other closed settings"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."People living in prisons and other closed settings"
-// End of People living in prisons and other closed settings
+/* End of People living in prisons and other closed settings */
+
 /*
 @dataElement: HIV.B.DE60 - Date HIV test results returned
 @activity: HIV.B6 Capture or update client history
@@ -596,14 +598,11 @@ define "People living in prisons and other closed settings Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date HIV test results returned":
-  exists "Date HIV test results returned Observation"
-    or exists "Date HIV test results returned Condition"
-define "Date HIV test results returned Condition":
-  [Condition: Concepts."Date HIV test results returned"]
-define "Date HIV test results returned Observation":
   [Observation: Concepts."Date HIV test results returned"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date HIV test results returned
+    return O.value
+/* End of Date HIV test results returned */
+
 /*
 @dataElement: HIV.B.DE61 - HIV exposure type*
 @activity: HIV.B6 Capture or update client history
@@ -613,7 +612,8 @@ define "Date HIV test results returned Observation":
 define "HIV exposure type* Observation":
   [Observation: Concepts."HIV exposure type*"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HIV exposure type*
+/* End of HIV exposure type* */
+
 /*
 @dataElement: HIV.B.DE62 - Occupational
 @activity: HIV.B6 Capture or update client history
@@ -626,10 +626,11 @@ define "Occupational":
 define "Occupational Condition":
   [Condition: Concepts."Occupational"]
 define "Occupational Observation":
-  "Occupational Observation" O
+  [Observation: Concepts."Occupational"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Occupational"
-// End of Occupational
+/* End of Occupational */
+
 /*
 @dataElement: HIV.B.DE63 - Non-occupational violent
 @activity: HIV.B6 Capture or update client history
@@ -642,10 +643,11 @@ define "Non-occupational violent":
 define "Non-occupational violent Condition":
   [Condition: Concepts."Non-occupational violent"]
 define "Non-occupational violent Observation":
-  "Non-occupational violent Observation" O
+  [Observation: Concepts."Non-occupational violent"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Non-occupational violent"
-// End of Non-occupational violent
+/* End of Non-occupational violent */
+
 /*
 @dataElement: HIV.B.DE64 - Non-occupational consensual sex
 @activity: HIV.B6 Capture or update client history
@@ -658,10 +660,11 @@ define "Non-occupational consensual sex":
 define "Non-occupational consensual sex Condition":
   [Condition: Concepts."Non-occupational consensual sex"]
 define "Non-occupational consensual sex Observation":
-  "Non-occupational consensual sex Observation" O
+  [Observation: Concepts."Non-occupational consensual sex"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Non-occupational consensual sex"
-// End of Non-occupational consensual sex
+/* End of Non-occupational consensual sex */
+
 /*
 @dataElement: HIV.B.DE65 - Date informed of HIV-positive diagnosis
 @activity: HIV.B6 Capture or update client history
@@ -669,14 +672,11 @@ define "Non-occupational consensual sex Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date informed of HIV-positive diagnosis":
-  exists "Date informed of HIV-positive diagnosis Observation"
-    or exists "Date informed of HIV-positive diagnosis Condition"
-define "Date informed of HIV-positive diagnosis Condition":
-  [Condition: Concepts."Date informed of HIV-positive diagnosis"]
-define "Date informed of HIV-positive diagnosis Observation":
   [Observation: Concepts."Date informed of HIV-positive diagnosis"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date informed of HIV-positive diagnosis
+    return O.value
+/* End of Date informed of HIV-positive diagnosis */
+
 /*
 @dataElement: HIV.B.DE71 - HIV diagnosis date
 @activity: HIV.B8 Provide post-test counselling
@@ -684,14 +684,11 @@ define "Date informed of HIV-positive diagnosis Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "HIV diagnosis date":
-  exists "HIV diagnosis date Observation"
-    or exists "HIV diagnosis date Condition"
-define "HIV diagnosis date Condition":
-  [Condition: Concepts."HIV diagnosis date"]
-define "HIV diagnosis date Observation":
   [Observation: Concepts."HIV diagnosis date"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HIV diagnosis date
+    return O.value
+/* End of HIV diagnosis date */
+
 /*
 @dataElement: HIV.B.DE72 - ART start date - HIV.B.DE72
 @activity: HIV.B8 Provide post-test counselling
@@ -699,14 +696,11 @@ define "HIV diagnosis date Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "ART start date - HIV.B.DE72":
-  exists "ART start date - HIV.B.DE72 Observation"
-    or exists "ART start date - HIV.B.DE72 Condition"
-define "ART start date - HIV.B.DE72 Condition":
-  [Condition: Concepts."ART start date - HIV.B.DE72"]
-define "ART start date - HIV.B.DE72 Observation":
   [Observation: Concepts."ART start date - HIV.B.DE72"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of ART start date - HIV.B.DE72
+    return O.value
+/* End of ART start date - HIV.B.DE72 */
+
 /*
 @dataElement: HIV.B.DE80 - HIV test conducted
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -714,14 +708,11 @@ define "ART start date - HIV.B.DE72 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "HIV test conducted":
-  exists "HIV test conducted Observation"
-    or exists "HIV test conducted Condition"
-define "HIV test conducted Condition":
-  [Condition: Concepts."HIV test conducted"]
-define "HIV test conducted Observation":
   [Observation: Concepts."HIV test conducted"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HIV test conducted
+    return O.value
+/* End of HIV test conducted */
+
 /*
 @dataElement: HIV.B.DE81 - HIV test type - HIV.B.DE81
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -731,7 +722,8 @@ define "HIV test conducted Observation":
 define "HIV test type - HIV.B.DE81 Observation":
   [Observation: Concepts."HIV test type - HIV.B.DE81"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HIV test type - HIV.B.DE81
+/* End of HIV test type - HIV.B.DE81 */
+
 /*
 @dataElement: HIV.B.DE82 - Rapid diagnostic test for HIV - HIV.B.DE82
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -744,10 +736,11 @@ define "Rapid diagnostic test for HIV - HIV.B.DE82":
 define "Rapid diagnostic test for HIV - HIV.B.DE82 Condition":
   [Condition: Concepts."Rapid diagnostic test for HIV - HIV.B.DE82"]
 define "Rapid diagnostic test for HIV - HIV.B.DE82 Observation":
-  "Rapid diagnostic test for HIV - HIV.B.DE81 Observation" O
+  [Observation: Concepts."Rapid diagnostic test for HIV - HIV.B.DE81"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Rapid diagnostic test for HIV - HIV.B.DE82"
-// End of Rapid diagnostic test for HIV - HIV.B.DE82
+/* End of Rapid diagnostic test for HIV - HIV.B.DE82 */
+
 /*
 @dataElement: HIV.B.DE83 - Enzyme immunoassay for HIV - HIV.B.DE83
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -760,10 +753,11 @@ define "Enzyme immunoassay for HIV - HIV.B.DE83":
 define "Enzyme immunoassay for HIV - HIV.B.DE83 Condition":
   [Condition: Concepts."Enzyme immunoassay for HIV - HIV.B.DE83"]
 define "Enzyme immunoassay for HIV - HIV.B.DE83 Observation":
-  "Enzyme immunoassay for HIV - HIV.B.DE81 Observation" O
+  [Observation: Concepts."Enzyme immunoassay for HIV - HIV.B.DE81"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Enzyme immunoassay for HIV - HIV.B.DE83"
-// End of Enzyme immunoassay for HIV - HIV.B.DE83
+/* End of Enzyme immunoassay for HIV - HIV.B.DE83 */
+
 /*
 @dataElement: HIV.B.DE84 - Nucleic acid test for HIV - HIV.B.DE84
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -776,10 +770,11 @@ define "Nucleic acid test for HIV - HIV.B.DE84":
 define "Nucleic acid test for HIV - HIV.B.DE84 Condition":
   [Condition: Concepts."Nucleic acid test for HIV - HIV.B.DE84"]
 define "Nucleic acid test for HIV - HIV.B.DE84 Observation":
-  "Nucleic acid test for HIV - HIV.B.DE81 Observation" O
+  [Observation: Concepts."Nucleic acid test for HIV - HIV.B.DE81"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Nucleic acid test for HIV - HIV.B.DE84"
-// End of Nucleic acid test for HIV - HIV.B.DE84
+/* End of Nucleic acid test for HIV - HIV.B.DE84 */
+
 /*
 @dataElement: HIV.B.DE85 - Dual HIV/syphilis rapid diagnostic test - HIV.B.DE85
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -792,10 +787,11 @@ define "Dual HIV/syphilis rapid diagnostic test - HIV.B.DE85":
 define "Dual HIV/syphilis rapid diagnostic test - HIV.B.DE85 Condition":
   [Condition: Concepts."Dual HIV/syphilis rapid diagnostic test - HIV.B.DE85"]
 define "Dual HIV/syphilis rapid diagnostic test - HIV.B.DE85 Observation":
-  "Dual HIV/syphilis rapid diagnostic test - HIV.B.DE81 Observation" O
+  [Observation: Concepts."Dual HIV/syphilis rapid diagnostic test - HIV.B.DE81"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Dual HIV/syphilis rapid diagnostic test - HIV.B.DE85"
-// End of Dual HIV/syphilis rapid diagnostic test - HIV.B.DE85
+/* End of Dual HIV/syphilis rapid diagnostic test - HIV.B.DE85 */
+
 /*
 @dataElement: HIV.B.DE86 - HIV self-test
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -808,10 +804,11 @@ define "HIV self-test":
 define "HIV self-test Condition":
   [Condition: Concepts."HIV self-test"]
 define "HIV self-test Observation":
-  "HIV self-test Observation" O
+  [Observation: Concepts."HIV self-test"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV self-test"
-// End of HIV self-test
+/* End of HIV self-test */
+
 /*
 @dataElement: HIV.B.DE88 - Assay number in testing strategy - HIV.B.DE88
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -821,7 +818,8 @@ define "HIV self-test Observation":
 define "Assay number in testing strategy - HIV.B.DE88 Observation":
   [Observation: Concepts."Assay number in testing strategy - HIV.B.DE88"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Assay number in testing strategy - HIV.B.DE88
+/* End of Assay number in testing strategy - HIV.B.DE88 */
+
 /*
 @dataElement: HIV.B.DE89 - Assay 0 - HIV.B.DE89
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -834,10 +832,11 @@ define "Assay 0 - HIV.B.DE89":
 define "Assay 0 - HIV.B.DE89 Condition":
   [Condition: Concepts."Assay 0 - HIV.B.DE89"]
 define "Assay 0 - HIV.B.DE89 Observation":
-  "Assay 0 - HIV.B.DE88 Observation" O
+  [Observation: Concepts."Assay 0 - HIV.B.DE88"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Assay 0 - HIV.B.DE89"
-// End of Assay 0 - HIV.B.DE89
+/* End of Assay 0 - HIV.B.DE89 */
+
 /*
 @dataElement: HIV.B.DE90 - Assay 1 - HIV.B.DE90
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -850,10 +849,11 @@ define "Assay 1 - HIV.B.DE90":
 define "Assay 1 - HIV.B.DE90 Condition":
   [Condition: Concepts."Assay 1 - HIV.B.DE90"]
 define "Assay 1 - HIV.B.DE90 Observation":
-  "Assay 1 - HIV.B.DE88 Observation" O
+  [Observation: Concepts."Assay 1 - HIV.B.DE88"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Assay 1 - HIV.B.DE90"
-// End of Assay 1 - HIV.B.DE90
+/* End of Assay 1 - HIV.B.DE90 */
+
 /*
 @dataElement: HIV.B.DE91 - Assay 2 - HIV.B.DE91
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -866,10 +866,11 @@ define "Assay 2 - HIV.B.DE91":
 define "Assay 2 - HIV.B.DE91 Condition":
   [Condition: Concepts."Assay 2 - HIV.B.DE91"]
 define "Assay 2 - HIV.B.DE91 Observation":
-  "Assay 2 - HIV.B.DE88 Observation" O
+  [Observation: Concepts."Assay 2 - HIV.B.DE88"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Assay 2 - HIV.B.DE91"
-// End of Assay 2 - HIV.B.DE91
+/* End of Assay 2 - HIV.B.DE91 */
+
 /*
 @dataElement: HIV.B.DE92 - Assay 3 - HIV.B.DE92
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -882,10 +883,11 @@ define "Assay 3 - HIV.B.DE92":
 define "Assay 3 - HIV.B.DE92 Condition":
   [Condition: Concepts."Assay 3 - HIV.B.DE92"]
 define "Assay 3 - HIV.B.DE92 Observation":
-  "Assay 3 - HIV.B.DE88 Observation" O
+  [Observation: Concepts."Assay 3 - HIV.B.DE88"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Assay 3 - HIV.B.DE92"
-// End of Assay 3 - HIV.B.DE92
+/* End of Assay 3 - HIV.B.DE92 */
+
 /*
 @dataElement: HIV.B.DE93 - Assay 1 repeated - HIV.B.DE93
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -898,10 +900,11 @@ define "Assay 1 repeated - HIV.B.DE93":
 define "Assay 1 repeated - HIV.B.DE93 Condition":
   [Condition: Concepts."Assay 1 repeated - HIV.B.DE93"]
 define "Assay 1 repeated - HIV.B.DE93 Observation":
-  "Assay 1 repeated - HIV.B.DE88 Observation" O
+  [Observation: Concepts."Assay 1 repeated - HIV.B.DE88"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Assay 1 repeated - HIV.B.DE93"
-// End of Assay 1 repeated - HIV.B.DE93
+/* End of Assay 1 repeated - HIV.B.DE93 */
+
 /*
 @dataElement: HIV.B.DE94 - Test result of HIV assay 1 - HIV.B.DE94
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -911,7 +914,8 @@ define "Assay 1 repeated - HIV.B.DE93 Observation":
 define "Test result of HIV assay 1 - HIV.B.DE94 Observation":
   [Observation: Concepts."Test result of HIV assay 1 - HIV.B.DE94"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Test result of HIV assay 1 - HIV.B.DE94
+/* End of Test result of HIV assay 1 - HIV.B.DE94 */
+
 /*
 @dataElement: HIV.B.DE95 - Reactive - HIV.B.DE95
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -924,10 +928,11 @@ define "Reactive - HIV.B.DE95":
 define "Reactive - HIV.B.DE95 Condition":
   [Condition: Concepts."Reactive - HIV.B.DE95"]
 define "Reactive - HIV.B.DE95 Observation":
-  "Reactive - HIV.B.DE94 Observation" O
+  [Observation: Concepts."Reactive - HIV.B.DE94"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Reactive - HIV.B.DE95"
-// End of Reactive - HIV.B.DE95
+/* End of Reactive - HIV.B.DE95 */
+
 /*
 @dataElement: HIV.B.DE96 - Non-reactive - HIV.B.DE96
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -940,10 +945,11 @@ define "Non-reactive - HIV.B.DE96":
 define "Non-reactive - HIV.B.DE96 Condition":
   [Condition: Concepts."Non-reactive - HIV.B.DE96"]
 define "Non-reactive - HIV.B.DE96 Observation":
-  "Non-reactive - HIV.B.DE94 Observation" O
+  [Observation: Concepts."Non-reactive - HIV.B.DE94"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Non-reactive - HIV.B.DE96"
-// End of Non-reactive - HIV.B.DE96
+/* End of Non-reactive - HIV.B.DE96 */
+
 /*
 @dataElement: HIV.B.DE97 - Invalid - HIV.B.DE97
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -956,10 +962,11 @@ define "Invalid - HIV.B.DE97":
 define "Invalid - HIV.B.DE97 Condition":
   [Condition: Concepts."Invalid - HIV.B.DE97"]
 define "Invalid - HIV.B.DE97 Observation":
-  "Invalid - HIV.B.DE94 Observation" O
+  [Observation: Concepts."Invalid - HIV.B.DE94"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Invalid - HIV.B.DE97"
-// End of Invalid - HIV.B.DE97
+/* End of Invalid - HIV.B.DE97 */
+
 /*
 @dataElement: HIV.B.DE98 - Test result of HIV assay 2 - HIV.B.DE98
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -969,7 +976,8 @@ define "Invalid - HIV.B.DE97 Observation":
 define "Test result of HIV assay 2 - HIV.B.DE98 Observation":
   [Observation: Concepts."Test result of HIV assay 2 - HIV.B.DE98"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Test result of HIV assay 2 - HIV.B.DE98
+/* End of Test result of HIV assay 2 - HIV.B.DE98 */
+
 /*
 @dataElement: HIV.B.DE99 - Reactive - HIV.B.DE99
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -982,10 +990,11 @@ define "Reactive - HIV.B.DE99":
 define "Reactive - HIV.B.DE99 Condition":
   [Condition: Concepts."Reactive - HIV.B.DE99"]
 define "Reactive - HIV.B.DE99 Observation":
-  "Reactive - HIV.B.DE98 Observation" O
+  [Observation: Concepts."Reactive - HIV.B.DE98"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Reactive - HIV.B.DE99"
-// End of Reactive - HIV.B.DE99
+/* End of Reactive - HIV.B.DE99 */
+
 /*
 @dataElement: HIV.B.DE100 - Non-reactive - HIV.B.DE100
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -998,10 +1007,11 @@ define "Non-reactive - HIV.B.DE100":
 define "Non-reactive - HIV.B.DE100 Condition":
   [Condition: Concepts."Non-reactive - HIV.B.DE100"]
 define "Non-reactive - HIV.B.DE100 Observation":
-  "Non-reactive - HIV.B.DE98 Observation" O
+  [Observation: Concepts."Non-reactive - HIV.B.DE98"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Non-reactive - HIV.B.DE100"
-// End of Non-reactive - HIV.B.DE100
+/* End of Non-reactive - HIV.B.DE100 */
+
 /*
 @dataElement: HIV.B.DE101 - Invalid - HIV.B.DE101
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -1014,10 +1024,11 @@ define "Invalid - HIV.B.DE101":
 define "Invalid - HIV.B.DE101 Condition":
   [Condition: Concepts."Invalid - HIV.B.DE101"]
 define "Invalid - HIV.B.DE101 Observation":
-  "Invalid - HIV.B.DE98 Observation" O
+  [Observation: Concepts."Invalid - HIV.B.DE98"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Invalid - HIV.B.DE101"
-// End of Invalid - HIV.B.DE101
+/* End of Invalid - HIV.B.DE101 */
+
 /*
 @dataElement: HIV.B.DE102 - Test result of HIV assay 3 - HIV.B.DE102
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -1027,7 +1038,8 @@ define "Invalid - HIV.B.DE101 Observation":
 define "Test result of HIV assay 3 - HIV.B.DE102 Observation":
   [Observation: Concepts."Test result of HIV assay 3 - HIV.B.DE102"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Test result of HIV assay 3 - HIV.B.DE102
+/* End of Test result of HIV assay 3 - HIV.B.DE102 */
+
 /*
 @dataElement: HIV.B.DE103 - Reactive - HIV.B.DE103
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -1040,10 +1052,11 @@ define "Reactive - HIV.B.DE103":
 define "Reactive - HIV.B.DE103 Condition":
   [Condition: Concepts."Reactive - HIV.B.DE103"]
 define "Reactive - HIV.B.DE103 Observation":
-  "Reactive - HIV.B.DE102 Observation" O
+  [Observation: Concepts."Reactive - HIV.B.DE102"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Reactive - HIV.B.DE103"
-// End of Reactive - HIV.B.DE103
+/* End of Reactive - HIV.B.DE103 */
+
 /*
 @dataElement: HIV.B.DE104 - Non-reactive - HIV.B.DE104
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -1056,10 +1069,11 @@ define "Non-reactive - HIV.B.DE104":
 define "Non-reactive - HIV.B.DE104 Condition":
   [Condition: Concepts."Non-reactive - HIV.B.DE104"]
 define "Non-reactive - HIV.B.DE104 Observation":
-  "Non-reactive - HIV.B.DE102 Observation" O
+  [Observation: Concepts."Non-reactive - HIV.B.DE102"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Non-reactive - HIV.B.DE104"
-// End of Non-reactive - HIV.B.DE104
+/* End of Non-reactive - HIV.B.DE104 */
+
 /*
 @dataElement: HIV.B.DE105 - Invalid - HIV.B.DE105
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -1072,10 +1086,11 @@ define "Invalid - HIV.B.DE105":
 define "Invalid - HIV.B.DE105 Condition":
   [Condition: Concepts."Invalid - HIV.B.DE105"]
 define "Invalid - HIV.B.DE105 Observation":
-  "Invalid - HIV.B.DE102 Observation" O
+  [Observation: Concepts."Invalid - HIV.B.DE102"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Invalid - HIV.B.DE105"
-// End of Invalid - HIV.B.DE105
+/* End of Invalid - HIV.B.DE105 */
+
 /*
 @dataElement: HIV.B.DE106 - Test result of HIV assay 1 repeated - HIV.B.DE106
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -1085,7 +1100,8 @@ define "Invalid - HIV.B.DE105 Observation":
 define "Test result of HIV assay 1 repeated - HIV.B.DE106 Observation":
   [Observation: Concepts."Test result of HIV assay 1 repeated - HIV.B.DE106"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Test result of HIV assay 1 repeated - HIV.B.DE106
+/* End of Test result of HIV assay 1 repeated - HIV.B.DE106 */
+
 /*
 @dataElement: HIV.B.DE107 - Reactive - HIV.B.DE107
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -1098,10 +1114,11 @@ define "Reactive - HIV.B.DE107":
 define "Reactive - HIV.B.DE107 Condition":
   [Condition: Concepts."Reactive - HIV.B.DE107"]
 define "Reactive - HIV.B.DE107 Observation":
-  "Reactive - HIV.B.DE106 Observation" O
+  [Observation: Concepts."Reactive - HIV.B.DE106"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Reactive - HIV.B.DE107"
-// End of Reactive - HIV.B.DE107
+/* End of Reactive - HIV.B.DE107 */
+
 /*
 @dataElement: HIV.B.DE108 - Non-reactive - HIV.B.DE108
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -1114,10 +1131,11 @@ define "Non-reactive - HIV.B.DE108":
 define "Non-reactive - HIV.B.DE108 Condition":
   [Condition: Concepts."Non-reactive - HIV.B.DE108"]
 define "Non-reactive - HIV.B.DE108 Observation":
-  "Non-reactive - HIV.B.DE106 Observation" O
+  [Observation: Concepts."Non-reactive - HIV.B.DE106"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Non-reactive - HIV.B.DE108"
-// End of Non-reactive - HIV.B.DE108
+/* End of Non-reactive - HIV.B.DE108 */
+
 /*
 @dataElement: HIV.B.DE109 - Invalid - HIV.B.DE109
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -1130,10 +1148,11 @@ define "Invalid - HIV.B.DE109":
 define "Invalid - HIV.B.DE109 Condition":
   [Condition: Concepts."Invalid - HIV.B.DE109"]
 define "Invalid - HIV.B.DE109 Observation":
-  "Invalid - HIV.B.DE106 Observation" O
+  [Observation: Concepts."Invalid - HIV.B.DE106"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Invalid - HIV.B.DE109"
-// End of Invalid - HIV.B.DE109
+/* End of Invalid - HIV.B.DE109 */
+
 /*
 @dataElement: HIV.B.DE110 - HIV test date - HIV.B.DE110
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -1141,14 +1160,11 @@ define "Invalid - HIV.B.DE109 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "HIV test date - HIV.B.DE110":
-  exists "HIV test date - HIV.B.DE110 Observation"
-    or exists "HIV test date - HIV.B.DE110 Condition"
-define "HIV test date - HIV.B.DE110 Condition":
-  [Condition: Concepts."HIV test date - HIV.B.DE110"]
-define "HIV test date - HIV.B.DE110 Observation":
   [Observation: Concepts."HIV test date - HIV.B.DE110"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HIV test date - HIV.B.DE110
+    return O.value
+/* End of HIV test date - HIV.B.DE110 */
+
 /*
 @dataElement: HIV.B.DE111 - HIV test result - HIV.B.DE111
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -1158,7 +1174,8 @@ define "HIV test date - HIV.B.DE110 Observation":
 define "HIV test result - HIV.B.DE111 Observation":
   [Observation: Concepts."HIV test result - HIV.B.DE111"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HIV test result - HIV.B.DE111
+/* End of HIV test result - HIV.B.DE111 */
+
 /*
 @dataElement: HIV.B.DE112 - HIV-positive - HIV.B.DE112
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -1171,10 +1188,11 @@ define "HIV-positive - HIV.B.DE112":
 define "HIV-positive - HIV.B.DE112 Condition":
   [Condition: Concepts."HIV-positive - HIV.B.DE112"]
 define "HIV-positive - HIV.B.DE112 Observation":
-  "HIV-positive - HIV.B.DE111 Observation" O
+  [Observation: Concepts."HIV-positive - HIV.B.DE111"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV-positive - HIV.B.DE112"
-// End of HIV-positive - HIV.B.DE112
+/* End of HIV-positive - HIV.B.DE112 */
+
 /*
 @dataElement: HIV.B.DE113 - HIV-negative - HIV.B.DE113
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -1187,10 +1205,11 @@ define "HIV-negative - HIV.B.DE113":
 define "HIV-negative - HIV.B.DE113 Condition":
   [Condition: Concepts."HIV-negative - HIV.B.DE113"]
 define "HIV-negative - HIV.B.DE113 Observation":
-  "HIV-negative - HIV.B.DE111 Observation" O
+  [Observation: Concepts."HIV-negative - HIV.B.DE111"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV-negative - HIV.B.DE113"
-// End of HIV-negative - HIV.B.DE113
+/* End of HIV-negative - HIV.B.DE113 */
+
 /*
 @dataElement: HIV.B.DE114 - HIV-inconclusive
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -1203,10 +1222,11 @@ define "HIV-inconclusive":
 define "HIV-inconclusive Condition":
   [Condition: Concepts."HIV-inconclusive"]
 define "HIV-inconclusive Observation":
-  "HIV-inconclusive Observation" O
+  [Observation: Concepts."HIV-inconclusive"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV-inconclusive"
-// End of HIV-inconclusive
+/* End of HIV-inconclusive */
+
 /*
 @dataElement: HIV.B.DE115 - HIV status
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -1216,7 +1236,8 @@ define "HIV-inconclusive Observation":
 define "HIV status Observation":
   [Observation: Concepts."HIV status"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HIV status
+/* End of HIV status */
+
 /*
 @dataElement: HIV.B.DE116 - HIV-positive - HIV.B.DE116
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -1229,10 +1250,11 @@ define "HIV-positive - HIV.B.DE116":
 define "HIV-positive - HIV.B.DE116 Condition":
   [Condition: Concepts."HIV-positive - HIV.B.DE116"]
 define "HIV-positive - HIV.B.DE116 Observation":
-  "HIV-positive - HIV.B.DE115 Observation" O
+  [Observation: Concepts."HIV-positive - HIV.B.DE115"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV-positive - HIV.B.DE116"
-// End of HIV-positive - HIV.B.DE116
+/* End of HIV-positive - HIV.B.DE116 */
+
 /*
 @dataElement: HIV.B.DE117 - HIV-negative - HIV.B.DE117
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -1245,10 +1267,11 @@ define "HIV-negative - HIV.B.DE117":
 define "HIV-negative - HIV.B.DE117 Condition":
   [Condition: Concepts."HIV-negative - HIV.B.DE117"]
 define "HIV-negative - HIV.B.DE117 Observation":
-  "HIV-negative - HIV.B.DE115 Observation" O
+  [Observation: Concepts."HIV-negative - HIV.B.DE115"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV-negative - HIV.B.DE117"
-// End of HIV-negative - HIV.B.DE117
+/* End of HIV-negative - HIV.B.DE117 */
+
 /*
 @dataElement: HIV.B.DE118 - Unknown - HIV.B.DE118
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -1261,10 +1284,11 @@ define "Unknown - HIV.B.DE118":
 define "Unknown - HIV.B.DE118 Condition":
   [Condition: Concepts."Unknown - HIV.B.DE118"]
 define "Unknown - HIV.B.DE118 Observation":
-  "Unknown - HIV.B.DE115 Observation" O
+  [Observation: Concepts."Unknown - HIV.B.DE115"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Unknown - HIV.B.DE118"
-// End of Unknown - HIV.B.DE118
+/* End of Unknown - HIV.B.DE118 */
+
 /*
 @dataElement: HIV.B.DE121 - Probable route of transmission*
 @activity: HIV.B8 Provide post-test counselling
@@ -1274,7 +1298,8 @@ define "Unknown - HIV.B.DE118 Observation":
 define "Probable route of transmission* Observation":
   [Observation: Concepts."Probable route of transmission*"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Probable route of transmission*
+/* End of Probable route of transmission* */
+
 /*
 @dataElement: HIV.B.DE122 - Heterosexual sex
 @activity: HIV.B8 Provide post-test counselling
@@ -1287,10 +1312,11 @@ define "Heterosexual sex":
 define "Heterosexual sex Condition":
   [Condition: Concepts."Heterosexual sex"]
 define "Heterosexual sex Observation":
-  "Heterosexual sex Observation" O
+  [Observation: Concepts."Heterosexual sex"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Heterosexual sex"
-// End of Heterosexual sex
+/* End of Heterosexual sex */
+
 /*
 @dataElement: HIV.B.DE123 - Sex between men
 @activity: HIV.B8 Provide post-test counselling
@@ -1303,10 +1329,11 @@ define "Sex between men":
 define "Sex between men Condition":
   [Condition: Concepts."Sex between men"]
 define "Sex between men Observation":
-  "Sex between men Observation" O
+  [Observation: Concepts."Sex between men"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Sex between men"
-// End of Sex between men
+/* End of Sex between men */
+
 /*
 @dataElement: HIV.B.DE124 - Unprotected intercourse during sex work
 @activity: HIV.B8 Provide post-test counselling
@@ -1319,10 +1346,11 @@ define "Unprotected intercourse during sex work":
 define "Unprotected intercourse during sex work Condition":
   [Condition: Concepts."Unprotected intercourse during sex work"]
 define "Unprotected intercourse during sex work Observation":
-  "Unprotected intercourse during sex work Observation" O
+  [Observation: Concepts."Unprotected intercourse during sex work"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Unprotected intercourse during sex work"
-// End of Unprotected intercourse during sex work
+/* End of Unprotected intercourse during sex work */
+
 /*
 @dataElement: HIV.B.DE125 - Injecting drug use with unsterile equipment
 @activity: HIV.B8 Provide post-test counselling
@@ -1335,10 +1363,11 @@ define "Injecting drug use with unsterile equipment":
 define "Injecting drug use with unsterile equipment Condition":
   [Condition: Concepts."Injecting drug use with unsterile equipment"]
 define "Injecting drug use with unsterile equipment Observation":
-  "Injecting drug use with unsterile equipment Observation" O
+  [Observation: Concepts."Injecting drug use with unsterile equipment"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Injecting drug use with unsterile equipment"
-// End of Injecting drug use with unsterile equipment
+/* End of Injecting drug use with unsterile equipment */
+
 /*
 @dataElement: HIV.B.DE126 - Nosocomial
 @activity: HIV.B8 Provide post-test counselling
@@ -1351,10 +1380,11 @@ define "Nosocomial":
 define "Nosocomial Condition":
   [Condition: Concepts."Nosocomial"]
 define "Nosocomial Observation":
-  "Nosocomial Observation" O
+  [Observation: Concepts."Nosocomial"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Nosocomial"
-// End of Nosocomial
+/* End of Nosocomial */
+
 /*
 @dataElement: HIV.B.DE127 - Vertical
 @activity: HIV.B8 Provide post-test counselling
@@ -1367,10 +1397,11 @@ define "Vertical":
 define "Vertical Condition":
   [Condition: Concepts."Vertical"]
 define "Vertical Observation":
-  "Vertical Observation" O
+  [Observation: Concepts."Vertical"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Vertical"
-// End of Vertical
+/* End of Vertical */
+
 /*
 @dataElement: HIV.B.DE128 - Other - HIV.B.DE128
 @activity: HIV.B8 Provide post-test counselling
@@ -1383,10 +1414,11 @@ define "Other - HIV.B.DE128":
 define "Other - HIV.B.DE128 Condition":
   [Condition: Concepts."Other - HIV.B.DE128"]
 define "Other - HIV.B.DE128 Observation":
-  "Other - HIV.B.DE121 Observation" O
+  [Observation: Concepts."Other - HIV.B.DE121"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other - HIV.B.DE128"
-// End of Other - HIV.B.DE128
+/* End of Other - HIV.B.DE128 */
+
 /*
 @dataElement: HIV.B.DE141 - Partner virally suppressed on ART
 @activity: HIV.B6 Capture or update client history
@@ -1394,14 +1426,11 @@ define "Other - HIV.B.DE128 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Partner virally suppressed on ART":
-  exists "Partner virally suppressed on ART Observation"
-    or exists "Partner virally suppressed on ART Condition"
-define "Partner virally suppressed on ART Condition":
-  [Condition: Concepts."Partner virally suppressed on ART"]
-define "Partner virally suppressed on ART Observation":
   [Observation: Concepts."Partner virally suppressed on ART"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Partner virally suppressed on ART
+    return O.value
+/* End of Partner virally suppressed on ART */
+
 /*
 @dataElement: HIV.B.DE142 - Counselling provided
 @activity: HIV.B8 Provide post-test counselling
@@ -1411,7 +1440,8 @@ define "Partner virally suppressed on ART Observation":
 define "Counselling provided Observation":
   [Observation: Concepts."Counselling provided"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Counselling provided
+/* End of Counselling provided */
+
 /*
 @dataElement: HIV.B.DE143 - HIV-positive counselling conducted
 @activity: HIV.B8 Provide post-test counselling
@@ -1424,10 +1454,11 @@ define "HIV-positive counselling conducted":
 define "HIV-positive counselling conducted Condition":
   [Condition: Concepts."HIV-positive counselling conducted"]
 define "HIV-positive counselling conducted Observation":
-  "HIV-positive counselling conducted Observation" O
+  [Observation: Concepts."HIV-positive counselling conducted"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV-positive counselling conducted"
-// End of HIV-positive counselling conducted
+/* End of HIV-positive counselling conducted */
+
 /*
 @dataElement: HIV.B.DE144 - Hepatitis B positive counselling conducted
 @activity: HIV.B8 Provide post-test counselling
@@ -1440,10 +1471,11 @@ define "Hepatitis B positive counselling conducted":
 define "Hepatitis B positive counselling conducted Condition":
   [Condition: Concepts."Hepatitis B positive counselling conducted"]
 define "Hepatitis B positive counselling conducted Observation":
-  "Hepatitis B positive counselling conducted Observation" O
+  [Observation: Concepts."Hepatitis B positive counselling conducted"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Hepatitis B positive counselling conducted"
-// End of Hepatitis B positive counselling conducted
+/* End of Hepatitis B positive counselling conducted */
+
 /*
 @dataElement: HIV.B.DE145 - Hepatitis C positive counselling conducted
 @activity: HIV.B8 Provide post-test counselling
@@ -1456,10 +1488,11 @@ define "Hepatitis C positive counselling conducted":
 define "Hepatitis C positive counselling conducted Condition":
   [Condition: Concepts."Hepatitis C positive counselling conducted"]
 define "Hepatitis C positive counselling conducted Observation":
-  "Hepatitis C positive counselling conducted Observation" O
+  [Observation: Concepts."Hepatitis C positive counselling conducted"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Hepatitis C positive counselling conducted"
-// End of Hepatitis C positive counselling conducted
+/* End of Hepatitis C positive counselling conducted */
+
 /*
 @dataElement: HIV.B.DE146 - Syphilis counselling, treatment and further testing
 @activity: HIV.B8 Provide post-test counselling
@@ -1472,10 +1505,11 @@ define "Syphilis counselling, treatment and further testing":
 define "Syphilis counselling, treatment and further testing Condition":
   [Condition: Concepts."Syphilis counselling, treatment and further testing"]
 define "Syphilis counselling, treatment and further testing Observation":
-  "Syphilis counselling, treatment and further testing Observation" O
+  [Observation: Concepts."Syphilis counselling, treatment and further testing"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Syphilis counselling, treatment and further testing"
-// End of Syphilis counselling, treatment and further testing
+/* End of Syphilis counselling, treatment and further testing */
+
 /*
 @dataElement: HIV.B.DE147 - Linked to enrolment in care and ART initiation
 @activity: HIV.B8 Provide post-test counselling
@@ -1488,10 +1522,11 @@ define "Linked to enrolment in care and ART initiation":
 define "Linked to enrolment in care and ART initiation Condition":
   [Condition: Concepts."Linked to enrolment in care and ART initiation"]
 define "Linked to enrolment in care and ART initiation Observation":
-  "Linked to enrolment in care and ART initiation Observation" O
+  [Observation: Concepts."Linked to enrolment in care and ART initiation"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Linked to enrolment in care and ART initiation"
-// End of Linked to enrolment in care and ART initiation
+/* End of Linked to enrolment in care and ART initiation */
+
 /*
 @dataElement: HIV.B.DE148 - VMMC counselling provided
 @activity: HIV.B8 Provide post-test counselling
@@ -1504,10 +1539,11 @@ define "VMMC counselling provided":
 define "VMMC counselling provided Condition":
   [Condition: Concepts."VMMC counselling provided"]
 define "VMMC counselling provided Observation":
-  "VMMC counselling provided Observation" O
+  [Observation: Concepts."VMMC counselling provided"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."VMMC counselling provided"
-// End of VMMC counselling provided
+/* End of VMMC counselling provided */
+
 /*
 @dataElement: HIV.B.DE149 - Prevention services offered and referrals - HIV.B.DE149
 @activity: HIV.B9 Determine recommended services
@@ -1517,7 +1553,8 @@ define "VMMC counselling provided Observation":
 define "Prevention services offered and referrals - HIV.B.DE149 Observation":
   [Observation: Concepts."Prevention services offered and referrals - HIV.B.DE149"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Prevention services offered and referrals - HIV.B.DE149
+/* End of Prevention services offered and referrals - HIV.B.DE149 */
+
 /*
 @dataElement: HIV.B.DE150 - Offer male and female condoms and condom-compatible lubricants - HIV.B.DE150
 @activity: HIV.B9 Determine recommended services
@@ -1530,10 +1567,11 @@ define "Offer male and female condoms and condom-compatible lubricants - HIV.B.D
 define "Offer male and female condoms and condom-compatible lubricants - HIV.B.DE150 Condition":
   [Condition: Concepts."Offer male and female condoms and condom-compatible lubricants - HIV.B.DE150"]
 define "Offer male and female condoms and condom-compatible lubricants - HIV.B.DE150 Observation":
-  "Offer male and female condoms and condom-compatible lubricants - HIV.B.DE149 Observation" O
+  [Observation: Concepts."Offer male and female condoms and condom-compatible lubricants - HIV.B.DE149"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Offer male and female condoms and condom-compatible lubricants - HIV.B.DE150"
-// End of Offer male and female condoms and condom-compatible lubricants - HIV.B.DE150
+/* End of Offer male and female condoms and condom-compatible lubricants - HIV.B.DE150 */
+
 /*
 @dataElement: HIV.B.DE151 - Offer pre-exposure prophylaxis PrEP for people at elevated risk for HIV acquisition
 @activity: HIV.B9 Determine recommended services
@@ -1546,10 +1584,11 @@ define "Offer pre-exposure prophylaxis PrEP for people at elevated risk for HIV 
 define "Offer pre-exposure prophylaxis PrEP for people at elevated risk for HIV acquisition Condition":
   [Condition: Concepts."Offer pre-exposure prophylaxis PrEP for people at elevated risk for HIV acquisition"]
 define "Offer pre-exposure prophylaxis PrEP for people at elevated risk for HIV acquisition Observation":
-  "Offer pre-exposure prophylaxis PrEP for people at elevated risk for HIV acquisition Observation" O
+  [Observation: Concepts."Offer pre-exposure prophylaxis PrEP for people at elevated risk for HIV acquisition"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Offer pre-exposure prophylaxis PrEP for people at elevated risk for HIV acquisition"
-// End of Offer pre-exposure prophylaxis PrEP for people at elevated risk for HIV acquisition
+/* End of Offer pre-exposure prophylaxis PrEP for people at elevated risk for HIV acquisition */
+
 /*
 @dataElement: HIV.B.DE152 - Offer post-exposure prophylaxis PEP following suspected exposure
 @activity: HIV.B9 Determine recommended services
@@ -1562,10 +1601,11 @@ define "Offer post-exposure prophylaxis PEP following suspected exposure":
 define "Offer post-exposure prophylaxis PEP following suspected exposure Condition":
   [Condition: Concepts."Offer post-exposure prophylaxis PEP following suspected exposure"]
 define "Offer post-exposure prophylaxis PEP following suspected exposure Observation":
-  "Offer post-exposure prophylaxis PEP following suspected exposure Observation" O
+  [Observation: Concepts."Offer post-exposure prophylaxis PEP following suspected exposure"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Offer post-exposure prophylaxis PEP following suspected exposure"
-// End of Offer post-exposure prophylaxis PEP following suspected exposure
+/* End of Offer post-exposure prophylaxis PEP following suspected exposure */
+
 /*
 @dataElement: HIV.B.DE153 - Voluntary medical male circumcision VMMC
 @activity: HIV.B9 Determine recommended services
@@ -1578,10 +1618,11 @@ define "Voluntary medical male circumcision VMMC":
 define "Voluntary medical male circumcision VMMC Condition":
   [Condition: Concepts."Voluntary medical male circumcision VMMC"]
 define "Voluntary medical male circumcision VMMC Observation":
-  "Voluntary medical male circumcision VMMC Observation" O
+  [Observation: Concepts."Voluntary medical male circumcision VMMC"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Voluntary medical male circumcision VMMC"
-// End of Voluntary medical male circumcision VMMC
+/* End of Voluntary medical male circumcision VMMC */
+
 /*
 @dataElement: HIV.B.DE154 - Harm reduction for people who inject drugs - HIV.B.DE154
 @activity: HIV.B9 Determine recommended services
@@ -1594,10 +1635,11 @@ define "Harm reduction for people who inject drugs - HIV.B.DE154":
 define "Harm reduction for people who inject drugs - HIV.B.DE154 Condition":
   [Condition: Concepts."Harm reduction for people who inject drugs - HIV.B.DE154"]
 define "Harm reduction for people who inject drugs - HIV.B.DE154 Observation":
-  "Harm reduction for people who inject drugs - HIV.B.DE149 Observation" O
+  [Observation: Concepts."Harm reduction for people who inject drugs - HIV.B.DE149"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Harm reduction for people who inject drugs - HIV.B.DE154"
-// End of Harm reduction for people who inject drugs - HIV.B.DE154
+/* End of Harm reduction for people who inject drugs - HIV.B.DE154 */
+
 /*
 @dataElement: HIV.B.DE155 - Behavioural interventions to support risk reduction, particularly for people with HIV and members of key populations
 @activity: HIV.B9 Determine recommended services
@@ -1610,10 +1652,11 @@ define "Behavioural interventions to support risk reduction, particularly for pe
 define "Behavioural interventions to support risk reduction, particularly for people with HIV and members of key populations Condition":
   [Condition: Concepts."Behavioural interventions to support risk reduction, particularly for people with HIV and members of key populations"]
 define "Behavioural interventions to support risk reduction, particularly for people with HIV and members of key populations Observation":
-  "Behavioural interventions to support risk reduction, particularly for people with HIV and members of key populations Observation" O
+  [Observation: Concepts."Behavioural interventions to support risk reduction, particularly for people with HIV and members of key populations"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Behavioural interventions to support risk reduction, particularly for people with HIV and members of key populations"
-// End of Behavioural interventions to support risk reduction, particularly for people with HIV and members of key populations
+/* End of Behavioural interventions to support risk reduction, particularly for people with HIV and members of key populations */
+
 /*
 @dataElement: HIV.B.DE156 - HIV testing for partners and biological children - HIV.B.DE156
 @activity: HIV.B9 Determine recommended services
@@ -1626,10 +1669,11 @@ define "HIV testing for partners and biological children - HIV.B.DE156":
 define "HIV testing for partners and biological children - HIV.B.DE156 Condition":
   [Condition: Concepts."HIV testing for partners and biological children - HIV.B.DE156"]
 define "HIV testing for partners and biological children - HIV.B.DE156 Observation":
-  "HIV testing for partners and biological children - HIV.B.DE149 Observation" O
+  [Observation: Concepts."HIV testing for partners and biological children - HIV.B.DE149"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV testing for partners and biological children - HIV.B.DE156"
-// End of HIV testing for partners and biological children - HIV.B.DE156
+/* End of HIV testing for partners and biological children - HIV.B.DE156 */
+
 /*
 @dataElement: HIV.B.DE157 - HIV testing for partners and social contacts of people from key populations, where appropriate
 @activity: HIV.B9 Determine recommended services
@@ -1642,10 +1686,11 @@ define "HIV testing for partners and social contacts of people from key populati
 define "HIV testing for partners and social contacts of people from key populations, where appropriate Condition":
   [Condition: Concepts."HIV testing for partners and social contacts of people from key populations, where appropriate"]
 define "HIV testing for partners and social contacts of people from key populations, where appropriate Observation":
-  "HIV testing for partners and social contacts of people from key populations, where appropriate Observation" O
+  [Observation: Concepts."HIV testing for partners and social contacts of people from key populations, where appropriate"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV testing for partners and social contacts of people from key populations, where appropriate"
-// End of HIV testing for partners and social contacts of people from key populations, where appropriate
+/* End of HIV testing for partners and social contacts of people from key populations, where appropriate */
+
 /*
 @dataElement: HIV.B.DE158 - Sexual and reproductive health integrated services - HIV.B.DE158
 @activity: HIV.B9 Determine recommended services
@@ -1655,7 +1700,8 @@ define "HIV testing for partners and social contacts of people from key populati
 define "Sexual and reproductive health integrated services - HIV.B.DE158 Observation":
   [Observation: Concepts."Sexual and reproductive health integrated services - HIV.B.DE158"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Sexual and reproductive health integrated services - HIV.B.DE158
+/* End of Sexual and reproductive health integrated services - HIV.B.DE158 */
+
 /*
 @dataElement: HIV.B.DE159 - Contraception and family planning - HIV.B.DE159
 @activity: HIV.B9 Determine recommended services
@@ -1668,10 +1714,11 @@ define "Contraception and family planning - HIV.B.DE159":
 define "Contraception and family planning - HIV.B.DE159 Condition":
   [Condition: Concepts."Contraception and family planning - HIV.B.DE159"]
 define "Contraception and family planning - HIV.B.DE159 Observation":
-  "Contraception and family planning - HIV.B.DE158 Observation" O
+  [Observation: Concepts."Contraception and family planning - HIV.B.DE158"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Contraception and family planning - HIV.B.DE159"
-// End of Contraception and family planning - HIV.B.DE159
+/* End of Contraception and family planning - HIV.B.DE159 */
+
 /*
 @dataElement: HIV.B.DE160 - Check pregnancy status - HIV.B.DE160
 @activity: HIV.B9 Determine recommended services
@@ -1684,10 +1731,11 @@ define "Check pregnancy status - HIV.B.DE160":
 define "Check pregnancy status - HIV.B.DE160 Condition":
   [Condition: Concepts."Check pregnancy status - HIV.B.DE160"]
 define "Check pregnancy status - HIV.B.DE160 Observation":
-  "Check pregnancy status - HIV.B.DE158 Observation" O
+  [Observation: Concepts."Check pregnancy status - HIV.B.DE158"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Check pregnancy status - HIV.B.DE160"
-// End of Check pregnancy status - HIV.B.DE160
+/* End of Check pregnancy status - HIV.B.DE160 */
+
 /*
 @dataElement: HIV.B.DE161 - Prevention of mother-to-child transmission counselling
 @activity: HIV.B9 Determine recommended services
@@ -1700,10 +1748,11 @@ define "Prevention of mother-to-child transmission counselling":
 define "Prevention of mother-to-child transmission counselling Condition":
   [Condition: Concepts."Prevention of mother-to-child transmission counselling"]
 define "Prevention of mother-to-child transmission counselling Observation":
-  "Prevention of mother-to-child transmission counselling Observation" O
+  [Observation: Concepts."Prevention of mother-to-child transmission counselling"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Prevention of mother-to-child transmission counselling"
-// End of Prevention of mother-to-child transmission counselling
+/* End of Prevention of mother-to-child transmission counselling */
+
 /*
 @dataElement: HIV.B.DE162 - Cervical cancer screening and treatment counselling
 @activity: HIV.B9 Determine recommended services
@@ -1716,10 +1765,11 @@ define "Cervical cancer screening and treatment counselling":
 define "Cervical cancer screening and treatment counselling Condition":
   [Condition: Concepts."Cervical cancer screening and treatment counselling"]
 define "Cervical cancer screening and treatment counselling Observation":
-  "Cervical cancer screening and treatment counselling Observation" O
+  [Observation: Concepts."Cervical cancer screening and treatment counselling"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Cervical cancer screening and treatment counselling"
-// End of Cervical cancer screening and treatment counselling
+/* End of Cervical cancer screening and treatment counselling */
+
 /*
 @dataElement: HIV.B.DE163 - Anal cancer screening for men who have sex with men - HIV.B.DE163
 @activity: HIV.B9 Determine recommended services
@@ -1732,10 +1782,11 @@ define "Anal cancer screening for men who have sex with men - HIV.B.DE163":
 define "Anal cancer screening for men who have sex with men - HIV.B.DE163 Condition":
   [Condition: Concepts."Anal cancer screening for men who have sex with men - HIV.B.DE163"]
 define "Anal cancer screening for men who have sex with men - HIV.B.DE163 Observation":
-  "Anal cancer screening for men who have sex with men - HIV.B.DE158 Observation" O
+  [Observation: Concepts."Anal cancer screening for men who have sex with men - HIV.B.DE158"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Anal cancer screening for men who have sex with men - HIV.B.DE163"
-// End of Anal cancer screening for men who have sex with men - HIV.B.DE163
+/* End of Anal cancer screening for men who have sex with men - HIV.B.DE163 */
+
 /*
 @dataElement: HIV.B.DE164 - STI testing and treatment services
 @activity: HIV.B9 Determine recommended services
@@ -1748,10 +1799,11 @@ define "STI testing and treatment services":
 define "STI testing and treatment services Condition":
   [Condition: Concepts."STI testing and treatment services"]
 define "STI testing and treatment services Observation":
-  "STI testing and treatment services Observation" O
+  [Observation: Concepts."STI testing and treatment services"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."STI testing and treatment services"
-// End of STI testing and treatment services
+/* End of STI testing and treatment services */
+
 /*
 @dataElement: HIV.B.DE165 - Offer other clinical services - HIV.B.DE165
 @activity: HIV.B9 Determine recommended services
@@ -1761,7 +1813,8 @@ define "STI testing and treatment services Observation":
 define "Offer other clinical services - HIV.B.DE165 Observation":
   [Observation: Concepts."Offer other clinical services - HIV.B.DE165"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Offer other clinical services - HIV.B.DE165
+/* End of Offer other clinical services - HIV.B.DE165 */
+
 /*
 @dataElement: HIV.B.DE166 - Assessment and provision of vaccinations - HIV.B.DE166
 @activity: HIV.B9 Determine recommended services
@@ -1774,10 +1827,11 @@ define "Assessment and provision of vaccinations - HIV.B.DE166":
 define "Assessment and provision of vaccinations - HIV.B.DE166 Condition":
   [Condition: Concepts."Assessment and provision of vaccinations - HIV.B.DE166"]
 define "Assessment and provision of vaccinations - HIV.B.DE166 Observation":
-  "Assessment and provision of vaccinations - HIV.B.DE165 Observation" O
+  [Observation: Concepts."Assessment and provision of vaccinations - HIV.B.DE165"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Assessment and provision of vaccinations - HIV.B.DE166"
-// End of Assessment and provision of vaccinations - HIV.B.DE166
+/* End of Assessment and provision of vaccinations - HIV.B.DE166 */
+
 /*
 @dataElement: HIV.B.DE167 - Hepatitis B HBV and hepatitis C virus HCV testing and treatment provided
 @activity: HIV.B9 Determine recommended services
@@ -1790,10 +1844,11 @@ define "Hepatitis B HBV and hepatitis C virus HCV testing and treatment provided
 define "Hepatitis B HBV and hepatitis C virus HCV testing and treatment provided Condition":
   [Condition: Concepts."Hepatitis B HBV and hepatitis C virus HCV testing and treatment provided"]
 define "Hepatitis B HBV and hepatitis C virus HCV testing and treatment provided Observation":
-  "Hepatitis B HBV and hepatitis C virus HCV testing and treatment provided Observation" O
+  [Observation: Concepts."Hepatitis B HBV and hepatitis C virus HCV testing and treatment provided"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Hepatitis B HBV and hepatitis C virus HCV testing and treatment provided"
-// End of Hepatitis B HBV and hepatitis C virus HCV testing and treatment provided
+/* End of Hepatitis B HBV and hepatitis C virus HCV testing and treatment provided */
+
 /*
 @dataElement: HIV.B.DE168 - Co-trimoxazole chemoprophylaxis to prevent Pneumocystis carinii pneumonia provided
 @activity: HIV.B9 Determine recommended services
@@ -1806,10 +1861,11 @@ define "Co-trimoxazole chemoprophylaxis to prevent Pneumocystis carinii pneumoni
 define "Co-trimoxazole chemoprophylaxis to prevent Pneumocystis carinii pneumonia provided Condition":
   [Condition: Concepts."Co-trimoxazole chemoprophylaxis to prevent Pneumocystis carinii pneumonia provided"]
 define "Co-trimoxazole chemoprophylaxis to prevent Pneumocystis carinii pneumonia provided Observation":
-  "Co-trimoxazole chemoprophylaxis to prevent Pneumocystis carinii pneumonia provided Observation" O
+  [Observation: Concepts."Co-trimoxazole chemoprophylaxis to prevent Pneumocystis carinii pneumonia provided"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Co-trimoxazole chemoprophylaxis to prevent Pneumocystis carinii pneumonia provided"
-// End of Co-trimoxazole chemoprophylaxis to prevent Pneumocystis carinii pneumonia provided
+/* End of Co-trimoxazole chemoprophylaxis to prevent Pneumocystis carinii pneumonia provided */
+
 /*
 @dataElement: HIV.B.DE169 - Intensified TB case finding and linkage to TB treatment provided
 @activity: HIV.B9 Determine recommended services
@@ -1822,10 +1878,11 @@ define "Intensified TB case finding and linkage to TB treatment provided":
 define "Intensified TB case finding and linkage to TB treatment provided Condition":
   [Condition: Concepts."Intensified TB case finding and linkage to TB treatment provided"]
 define "Intensified TB case finding and linkage to TB treatment provided Observation":
-  "Intensified TB case finding and linkage to TB treatment provided Observation" O
+  [Observation: Concepts."Intensified TB case finding and linkage to TB treatment provided"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Intensified TB case finding and linkage to TB treatment provided"
-// End of Intensified TB case finding and linkage to TB treatment provided
+/* End of Intensified TB case finding and linkage to TB treatment provided */
+
 /*
 @dataElement: HIV.B.DE170 - Provision of isoniazid preventive therapy if person does not have TB - HIV.B.DE170
 @activity: HIV.B9 Determine recommended services
@@ -1838,10 +1895,11 @@ define "Provision of isoniazid preventive therapy if person does not have TB - H
 define "Provision of isoniazid preventive therapy if person does not have TB - HIV.B.DE170 Condition":
   [Condition: Concepts."Provision of isoniazid preventive therapy if person does not have TB - HIV.B.DE170"]
 define "Provision of isoniazid preventive therapy if person does not have TB - HIV.B.DE170 Observation":
-  "Provision of isoniazid preventive therapy if person does not have TB - HIV.B.DE165 Observation" O
+  [Observation: Concepts."Provision of isoniazid preventive therapy if person does not have TB - HIV.B.DE165"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Provision of isoniazid preventive therapy if person does not have TB - HIV.B.DE170"
-// End of Provision of isoniazid preventive therapy if person does not have TB - HIV.B.DE170
+/* End of Provision of isoniazid preventive therapy if person does not have TB - HIV.B.DE170 */
+
 /*
 @dataElement: HIV.B.DE171 - Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.B.DE171
 @activity: HIV.B9 Determine recommended services
@@ -1854,10 +1912,11 @@ define "Malaria prevention such as bed nets and prophylaxis, depending on epidem
 define "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.B.DE171 Condition":
   [Condition: Concepts."Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.B.DE171"]
 define "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.B.DE171 Observation":
-  "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.B.DE165 Observation" O
+  [Observation: Concepts."Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.B.DE165"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.B.DE171"
-// End of Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.B.DE171
+/* End of Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.B.DE171 */
+
 /*
 @dataElement: HIV.B.DE172 - Other support services - HIV.B.DE172
 @activity: HIV.B9 Determine recommended services
@@ -1867,7 +1926,8 @@ define "Malaria prevention such as bed nets and prophylaxis, depending on epidem
 define "Other support services - HIV.B.DE172 Observation":
   [Observation: Concepts."Other support services - HIV.B.DE172"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Other support services - HIV.B.DE172
+/* End of Other support services - HIV.B.DE172 */
+
 /*
 @dataElement: HIV.B.DE173 - Mental health services - HIV.B.DE173
 @activity: HIV.B9 Determine recommended services
@@ -1880,10 +1940,11 @@ define "Mental health services - HIV.B.DE173":
 define "Mental health services - HIV.B.DE173 Condition":
   [Condition: Concepts."Mental health services - HIV.B.DE173"]
 define "Mental health services - HIV.B.DE173 Observation":
-  "Mental health services - HIV.B.DE172 Observation" O
+  [Observation: Concepts."Mental health services - HIV.B.DE172"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Mental health services - HIV.B.DE173"
-// End of Mental health services - HIV.B.DE173
+/* End of Mental health services - HIV.B.DE173 */
+
 /*
 @dataElement: HIV.B.DE174 - Psychosocial counselling, support and treatment adherence counselling - HIV.B.DE174
 @activity: HIV.B9 Determine recommended services
@@ -1896,10 +1957,11 @@ define "Psychosocial counselling, support and treatment adherence counselling - 
 define "Psychosocial counselling, support and treatment adherence counselling - HIV.B.DE174 Condition":
   [Condition: Concepts."Psychosocial counselling, support and treatment adherence counselling - HIV.B.DE174"]
 define "Psychosocial counselling, support and treatment adherence counselling - HIV.B.DE174 Observation":
-  "Psychosocial counselling, support and treatment adherence counselling - HIV.B.DE172 Observation" O
+  [Observation: Concepts."Psychosocial counselling, support and treatment adherence counselling - HIV.B.DE172"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Psychosocial counselling, support and treatment adherence counselling - HIV.B.DE174"
-// End of Psychosocial counselling, support and treatment adherence counselling - HIV.B.DE174
+/* End of Psychosocial counselling, support and treatment adherence counselling - HIV.B.DE174 */
+
 /*
 @dataElement: HIV.B.DE175 - Support for disclosure and partner services - HIV.B.DE175
 @activity: HIV.B9 Determine recommended services
@@ -1912,10 +1974,11 @@ define "Support for disclosure and partner services - HIV.B.DE175":
 define "Support for disclosure and partner services - HIV.B.DE175 Condition":
   [Condition: Concepts."Support for disclosure and partner services - HIV.B.DE175"]
 define "Support for disclosure and partner services - HIV.B.DE175 Observation":
-  "Support for disclosure and partner services - HIV.B.DE172 Observation" O
+  [Observation: Concepts."Support for disclosure and partner services - HIV.B.DE172"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Support for disclosure and partner services - HIV.B.DE175"
-// End of Support for disclosure and partner services - HIV.B.DE175
+/* End of Support for disclosure and partner services - HIV.B.DE175 */
+
 /*
 @dataElement: HIV.B.DE176 - Legal and social services - HIV.B.DE176
 @activity: HIV.B9 Determine recommended services
@@ -1928,10 +1991,11 @@ define "Legal and social services - HIV.B.DE176":
 define "Legal and social services - HIV.B.DE176 Condition":
   [Condition: Concepts."Legal and social services - HIV.B.DE176"]
 define "Legal and social services - HIV.B.DE176 Observation":
-  "Legal and social services - HIV.B.DE172 Observation" O
+  [Observation: Concepts."Legal and social services - HIV.B.DE172"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Legal and social services - HIV.B.DE176"
-// End of Legal and social services - HIV.B.DE176
+/* End of Legal and social services - HIV.B.DE176 */
+
 /*
 @dataElement: HIV.B.DE177 - Services for responding to violence against women - HIV.B.DE177
 @activity: HIV.B9 Determine recommended services
@@ -1944,10 +2008,11 @@ define "Services for responding to violence against women - HIV.B.DE177":
 define "Services for responding to violence against women - HIV.B.DE177 Condition":
   [Condition: Concepts."Services for responding to violence against women - HIV.B.DE177"]
 define "Services for responding to violence against women - HIV.B.DE177 Observation":
-  "Services for responding to violence against women - HIV.B.DE172 Observation" O
+  [Observation: Concepts."Services for responding to violence against women - HIV.B.DE172"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Services for responding to violence against women - HIV.B.DE177"
-// End of Services for responding to violence against women - HIV.B.DE177
+/* End of Services for responding to violence against women - HIV.B.DE177 */
+
 /*
 @dataElement: HIV.B.DE191 - Type of follow-up appointment - HIV.B.DE191
 @activity: HIV.B20 Schedule retest
@@ -1957,7 +2022,8 @@ define "Services for responding to violence against women - HIV.B.DE177 Observat
 define "Type of follow-up appointment - HIV.B.DE191 Observation":
   [Observation: Concepts."Type of follow-up appointment - HIV.B.DE191"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Type of follow-up appointment - HIV.B.DE191
+/* End of Type of follow-up appointment - HIV.B.DE191 */
+
 /*
 @dataElement: HIV.B.DE192 - Retesting for HIV - HIV.B.DE192
 @activity: HIV.B20 Schedule retest
@@ -1970,10 +2036,11 @@ define "Retesting for HIV - HIV.B.DE192":
 define "Retesting for HIV - HIV.B.DE192 Condition":
   [Condition: Concepts."Retesting for HIV - HIV.B.DE192"]
 define "Retesting for HIV - HIV.B.DE192 Observation":
-  "Retesting for HIV - HIV.B.DE191 Observation" O
+  [Observation: Concepts."Retesting for HIV - HIV.B.DE191"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Retesting for HIV - HIV.B.DE192"
-// End of Retesting for HIV - HIV.B.DE192
+/* End of Retesting for HIV - HIV.B.DE192 */
+
 /*
 @dataElement: HIV.B.DE193 - Other - HIV.B.DE193
 @activity: HIV.B20 Schedule retest
@@ -1986,10 +2053,11 @@ define "Other - HIV.B.DE193":
 define "Other - HIV.B.DE193 Condition":
   [Condition: Concepts."Other - HIV.B.DE193"]
 define "Other - HIV.B.DE193 Observation":
-  "Other - HIV.B.DE191 Observation" O
+  [Observation: Concepts."Other - HIV.B.DE191"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other - HIV.B.DE193"
-// End of Other - HIV.B.DE193
+/* End of Other - HIV.B.DE193 */
+
 /*
 @dataElement: HIV.B.DE195 - Date/time of follow-up appointment - HIV.B.DE195
 @activity: HIV.B20 Schedule retest
@@ -1997,14 +2065,11 @@ define "Other - HIV.B.DE193 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date/time of follow-up appointment - HIV.B.DE195":
-  exists "Date/time of follow-up appointment - HIV.B.DE195 Observation"
-    or exists "Date/time of follow-up appointment - HIV.B.DE195 Condition"
-define "Date/time of follow-up appointment - HIV.B.DE195 Condition":
-  [Condition: Concepts."Date/time of follow-up appointment - HIV.B.DE195"]
-define "Date/time of follow-up appointment - HIV.B.DE195 Observation":
   [Observation: Concepts."Date/time of follow-up appointment - HIV.B.DE195"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date/time of follow-up appointment - HIV.B.DE195
+    return O.value
+/* End of Date/time of follow-up appointment - HIV.B.DE195 */
+
 /*
 @dataElement: HIV.B.DE198 - VMMC procedure date
 @activity: HIV.B21 Offer prevention options
@@ -2012,14 +2077,11 @@ define "Date/time of follow-up appointment - HIV.B.DE195 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "VMMC procedure date":
-  exists "VMMC procedure date Observation"
-    or exists "VMMC procedure date Condition"
-define "VMMC procedure date Condition":
-  [Condition: Concepts."VMMC procedure date"]
-define "VMMC procedure date Observation":
   [Observation: Concepts."VMMC procedure date"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of VMMC procedure date
+    return O.value
+/* End of VMMC procedure date */
+
 /*
 @dataElement: HIV.B.DE201 - Adverse event severity
 @activity: HIV.B21 Offer prevention options
@@ -2029,7 +2091,8 @@ define "VMMC procedure date Observation":
 define "Adverse event severity Observation":
   [Observation: Concepts."Adverse event severity"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Adverse event severity
+/* End of Adverse event severity */
+
 /*
 @dataElement: HIV.B.DE202 - Moderate
 @activity: HIV.B21 Offer prevention options
@@ -2042,10 +2105,11 @@ define "Moderate":
 define "Moderate Condition":
   [Condition: Concepts."Moderate"]
 define "Moderate Observation":
-  "Moderate Observation" O
+  [Observation: Concepts."Moderate"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Moderate"
-// End of Moderate
+/* End of Moderate */
+
 /*
 @dataElement: HIV.B.DE203 - Severe
 @activity: HIV.B21 Offer prevention options
@@ -2058,10 +2122,11 @@ define "Severe":
 define "Severe Condition":
   [Condition: Concepts."Severe"]
 define "Severe Observation":
-  "Severe Observation" O
+  [Observation: Concepts."Severe"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Severe"
-// End of Severe
+/* End of Severe */
+
 /*
 @dataElement: HIV.B.DE204 - Timing of adverse event
 @activity: HIV.B21 Offer prevention options
@@ -2071,7 +2136,8 @@ define "Severe Observation":
 define "Timing of adverse event Observation":
   [Observation: Concepts."Timing of adverse event"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Timing of adverse event
+/* End of Timing of adverse event */
+
 /*
 @dataElement: HIV.B.DE205 - Intraoperative
 @activity: HIV.B21 Offer prevention options
@@ -2084,10 +2150,11 @@ define "Intraoperative":
 define "Intraoperative Condition":
   [Condition: Concepts."Intraoperative"]
 define "Intraoperative Observation":
-  "Intraoperative Observation" O
+  [Observation: Concepts."Intraoperative"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Intraoperative"
-// End of Intraoperative
+/* End of Intraoperative */
+
 /*
 @dataElement: HIV.B.DE206 - Postoperative
 @activity: HIV.B21 Offer prevention options
@@ -2100,10 +2167,11 @@ define "Postoperative":
 define "Postoperative Condition":
   [Condition: Concepts."Postoperative"]
 define "Postoperative Observation":
-  "Postoperative Observation" O
+  [Observation: Concepts."Postoperative"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Postoperative"
-// End of Postoperative
+/* End of Postoperative */
+
 /*
 @dataElement: HIV.B.DE207 - Type of adverse VMMC event
 @activity: HIV.B21 Offer prevention options
@@ -2113,7 +2181,8 @@ define "Postoperative Observation":
 define "Type of adverse VMMC event Observation":
   [Observation: Concepts."Type of adverse VMMC event"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Type of adverse VMMC event
+/* End of Type of adverse VMMC event */
+
 /*
 @dataElement: HIV.B.DE208 - Abnormal pain
 @activity: HIV.B21 Offer prevention options
@@ -2126,10 +2195,11 @@ define "Abnormal pain":
 define "Abnormal pain Condition":
   [Condition: Concepts."Abnormal pain"]
 define "Abnormal pain Observation":
-  "Abnormal pain Observation" O
+  [Observation: Concepts."Abnormal pain"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Abnormal pain"
-// End of Abnormal pain
+/* End of Abnormal pain */
+
 /*
 @dataElement: HIV.B.DE209 - Anaesthesia-related effects
 @activity: HIV.B21 Offer prevention options
@@ -2142,10 +2212,11 @@ define "Anaesthesia-related effects":
 define "Anaesthesia-related effects Condition":
   [Condition: Concepts."Anaesthesia-related effects"]
 define "Anaesthesia-related effects Observation":
-  "Anaesthesia-related effects Observation" O
+  [Observation: Concepts."Anaesthesia-related effects"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Anaesthesia-related effects"
-// End of Anaesthesia-related effects
+/* End of Anaesthesia-related effects */
+
 /*
 @dataElement: HIV.B.DE210 - Bleeding
 @activity: HIV.B21 Offer prevention options
@@ -2158,10 +2229,11 @@ define "Bleeding":
 define "Bleeding Condition":
   [Condition: Concepts."Bleeding"]
 define "Bleeding Observation":
-  "Bleeding Observation" O
+  [Observation: Concepts."Bleeding"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Bleeding"
-// End of Bleeding
+/* End of Bleeding */
+
 /*
 @dataElement: HIV.B.DE211 - Damage to the penis
 @activity: HIV.B21 Offer prevention options
@@ -2174,10 +2246,11 @@ define "Damage to the penis":
 define "Damage to the penis Condition":
   [Condition: Concepts."Damage to the penis"]
 define "Damage to the penis Observation":
-  "Damage to the penis Observation" O
+  [Observation: Concepts."Damage to the penis"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Damage to the penis"
-// End of Damage to the penis
+/* End of Damage to the penis */
+
 /*
 @dataElement: HIV.B.DE212 - Difficulty urinating
 @activity: HIV.B21 Offer prevention options
@@ -2190,10 +2263,11 @@ define "Difficulty urinating":
 define "Difficulty urinating Condition":
   [Condition: Concepts."Difficulty urinating"]
 define "Difficulty urinating Observation":
-  "Difficulty urinating Observation" O
+  [Observation: Concepts."Difficulty urinating"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Difficulty urinating"
-// End of Difficulty urinating
+/* End of Difficulty urinating */
+
 /*
 @dataElement: HIV.B.DE213 - Excessive bleeding
 @activity: HIV.B21 Offer prevention options
@@ -2206,10 +2280,11 @@ define "Excessive bleeding":
 define "Excessive bleeding Condition":
   [Condition: Concepts."Excessive bleeding"]
 define "Excessive bleeding Observation":
-  "Excessive bleeding Observation" O
+  [Observation: Concepts."Excessive bleeding"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Excessive bleeding"
-// End of Excessive bleeding
+/* End of Excessive bleeding */
+
 /*
 @dataElement: HIV.B.DE214 - Excessive skin removal
 @activity: HIV.B21 Offer prevention options
@@ -2222,10 +2297,11 @@ define "Excessive skin removal":
 define "Excessive skin removal Condition":
   [Condition: Concepts."Excessive skin removal"]
 define "Excessive skin removal Observation":
-  "Excessive skin removal Observation" O
+  [Observation: Concepts."Excessive skin removal"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Excessive skin removal"
-// End of Excessive skin removal
+/* End of Excessive skin removal */
+
 /*
 @dataElement: HIV.B.DE215 - Excessive swelling
 @activity: HIV.B21 Offer prevention options
@@ -2238,10 +2314,11 @@ define "Excessive swelling":
 define "Excessive swelling Condition":
   [Condition: Concepts."Excessive swelling"]
 define "Excessive swelling Observation":
-  "Excessive swelling Observation" O
+  [Observation: Concepts."Excessive swelling"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Excessive swelling"
-// End of Excessive swelling
+/* End of Excessive swelling */
+
 /*
 @dataElement: HIV.B.DE216 - Haematoma
 @activity: HIV.B21 Offer prevention options
@@ -2254,10 +2331,11 @@ define "Haematoma":
 define "Haematoma Condition":
   [Condition: Concepts."Haematoma"]
 define "Haematoma Observation":
-  "Haematoma Observation" O
+  [Observation: Concepts."Haematoma"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Haematoma"
-// End of Haematoma
+/* End of Haematoma */
+
 /*
 @dataElement: HIV.B.DE217 - Infection
 @activity: HIV.B21 Offer prevention options
@@ -2270,10 +2348,11 @@ define "Infection":
 define "Infection Condition":
   [Condition: Concepts."Infection"]
 define "Infection Observation":
-  "Infection Observation" O
+  [Observation: Concepts."Infection"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Infection"
-// End of Infection
+/* End of Infection */
+
 /*
 @dataElement: HIV.B.DE218 - Injury to glans
 @activity: HIV.B21 Offer prevention options
@@ -2286,10 +2365,11 @@ define "Injury to glans":
 define "Injury to glans Condition":
   [Condition: Concepts."Injury to glans"]
 define "Injury to glans Observation":
-  "Injury to glans Observation" O
+  [Observation: Concepts."Injury to glans"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Injury to glans"
-// End of Injury to glans
+/* End of Injury to glans */
+
 /*
 @dataElement: HIV.B.DE219 - Scar or disfigurement
 @activity: HIV.B21 Offer prevention options
@@ -2302,10 +2382,11 @@ define "Scar or disfigurement":
 define "Scar or disfigurement Condition":
   [Condition: Concepts."Scar or disfigurement"]
 define "Scar or disfigurement Observation":
-  "Scar or disfigurement Observation" O
+  [Observation: Concepts."Scar or disfigurement"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Scar or disfigurement"
-// End of Scar or disfigurement
+/* End of Scar or disfigurement */
+
 /*
 @dataElement: HIV.B.DE220 - Sharps injury to personnel
 @activity: HIV.B21 Offer prevention options
@@ -2318,10 +2399,11 @@ define "Sharps injury to personnel":
 define "Sharps injury to personnel Condition":
   [Condition: Concepts."Sharps injury to personnel"]
 define "Sharps injury to personnel Observation":
-  "Sharps injury to personnel Observation" O
+  [Observation: Concepts."Sharps injury to personnel"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Sharps injury to personnel"
-// End of Sharps injury to personnel
+/* End of Sharps injury to personnel */
+
 /*
 @dataElement: HIV.B.DE221 - Wound disruption
 @activity: HIV.B21 Offer prevention options
@@ -2334,10 +2416,11 @@ define "Wound disruption":
 define "Wound disruption Condition":
   [Condition: Concepts."Wound disruption"]
 define "Wound disruption Observation":
-  "Wound disruption Observation" O
+  [Observation: Concepts."Wound disruption"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Wound disruption"
-// End of Wound disruption
+/* End of Wound disruption */
+
 /*
 @dataElement: HIV.B.DE222 - Other - HIV.B.DE222
 @activity: HIV.B21 Offer prevention options
@@ -2350,10 +2433,11 @@ define "Other - HIV.B.DE222":
 define "Other - HIV.B.DE222 Condition":
   [Condition: Concepts."Other - HIV.B.DE222"]
 define "Other - HIV.B.DE222 Observation":
-  "Other - HIV.B.DE207 Observation" O
+  [Observation: Concepts."Other - HIV.B.DE207"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other - HIV.B.DE222"
-// End of Other - HIV.B.DE222
+/* End of Other - HIV.B.DE222 */
+
 /*
 @dataElement: HIV.B.DE224 - HIV retest prior to starting ART conducted
 @activity: HIV.B20 Schedule retest
@@ -2361,14 +2445,11 @@ define "Other - HIV.B.DE222 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "HIV retest prior to starting ART conducted":
-  exists "HIV retest prior to starting ART conducted Observation"
-    or exists "HIV retest prior to starting ART conducted Condition"
-define "HIV retest prior to starting ART conducted Condition":
-  [Condition: Concepts."HIV retest prior to starting ART conducted"]
-define "HIV retest prior to starting ART conducted Observation":
   [Observation: Concepts."HIV retest prior to starting ART conducted"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HIV retest prior to starting ART conducted
+    return O.value
+/* End of HIV retest prior to starting ART conducted */
+
 /*
 @dataElement: HIV.B.DE225 - At elevated risk for HIV acquisition - HIV.B.DE225
 @activity: HIV.B6 Capture or update client history
@@ -2376,14 +2457,11 @@ define "HIV retest prior to starting ART conducted Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "At elevated risk for HIV acquisition - HIV.B.DE225":
-  exists "At elevated risk for HIV acquisition - HIV.B.DE225 Observation"
-    or exists "At elevated risk for HIV acquisition - HIV.B.DE225 Condition"
-define "At elevated risk for HIV acquisition - HIV.B.DE225 Condition":
-  [Condition: Concepts."At elevated risk for HIV acquisition - HIV.B.DE225"]
-define "At elevated risk for HIV acquisition - HIV.B.DE225 Observation":
   [Observation: Concepts."At elevated risk for HIV acquisition - HIV.B.DE225"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of At elevated risk for HIV acquisition - HIV.B.DE225
+    return O.value
+/* End of At elevated risk for HIV acquisition - HIV.B.DE225 */
+
 /*
 @dataElement: HIV.B.DE226 - Syndrome/STI diagnosed - HIV.B.DE226
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2393,7 +2471,8 @@ define "At elevated risk for HIV acquisition - HIV.B.DE225 Observation":
 define "Syndrome/STI diagnosed - HIV.B.DE226 Observation":
   [Observation: Concepts."Syndrome/STI diagnosed - HIV.B.DE226"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Syndrome/STI diagnosed - HIV.B.DE226
+/* End of Syndrome/STI diagnosed - HIV.B.DE226 */
+
 /*
 @dataElement: HIV.B.DE227 - Urethral discharge syndrome - HIV.B.DE227
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2406,10 +2485,11 @@ define "Urethral discharge syndrome - HIV.B.DE227":
 define "Urethral discharge syndrome - HIV.B.DE227 Condition":
   [Condition: Concepts."Urethral discharge syndrome - HIV.B.DE227"]
 define "Urethral discharge syndrome - HIV.B.DE227 Observation":
-  "Urethral discharge syndrome - HIV.B.DE226 Observation" O
+  [Observation: Concepts."Urethral discharge syndrome - HIV.B.DE226"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Urethral discharge syndrome - HIV.B.DE227"
-// End of Urethral discharge syndrome - HIV.B.DE227
+/* End of Urethral discharge syndrome - HIV.B.DE227 */
+
 /*
 @dataElement: HIV.B.DE228 - Vaginal discharge syndrome - HIV.B.DE228
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2422,10 +2502,11 @@ define "Vaginal discharge syndrome - HIV.B.DE228":
 define "Vaginal discharge syndrome - HIV.B.DE228 Condition":
   [Condition: Concepts."Vaginal discharge syndrome - HIV.B.DE228"]
 define "Vaginal discharge syndrome - HIV.B.DE228 Observation":
-  "Vaginal discharge syndrome - HIV.B.DE226 Observation" O
+  [Observation: Concepts."Vaginal discharge syndrome - HIV.B.DE226"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Vaginal discharge syndrome - HIV.B.DE228"
-// End of Vaginal discharge syndrome - HIV.B.DE228
+/* End of Vaginal discharge syndrome - HIV.B.DE228 */
+
 /*
 @dataElement: HIV.B.DE229 - Lower Abdominal pain  - HIV.B.DE229
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2438,10 +2519,11 @@ define "Lower Abdominal pain  - HIV.B.DE229":
 define "Lower Abdominal pain  - HIV.B.DE229 Condition":
   [Condition: Concepts."Lower Abdominal pain  - HIV.B.DE229"]
 define "Lower Abdominal pain  - HIV.B.DE229 Observation":
-  "Lower Abdominal pain  - HIV.B.DE226 Observation" O
+  [Observation: Concepts."Lower Abdominal pain  - HIV.B.DE226"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Lower Abdominal pain  - HIV.B.DE229"
-// End of Lower Abdominal pain  - HIV.B.DE229
+/* End of Lower Abdominal pain  - HIV.B.DE229 */
+
 /*
 @dataElement: HIV.B.DE230 - Genital ulcer disease syndrome - HIV.B.DE230
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2454,10 +2536,11 @@ define "Genital ulcer disease syndrome - HIV.B.DE230":
 define "Genital ulcer disease syndrome - HIV.B.DE230 Condition":
   [Condition: Concepts."Genital ulcer disease syndrome - HIV.B.DE230"]
 define "Genital ulcer disease syndrome - HIV.B.DE230 Observation":
-  "Genital ulcer disease syndrome - HIV.B.DE226 Observation" O
+  [Observation: Concepts."Genital ulcer disease syndrome - HIV.B.DE226"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Genital ulcer disease syndrome - HIV.B.DE230"
-// End of Genital ulcer disease syndrome - HIV.B.DE230
+/* End of Genital ulcer disease syndrome - HIV.B.DE230 */
+
 /*
 @dataElement: HIV.B.DE231 - Anorectal discharge - HIV.B.DE231
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2470,10 +2553,11 @@ define "Anorectal discharge - HIV.B.DE231":
 define "Anorectal discharge - HIV.B.DE231 Condition":
   [Condition: Concepts."Anorectal discharge - HIV.B.DE231"]
 define "Anorectal discharge - HIV.B.DE231 Observation":
-  "Anorectal discharge - HIV.B.DE226 Observation" O
+  [Observation: Concepts."Anorectal discharge - HIV.B.DE226"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Anorectal discharge - HIV.B.DE231"
-// End of Anorectal discharge - HIV.B.DE231
+/* End of Anorectal discharge - HIV.B.DE231 */
+
 /*
 @dataElement: HIV.B.DE232 - Sent for testing - HIV.B.DE232
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2486,10 +2570,11 @@ define "Sent for testing - HIV.B.DE232":
 define "Sent for testing - HIV.B.DE232 Condition":
   [Condition: Concepts."Sent for testing - HIV.B.DE232"]
 define "Sent for testing - HIV.B.DE232 Observation":
-  "Sent for testing - HIV.B.DE226 Observation" O
+  [Observation: Concepts."Sent for testing - HIV.B.DE226"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Sent for testing - HIV.B.DE232"
-// End of Sent for testing - HIV.B.DE232
+/* End of Sent for testing - HIV.B.DE232 */
+
 /*
 @dataElement: HIV.B.DE233 - Other - HIV.B.DE233
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2502,10 +2587,11 @@ define "Other - HIV.B.DE233":
 define "Other - HIV.B.DE233 Condition":
   [Condition: Concepts."Other - HIV.B.DE233"]
 define "Other - HIV.B.DE233 Observation":
-  "Other - HIV.B.DE226 Observation" O
+  [Observation: Concepts."Other - HIV.B.DE226"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other - HIV.B.DE233"
-// End of Other - HIV.B.DE233
+/* End of Other - HIV.B.DE233 */
+
 /*
 @dataElement: HIV.B.DE235 - Any STI syndrome diagnosed - HIV.B.DE235
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2513,14 +2599,11 @@ define "Other - HIV.B.DE233 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Any STI syndrome diagnosed - HIV.B.DE235":
-  exists "Any STI syndrome diagnosed - HIV.B.DE235 Observation"
-    or exists "Any STI syndrome diagnosed - HIV.B.DE235 Condition"
-define "Any STI syndrome diagnosed - HIV.B.DE235 Condition":
-  [Condition: Concepts."Any STI syndrome diagnosed - HIV.B.DE235"]
-define "Any STI syndrome diagnosed - HIV.B.DE235 Observation":
   [Observation: Concepts."Any STI syndrome diagnosed - HIV.B.DE235"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Any STI syndrome diagnosed - HIV.B.DE235
+    return O.value
+/* End of Any STI syndrome diagnosed - HIV.B.DE235 */
+
 /*
 @dataElement: HIV.B.DE249 - Syphilis test date - HIV.B.DE249
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2528,14 +2611,11 @@ define "Any STI syndrome diagnosed - HIV.B.DE235 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Syphilis test date - HIV.B.DE249":
-  exists "Syphilis test date - HIV.B.DE249 Observation"
-    or exists "Syphilis test date - HIV.B.DE249 Condition"
-define "Syphilis test date - HIV.B.DE249 Condition":
-  [Condition: Concepts."Syphilis test date - HIV.B.DE249"]
-define "Syphilis test date - HIV.B.DE249 Observation":
   [Observation: Concepts."Syphilis test date - HIV.B.DE249"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Syphilis test date - HIV.B.DE249
+    return O.value
+/* End of Syphilis test date - HIV.B.DE249 */
+
 /*
 @dataElement: HIV.B.DE250 - Syphilis test result - HIV.B.DE250
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2545,7 +2625,8 @@ define "Syphilis test date - HIV.B.DE249 Observation":
 define "Syphilis test result - HIV.B.DE250 Observation":
   [Observation: Concepts."Syphilis test result - HIV.B.DE250"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Syphilis test result - HIV.B.DE250
+/* End of Syphilis test result - HIV.B.DE250 */
+
 /*
 @dataElement: HIV.B.DE251 - Positive - HIV.B.DE251
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2558,10 +2639,11 @@ define "Positive - HIV.B.DE251":
 define "Positive - HIV.B.DE251 Condition":
   [Condition: Concepts."Positive - HIV.B.DE251"]
 define "Positive - HIV.B.DE251 Observation":
-  "Positive - HIV.B.DE250 Observation" O
+  [Observation: Concepts."Positive - HIV.B.DE250"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Positive - HIV.B.DE251"
-// End of Positive - HIV.B.DE251
+/* End of Positive - HIV.B.DE251 */
+
 /*
 @dataElement: HIV.B.DE252 - Negative - HIV.B.DE252
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2574,10 +2656,11 @@ define "Negative - HIV.B.DE252":
 define "Negative - HIV.B.DE252 Condition":
   [Condition: Concepts."Negative - HIV.B.DE252"]
 define "Negative - HIV.B.DE252 Observation":
-  "Negative - HIV.B.DE250 Observation" O
+  [Observation: Concepts."Negative - HIV.B.DE250"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Negative - HIV.B.DE252"
-// End of Negative - HIV.B.DE252
+/* End of Negative - HIV.B.DE252 */
+
 /*
 @dataElement: HIV.B.DE253 - Inconclusive - HIV.B.DE253
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2590,10 +2673,11 @@ define "Inconclusive - HIV.B.DE253":
 define "Inconclusive - HIV.B.DE253 Condition":
   [Condition: Concepts."Inconclusive - HIV.B.DE253"]
 define "Inconclusive - HIV.B.DE253 Observation":
-  "Inconclusive - HIV.B.DE250 Observation" O
+  [Observation: Concepts."Inconclusive - HIV.B.DE250"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Inconclusive - HIV.B.DE253"
-// End of Inconclusive - HIV.B.DE253
+/* End of Inconclusive - HIV.B.DE253 */
+
 /*
 @dataElement: HIV.B.DE254 - Syphilis treatment start date - HIV.B.DE254
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2601,14 +2685,11 @@ define "Inconclusive - HIV.B.DE253 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Syphilis treatment start date - HIV.B.DE254":
-  exists "Syphilis treatment start date - HIV.B.DE254 Observation"
-    or exists "Syphilis treatment start date - HIV.B.DE254 Condition"
-define "Syphilis treatment start date - HIV.B.DE254 Condition":
-  [Condition: Concepts."Syphilis treatment start date - HIV.B.DE254"]
-define "Syphilis treatment start date - HIV.B.DE254 Observation":
   [Observation: Concepts."Syphilis treatment start date - HIV.B.DE254"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Syphilis treatment start date - HIV.B.DE254
+    return O.value
+/* End of Syphilis treatment start date - HIV.B.DE254 */
+
 /*
 @dataElement: HIV.B.DE255 - Gonorrhoea test date - HIV.B.DE255
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2616,14 +2697,11 @@ define "Syphilis treatment start date - HIV.B.DE254 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Gonorrhoea test date - HIV.B.DE255":
-  exists "Gonorrhoea test date - HIV.B.DE255 Observation"
-    or exists "Gonorrhoea test date - HIV.B.DE255 Condition"
-define "Gonorrhoea test date - HIV.B.DE255 Condition":
-  [Condition: Concepts."Gonorrhoea test date - HIV.B.DE255"]
-define "Gonorrhoea test date - HIV.B.DE255 Observation":
   [Observation: Concepts."Gonorrhoea test date - HIV.B.DE255"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Gonorrhoea test date - HIV.B.DE255
+    return O.value
+/* End of Gonorrhoea test date - HIV.B.DE255 */
+
 /*
 @dataElement: HIV.B.DE256 - Gonorrhoea test result - HIV.B.DE256
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2633,7 +2711,8 @@ define "Gonorrhoea test date - HIV.B.DE255 Observation":
 define "Gonorrhoea test result - HIV.B.DE256 Observation":
   [Observation: Concepts."Gonorrhoea test result - HIV.B.DE256"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Gonorrhoea test result - HIV.B.DE256
+/* End of Gonorrhoea test result - HIV.B.DE256 */
+
 /*
 @dataElement: HIV.B.DE257 - Positive - HIV.B.DE257
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2646,10 +2725,11 @@ define "Positive - HIV.B.DE257":
 define "Positive - HIV.B.DE257 Condition":
   [Condition: Concepts."Positive - HIV.B.DE257"]
 define "Positive - HIV.B.DE257 Observation":
-  "Positive - HIV.B.DE256 Observation" O
+  [Observation: Concepts."Positive - HIV.B.DE256"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Positive - HIV.B.DE257"
-// End of Positive - HIV.B.DE257
+/* End of Positive - HIV.B.DE257 */
+
 /*
 @dataElement: HIV.B.DE258 - Negative - HIV.B.DE258
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2662,10 +2742,11 @@ define "Negative - HIV.B.DE258":
 define "Negative - HIV.B.DE258 Condition":
   [Condition: Concepts."Negative - HIV.B.DE258"]
 define "Negative - HIV.B.DE258 Observation":
-  "Negative - HIV.B.DE256 Observation" O
+  [Observation: Concepts."Negative - HIV.B.DE256"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Negative - HIV.B.DE258"
-// End of Negative - HIV.B.DE258
+/* End of Negative - HIV.B.DE258 */
+
 /*
 @dataElement: HIV.B.DE259 - Inconclusive - HIV.B.DE259
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2678,10 +2759,11 @@ define "Inconclusive - HIV.B.DE259":
 define "Inconclusive - HIV.B.DE259 Condition":
   [Condition: Concepts."Inconclusive - HIV.B.DE259"]
 define "Inconclusive - HIV.B.DE259 Observation":
-  "Inconclusive - HIV.B.DE256 Observation" O
+  [Observation: Concepts."Inconclusive - HIV.B.DE256"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Inconclusive - HIV.B.DE259"
-// End of Inconclusive - HIV.B.DE259
+/* End of Inconclusive - HIV.B.DE259 */
+
 /*
 @dataElement: HIV.B.DE260 - Gonorrhoea treatment start date - HIV.B.DE260
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2689,14 +2771,11 @@ define "Inconclusive - HIV.B.DE259 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Gonorrhoea treatment start date - HIV.B.DE260":
-  exists "Gonorrhoea treatment start date - HIV.B.DE260 Observation"
-    or exists "Gonorrhoea treatment start date - HIV.B.DE260 Condition"
-define "Gonorrhoea treatment start date - HIV.B.DE260 Condition":
-  [Condition: Concepts."Gonorrhoea treatment start date - HIV.B.DE260"]
-define "Gonorrhoea treatment start date - HIV.B.DE260 Observation":
   [Observation: Concepts."Gonorrhoea treatment start date - HIV.B.DE260"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Gonorrhoea treatment start date - HIV.B.DE260
+    return O.value
+/* End of Gonorrhoea treatment start date - HIV.B.DE260 */
+
 /*
 @dataElement: HIV.B.DE261 - Type of specimen - HIV.B.DE261
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2706,7 +2785,8 @@ define "Gonorrhoea treatment start date - HIV.B.DE260 Observation":
 define "Type of specimen - HIV.B.DE261 Observation":
   [Observation: Concepts."Type of specimen - HIV.B.DE261"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Type of specimen - HIV.B.DE261
+/* End of Type of specimen - HIV.B.DE261 */
+
 /*
 @dataElement: HIV.B.DE262 - Blood - HIV.B.DE262
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2719,10 +2799,11 @@ define "Blood - HIV.B.DE262":
 define "Blood - HIV.B.DE262 Condition":
   [Condition: Concepts."Blood - HIV.B.DE262"]
 define "Blood - HIV.B.DE262 Observation":
-  "Blood - HIV.B.DE261 Observation" O
+  [Observation: Concepts."Blood - HIV.B.DE261"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Blood - HIV.B.DE262"
-// End of Blood - HIV.B.DE262
+/* End of Blood - HIV.B.DE262 */
+
 /*
 @dataElement: HIV.B.DE263 - Urine - HIV.B.DE263
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2735,10 +2816,11 @@ define "Urine - HIV.B.DE263":
 define "Urine - HIV.B.DE263 Condition":
   [Condition: Concepts."Urine - HIV.B.DE263"]
 define "Urine - HIV.B.DE263 Observation":
-  "Urine - HIV.B.DE261 Observation" O
+  [Observation: Concepts."Urine - HIV.B.DE261"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Urine - HIV.B.DE263"
-// End of Urine - HIV.B.DE263
+/* End of Urine - HIV.B.DE263 */
+
 /*
 @dataElement: HIV.B.DE264 - Cervical or vaginal swab - HIV.B.DE264
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2751,10 +2833,11 @@ define "Cervical or vaginal swab - HIV.B.DE264":
 define "Cervical or vaginal swab - HIV.B.DE264 Condition":
   [Condition: Concepts."Cervical or vaginal swab - HIV.B.DE264"]
 define "Cervical or vaginal swab - HIV.B.DE264 Observation":
-  "Cervical or vaginal swab - HIV.B.DE261 Observation" O
+  [Observation: Concepts."Cervical or vaginal swab - HIV.B.DE261"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Cervical or vaginal swab - HIV.B.DE264"
-// End of Cervical or vaginal swab - HIV.B.DE264
+/* End of Cervical or vaginal swab - HIV.B.DE264 */
+
 /*
 @dataElement: HIV.B.DE265 - Urethral or penile swab - HIV.B.DE265
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2767,10 +2850,11 @@ define "Urethral or penile swab - HIV.B.DE265":
 define "Urethral or penile swab - HIV.B.DE265 Condition":
   [Condition: Concepts."Urethral or penile swab - HIV.B.DE265"]
 define "Urethral or penile swab - HIV.B.DE265 Observation":
-  "Urethral or penile swab - HIV.B.DE261 Observation" O
+  [Observation: Concepts."Urethral or penile swab - HIV.B.DE261"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Urethral or penile swab - HIV.B.DE265"
-// End of Urethral or penile swab - HIV.B.DE265
+/* End of Urethral or penile swab - HIV.B.DE265 */
+
 /*
 @dataElement: HIV.B.DE266 - Rectal swab - HIV.B.DE266
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2783,10 +2867,11 @@ define "Rectal swab - HIV.B.DE266":
 define "Rectal swab - HIV.B.DE266 Condition":
   [Condition: Concepts."Rectal swab - HIV.B.DE266"]
 define "Rectal swab - HIV.B.DE266 Observation":
-  "Rectal swab - HIV.B.DE261 Observation" O
+  [Observation: Concepts."Rectal swab - HIV.B.DE261"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Rectal swab - HIV.B.DE266"
-// End of Rectal swab - HIV.B.DE266
+/* End of Rectal swab - HIV.B.DE266 */
+
 /*
 @dataElement: HIV.B.DE267 - Other - HIV.B.DE267
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2799,10 +2884,11 @@ define "Other - HIV.B.DE267":
 define "Other - HIV.B.DE267 Condition":
   [Condition: Concepts."Other - HIV.B.DE267"]
 define "Other - HIV.B.DE267 Observation":
-  "Other - HIV.B.DE261 Observation" O
+  [Observation: Concepts."Other - HIV.B.DE261"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other - HIV.B.DE267"
-// End of Other - HIV.B.DE267
+/* End of Other - HIV.B.DE267 */
+
 /*
 @dataElement: HIV.B.DE276 - Neisseria gonorrhoeae test type - HIV.B.DE276
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2812,7 +2898,8 @@ define "Other - HIV.B.DE267 Observation":
 define "Neisseria gonorrhoeae test type - HIV.B.DE276 Observation":
   [Observation: Concepts."Neisseria gonorrhoeae test type - HIV.B.DE276"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Neisseria gonorrhoeae test type - HIV.B.DE276
+/* End of Neisseria gonorrhoeae test type - HIV.B.DE276 */
+
 /*
 @dataElement: HIV.B.DE277 - NAAT - HIV.B.DE277
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2825,10 +2912,11 @@ define "NAAT - HIV.B.DE277":
 define "NAAT - HIV.B.DE277 Condition":
   [Condition: Concepts."NAAT - HIV.B.DE277"]
 define "NAAT - HIV.B.DE277 Observation":
-  "NAAT - HIV.B.DE276 Observation" O
+  [Observation: Concepts."NAAT - HIV.B.DE276"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."NAAT - HIV.B.DE277"
-// End of NAAT - HIV.B.DE277
+/* End of NAAT - HIV.B.DE277 */
+
 /*
 @dataElement: HIV.B.DE278 - POC Test - HIV.B.DE278
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2841,10 +2929,11 @@ define "POC Test - HIV.B.DE278":
 define "POC Test - HIV.B.DE278 Condition":
   [Condition: Concepts."POC Test - HIV.B.DE278"]
 define "POC Test - HIV.B.DE278 Observation":
-  "POC Test - HIV.B.DE276 Observation" O
+  [Observation: Concepts."POC Test - HIV.B.DE276"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."POC Test - HIV.B.DE278"
-// End of POC Test - HIV.B.DE278
+/* End of POC Test - HIV.B.DE278 */
+
 /*
 @dataElement: HIV.B.DE279 - Culture - HIV.B.DE279
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2857,10 +2946,11 @@ define "Culture - HIV.B.DE279":
 define "Culture - HIV.B.DE279 Condition":
   [Condition: Concepts."Culture - HIV.B.DE279"]
 define "Culture - HIV.B.DE279 Observation":
-  "Culture - HIV.B.DE276 Observation" O
+  [Observation: Concepts."Culture - HIV.B.DE276"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Culture - HIV.B.DE279"
-// End of Culture - HIV.B.DE279
+/* End of Culture - HIV.B.DE279 */
+
 /*
 @dataElement: HIV.B.DE280 - Microscopy - HIV.B.DE280
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2873,10 +2963,11 @@ define "Microscopy - HIV.B.DE280":
 define "Microscopy - HIV.B.DE280 Condition":
   [Condition: Concepts."Microscopy - HIV.B.DE280"]
 define "Microscopy - HIV.B.DE280 Observation":
-  "Microscopy - HIV.B.DE276 Observation" O
+  [Observation: Concepts."Microscopy - HIV.B.DE276"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Microscopy - HIV.B.DE280"
-// End of Microscopy - HIV.B.DE280
+/* End of Microscopy - HIV.B.DE280 */
+
 /*
 @dataElement: HIV.B.DE281 - Other - HIV.B.DE281
 @activity: HIV.B23 Offer sexual and reproductive health services
@@ -2889,10 +2980,11 @@ define "Other - HIV.B.DE281":
 define "Other - HIV.B.DE281 Condition":
   [Condition: Concepts."Other - HIV.B.DE281"]
 define "Other - HIV.B.DE281 Observation":
-  "Other - HIV.B.DE276 Observation" O
+  [Observation: Concepts."Other - HIV.B.DE276"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other - HIV.B.DE281"
-// End of Other - HIV.B.DE281
+/* End of Other - HIV.B.DE281 */
+
 /*
 @dataElement: HIV.C.DE9 - Date/time of suspected exposure to HIV - HIV.C.DE9
 @activity: HIV.C3 Capture or update client history
@@ -2900,14 +2992,11 @@ define "Other - HIV.B.DE281 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date/time of suspected exposure to HIV - HIV.C.DE9":
-  exists "Date/time of suspected exposure to HIV - HIV.C.DE9 Observation"
-    or exists "Date/time of suspected exposure to HIV - HIV.C.DE9 Condition"
-define "Date/time of suspected exposure to HIV - HIV.C.DE9 Condition":
-  [Condition: Concepts."Date/time of suspected exposure to HIV - HIV.C.DE9"]
-define "Date/time of suspected exposure to HIV - HIV.C.DE9 Observation":
   [Observation: Concepts."Date/time of suspected exposure to HIV - HIV.C.DE9"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date/time of suspected exposure to HIV - HIV.C.DE9
+    return O.value
+/* End of Date/time of suspected exposure to HIV - HIV.C.DE9 */
+
 /*
 @dataElement: HIV.C.DE10 - Currently on PrEP
 @activity: HIV.C3 Capture or update client history
@@ -2915,14 +3004,11 @@ define "Date/time of suspected exposure to HIV - HIV.C.DE9 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Currently on PrEP":
-  exists "Currently on PrEP Observation"
-    or exists "Currently on PrEP Condition"
-define "Currently on PrEP Condition":
-  [Condition: Concepts."Currently on PrEP"]
-define "Currently on PrEP Observation":
   [Observation: Concepts."Currently on PrEP"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Currently on PrEP
+    return O.value
+/* End of Currently on PrEP */
+
 /*
 @dataElement: HIV.C.DE11 - PrEP dosing type
 @activity: HIV.C3 Capture or update client history
@@ -2932,7 +3018,8 @@ define "Currently on PrEP Observation":
 define "PrEP dosing type Observation":
   [Observation: Concepts."PrEP dosing type"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of PrEP dosing type
+/* End of PrEP dosing type */
+
 /*
 @dataElement: HIV.C.DE12 - Daily oral PrEP
 @activity: HIV.C3 Capture or update client history
@@ -2945,10 +3032,11 @@ define "Daily oral PrEP":
 define "Daily oral PrEP Condition":
   [Condition: Concepts."Daily oral PrEP"]
 define "Daily oral PrEP Observation":
-  "Daily oral PrEP Observation" O
+  [Observation: Concepts."Daily oral PrEP"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Daily oral PrEP"
-// End of Daily oral PrEP
+/* End of Daily oral PrEP */
+
 /*
 @dataElement: HIV.C.DE13 - Event-driven PrEP 2+1+1
 @activity: HIV.C3 Capture or update client history
@@ -2961,10 +3049,11 @@ define "Event-driven PrEP 2+1+1":
 define "Event-driven PrEP 2+1+1 Condition":
   [Condition: Concepts."Event-driven PrEP 2+1+1"]
 define "Event-driven PrEP 2+1+1 Observation":
-  "Event-driven PrEP 2+1+1 Observation" O
+  [Observation: Concepts."Event-driven PrEP 2+1+1"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Event-driven PrEP 2+1+1"
-// End of Event-driven PrEP 2+1+1
+/* End of Event-driven PrEP 2+1+1 */
+
 /*
 @dataElement: HIV.C.DE14 - Other PrEP dosing type
 @activity: HIV.C3 Capture or update client history
@@ -2977,10 +3066,11 @@ define "Other PrEP dosing type":
 define "Other PrEP dosing type Condition":
   [Condition: Concepts."Other PrEP dosing type"]
 define "Other PrEP dosing type Observation":
-  "Other PrEP dosing type Observation" O
+  [Observation: Concepts."Other PrEP dosing type"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other PrEP dosing type"
-// End of Other PrEP dosing type
+/* End of Other PrEP dosing type */
+
 /*
 @dataElement: HIV.C.DE17 - Current PrEP regimen
 @activity: HIV.C3 Capture or update client history
@@ -2990,7 +3080,8 @@ define "Other PrEP dosing type Observation":
 define "Current PrEP regimen Observation":
   [Observation: Concepts."Current PrEP regimen"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Current PrEP regimen
+/* End of Current PrEP regimen */
+
 /*
 @dataElement: HIV.C.DE18 - TDF + FTC - HIV.C.DE18
 @activity: HIV.C3 Capture or update client history
@@ -3003,10 +3094,11 @@ define "TDF + FTC - HIV.C.DE18":
 define "TDF + FTC - HIV.C.DE18 Condition":
   [Condition: Concepts."TDF + FTC - HIV.C.DE18"]
 define "TDF + FTC - HIV.C.DE18 Observation":
-  "TDF + FTC - HIV.C.DE17 Observation" O
+  [Observation: Concepts."TDF + FTC - HIV.C.DE17"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."TDF + FTC - HIV.C.DE18"
-// End of TDF + FTC - HIV.C.DE18
+/* End of TDF + FTC - HIV.C.DE18 */
+
 /*
 @dataElement: HIV.C.DE19 - TDF - HIV.C.DE19
 @activity: HIV.C3 Capture or update client history
@@ -3019,10 +3111,11 @@ define "TDF - HIV.C.DE19":
 define "TDF - HIV.C.DE19 Condition":
   [Condition: Concepts."TDF - HIV.C.DE19"]
 define "TDF - HIV.C.DE19 Observation":
-  "TDF - HIV.C.DE17 Observation" O
+  [Observation: Concepts."TDF - HIV.C.DE17"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."TDF - HIV.C.DE19"
-// End of TDF - HIV.C.DE19
+/* End of TDF - HIV.C.DE19 */
+
 /*
 @dataElement: HIV.C.DE20 - TDF + 3TC - HIV.C.DE20
 @activity: HIV.C3 Capture or update client history
@@ -3035,10 +3128,11 @@ define "TDF + 3TC - HIV.C.DE20":
 define "TDF + 3TC - HIV.C.DE20 Condition":
   [Condition: Concepts."TDF + 3TC - HIV.C.DE20"]
 define "TDF + 3TC - HIV.C.DE20 Observation":
-  "TDF + 3TC - HIV.C.DE17 Observation" O
+  [Observation: Concepts."TDF + 3TC - HIV.C.DE17"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."TDF + 3TC - HIV.C.DE20"
-// End of TDF + 3TC - HIV.C.DE20
+/* End of TDF + 3TC - HIV.C.DE20 */
+
 /*
 @dataElement: HIV.C.DE21 - Other TDF-based regimen
 @activity: HIV.C3 Capture or update client history
@@ -3051,10 +3145,11 @@ define "Other TDF-based regimen":
 define "Other TDF-based regimen Condition":
   [Condition: Concepts."Other TDF-based regimen"]
 define "Other TDF-based regimen Observation":
-  "Other TDF-based regimen Observation" O
+  [Observation: Concepts."Other TDF-based regimen"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other TDF-based regimen"
-// End of Other TDF-based regimen
+/* End of Other TDF-based regimen */
+
 /*
 @dataElement: HIV.C.DE22 - Dapivirine vaginal ring DVR - HIV.C.DE22
 @activity: HIV.C3 Capture or update client history
@@ -3067,10 +3162,11 @@ define "Dapivirine vaginal ring DVR - HIV.C.DE22":
 define "Dapivirine vaginal ring DVR - HIV.C.DE22 Condition":
   [Condition: Concepts."Dapivirine vaginal ring DVR - HIV.C.DE22"]
 define "Dapivirine vaginal ring DVR - HIV.C.DE22 Observation":
-  "Dapivirine vaginal ring DVR - HIV.C.DE17 Observation" O
+  [Observation: Concepts."Dapivirine vaginal ring DVR - HIV.C.DE17"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Dapivirine vaginal ring DVR - HIV.C.DE22"
-// End of Dapivirine vaginal ring DVR - HIV.C.DE22
+/* End of Dapivirine vaginal ring DVR - HIV.C.DE22 */
+
 /*
 @dataElement: HIV.C.DE23 - CAB-LA - HIV.C.DE23
 @activity: HIV.C3 Capture or update client history
@@ -3083,10 +3179,11 @@ define "CAB-LA - HIV.C.DE23":
 define "CAB-LA - HIV.C.DE23 Condition":
   [Condition: Concepts."CAB-LA - HIV.C.DE23"]
 define "CAB-LA - HIV.C.DE23 Observation":
-  "CAB-LA - HIV.C.DE17 Observation" O
+  [Observation: Concepts."CAB-LA - HIV.C.DE17"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."CAB-LA - HIV.C.DE23"
-// End of CAB-LA - HIV.C.DE23
+/* End of CAB-LA - HIV.C.DE23 */
+
 /*
 @dataElement: HIV.C.DE24 - Experience with PrEP
 @activity: HIV.C3 Capture or update client history
@@ -3096,7 +3193,8 @@ define "CAB-LA - HIV.C.DE23 Observation":
 define "Experience with PrEP Observation":
   [Observation: Concepts."Experience with PrEP"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Experience with PrEP
+/* End of Experience with PrEP */
+
 /*
 @dataElement: HIV.C.DE25 - First-time user - HIV.C.DE25
 @activity: HIV.C3 Capture or update client history
@@ -3109,10 +3207,11 @@ define "First-time user - HIV.C.DE25":
 define "First-time user - HIV.C.DE25 Condition":
   [Condition: Concepts."First-time user - HIV.C.DE25"]
 define "First-time user - HIV.C.DE25 Observation":
-  "First-time user - HIV.C.DE24 Observation" O
+  [Observation: Concepts."First-time user - HIV.C.DE24"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."First-time user - HIV.C.DE25"
-// End of First-time user - HIV.C.DE25
+/* End of First-time user - HIV.C.DE25 */
+
 /*
 @dataElement: HIV.C.DE26 - Continuing user
 @activity: HIV.C3 Capture or update client history
@@ -3125,10 +3224,11 @@ define "Continuing user":
 define "Continuing user Condition":
   [Condition: Concepts."Continuing user"]
 define "Continuing user Observation":
-  "Continuing user Observation" O
+  [Observation: Concepts."Continuing user"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Continuing user"
-// End of Continuing user
+/* End of Continuing user */
+
 /*
 @dataElement: HIV.C.DE27 - Restarting following a period of not taking PrEP
 @activity: HIV.C3 Capture or update client history
@@ -3141,10 +3241,11 @@ define "Restarting following a period of not taking PrEP":
 define "Restarting following a period of not taking PrEP Condition":
   [Condition: Concepts."Restarting following a period of not taking PrEP"]
 define "Restarting following a period of not taking PrEP Observation":
-  "Restarting following a period of not taking PrEP Observation" O
+  [Observation: Concepts."Restarting following a period of not taking PrEP"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Restarting following a period of not taking PrEP"
-// End of Restarting following a period of not taking PrEP
+/* End of Restarting following a period of not taking PrEP */
+
 /*
 @dataElement: HIV.C.DE31 - PEP history
 @activity: HIV.C3 Capture or update client history
@@ -3154,7 +3255,8 @@ define "Restarting following a period of not taking PrEP Observation":
 define "PEP history Observation":
   [Observation: Concepts."PEP history"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of PEP history
+/* End of PEP history */
+
 /*
 @dataElement: HIV.C.DE32 - First-time user - HIV.C.DE32
 @activity: HIV.C3 Capture or update client history
@@ -3167,10 +3269,11 @@ define "First-time user - HIV.C.DE32":
 define "First-time user - HIV.C.DE32 Condition":
   [Condition: Concepts."First-time user - HIV.C.DE32"]
 define "First-time user - HIV.C.DE32 Observation":
-  "First-time user - HIV.C.DE31 Observation" O
+  [Observation: Concepts."First-time user - HIV.C.DE31"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."First-time user - HIV.C.DE32"
-// End of First-time user - HIV.C.DE32
+/* End of First-time user - HIV.C.DE32 */
+
 /*
 @dataElement: HIV.C.DE33 - Repeat user
 @activity: HIV.C3 Capture or update client history
@@ -3183,10 +3286,11 @@ define "Repeat user":
 define "Repeat user Condition":
   [Condition: Concepts."Repeat user"]
 define "Repeat user Observation":
-  "Repeat user Observation" O
+  [Observation: Concepts."Repeat user"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Repeat user"
-// End of Repeat user
+/* End of Repeat user */
+
 /*
 @dataElement: HIV.C.DE35 - Date client completes PEP course
 @activity: HIV.C3 Capture or update client history
@@ -3194,14 +3298,11 @@ define "Repeat user Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date client completes PEP course":
-  exists "Date client completes PEP course Observation"
-    or exists "Date client completes PEP course Condition"
-define "Date client completes PEP course Condition":
-  [Condition: Concepts."Date client completes PEP course"]
-define "Date client completes PEP course Observation":
   [Observation: Concepts."Date client completes PEP course"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date client completes PEP course
+    return O.value
+/* End of Date client completes PEP course */
+
 /*
 @dataElement: HIV.C.DE36 - Signs of substantial risk of HIV infection - HIV.C.DE36
 @activity: HIV.C3 Capture or update client history
@@ -3211,7 +3312,8 @@ define "Date client completes PEP course Observation":
 define "Signs of substantial risk of HIV infection - HIV.C.DE36 Observation":
   [Observation: Concepts."Signs of substantial risk of HIV infection - HIV.C.DE36"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Signs of substantial risk of HIV infection - HIV.C.DE36
+/* End of Signs of substantial risk of HIV infection - HIV.C.DE36 */
+
 /*
 @dataElement: HIV.C.DE37 - No condom use during sex with more than one partner in the past 6 months - HIV.C.DE37
 @activity: HIV.C3 Capture or update client history
@@ -3224,10 +3326,11 @@ define "No condom use during sex with more than one partner in the past 6 months
 define "No condom use during sex with more than one partner in the past 6 months - HIV.C.DE37 Condition":
   [Condition: Concepts."No condom use during sex with more than one partner in the past 6 months - HIV.C.DE37"]
 define "No condom use during sex with more than one partner in the past 6 months - HIV.C.DE37 Observation":
-  "No condom use during sex with more than one partner in the past 6 months - HIV.C.DE36 Observation" O
+  [Observation: Concepts."No condom use during sex with more than one partner in the past 6 months - HIV.C.DE36"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."No condom use during sex with more than one partner in the past 6 months - HIV.C.DE37"
-// End of No condom use during sex with more than one partner in the past 6 months - HIV.C.DE37
+/* End of No condom use during sex with more than one partner in the past 6 months - HIV.C.DE37 */
+
 /*
 @dataElement: HIV.C.DE38 - STI in the past 6 months - HIV.C.DE38
 @activity: HIV.C3 Capture or update client history
@@ -3240,10 +3343,11 @@ define "STI in the past 6 months - HIV.C.DE38":
 define "STI in the past 6 months - HIV.C.DE38 Condition":
   [Condition: Concepts."STI in the past 6 months - HIV.C.DE38"]
 define "STI in the past 6 months - HIV.C.DE38 Observation":
-  "STI in the past 6 months - HIV.C.DE36 Observation" O
+  [Observation: Concepts."STI in the past 6 months - HIV.C.DE36"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."STI in the past 6 months - HIV.C.DE38"
-// End of STI in the past 6 months - HIV.C.DE38
+/* End of STI in the past 6 months - HIV.C.DE38 */
+
 /*
 @dataElement: HIV.C.DE39 - A sexual partner in the past 6 months had one or more HIV risk factors - HIV.C.DE39
 @activity: HIV.C3 Capture or update client history
@@ -3256,10 +3360,11 @@ define "A sexual partner in the past 6 months had one or more HIV risk factors -
 define "A sexual partner in the past 6 months had one or more HIV risk factors - HIV.C.DE39 Condition":
   [Condition: Concepts."A sexual partner in the past 6 months had one or more HIV risk factors - HIV.C.DE39"]
 define "A sexual partner in the past 6 months had one or more HIV risk factors - HIV.C.DE39 Observation":
-  "A sexual partner in the past 6 months had one or more HIV risk factors - HIV.C.DE36 Observation" O
+  [Observation: Concepts."A sexual partner in the past 6 months had one or more HIV risk factors - HIV.C.DE36"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."A sexual partner in the past 6 months had one or more HIV risk factors - HIV.C.DE39"
-// End of A sexual partner in the past 6 months had one or more HIV risk factors - HIV.C.DE39
+/* End of A sexual partner in the past 6 months had one or more HIV risk factors - HIV.C.DE39 */
+
 /*
 @dataElement: HIV.C.DE40 - PrEP requested by client - HIV.C.DE40
 @activity: HIV.C3 Capture or update client history
@@ -3272,10 +3377,11 @@ define "PrEP requested by client - HIV.C.DE40":
 define "PrEP requested by client - HIV.C.DE40 Condition":
   [Condition: Concepts."PrEP requested by client - HIV.C.DE40"]
 define "PrEP requested by client - HIV.C.DE40 Observation":
-  "PrEP requested by client - HIV.C.DE36 Observation" O
+  [Observation: Concepts."PrEP requested by client - HIV.C.DE36"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."PrEP requested by client - HIV.C.DE40"
-// End of PrEP requested by client - HIV.C.DE40
+/* End of PrEP requested by client - HIV.C.DE40 */
+
 /*
 @dataElement: HIV.C.DE46 - Acute HIV infection symptoms - HIV.C.DE46
 @activity: HIV.C3 Capture or update client history
@@ -3285,7 +3391,8 @@ define "PrEP requested by client - HIV.C.DE40 Observation":
 define "Acute HIV infection symptoms - HIV.C.DE46 Observation":
   [Observation: Concepts."Acute HIV infection symptoms - HIV.C.DE46"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Acute HIV infection symptoms - HIV.C.DE46
+/* End of Acute HIV infection symptoms - HIV.C.DE46 */
+
 /*
 @dataElement: HIV.C.DE47 - Fever
 @activity: HIV.C3 Capture or update client history
@@ -3298,10 +3405,11 @@ define "Fever":
 define "Fever Condition":
   [Condition: Concepts."Fever"]
 define "Fever Observation":
-  "Fever Observation" O
+  [Observation: Concepts."Fever"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Fever"
-// End of Fever
+/* End of Fever */
+
 /*
 @dataElement: HIV.C.DE48 - Sore throat
 @activity: HIV.C3 Capture or update client history
@@ -3314,10 +3422,11 @@ define "Sore throat":
 define "Sore throat Condition":
   [Condition: Concepts."Sore throat"]
 define "Sore throat Observation":
-  "Sore throat Observation" O
+  [Observation: Concepts."Sore throat"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Sore throat"
-// End of Sore throat
+/* End of Sore throat */
+
 /*
 @dataElement: HIV.C.DE49 - Aches
 @activity: HIV.C3 Capture or update client history
@@ -3330,10 +3439,11 @@ define "Aches":
 define "Aches Condition":
   [Condition: Concepts."Aches"]
 define "Aches Observation":
-  "Aches Observation" O
+  [Observation: Concepts."Aches"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Aches"
-// End of Aches
+/* End of Aches */
+
 /*
 @dataElement: HIV.C.DE50 - Pains
 @activity: HIV.C3 Capture or update client history
@@ -3346,10 +3456,11 @@ define "Pains":
 define "Pains Condition":
   [Condition: Concepts."Pains"]
 define "Pains Observation":
-  "Pains Observation" O
+  [Observation: Concepts."Pains"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Pains"
-// End of Pains
+/* End of Pains */
+
 /*
 @dataElement: HIV.C.DE51 - Swollen glands
 @activity: HIV.C3 Capture or update client history
@@ -3362,10 +3473,11 @@ define "Swollen glands":
 define "Swollen glands Condition":
   [Condition: Concepts."Swollen glands"]
 define "Swollen glands Observation":
-  "Swollen glands Observation" O
+  [Observation: Concepts."Swollen glands"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Swollen glands"
-// End of Swollen glands
+/* End of Swollen glands */
+
 /*
 @dataElement: HIV.C.DE52 - Mouth sores
 @activity: HIV.C3 Capture or update client history
@@ -3378,10 +3490,11 @@ define "Mouth sores":
 define "Mouth sores Condition":
   [Condition: Concepts."Mouth sores"]
 define "Mouth sores Observation":
-  "Mouth sores Observation" O
+  [Observation: Concepts."Mouth sores"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Mouth sores"
-// End of Mouth sores
+/* End of Mouth sores */
+
 /*
 @dataElement: HIV.C.DE53 - Headaches
 @activity: HIV.C3 Capture or update client history
@@ -3394,10 +3507,11 @@ define "Headaches":
 define "Headaches Condition":
   [Condition: Concepts."Headaches"]
 define "Headaches Observation":
-  "Headaches Observation" O
+  [Observation: Concepts."Headaches"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Headaches"
-// End of Headaches
+/* End of Headaches */
+
 /*
 @dataElement: HIV.C.DE54 - Rash
 @activity: HIV.C3 Capture or update client history
@@ -3410,10 +3524,11 @@ define "Rash":
 define "Rash Condition":
   [Condition: Concepts."Rash"]
 define "Rash Observation":
-  "Rash Observation" O
+  [Observation: Concepts."Rash"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Rash"
-// End of Rash
+/* End of Rash */
+
 /*
 @dataElement: HIV.C.DE55 - Sex partners HIV treatment status
 @activity: HIV.C3 Capture or update client history
@@ -3423,7 +3538,8 @@ define "Rash Observation":
 define "Sex partners HIV treatment status Observation":
   [Observation: Concepts."Sex partners HIV treatment status"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Sex partners HIV treatment status
+/* End of Sex partners HIV treatment status */
+
 /*
 @dataElement: HIV.C.DE56 - Not on ART
 @activity: HIV.C3 Capture or update client history
@@ -3436,10 +3552,11 @@ define "Not on ART":
 define "Not on ART Condition":
   [Condition: Concepts."Not on ART"]
 define "Not on ART Observation":
-  "Not on ART Observation" O
+  [Observation: Concepts."Not on ART"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Not on ART"
-// End of Not on ART
+/* End of Not on ART */
+
 /*
 @dataElement: HIV.C.DE57 - On ART less than 6 months
 @activity: HIV.C3 Capture or update client history
@@ -3452,10 +3569,11 @@ define "On ART less than 6 months":
 define "On ART less than 6 months Condition":
   [Condition: Concepts."On ART less than 6 months"]
 define "On ART less than 6 months Observation":
-  "On ART less than 6 months Observation" O
+  [Observation: Concepts."On ART less than 6 months"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."On ART less than 6 months"
-// End of On ART less than 6 months
+/* End of On ART less than 6 months */
+
 /*
 @dataElement: HIV.C.DE58 - Partner has suspected low adherence to ART
 @activity: HIV.C3 Capture or update client history
@@ -3468,10 +3586,11 @@ define "Partner has suspected low adherence to ART":
 define "Partner has suspected low adherence to ART Condition":
   [Condition: Concepts."Partner has suspected low adherence to ART"]
 define "Partner has suspected low adherence to ART Observation":
-  "Partner has suspected low adherence to ART Observation" O
+  [Observation: Concepts."Partner has suspected low adherence to ART"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Partner has suspected low adherence to ART"
-// End of Partner has suspected low adherence to ART
+/* End of Partner has suspected low adherence to ART */
+
 /*
 @dataElement: HIV.C.DE59 - Partner is not virally suppressed
 @activity: HIV.C3 Capture or update client history
@@ -3484,10 +3603,11 @@ define "Partner is not virally suppressed":
 define "Partner is not virally suppressed Condition":
   [Condition: Concepts."Partner is not virally suppressed"]
 define "Partner is not virally suppressed Observation":
-  "Partner is not virally suppressed Observation" O
+  [Observation: Concepts."Partner is not virally suppressed"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Partner is not virally suppressed"
-// End of Partner is not virally suppressed
+/* End of Partner is not virally suppressed */
+
 /*
 @dataElement: HIV.C.DE60 - Partner is virally suppressed and has been on ART for 6 months or more
 @activity: HIV.C3 Capture or update client history
@@ -3500,10 +3620,11 @@ define "Partner is virally suppressed and has been on ART for 6 months or more":
 define "Partner is virally suppressed and has been on ART for 6 months or more Condition":
   [Condition: Concepts."Partner is virally suppressed and has been on ART for 6 months or more"]
 define "Partner is virally suppressed and has been on ART for 6 months or more Observation":
-  "Partner is virally suppressed and has been on ART for 6 months or more Observation" O
+  [Observation: Concepts."Partner is virally suppressed and has been on ART for 6 months or more"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Partner is virally suppressed and has been on ART for 6 months or more"
-// End of Partner is virally suppressed and has been on ART for 6 months or more
+/* End of Partner is virally suppressed and has been on ART for 6 months or more */
+
 /*
 @dataElement: HIV.C.DE61 - Suitable for PrEP
 @activity: HIV.C8 Suitable for PrEP or PEP?
@@ -3511,14 +3632,11 @@ define "Partner is virally suppressed and has been on ART for 6 months or more O
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Suitable for PrEP":
-  exists "Suitable for PrEP Observation"
-    or exists "Suitable for PrEP Condition"
-define "Suitable for PrEP Condition":
-  [Condition: Concepts."Suitable for PrEP"]
-define "Suitable for PrEP Observation":
   [Observation: Concepts."Suitable for PrEP"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Suitable for PrEP
+    return O.value
+/* End of Suitable for PrEP */
+
 /*
 @dataElement: HIV.C.DE74 - Date medications prescribed - HIV.C.DE74
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -3526,14 +3644,11 @@ define "Suitable for PrEP Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date medications prescribed - HIV.C.DE74":
-  exists "Date medications prescribed - HIV.C.DE74 Observation"
-    or exists "Date medications prescribed - HIV.C.DE74 Condition"
-define "Date medications prescribed - HIV.C.DE74 Condition":
-  [Condition: Concepts."Date medications prescribed - HIV.C.DE74"]
-define "Date medications prescribed - HIV.C.DE74 Observation":
   [Observation: Concepts."Date medications prescribed - HIV.C.DE74"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date medications prescribed - HIV.C.DE74
+    return O.value
+/* End of Date medications prescribed - HIV.C.DE74 */
+
 /*
 @dataElement: HIV.C.DE75 - Medications prescribed - HIV.C.DE75
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -3543,7 +3658,8 @@ define "Date medications prescribed - HIV.C.DE74 Observation":
 define "Medications prescribed - HIV.C.DE75 Observation":
   [Observation: Concepts."Medications prescribed - HIV.C.DE75"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Medications prescribed - HIV.C.DE75
+/* End of Medications prescribed - HIV.C.DE75 */
+
 /*
 @dataElement: HIV.C.DE76 - PrEP for HIV prevention
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -3556,10 +3672,11 @@ define "PrEP for HIV prevention":
 define "PrEP for HIV prevention Condition":
   [Condition: Concepts."PrEP for HIV prevention"]
 define "PrEP for HIV prevention Observation":
-  "PrEP for HIV prevention Observation" O
+  [Observation: Concepts."PrEP for HIV prevention"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."PrEP for HIV prevention"
-// End of PrEP for HIV prevention
+/* End of PrEP for HIV prevention */
+
 /*
 @dataElement: HIV.C.DE77 - PEP for HIV prevention
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -3572,10 +3689,11 @@ define "PEP for HIV prevention":
 define "PEP for HIV prevention Condition":
   [Condition: Concepts."PEP for HIV prevention"]
 define "PEP for HIV prevention Observation":
-  "PEP for HIV prevention Observation" O
+  [Observation: Concepts."PEP for HIV prevention"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."PEP for HIV prevention"
-// End of PEP for HIV prevention
+/* End of PEP for HIV prevention */
+
 /*
 @dataElement: HIV.C.DE78 - Other - HIV.C.DE78
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -3588,10 +3706,11 @@ define "Other - HIV.C.DE78":
 define "Other - HIV.C.DE78 Condition":
   [Condition: Concepts."Other - HIV.C.DE78"]
 define "Other - HIV.C.DE78 Observation":
-  "Other - HIV.C.DE75 Observation" O
+  [Observation: Concepts."Other - HIV.C.DE75"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other - HIV.C.DE78"
-// End of Other - HIV.C.DE78
+/* End of Other - HIV.C.DE78 */
+
 /*
 @dataElement: HIV.C.DE80 - PrEP product prescribed
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -3601,7 +3720,8 @@ define "Other - HIV.C.DE78 Observation":
 define "PrEP product prescribed Observation":
   [Observation: Concepts."PrEP product prescribed"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of PrEP product prescribed
+/* End of PrEP product prescribed */
+
 /*
 @dataElement: HIV.C.DE81 - Oral PrEP
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -3614,10 +3734,11 @@ define "Oral PrEP":
 define "Oral PrEP Condition":
   [Condition: Concepts."Oral PrEP"]
 define "Oral PrEP Observation":
-  "Oral PrEP Observation" O
+  [Observation: Concepts."Oral PrEP"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Oral PrEP"
-// End of Oral PrEP
+/* End of Oral PrEP */
+
 /*
 @dataElement: HIV.C.DE82 - Dapivirine vaginal ring DVR - HIV.C.DE82
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -3630,10 +3751,11 @@ define "Dapivirine vaginal ring DVR - HIV.C.DE82":
 define "Dapivirine vaginal ring DVR - HIV.C.DE82 Condition":
   [Condition: Concepts."Dapivirine vaginal ring DVR - HIV.C.DE82"]
 define "Dapivirine vaginal ring DVR - HIV.C.DE82 Observation":
-  "Dapivirine vaginal ring DVR - HIV.C.DE80 Observation" O
+  [Observation: Concepts."Dapivirine vaginal ring DVR - HIV.C.DE80"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Dapivirine vaginal ring DVR - HIV.C.DE82"
-// End of Dapivirine vaginal ring DVR - HIV.C.DE82
+/* End of Dapivirine vaginal ring DVR - HIV.C.DE82 */
+
 /*
 @dataElement: HIV.C.DE83 - CAB-LA - HIV.C.DE83
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -3646,10 +3768,11 @@ define "CAB-LA - HIV.C.DE83":
 define "CAB-LA - HIV.C.DE83 Condition":
   [Condition: Concepts."CAB-LA - HIV.C.DE83"]
 define "CAB-LA - HIV.C.DE83 Observation":
-  "CAB-LA - HIV.C.DE80 Observation" O
+  [Observation: Concepts."CAB-LA - HIV.C.DE80"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."CAB-LA - HIV.C.DE83"
-// End of CAB-LA - HIV.C.DE83
+/* End of CAB-LA - HIV.C.DE83 */
+
 /*
 @dataElement: HIV.C.DE84 - Other - HIV.C.DE84
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -3662,10 +3785,11 @@ define "Other - HIV.C.DE84":
 define "Other - HIV.C.DE84 Condition":
   [Condition: Concepts."Other - HIV.C.DE84"]
 define "Other - HIV.C.DE84 Observation":
-  "Other - HIV.C.DE80 Observation" O
+  [Observation: Concepts."Other - HIV.C.DE80"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other - HIV.C.DE84"
-// End of Other - HIV.C.DE84
+/* End of Other - HIV.C.DE84 */
+
 /*
 @dataElement: HIV.C.DE91 - Preferred PEP backbone regimen
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -3675,7 +3799,8 @@ define "Other - HIV.C.DE84 Observation":
 define "Preferred PEP backbone regimen Observation":
   [Observation: Concepts."Preferred PEP backbone regimen"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Preferred PEP backbone regimen
+/* End of Preferred PEP backbone regimen */
+
 /*
 @dataElement: HIV.C.DE92 - TDF + 3TC - HIV.C.DE92
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -3688,10 +3813,11 @@ define "TDF + 3TC - HIV.C.DE92":
 define "TDF + 3TC - HIV.C.DE92 Condition":
   [Condition: Concepts."TDF + 3TC - HIV.C.DE92"]
 define "TDF + 3TC - HIV.C.DE92 Observation":
-  "TDF + 3TC - HIV.C.DE91 Observation" O
+  [Observation: Concepts."TDF + 3TC - HIV.C.DE91"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."TDF + 3TC - HIV.C.DE92"
-// End of TDF + 3TC - HIV.C.DE92
+/* End of TDF + 3TC - HIV.C.DE92 */
+
 /*
 @dataElement: HIV.C.DE93 - TDF + FTC - HIV.C.DE93
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -3704,10 +3830,11 @@ define "TDF + FTC - HIV.C.DE93":
 define "TDF + FTC - HIV.C.DE93 Condition":
   [Condition: Concepts."TDF + FTC - HIV.C.DE93"]
 define "TDF + FTC - HIV.C.DE93 Observation":
-  "TDF + FTC - HIV.C.DE91 Observation" O
+  [Observation: Concepts."TDF + FTC - HIV.C.DE91"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."TDF + FTC - HIV.C.DE93"
-// End of TDF + FTC - HIV.C.DE93
+/* End of TDF + FTC - HIV.C.DE93 */
+
 /*
 @dataElement: HIV.C.DE94 - AZT + 3TC
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -3720,10 +3847,11 @@ define "AZT + 3TC":
 define "AZT + 3TC Condition":
   [Condition: Concepts."AZT + 3TC"]
 define "AZT + 3TC Observation":
-  "AZT + 3TC Observation" O
+  [Observation: Concepts."AZT + 3TC"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."AZT + 3TC"
-// End of AZT + 3TC
+/* End of AZT + 3TC */
+
 /*
 @dataElement: HIV.C.DE95 - Alternative PEP backbone regimen
 @activity: HIV.C3 Capture or update client history
@@ -3733,7 +3861,8 @@ define "AZT + 3TC Observation":
 define "Alternative PEP backbone regimen Observation":
   [Observation: Concepts."Alternative PEP backbone regimen"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Alternative PEP backbone regimen
+/* End of Alternative PEP backbone regimen */
+
 /*
 @dataElement: HIV.C.DE96 - ABC + 3TC
 @activity: HIV.C3 Capture or update client history
@@ -3746,10 +3875,11 @@ define "ABC + 3TC":
 define "ABC + 3TC Condition":
   [Condition: Concepts."ABC + 3TC"]
 define "ABC + 3TC Observation":
-  "ABC + 3TC Observation" O
+  [Observation: Concepts."ABC + 3TC"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."ABC + 3TC"
-// End of ABC + 3TC
+/* End of ABC + 3TC */
+
 /*
 @dataElement: HIV.C.DE97 - TDF + 3TC - HIV.C.DE97
 @activity: HIV.C3 Capture or update client history
@@ -3762,10 +3892,11 @@ define "TDF + 3TC - HIV.C.DE97":
 define "TDF + 3TC - HIV.C.DE97 Condition":
   [Condition: Concepts."TDF + 3TC - HIV.C.DE97"]
 define "TDF + 3TC - HIV.C.DE97 Observation":
-  "TDF + 3TC - HIV.C.DE95 Observation" O
+  [Observation: Concepts."TDF + 3TC - HIV.C.DE95"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."TDF + 3TC - HIV.C.DE97"
-// End of TDF + 3TC - HIV.C.DE97
+/* End of TDF + 3TC - HIV.C.DE97 */
+
 /*
 @dataElement: HIV.C.DE98 - TDF + FTC - HIV.C.DE98
 @activity: HIV.C3 Capture or update client history
@@ -3778,10 +3909,11 @@ define "TDF + FTC - HIV.C.DE98":
 define "TDF + FTC - HIV.C.DE98 Condition":
   [Condition: Concepts."TDF + FTC - HIV.C.DE98"]
 define "TDF + FTC - HIV.C.DE98 Observation":
-  "TDF + FTC - HIV.C.DE95 Observation" O
+  [Observation: Concepts."TDF + FTC - HIV.C.DE95"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."TDF + FTC - HIV.C.DE98"
-// End of TDF + FTC - HIV.C.DE98
+/* End of TDF + FTC - HIV.C.DE98 */
+
 /*
 @dataElement: HIV.C.DE99 - Preferred third PEP drug
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -3791,7 +3923,8 @@ define "TDF + FTC - HIV.C.DE98 Observation":
 define "Preferred third PEP drug Observation":
   [Observation: Concepts."Preferred third PEP drug"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Preferred third PEP drug
+/* End of Preferred third PEP drug */
+
 /*
 @dataElement: HIV.C.DE100 - DTG - HIV.C.DE100
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -3804,10 +3937,11 @@ define "DTG - HIV.C.DE100":
 define "DTG - HIV.C.DE100 Condition":
   [Condition: Concepts."DTG - HIV.C.DE100"]
 define "DTG - HIV.C.DE100 Observation":
-  "DTG - HIV.C.DE99 Observation" O
+  [Observation: Concepts."DTG - HIV.C.DE99"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."DTG - HIV.C.DE100"
-// End of DTG - HIV.C.DE100
+/* End of DTG - HIV.C.DE100 */
+
 /*
 @dataElement: HIV.C.DE101 - Alternative third PEP drug
 @activity: HIV.C3 Capture or update client history
@@ -3817,7 +3951,8 @@ define "DTG - HIV.C.DE100 Observation":
 define "Alternative third PEP drug Observation":
   [Observation: Concepts."Alternative third PEP drug"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Alternative third PEP drug
+/* End of Alternative third PEP drug */
+
 /*
 @dataElement: HIV.C.DE102 - ATV/r - HIV.C.DE102
 @activity: HIV.C3 Capture or update client history
@@ -3830,10 +3965,11 @@ define "ATV/r - HIV.C.DE102":
 define "ATV/r - HIV.C.DE102 Condition":
   [Condition: Concepts."ATV/r - HIV.C.DE102"]
 define "ATV/r - HIV.C.DE102 Observation":
-  "ATV/r - HIV.C.DE101 Observation" O
+  [Observation: Concepts."ATV/r - HIV.C.DE101"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."ATV/r - HIV.C.DE102"
-// End of ATV/r - HIV.C.DE102
+/* End of ATV/r - HIV.C.DE102 */
+
 /*
 @dataElement: HIV.C.DE103 - DRV/r - HIV.C.DE103
 @activity: HIV.C3 Capture or update client history
@@ -3846,10 +3982,11 @@ define "DRV/r - HIV.C.DE103":
 define "DRV/r - HIV.C.DE103 Condition":
   [Condition: Concepts."DRV/r - HIV.C.DE103"]
 define "DRV/r - HIV.C.DE103 Observation":
-  "DRV/r - HIV.C.DE101 Observation" O
+  [Observation: Concepts."DRV/r - HIV.C.DE101"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."DRV/r - HIV.C.DE103"
-// End of DRV/r - HIV.C.DE103
+/* End of DRV/r - HIV.C.DE103 */
+
 /*
 @dataElement: HIV.C.DE104 - LPV/r - HIV.C.DE104
 @activity: HIV.C3 Capture or update client history
@@ -3862,10 +3999,11 @@ define "LPV/r - HIV.C.DE104":
 define "LPV/r - HIV.C.DE104 Condition":
   [Condition: Concepts."LPV/r - HIV.C.DE104"]
 define "LPV/r - HIV.C.DE104 Observation":
-  "LPV/r - HIV.C.DE101 Observation" O
+  [Observation: Concepts."LPV/r - HIV.C.DE101"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."LPV/r - HIV.C.DE104"
-// End of LPV/r - HIV.C.DE104
+/* End of LPV/r - HIV.C.DE104 */
+
 /*
 @dataElement: HIV.C.DE105 - RAL - HIV.C.DE105
 @activity: HIV.C3 Capture or update client history
@@ -3878,10 +4016,11 @@ define "RAL - HIV.C.DE105":
 define "RAL - HIV.C.DE105 Condition":
   [Condition: Concepts."RAL - HIV.C.DE105"]
 define "RAL - HIV.C.DE105 Observation":
-  "RAL - HIV.C.DE101 Observation" O
+  [Observation: Concepts."RAL - HIV.C.DE101"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."RAL - HIV.C.DE105"
-// End of RAL - HIV.C.DE105
+/* End of RAL - HIV.C.DE105 */
+
 /*
 @dataElement: HIV.C.DE106 - Estimated creatinine clearance
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -3889,14 +4028,11 @@ define "RAL - HIV.C.DE105 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Estimated creatinine clearance":
-  exists "Estimated creatinine clearance Observation"
-    or exists "Estimated creatinine clearance Condition"
-define "Estimated creatinine clearance Condition":
-  [Condition: Concepts."Estimated creatinine clearance"]
-define "Estimated creatinine clearance Observation":
   [Observation: Concepts."Estimated creatinine clearance"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Estimated creatinine clearance
+    return O.value
+/* End of Estimated creatinine clearance */
+
 /*
 @dataElement: HIV.C.DE112 - Contraindications to PrEP usage
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -3906,7 +4042,8 @@ define "Estimated creatinine clearance Observation":
 define "Contraindications to PrEP usage Observation":
   [Observation: Concepts."Contraindications to PrEP usage"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Contraindications to PrEP usage
+/* End of Contraindications to PrEP usage */
+
 /*
 @dataElement: HIV.C.DE113 - Tenofovir disoproxil fumarate TDF allergy or contraindication
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -3919,10 +4056,11 @@ define "Tenofovir disoproxil fumarate TDF allergy or contraindication":
 define "Tenofovir disoproxil fumarate TDF allergy or contraindication Condition":
   [Condition: Concepts."Tenofovir disoproxil fumarate TDF allergy or contraindication"]
 define "Tenofovir disoproxil fumarate TDF allergy or contraindication Observation":
-  "Tenofovir disoproxil fumarate TDF allergy or contraindication Observation" O
+  [Observation: Concepts."Tenofovir disoproxil fumarate TDF allergy or contraindication"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Tenofovir disoproxil fumarate TDF allergy or contraindication"
-// End of Tenofovir disoproxil fumarate TDF allergy or contraindication
+/* End of Tenofovir disoproxil fumarate TDF allergy or contraindication */
+
 /*
 @dataElement: HIV.C.DE114 - HIV-positive - HIV.C.DE114
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -3935,10 +4073,11 @@ define "HIV-positive - HIV.C.DE114":
 define "HIV-positive - HIV.C.DE114 Condition":
   [Condition: Concepts."HIV-positive - HIV.C.DE114"]
 define "HIV-positive - HIV.C.DE114 Observation":
-  "HIV-positive - HIV.C.DE112 Observation" O
+  [Observation: Concepts."HIV-positive - HIV.C.DE112"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV-positive - HIV.C.DE114"
-// End of HIV-positive - HIV.C.DE114
+/* End of HIV-positive - HIV.C.DE114 */
+
 /*
 @dataElement: HIV.C.DE115 - Low estimated creatinine clearance
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -3951,10 +4090,11 @@ define "Low estimated creatinine clearance":
 define "Low estimated creatinine clearance Condition":
   [Condition: Concepts."Low estimated creatinine clearance"]
 define "Low estimated creatinine clearance Observation":
-  "Low estimated creatinine clearance Observation" O
+  [Observation: Concepts."Low estimated creatinine clearance"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Low estimated creatinine clearance"
-// End of Low estimated creatinine clearance
+/* End of Low estimated creatinine clearance */
+
 /*
 @dataElement: HIV.C.DE116 - Acute HIV infection symptoms - HIV.C.DE116
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -3967,10 +4107,11 @@ define "Acute HIV infection symptoms - HIV.C.DE116":
 define "Acute HIV infection symptoms - HIV.C.DE116 Condition":
   [Condition: Concepts."Acute HIV infection symptoms - HIV.C.DE116"]
 define "Acute HIV infection symptoms - HIV.C.DE116 Observation":
-  "Acute HIV infection symptoms - HIV.C.DE112 Observation" O
+  [Observation: Concepts."Acute HIV infection symptoms - HIV.C.DE112"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Acute HIV infection symptoms - HIV.C.DE116"
-// End of Acute HIV infection symptoms - HIV.C.DE116
+/* End of Acute HIV infection symptoms - HIV.C.DE116 */
+
 /*
 @dataElement: HIV.C.DE117 - Probable recent exposure to HIV
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -3983,10 +4124,11 @@ define "Probable recent exposure to HIV":
 define "Probable recent exposure to HIV Condition":
   [Condition: Concepts."Probable recent exposure to HIV"]
 define "Probable recent exposure to HIV Observation":
-  "Probable recent exposure to HIV Observation" O
+  [Observation: Concepts."Probable recent exposure to HIV"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Probable recent exposure to HIV"
-// End of Probable recent exposure to HIV
+/* End of Probable recent exposure to HIV */
+
 /*
 @dataElement: HIV.C.DE118 - Other allergy or contraindication to a medicine in the PrEP regimen
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -3999,10 +4141,11 @@ define "Other allergy or contraindication to a medicine in the PrEP regimen":
 define "Other allergy or contraindication to a medicine in the PrEP regimen Condition":
   [Condition: Concepts."Other allergy or contraindication to a medicine in the PrEP regimen"]
 define "Other allergy or contraindication to a medicine in the PrEP regimen Observation":
-  "Other allergy or contraindication to a medicine in the PrEP regimen Observation" O
+  [Observation: Concepts."Other allergy or contraindication to a medicine in the PrEP regimen"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other allergy or contraindication to a medicine in the PrEP regimen"
-// End of Other allergy or contraindication to a medicine in the PrEP regimen
+/* End of Other allergy or contraindication to a medicine in the PrEP regimen */
+
 /*
 @dataElement: HIV.C.DE121 - Number of days prescribed - HIV.C.DE121
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -4010,14 +4153,11 @@ define "Other allergy or contraindication to a medicine in the PrEP regimen Obse
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Number of days prescribed - HIV.C.DE121":
-  exists "Number of days prescribed - HIV.C.DE121 Observation"
-    or exists "Number of days prescribed - HIV.C.DE121 Condition"
-define "Number of days prescribed - HIV.C.DE121 Condition":
-  [Condition: Concepts."Number of days prescribed - HIV.C.DE121"]
-define "Number of days prescribed - HIV.C.DE121 Observation":
   [Observation: Concepts."Number of days prescribed - HIV.C.DE121"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Number of days prescribed - HIV.C.DE121
+    return O.value
+/* End of Number of days prescribed - HIV.C.DE121 */
+
 /*
 @dataElement: HIV.C.DE123 - Adherence counselling provided - HIV.C.DE123
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -4025,14 +4165,11 @@ define "Number of days prescribed - HIV.C.DE121 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Adherence counselling provided - HIV.C.DE123":
-  exists "Adherence counselling provided - HIV.C.DE123 Observation"
-    or exists "Adherence counselling provided - HIV.C.DE123 Condition"
-define "Adherence counselling provided - HIV.C.DE123 Condition":
-  [Condition: Concepts."Adherence counselling provided - HIV.C.DE123"]
-define "Adherence counselling provided - HIV.C.DE123 Observation":
   [Observation: Concepts."Adherence counselling provided - HIV.C.DE123"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Adherence counselling provided - HIV.C.DE123
+    return O.value
+/* End of Adherence counselling provided - HIV.C.DE123 */
+
 /*
 @dataElement: HIV.C.DE124 - Date/time of follow-up appointment - HIV.C.DE124
 @activity: HIV.C24 Schedule follow-up
@@ -4040,14 +4177,11 @@ define "Adherence counselling provided - HIV.C.DE123 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date/time of follow-up appointment - HIV.C.DE124":
-  exists "Date/time of follow-up appointment - HIV.C.DE124 Observation"
-    or exists "Date/time of follow-up appointment - HIV.C.DE124 Condition"
-define "Date/time of follow-up appointment - HIV.C.DE124 Condition":
-  [Condition: Concepts."Date/time of follow-up appointment - HIV.C.DE124"]
-define "Date/time of follow-up appointment - HIV.C.DE124 Observation":
   [Observation: Concepts."Date/time of follow-up appointment - HIV.C.DE124"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date/time of follow-up appointment - HIV.C.DE124
+    return O.value
+/* End of Date/time of follow-up appointment - HIV.C.DE124 */
+
 /*
 @dataElement: HIV.C.DE125 - Type of follow-up appointment - HIV.C.DE125
 @activity: HIV.C24 Schedule follow-up
@@ -4057,7 +4191,8 @@ define "Date/time of follow-up appointment - HIV.C.DE124 Observation":
 define "Type of follow-up appointment - HIV.C.DE125 Observation":
   [Observation: Concepts."Type of follow-up appointment - HIV.C.DE125"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Type of follow-up appointment - HIV.C.DE125
+/* End of Type of follow-up appointment - HIV.C.DE125 */
+
 /*
 @dataElement: HIV.C.DE126 - Retesting for HIV - HIV.C.DE126
 @activity: HIV.C24 Schedule follow-up
@@ -4070,10 +4205,11 @@ define "Retesting for HIV - HIV.C.DE126":
 define "Retesting for HIV - HIV.C.DE126 Condition":
   [Condition: Concepts."Retesting for HIV - HIV.C.DE126"]
 define "Retesting for HIV - HIV.C.DE126 Observation":
-  "Retesting for HIV - HIV.C.DE125 Observation" O
+  [Observation: Concepts."Retesting for HIV - HIV.C.DE125"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Retesting for HIV - HIV.C.DE126"
-// End of Retesting for HIV - HIV.C.DE126
+/* End of Retesting for HIV - HIV.C.DE126 */
+
 /*
 @dataElement: HIV.C.DE127 - Follow-up appointment for PrEP
 @activity: HIV.C24 Schedule follow-up
@@ -4086,10 +4222,11 @@ define "Follow-up appointment for PrEP":
 define "Follow-up appointment for PrEP Condition":
   [Condition: Concepts."Follow-up appointment for PrEP"]
 define "Follow-up appointment for PrEP Observation":
-  "Follow-up appointment for PrEP Observation" O
+  [Observation: Concepts."Follow-up appointment for PrEP"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Follow-up appointment for PrEP"
-// End of Follow-up appointment for PrEP
+/* End of Follow-up appointment for PrEP */
+
 /*
 @dataElement: HIV.C.DE128 - Other - HIV.C.DE128
 @activity: HIV.C24 Schedule follow-up
@@ -4102,10 +4239,11 @@ define "Other - HIV.C.DE128":
 define "Other - HIV.C.DE128 Condition":
   [Condition: Concepts."Other - HIV.C.DE128"]
 define "Other - HIV.C.DE128 Observation":
-  "Other - HIV.C.DE125 Observation" O
+  [Observation: Concepts."Other - HIV.C.DE125"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other - HIV.C.DE128"
-// End of Other - HIV.C.DE128
+/* End of Other - HIV.C.DE128 */
+
 /*
 @dataElement: HIV.C.DE131 - Prevention services offered and referrals - HIV.C.DE131
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4115,7 +4253,8 @@ define "Other - HIV.C.DE128 Observation":
 define "Prevention services offered and referrals - HIV.C.DE131 Observation":
   [Observation: Concepts."Prevention services offered and referrals - HIV.C.DE131"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Prevention services offered and referrals - HIV.C.DE131
+/* End of Prevention services offered and referrals - HIV.C.DE131 */
+
 /*
 @dataElement: HIV.C.DE132 - Male and female condoms and condom-compatible lubricants offered
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4128,10 +4267,11 @@ define "Male and female condoms and condom-compatible lubricants offered":
 define "Male and female condoms and condom-compatible lubricants offered Condition":
   [Condition: Concepts."Male and female condoms and condom-compatible lubricants offered"]
 define "Male and female condoms and condom-compatible lubricants offered Observation":
-  "Male and female condoms and condom-compatible lubricants offered Observation" O
+  [Observation: Concepts."Male and female condoms and condom-compatible lubricants offered"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Male and female condoms and condom-compatible lubricants offered"
-// End of Male and female condoms and condom-compatible lubricants offered
+/* End of Male and female condoms and condom-compatible lubricants offered */
+
 /*
 @dataElement: HIV.C.DE133 - Voluntary medical male circumcision VMMC referral
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4144,10 +4284,11 @@ define "Voluntary medical male circumcision VMMC referral":
 define "Voluntary medical male circumcision VMMC referral Condition":
   [Condition: Concepts."Voluntary medical male circumcision VMMC referral"]
 define "Voluntary medical male circumcision VMMC referral Observation":
-  "Voluntary medical male circumcision VMMC referral Observation" O
+  [Observation: Concepts."Voluntary medical male circumcision VMMC referral"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Voluntary medical male circumcision VMMC referral"
-// End of Voluntary medical male circumcision VMMC referral
+/* End of Voluntary medical male circumcision VMMC referral */
+
 /*
 @dataElement: HIV.C.DE134 - Harm reduction for people who inject drugs - HIV.C.DE134
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4160,10 +4301,11 @@ define "Harm reduction for people who inject drugs - HIV.C.DE134":
 define "Harm reduction for people who inject drugs - HIV.C.DE134 Condition":
   [Condition: Concepts."Harm reduction for people who inject drugs - HIV.C.DE134"]
 define "Harm reduction for people who inject drugs - HIV.C.DE134 Observation":
-  "Harm reduction for people who inject drugs - HIV.C.DE131 Observation" O
+  [Observation: Concepts."Harm reduction for people who inject drugs - HIV.C.DE131"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Harm reduction for people who inject drugs - HIV.C.DE134"
-// End of Harm reduction for people who inject drugs - HIV.C.DE134
+/* End of Harm reduction for people who inject drugs - HIV.C.DE134 */
+
 /*
 @dataElement: HIV.C.DE135 - Behavioural interventions to support risk reduction - HIV.C.DE135
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4176,10 +4318,11 @@ define "Behavioural interventions to support risk reduction - HIV.C.DE135":
 define "Behavioural interventions to support risk reduction - HIV.C.DE135 Condition":
   [Condition: Concepts."Behavioural interventions to support risk reduction - HIV.C.DE135"]
 define "Behavioural interventions to support risk reduction - HIV.C.DE135 Observation":
-  "Behavioural interventions to support risk reduction - HIV.C.DE131 Observation" O
+  [Observation: Concepts."Behavioural interventions to support risk reduction - HIV.C.DE131"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Behavioural interventions to support risk reduction - HIV.C.DE135"
-// End of Behavioural interventions to support risk reduction - HIV.C.DE135
+/* End of Behavioural interventions to support risk reduction - HIV.C.DE135 */
+
 /*
 @dataElement: HIV.C.DE138 - Condom type
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4189,7 +4332,8 @@ define "Behavioural interventions to support risk reduction - HIV.C.DE135 Observ
 define "Condom type Observation":
   [Observation: Concepts."Condom type"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Condom type
+/* End of Condom type */
+
 /*
 @dataElement: HIV.C.DE139 - Male condom
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4202,10 +4346,11 @@ define "Male condom":
 define "Male condom Condition":
   [Condition: Concepts."Male condom"]
 define "Male condom Observation":
-  "Male condom Observation" O
+  [Observation: Concepts."Male condom"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Male condom"
-// End of Male condom
+/* End of Male condom */
+
 /*
 @dataElement: HIV.C.DE140 - Female condom
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4218,10 +4363,11 @@ define "Female condom":
 define "Female condom Condition":
   [Condition: Concepts."Female condom"]
 define "Female condom Observation":
-  "Female condom Observation" O
+  [Observation: Concepts."Female condom"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Female condom"
-// End of Female condom
+/* End of Female condom */
+
 /*
 @dataElement: HIV.C.DE142 - Number of HIV self-test kits distributed
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4229,14 +4375,11 @@ define "Female condom Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Number of HIV self-test kits distributed":
-  exists "Number of HIV self-test kits distributed Observation"
-    or exists "Number of HIV self-test kits distributed Condition"
-define "Number of HIV self-test kits distributed Condition":
-  [Condition: Concepts."Number of HIV self-test kits distributed"]
-define "Number of HIV self-test kits distributed Observation":
   [Observation: Concepts."Number of HIV self-test kits distributed"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Number of HIV self-test kits distributed
+    return O.value
+/* End of Number of HIV self-test kits distributed */
+
 /*
 @dataElement: HIV.C.DE143 - HIV self-test distributed for use by
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4246,7 +4389,8 @@ define "Number of HIV self-test kits distributed Observation":
 define "HIV self-test distributed for use by Observation":
   [Observation: Concepts."HIV self-test distributed for use by"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HIV self-test distributed for use by
+/* End of HIV self-test distributed for use by */
+
 /*
 @dataElement: HIV.C.DE144 - Self
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4259,10 +4403,11 @@ define "Self":
 define "Self Condition":
   [Condition: Concepts."Self"]
 define "Self Observation":
-  "Self Observation" O
+  [Observation: Concepts."Self"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Self"
-// End of Self
+/* End of Self */
+
 /*
 @dataElement: HIV.C.DE145 - Family member
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4275,10 +4420,11 @@ define "Family member":
 define "Family member Condition":
   [Condition: Concepts."Family member"]
 define "Family member Observation":
-  "Family member Observation" O
+  [Observation: Concepts."Family member"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Family member"
-// End of Family member
+/* End of Family member */
+
 /*
 @dataElement: HIV.C.DE146 - Drug-injecting partner - HIV.C.DE146
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4291,10 +4437,11 @@ define "Drug-injecting partner - HIV.C.DE146":
 define "Drug-injecting partner - HIV.C.DE146 Condition":
   [Condition: Concepts."Drug-injecting partner - HIV.C.DE146"]
 define "Drug-injecting partner - HIV.C.DE146 Observation":
-  "Drug-injecting partner - HIV.C.DE143 Observation" O
+  [Observation: Concepts."Drug-injecting partner - HIV.C.DE143"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Drug-injecting partner - HIV.C.DE146"
-// End of Drug-injecting partner - HIV.C.DE146
+/* End of Drug-injecting partner - HIV.C.DE146 */
+
 /*
 @dataElement: HIV.C.DE147 - Sexual partner - HIV.C.DE147
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4307,10 +4454,11 @@ define "Sexual partner - HIV.C.DE147":
 define "Sexual partner - HIV.C.DE147 Condition":
   [Condition: Concepts."Sexual partner - HIV.C.DE147"]
 define "Sexual partner - HIV.C.DE147 Observation":
-  "Sexual partner - HIV.C.DE143 Observation" O
+  [Observation: Concepts."Sexual partner - HIV.C.DE143"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Sexual partner - HIV.C.DE147"
-// End of Sexual partner - HIV.C.DE147
+/* End of Sexual partner - HIV.C.DE147 */
+
 /*
 @dataElement: HIV.C.DE148 - Social contact - HIV.C.DE148
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4323,10 +4471,11 @@ define "Social contact - HIV.C.DE148":
 define "Social contact - HIV.C.DE148 Condition":
   [Condition: Concepts."Social contact - HIV.C.DE148"]
 define "Social contact - HIV.C.DE148 Observation":
-  "Social contact - HIV.C.DE143 Observation" O
+  [Observation: Concepts."Social contact - HIV.C.DE143"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Social contact - HIV.C.DE148"
-// End of Social contact - HIV.C.DE148
+/* End of Social contact - HIV.C.DE148 */
+
 /*
 @dataElement: HIV.C.DE149 - Sexual and reproductive health integrated services - HIV.C.DE149
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4336,7 +4485,8 @@ define "Social contact - HIV.C.DE148 Observation":
 define "Sexual and reproductive health integrated services - HIV.C.DE149 Observation":
   [Observation: Concepts."Sexual and reproductive health integrated services - HIV.C.DE149"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Sexual and reproductive health integrated services - HIV.C.DE149
+/* End of Sexual and reproductive health integrated services - HIV.C.DE149 */
+
 /*
 @dataElement: HIV.C.DE150 - Contraception and family planning - HIV.C.DE150
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4349,10 +4499,11 @@ define "Contraception and family planning - HIV.C.DE150":
 define "Contraception and family planning - HIV.C.DE150 Condition":
   [Condition: Concepts."Contraception and family planning - HIV.C.DE150"]
 define "Contraception and family planning - HIV.C.DE150 Observation":
-  "Contraception and family planning - HIV.C.DE149 Observation" O
+  [Observation: Concepts."Contraception and family planning - HIV.C.DE149"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Contraception and family planning - HIV.C.DE150"
-// End of Contraception and family planning - HIV.C.DE150
+/* End of Contraception and family planning - HIV.C.DE150 */
+
 /*
 @dataElement: HIV.C.DE151 - Check pregnancy status - HIV.C.DE151
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4365,10 +4516,11 @@ define "Check pregnancy status - HIV.C.DE151":
 define "Check pregnancy status - HIV.C.DE151 Condition":
   [Condition: Concepts."Check pregnancy status - HIV.C.DE151"]
 define "Check pregnancy status - HIV.C.DE151 Observation":
-  "Check pregnancy status - HIV.C.DE149 Observation" O
+  [Observation: Concepts."Check pregnancy status - HIV.C.DE149"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Check pregnancy status - HIV.C.DE151"
-// End of Check pregnancy status - HIV.C.DE151
+/* End of Check pregnancy status - HIV.C.DE151 */
+
 /*
 @dataElement: HIV.C.DE152 - Prevent mother-to-child transmission
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4381,10 +4533,11 @@ define "Prevent mother-to-child transmission":
 define "Prevent mother-to-child transmission Condition":
   [Condition: Concepts."Prevent mother-to-child transmission"]
 define "Prevent mother-to-child transmission Observation":
-  "Prevent mother-to-child transmission Observation" O
+  [Observation: Concepts."Prevent mother-to-child transmission"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Prevent mother-to-child transmission"
-// End of Prevent mother-to-child transmission
+/* End of Prevent mother-to-child transmission */
+
 /*
 @dataElement: HIV.C.DE153 - Cervical cancer screening and treatment
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4397,10 +4550,11 @@ define "Cervical cancer screening and treatment":
 define "Cervical cancer screening and treatment Condition":
   [Condition: Concepts."Cervical cancer screening and treatment"]
 define "Cervical cancer screening and treatment Observation":
-  "Cervical cancer screening and treatment Observation" O
+  [Observation: Concepts."Cervical cancer screening and treatment"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Cervical cancer screening and treatment"
-// End of Cervical cancer screening and treatment
+/* End of Cervical cancer screening and treatment */
+
 /*
 @dataElement: HIV.C.DE154 - Anal cancer screening for men who have sex with men - HIV.C.DE154
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4413,10 +4567,11 @@ define "Anal cancer screening for men who have sex with men - HIV.C.DE154":
 define "Anal cancer screening for men who have sex with men - HIV.C.DE154 Condition":
   [Condition: Concepts."Anal cancer screening for men who have sex with men - HIV.C.DE154"]
 define "Anal cancer screening for men who have sex with men - HIV.C.DE154 Observation":
-  "Anal cancer screening for men who have sex with men - HIV.C.DE149 Observation" O
+  [Observation: Concepts."Anal cancer screening for men who have sex with men - HIV.C.DE149"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Anal cancer screening for men who have sex with men - HIV.C.DE154"
-// End of Anal cancer screening for men who have sex with men - HIV.C.DE154
+/* End of Anal cancer screening for men who have sex with men - HIV.C.DE154 */
+
 /*
 @dataElement: HIV.C.DE155 - STI testing and treatment - HIV.C.DE155
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4429,10 +4584,11 @@ define "STI testing and treatment - HIV.C.DE155":
 define "STI testing and treatment - HIV.C.DE155 Condition":
   [Condition: Concepts."STI testing and treatment - HIV.C.DE155"]
 define "STI testing and treatment - HIV.C.DE155 Observation":
-  "STI testing and treatment - HIV.C.DE149 Observation" O
+  [Observation: Concepts."STI testing and treatment - HIV.C.DE149"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."STI testing and treatment - HIV.C.DE155"
-// End of STI testing and treatment - HIV.C.DE155
+/* End of STI testing and treatment - HIV.C.DE155 */
+
 /*
 @dataElement: HIV.C.DE156 - HIV testing for partners and biological children - HIV.C.DE156
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4445,10 +4601,11 @@ define "HIV testing for partners and biological children - HIV.C.DE156":
 define "HIV testing for partners and biological children - HIV.C.DE156 Condition":
   [Condition: Concepts."HIV testing for partners and biological children - HIV.C.DE156"]
 define "HIV testing for partners and biological children - HIV.C.DE156 Observation":
-  "HIV testing for partners and biological children - HIV.C.DE149 Observation" O
+  [Observation: Concepts."HIV testing for partners and biological children - HIV.C.DE149"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV testing for partners and biological children - HIV.C.DE156"
-// End of HIV testing for partners and biological children - HIV.C.DE156
+/* End of HIV testing for partners and biological children - HIV.C.DE156 */
+
 /*
 @dataElement: HIV.C.DE157 - Offer other clinical services - HIV.C.DE157
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4458,7 +4615,8 @@ define "HIV testing for partners and biological children - HIV.C.DE156 Observati
 define "Offer other clinical services - HIV.C.DE157 Observation":
   [Observation: Concepts."Offer other clinical services - HIV.C.DE157"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Offer other clinical services - HIV.C.DE157
+/* End of Offer other clinical services - HIV.C.DE157 */
+
 /*
 @dataElement: HIV.C.DE158 - Assessment and provision of vaccinations - HIV.C.DE158
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4471,10 +4629,11 @@ define "Assessment and provision of vaccinations - HIV.C.DE158":
 define "Assessment and provision of vaccinations - HIV.C.DE158 Condition":
   [Condition: Concepts."Assessment and provision of vaccinations - HIV.C.DE158"]
 define "Assessment and provision of vaccinations - HIV.C.DE158 Observation":
-  "Assessment and provision of vaccinations - HIV.C.DE157 Observation" O
+  [Observation: Concepts."Assessment and provision of vaccinations - HIV.C.DE157"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Assessment and provision of vaccinations - HIV.C.DE158"
-// End of Assessment and provision of vaccinations - HIV.C.DE158
+/* End of Assessment and provision of vaccinations - HIV.C.DE158 */
+
 /*
 @dataElement: HIV.C.DE159 - Hepatitis B virus HBV and hepatitis C virus HCV testing and treatment
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4487,10 +4646,11 @@ define "Hepatitis B virus HBV and hepatitis C virus HCV testing and treatment":
 define "Hepatitis B virus HBV and hepatitis C virus HCV testing and treatment Condition":
   [Condition: Concepts."Hepatitis B virus HBV and hepatitis C virus HCV testing and treatment"]
 define "Hepatitis B virus HBV and hepatitis C virus HCV testing and treatment Observation":
-  "Hepatitis B virus HBV and hepatitis C virus HCV testing and treatment Observation" O
+  [Observation: Concepts."Hepatitis B virus HBV and hepatitis C virus HCV testing and treatment"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Hepatitis B virus HBV and hepatitis C virus HCV testing and treatment"
-// End of Hepatitis B virus HBV and hepatitis C virus HCV testing and treatment
+/* End of Hepatitis B virus HBV and hepatitis C virus HCV testing and treatment */
+
 /*
 @dataElement: HIV.C.DE160 - Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.C.DE160
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4503,10 +4663,11 @@ define "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumoni
 define "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.C.DE160 Condition":
   [Condition: Concepts."Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.C.DE160"]
 define "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.C.DE160 Observation":
-  "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.C.DE157 Observation" O
+  [Observation: Concepts."Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.C.DE157"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.C.DE160"
-// End of Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.C.DE160
+/* End of Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.C.DE160 */
+
 /*
 @dataElement: HIV.C.DE161 - Intensified TB case finding and linkage to TB treatment - HIV.C.DE161
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4519,10 +4680,11 @@ define "Intensified TB case finding and linkage to TB treatment - HIV.C.DE161":
 define "Intensified TB case finding and linkage to TB treatment - HIV.C.DE161 Condition":
   [Condition: Concepts."Intensified TB case finding and linkage to TB treatment - HIV.C.DE161"]
 define "Intensified TB case finding and linkage to TB treatment - HIV.C.DE161 Observation":
-  "Intensified TB case finding and linkage to TB treatment - HIV.C.DE157 Observation" O
+  [Observation: Concepts."Intensified TB case finding and linkage to TB treatment - HIV.C.DE157"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Intensified TB case finding and linkage to TB treatment - HIV.C.DE161"
-// End of Intensified TB case finding and linkage to TB treatment - HIV.C.DE161
+/* End of Intensified TB case finding and linkage to TB treatment - HIV.C.DE161 */
+
 /*
 @dataElement: HIV.C.DE162 - Provision of isoniazid preventive therapy if person does not have TB - HIV.C.DE162
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4535,10 +4697,11 @@ define "Provision of isoniazid preventive therapy if person does not have TB - H
 define "Provision of isoniazid preventive therapy if person does not have TB - HIV.C.DE162 Condition":
   [Condition: Concepts."Provision of isoniazid preventive therapy if person does not have TB - HIV.C.DE162"]
 define "Provision of isoniazid preventive therapy if person does not have TB - HIV.C.DE162 Observation":
-  "Provision of isoniazid preventive therapy if person does not have TB - HIV.C.DE157 Observation" O
+  [Observation: Concepts."Provision of isoniazid preventive therapy if person does not have TB - HIV.C.DE157"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Provision of isoniazid preventive therapy if person does not have TB - HIV.C.DE162"
-// End of Provision of isoniazid preventive therapy if person does not have TB - HIV.C.DE162
+/* End of Provision of isoniazid preventive therapy if person does not have TB - HIV.C.DE162 */
+
 /*
 @dataElement: HIV.C.DE163 - Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.C.DE163
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4551,10 +4714,11 @@ define "Malaria prevention such as bed nets and prophylaxis, depending on epidem
 define "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.C.DE163 Condition":
   [Condition: Concepts."Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.C.DE163"]
 define "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.C.DE163 Observation":
-  "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.C.DE157 Observation" O
+  [Observation: Concepts."Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.C.DE157"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.C.DE163"
-// End of Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.C.DE163
+/* End of Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.C.DE163 */
+
 /*
 @dataElement: HIV.C.DE164 - Other support services - HIV.C.DE164
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4564,7 +4728,8 @@ define "Malaria prevention such as bed nets and prophylaxis, depending on epidem
 define "Other support services - HIV.C.DE164 Observation":
   [Observation: Concepts."Other support services - HIV.C.DE164"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Other support services - HIV.C.DE164
+/* End of Other support services - HIV.C.DE164 */
+
 /*
 @dataElement: HIV.C.DE165 - Mental health services - HIV.C.DE165
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4577,10 +4742,11 @@ define "Mental health services - HIV.C.DE165":
 define "Mental health services - HIV.C.DE165 Condition":
   [Condition: Concepts."Mental health services - HIV.C.DE165"]
 define "Mental health services - HIV.C.DE165 Observation":
-  "Mental health services - HIV.C.DE164 Observation" O
+  [Observation: Concepts."Mental health services - HIV.C.DE164"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Mental health services - HIV.C.DE165"
-// End of Mental health services - HIV.C.DE165
+/* End of Mental health services - HIV.C.DE165 */
+
 /*
 @dataElement: HIV.C.DE166 - Psychosocial counselling, support and treatment adherence counselling - HIV.C.DE166
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4593,10 +4759,11 @@ define "Psychosocial counselling, support and treatment adherence counselling - 
 define "Psychosocial counselling, support and treatment adherence counselling - HIV.C.DE166 Condition":
   [Condition: Concepts."Psychosocial counselling, support and treatment adherence counselling - HIV.C.DE166"]
 define "Psychosocial counselling, support and treatment adherence counselling - HIV.C.DE166 Observation":
-  "Psychosocial counselling, support and treatment adherence counselling - HIV.C.DE164 Observation" O
+  [Observation: Concepts."Psychosocial counselling, support and treatment adherence counselling - HIV.C.DE164"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Psychosocial counselling, support and treatment adherence counselling - HIV.C.DE166"
-// End of Psychosocial counselling, support and treatment adherence counselling - HIV.C.DE166
+/* End of Psychosocial counselling, support and treatment adherence counselling - HIV.C.DE166 */
+
 /*
 @dataElement: HIV.C.DE167 - Support for disclosure and partner services - HIV.C.DE167
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4609,10 +4776,11 @@ define "Support for disclosure and partner services - HIV.C.DE167":
 define "Support for disclosure and partner services - HIV.C.DE167 Condition":
   [Condition: Concepts."Support for disclosure and partner services - HIV.C.DE167"]
 define "Support for disclosure and partner services - HIV.C.DE167 Observation":
-  "Support for disclosure and partner services - HIV.C.DE164 Observation" O
+  [Observation: Concepts."Support for disclosure and partner services - HIV.C.DE164"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Support for disclosure and partner services - HIV.C.DE167"
-// End of Support for disclosure and partner services - HIV.C.DE167
+/* End of Support for disclosure and partner services - HIV.C.DE167 */
+
 /*
 @dataElement: HIV.C.DE168 - Legal and social services - HIV.C.DE168
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4625,10 +4793,11 @@ define "Legal and social services - HIV.C.DE168":
 define "Legal and social services - HIV.C.DE168 Condition":
   [Condition: Concepts."Legal and social services - HIV.C.DE168"]
 define "Legal and social services - HIV.C.DE168 Observation":
-  "Legal and social services - HIV.C.DE164 Observation" O
+  [Observation: Concepts."Legal and social services - HIV.C.DE164"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Legal and social services - HIV.C.DE168"
-// End of Legal and social services - HIV.C.DE168
+/* End of Legal and social services - HIV.C.DE168 */
+
 /*
 @dataElement: HIV.C.DE169 - Services for responding to violence against women - HIV.C.DE169
 @activity: HIV.C10 Counsel on risk and prevention
@@ -4641,10 +4810,11 @@ define "Services for responding to violence against women - HIV.C.DE169":
 define "Services for responding to violence against women - HIV.C.DE169 Condition":
   [Condition: Concepts."Services for responding to violence against women - HIV.C.DE169"]
 define "Services for responding to violence against women - HIV.C.DE169 Observation":
-  "Services for responding to violence against women - HIV.C.DE164 Observation" O
+  [Observation: Concepts."Services for responding to violence against women - HIV.C.DE164"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Services for responding to violence against women - HIV.C.DE169"
-// End of Services for responding to violence against women - HIV.C.DE169
+/* End of Services for responding to violence against women - HIV.C.DE169 */
+
 /*
 @dataElement: HIV.D.DE1 - Reason for visit - HIV.D.DE1
 @activity: HIV.D1 Determine reason for visit
@@ -4654,7 +4824,8 @@ define "Services for responding to violence against women - HIV.C.DE169 Observat
 define "Reason for visit - HIV.D.DE1 Observation":
   [Observation: Concepts."Reason for visit - HIV.D.DE1"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Reason for visit - HIV.D.DE1
+/* End of Reason for visit - HIV.D.DE1 */
+
 /*
 @dataElement: HIV.D.DE2 - First clinical visit
 @activity: HIV.D1 Determine reason for visit
@@ -4667,10 +4838,11 @@ define "First clinical visit":
 define "First clinical visit Condition":
   [Condition: Concepts."First clinical visit"]
 define "First clinical visit Observation":
-  "First clinical visit Observation" O
+  [Observation: Concepts."First clinical visit"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."First clinical visit"
-// End of First clinical visit
+/* End of First clinical visit */
+
 /*
 @dataElement: HIV.D.DE3 - Clinical visit - HIV.D.DE3
 @activity: HIV.D1 Determine reason for visit
@@ -4683,10 +4855,11 @@ define "Clinical visit - HIV.D.DE3":
 define "Clinical visit - HIV.D.DE3 Condition":
   [Condition: Concepts."Clinical visit - HIV.D.DE3"]
 define "Clinical visit - HIV.D.DE3 Observation":
-  "Clinical visit - HIV.D.DE1 Observation" O
+  [Observation: Concepts."Clinical visit - HIV.D.DE1"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Clinical visit - HIV.D.DE3"
-// End of Clinical visit - HIV.D.DE3
+/* End of Clinical visit - HIV.D.DE3 */
+
 /*
 @dataElement: HIV.D.DE4 - ART initiation
 @activity: HIV.D1 Determine reason for visit
@@ -4699,10 +4872,11 @@ define "ART initiation":
 define "ART initiation Condition":
   [Condition: Concepts."ART initiation"]
 define "ART initiation Observation":
-  "ART initiation Observation" O
+  [Observation: Concepts."ART initiation"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."ART initiation"
-// End of ART initiation
+/* End of ART initiation */
+
 /*
 @dataElement: HIV.D.DE5 - ART drug pick up
 @activity: HIV.D1 Determine reason for visit
@@ -4715,10 +4889,11 @@ define "ART drug pick up":
 define "ART drug pick up Condition":
   [Condition: Concepts."ART drug pick up"]
 define "ART drug pick up Observation":
-  "ART drug pick up Observation" O
+  [Observation: Concepts."ART drug pick up"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."ART drug pick up"
-// End of ART drug pick up
+/* End of ART drug pick up */
+
 /*
 @dataElement: HIV.D.DE6 - Issues and concerns
 @activity: HIV.D1 Determine reason for visit
@@ -4731,10 +4906,11 @@ define "Issues and concerns":
 define "Issues and concerns Condition":
   [Condition: Concepts."Issues and concerns"]
 define "Issues and concerns Observation":
-  "Issues and concerns Observation" O
+  [Observation: Concepts."Issues and concerns"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Issues and concerns"
-// End of Issues and concerns
+/* End of Issues and concerns */
+
 /*
 @dataElement: HIV.D.DE7 - Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE7
 @activity: HIV.D1 Determine reason for visit
@@ -4747,10 +4923,11 @@ define "Post-treatment follow-up visit for cervical precancer lesions or invasiv
 define "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE7 Condition":
   [Condition: Concepts."Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE7"]
 define "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE7 Observation":
-  "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE1 Observation" O
+  [Observation: Concepts."Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE1"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE7"
-// End of Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE7
+/* End of Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE7 */
+
 /*
 @dataElement: HIV.D.DE9 - Body temperature
 @activity: HIV.D2 Take vital signs
@@ -4758,14 +4935,11 @@ define "Post-treatment follow-up visit for cervical precancer lesions or invasiv
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Body temperature":
-  exists "Body temperature Observation"
-    or exists "Body temperature Condition"
-define "Body temperature Condition":
-  [Condition: Concepts."Body temperature"]
-define "Body temperature Observation":
   [Observation: Concepts."Body temperature"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Body temperature
+    return O.value
+/* End of Body temperature */
+
 /*
 @dataElement: HIV.D.DE13 - Body weight
 @activity: HIV.D2 Take vital signs
@@ -4773,14 +4947,11 @@ define "Body temperature Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Body weight":
-  exists "Body weight Observation"
-    or exists "Body weight Condition"
-define "Body weight Condition":
-  [Condition: Concepts."Body weight"]
-define "Body weight Observation":
   [Observation: Concepts."Body weight"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Body weight
+    return O.value
+/* End of Body weight */
+
 /*
 @dataElement: HIV.D.DE17 - Signs of serious illness
 @activity: HIV.D3 Check for signs of serious illness
@@ -4790,7 +4961,8 @@ define "Body weight Observation":
 define "Signs of serious illness Observation":
   [Observation: Concepts."Signs of serious illness"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Signs of serious illness
+/* End of Signs of serious illness */
+
 /*
 @dataElement: HIV.D.DE18 - Fever of 39 C or greater
 @activity: HIV.D3 Check for signs of serious illness
@@ -4803,10 +4975,11 @@ define "Fever of 39 C or greater":
 define "Fever of 39 C or greater Condition":
   [Condition: Concepts."Fever of 39 C or greater"]
 define "Fever of 39 C or greater Observation":
-  "Fever of 39 C or greater Observation" O
+  [Observation: Concepts."Fever of 39 C or greater"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Fever of 39 C or greater"
-// End of Fever of 39 C or greater
+/* End of Fever of 39 C or greater */
+
 /*
 @dataElement: HIV.D.DE19 - Tachycardia
 @activity: HIV.D3 Check for signs of serious illness
@@ -4819,10 +4992,11 @@ define "Tachycardia":
 define "Tachycardia Condition":
   [Condition: Concepts."Tachycardia"]
 define "Tachycardia Observation":
-  "Tachycardia Observation" O
+  [Observation: Concepts."Tachycardia"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Tachycardia"
-// End of Tachycardia
+/* End of Tachycardia */
+
 /*
 @dataElement: HIV.D.DE20 - Tachypnea
 @activity: HIV.D3 Check for signs of serious illness
@@ -4835,10 +5009,11 @@ define "Tachypnea":
 define "Tachypnea Condition":
   [Condition: Concepts."Tachypnea"]
 define "Tachypnea Observation":
-  "Tachypnea Observation" O
+  [Observation: Concepts."Tachypnea"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Tachypnea"
-// End of Tachypnea
+/* End of Tachypnea */
+
 /*
 @dataElement: HIV.D.DE21 - Unable to walk unaided
 @activity: HIV.D3 Check for signs of serious illness
@@ -4851,10 +5026,11 @@ define "Unable to walk unaided":
 define "Unable to walk unaided Condition":
   [Condition: Concepts."Unable to walk unaided"]
 define "Unable to walk unaided Observation":
-  "Unable to walk unaided Observation" O
+  [Observation: Concepts."Unable to walk unaided"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Unable to walk unaided"
-// End of Unable to walk unaided
+/* End of Unable to walk unaided */
+
 /*
 @dataElement: HIV.D.DE22 - Lethargy - HIV.D.DE22
 @activity: HIV.D3 Check for signs of serious illness
@@ -4867,10 +5043,11 @@ define "Lethargy - HIV.D.DE22":
 define "Lethargy - HIV.D.DE22 Condition":
   [Condition: Concepts."Lethargy - HIV.D.DE22"]
 define "Lethargy - HIV.D.DE22 Observation":
-  "Lethargy - HIV.D.DE17 Observation" O
+  [Observation: Concepts."Lethargy - HIV.D.DE17"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Lethargy - HIV.D.DE22"
-// End of Lethargy - HIV.D.DE22
+/* End of Lethargy - HIV.D.DE22 */
+
 /*
 @dataElement: HIV.D.DE23 - Unconsciousness
 @activity: HIV.D3 Check for signs of serious illness
@@ -4883,10 +5060,11 @@ define "Unconsciousness":
 define "Unconsciousness Condition":
   [Condition: Concepts."Unconsciousness"]
 define "Unconsciousness Observation":
-  "Unconsciousness Observation" O
+  [Observation: Concepts."Unconsciousness"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Unconsciousness"
-// End of Unconsciousness
+/* End of Unconsciousness */
+
 /*
 @dataElement: HIV.D.DE24 - Convulsions
 @activity: HIV.D3 Check for signs of serious illness
@@ -4899,10 +5077,11 @@ define "Convulsions":
 define "Convulsions Condition":
   [Condition: Concepts."Convulsions"]
 define "Convulsions Observation":
-  "Convulsions Observation" O
+  [Observation: Concepts."Convulsions"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Convulsions"
-// End of Convulsions
+/* End of Convulsions */
+
 /*
 @dataElement: HIV.D.DE25 - Unable to drink
 @activity: HIV.D3 Check for signs of serious illness
@@ -4915,10 +5094,11 @@ define "Unable to drink":
 define "Unable to drink Condition":
   [Condition: Concepts."Unable to drink"]
 define "Unable to drink Observation":
-  "Unable to drink Observation" O
+  [Observation: Concepts."Unable to drink"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Unable to drink"
-// End of Unable to drink
+/* End of Unable to drink */
+
 /*
 @dataElement: HIV.D.DE26 - Unable to breastfeed
 @activity: HIV.D3 Check for signs of serious illness
@@ -4931,10 +5111,11 @@ define "Unable to breastfeed":
 define "Unable to breastfeed Condition":
   [Condition: Concepts."Unable to breastfeed"]
 define "Unable to breastfeed Observation":
-  "Unable to breastfeed Observation" O
+  [Observation: Concepts."Unable to breastfeed"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Unable to breastfeed"
-// End of Unable to breastfeed
+/* End of Unable to breastfeed */
+
 /*
 @dataElement: HIV.D.DE27 - Repeated vomiting
 @activity: HIV.D3 Check for signs of serious illness
@@ -4947,10 +5128,11 @@ define "Repeated vomiting":
 define "Repeated vomiting Condition":
   [Condition: Concepts."Repeated vomiting"]
 define "Repeated vomiting Observation":
-  "Repeated vomiting Observation" O
+  [Observation: Concepts."Repeated vomiting"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Repeated vomiting"
-// End of Repeated vomiting
+/* End of Repeated vomiting */
+
 /*
 @dataElement: HIV.D.DE28 - Headache - HIV.D.DE28
 @activity: HIV.D3 Check for signs of serious illness
@@ -4963,10 +5145,11 @@ define "Headache - HIV.D.DE28":
 define "Headache - HIV.D.DE28 Condition":
   [Condition: Concepts."Headache - HIV.D.DE28"]
 define "Headache - HIV.D.DE28 Observation":
-  "Headache - HIV.D.DE17 Observation" O
+  [Observation: Concepts."Headache - HIV.D.DE17"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Headache - HIV.D.DE28"
-// End of Headache - HIV.D.DE28
+/* End of Headache - HIV.D.DE28 */
+
 /*
 @dataElement: HIV.D.DE29 - Other sign of serious illness
 @activity: HIV.D3 Check for signs of serious illness
@@ -4979,10 +5162,11 @@ define "Other sign of serious illness":
 define "Other sign of serious illness Condition":
   [Condition: Concepts."Other sign of serious illness"]
 define "Other sign of serious illness Observation":
-  "Other sign of serious illness Observation" O
+  [Observation: Concepts."Other sign of serious illness"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other sign of serious illness"
-// End of Other sign of serious illness
+/* End of Other sign of serious illness */
+
 /*
 @dataElement: HIV.D.DE31 - Currently pregnant - HIV.D.DE31
 @activity: HIV.D8 Capture or update client history
@@ -4990,14 +5174,11 @@ define "Other sign of serious illness Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Currently pregnant - HIV.D.DE31":
-  exists "Currently pregnant - HIV.D.DE31 Observation"
-    or exists "Currently pregnant - HIV.D.DE31 Condition"
-define "Currently pregnant - HIV.D.DE31 Condition":
-  [Condition: Concepts."Currently pregnant - HIV.D.DE31"]
-define "Currently pregnant - HIV.D.DE31 Observation":
   [Observation: Concepts."Currently pregnant - HIV.D.DE31"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Currently pregnant - HIV.D.DE31
+    return O.value
+/* End of Currently pregnant - HIV.D.DE31 */
+
 /*
 @dataElement: HIV.D.DE32 - Breastfeeding - HIV.D.DE32
 @activity: HIV.D8 Capture or update client history
@@ -5005,14 +5186,11 @@ define "Currently pregnant - HIV.D.DE31 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Breastfeeding - HIV.D.DE32":
-  exists "Breastfeeding - HIV.D.DE32 Observation"
-    or exists "Breastfeeding - HIV.D.DE32 Condition"
-define "Breastfeeding - HIV.D.DE32 Condition":
-  [Condition: Concepts."Breastfeeding - HIV.D.DE32"]
-define "Breastfeeding - HIV.D.DE32 Observation":
   [Observation: Concepts."Breastfeeding - HIV.D.DE32"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Breastfeeding - HIV.D.DE32
+    return O.value
+/* End of Breastfeeding - HIV.D.DE32 */
+
 /*
 @dataElement: HIV.D.DE37 - Serodiscordant partner - HIV.D.DE37
 @activity: HIV.D8 Capture or update client history
@@ -5020,14 +5198,11 @@ define "Breastfeeding - HIV.D.DE32 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Serodiscordant partner - HIV.D.DE37":
-  exists "Serodiscordant partner - HIV.D.DE37 Observation"
-    or exists "Serodiscordant partner - HIV.D.DE37 Condition"
-define "Serodiscordant partner - HIV.D.DE37 Condition":
-  [Condition: Concepts."Serodiscordant partner - HIV.D.DE37"]
-define "Serodiscordant partner - HIV.D.DE37 Observation":
   [Observation: Concepts."Serodiscordant partner - HIV.D.DE37"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Serodiscordant partner - HIV.D.DE37
+    return O.value
+/* End of Serodiscordant partner - HIV.D.DE37 */
+
 /*
 @dataElement: HIV.D.DE38 - On ART - HIV.D.DE38
 @activity: HIV.D8 Capture or update client history
@@ -5035,14 +5210,11 @@ define "Serodiscordant partner - HIV.D.DE37 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "On ART - HIV.D.DE38":
-  exists "On ART - HIV.D.DE38 Observation"
-    or exists "On ART - HIV.D.DE38 Condition"
-define "On ART - HIV.D.DE38 Condition":
-  [Condition: Concepts."On ART - HIV.D.DE38"]
-define "On ART - HIV.D.DE38 Observation":
   [Observation: Concepts."On ART - HIV.D.DE38"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of On ART - HIV.D.DE38
+    return O.value
+/* End of On ART - HIV.D.DE38 */
+
 /*
 @dataElement: HIV.D.DE39 - ART start date - HIV.D.DE39
 @activity: HIV.D8 Capture or update client history
@@ -5050,14 +5222,11 @@ define "On ART - HIV.D.DE38 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "ART start date - HIV.D.DE39":
-  exists "ART start date - HIV.D.DE39 Observation"
-    or exists "ART start date - HIV.D.DE39 Condition"
-define "ART start date - HIV.D.DE39 Condition":
-  [Condition: Concepts."ART start date - HIV.D.DE39"]
-define "ART start date - HIV.D.DE39 Observation":
   [Observation: Concepts."ART start date - HIV.D.DE39"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of ART start date - HIV.D.DE39
+    return O.value
+/* End of ART start date - HIV.D.DE39 */
+
 /*
 @dataElement: HIV.D.DE41 - Date ART stopped - HIV.D.DE41
 @activity: HIV.D8 Capture or update client history
@@ -5065,14 +5234,11 @@ define "ART start date - HIV.D.DE39 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date ART stopped - HIV.D.DE41":
-  exists "Date ART stopped - HIV.D.DE41 Observation"
-    or exists "Date ART stopped - HIV.D.DE41 Condition"
-define "Date ART stopped - HIV.D.DE41 Condition":
-  [Condition: Concepts."Date ART stopped - HIV.D.DE41"]
-define "Date ART stopped - HIV.D.DE41 Observation":
   [Observation: Concepts."Date ART stopped - HIV.D.DE41"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date ART stopped - HIV.D.DE41
+    return O.value
+/* End of Date ART stopped - HIV.D.DE41 */
+
 /*
 @dataElement: HIV.D.DE42 - Established on ART
 @activity: HIV.D8 Capture or update client history
@@ -5080,14 +5246,11 @@ define "Date ART stopped - HIV.D.DE41 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Established on ART":
-  exists "Established on ART Observation"
-    or exists "Established on ART Condition"
-define "Established on ART Condition":
-  [Condition: Concepts."Established on ART"]
-define "Established on ART Observation":
   [Observation: Concepts."Established on ART"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Established on ART
+    return O.value
+/* End of Established on ART */
+
 /*
 @dataElement: HIV.D.DE43 - ART start type
 @activity: HIV.D8 Capture or update client history
@@ -5097,7 +5260,8 @@ define "Established on ART Observation":
 define "ART start type Observation":
   [Observation: Concepts."ART start type"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of ART start type
+/* End of ART start type */
+
 /*
 @dataElement: HIV.D.DE44 - First-time user of ART
 @activity: HIV.D8 Capture or update client history
@@ -5110,10 +5274,11 @@ define "First-time user of ART":
 define "First-time user of ART Condition":
   [Condition: Concepts."First-time user of ART"]
 define "First-time user of ART Observation":
-  "First-time user of ART Observation" O
+  [Observation: Concepts."First-time user of ART"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."First-time user of ART"
-// End of First-time user of ART
+/* End of First-time user of ART */
+
 /*
 @dataElement: HIV.D.DE45 - Restarting ART
 @activity: HIV.D8 Capture or update client history
@@ -5126,10 +5291,11 @@ define "Restarting ART":
 define "Restarting ART Condition":
   [Condition: Concepts."Restarting ART"]
 define "Restarting ART Observation":
-  "Restarting ART Observation" O
+  [Observation: Concepts."Restarting ART"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Restarting ART"
-// End of Restarting ART
+/* End of Restarting ART */
+
 /*
 @dataElement: HIV.D.DE75 - Current ART regimen
 @activity: HIV.D8 Capture or update client history
@@ -5139,7 +5305,8 @@ define "Restarting ART Observation":
 define "Current ART regimen Observation":
   [Observation: Concepts."Current ART regimen"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Current ART regimen
+/* End of Current ART regimen */
+
 /*
 @dataElement: HIV.D.DE77 - Preferred first-line ART regimen
 @activity: HIV.D8 Capture or update client history
@@ -5149,7 +5316,8 @@ define "Current ART regimen Observation":
 define "Preferred first-line ART regimen Observation":
   [Observation: Concepts."Preferred first-line ART regimen"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Preferred first-line ART regimen
+/* End of Preferred first-line ART regimen */
+
 /*
 @dataElement: HIV.D.DE78 - Alternative first-line ART regimen
 @activity: HIV.D8 Capture or update client history
@@ -5159,7 +5327,8 @@ define "Preferred first-line ART regimen Observation":
 define "Alternative first-line ART regimen Observation":
   [Observation: Concepts."Alternative first-line ART regimen"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Alternative first-line ART regimen
+/* End of Alternative first-line ART regimen */
+
 /*
 @dataElement: HIV.D.DE79 - First-line ART regimen under special circumstances
 @activity: HIV.D8 Capture or update client history
@@ -5169,7 +5338,8 @@ define "Alternative first-line ART regimen Observation":
 define "First-line ART regimen under special circumstances Observation":
   [Observation: Concepts."First-line ART regimen under special circumstances"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of First-line ART regimen under special circumstances
+/* End of First-line ART regimen under special circumstances */
+
 /*
 @dataElement: HIV.D.DE80 - Preferred second-line ART regimen
 @activity: HIV.D8 Capture or update client history
@@ -5179,7 +5349,8 @@ define "First-line ART regimen under special circumstances Observation":
 define "Preferred second-line ART regimen Observation":
   [Observation: Concepts."Preferred second-line ART regimen"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Preferred second-line ART regimen
+/* End of Preferred second-line ART regimen */
+
 /*
 @dataElement: HIV.D.DE81 - Alternative second-line ART regimen
 @activity: HIV.D8 Capture or update client history
@@ -5189,7 +5360,8 @@ define "Preferred second-line ART regimen Observation":
 define "Alternative second-line ART regimen Observation":
   [Observation: Concepts."Alternative second-line ART regimen"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Alternative second-line ART regimen
+/* End of Alternative second-line ART regimen */
+
 /*
 @dataElement: HIV.D.DE82 - Optimal regimen for transition
 @activity: HIV.D8 Capture or update client history
@@ -5199,7 +5371,8 @@ define "Alternative second-line ART regimen Observation":
 define "Optimal regimen for transition Observation":
   [Observation: Concepts."Optimal regimen for transition"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Optimal regimen for transition
+/* End of Optimal regimen for transition */
+
 /*
 @dataElement: HIV.D.DE83 - Current ART regimen first-, second-, or third-line
 @activity: HIV.D8 Capture or update client history
@@ -5209,7 +5382,8 @@ define "Optimal regimen for transition Observation":
 define "Current ART regimen first-, second-, or third-line Observation":
   [Observation: Concepts."Current ART regimen first-, second-, or third-line"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Current ART regimen first-, second-, or third-line
+/* End of Current ART regimen first-, second-, or third-line */
+
 /*
 @dataElement: HIV.D.DE84 - First-line ART regimen for adults and adolescents
 @activity: HIV.D8 Capture or update client history
@@ -5222,10 +5396,11 @@ define "First-line ART regimen for adults and adolescents":
 define "First-line ART regimen for adults and adolescents Condition":
   [Condition: Concepts."First-line ART regimen for adults and adolescents"]
 define "First-line ART regimen for adults and adolescents Observation":
-  "First-line ART regimen for adults and adolescents Observation" O
+  [Observation: Concepts."First-line ART regimen for adults and adolescents"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."First-line ART regimen for adults and adolescents"
-// End of First-line ART regimen for adults and adolescents
+/* End of First-line ART regimen for adults and adolescents */
+
 /*
 @dataElement: HIV.D.DE85 - First-line ART regimen for children
 @activity: HIV.D8 Capture or update client history
@@ -5238,10 +5413,11 @@ define "First-line ART regimen for children":
 define "First-line ART regimen for children Condition":
   [Condition: Concepts."First-line ART regimen for children"]
 define "First-line ART regimen for children Observation":
-  "First-line ART regimen for children Observation" O
+  [Observation: Concepts."First-line ART regimen for children"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."First-line ART regimen for children"
-// End of First-line ART regimen for children
+/* End of First-line ART regimen for children */
+
 /*
 @dataElement: HIV.D.DE86 - First-line ART regimen for neonates
 @activity: HIV.D8 Capture or update client history
@@ -5254,10 +5430,11 @@ define "First-line ART regimen for neonates":
 define "First-line ART regimen for neonates Condition":
   [Condition: Concepts."First-line ART regimen for neonates"]
 define "First-line ART regimen for neonates Observation":
-  "First-line ART regimen for neonates Observation" O
+  [Observation: Concepts."First-line ART regimen for neonates"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."First-line ART regimen for neonates"
-// End of First-line ART regimen for neonates
+/* End of First-line ART regimen for neonates */
+
 /*
 @dataElement: HIV.D.DE87 - Second-line ART regimen for adults and adolescents
 @activity: HIV.D8 Capture or update client history
@@ -5270,10 +5447,11 @@ define "Second-line ART regimen for adults and adolescents":
 define "Second-line ART regimen for adults and adolescents Condition":
   [Condition: Concepts."Second-line ART regimen for adults and adolescents"]
 define "Second-line ART regimen for adults and adolescents Observation":
-  "Second-line ART regimen for adults and adolescents Observation" O
+  [Observation: Concepts."Second-line ART regimen for adults and adolescents"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Second-line ART regimen for adults and adolescents"
-// End of Second-line ART regimen for adults and adolescents
+/* End of Second-line ART regimen for adults and adolescents */
+
 /*
 @dataElement: HIV.D.DE88 - Second-line ART regimen for children
 @activity: HIV.D8 Capture or update client history
@@ -5286,10 +5464,11 @@ define "Second-line ART regimen for children":
 define "Second-line ART regimen for children Condition":
   [Condition: Concepts."Second-line ART regimen for children"]
 define "Second-line ART regimen for children Observation":
-  "Second-line ART regimen for children Observation" O
+  [Observation: Concepts."Second-line ART regimen for children"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Second-line ART regimen for children"
-// End of Second-line ART regimen for children
+/* End of Second-line ART regimen for children */
+
 /*
 @dataElement: HIV.D.DE89 - Third-line ART regimen
 @activity: HIV.D8 Capture or update client history
@@ -5302,10 +5481,11 @@ define "Third-line ART regimen":
 define "Third-line ART regimen Condition":
   [Condition: Concepts."Third-line ART regimen"]
 define "Third-line ART regimen Observation":
-  "Third-line ART regimen Observation" O
+  [Observation: Concepts."Third-line ART regimen"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Third-line ART regimen"
-// End of Third-line ART regimen
+/* End of Third-line ART regimen */
+
 /*
 @dataElement: HIV.D.DE128 - ART regimen composition
 @activity: HIV.D8 Capture or update client history
@@ -5315,7 +5495,8 @@ define "Third-line ART regimen Observation":
 define "ART regimen composition Observation":
   [Observation: Concepts."ART regimen composition"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of ART regimen composition
+/* End of ART regimen composition */
+
 /*
 @dataElement: HIV.D.DE129 - ABC
 @activity: HIV.D8 Capture or update client history
@@ -5328,10 +5509,11 @@ define "ABC":
 define "ABC Condition":
   [Condition: Concepts."ABC"]
 define "ABC Observation":
-  "ABC Observation" O
+  [Observation: Concepts."ABC"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."ABC"
-// End of ABC
+/* End of ABC */
+
 /*
 @dataElement: HIV.D.DE130 - FTC
 @activity: HIV.D8 Capture or update client history
@@ -5344,10 +5526,11 @@ define "FTC":
 define "FTC Condition":
   [Condition: Concepts."FTC"]
 define "FTC Observation":
-  "FTC Observation" O
+  [Observation: Concepts."FTC"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."FTC"
-// End of FTC
+/* End of FTC */
+
 /*
 @dataElement: HIV.D.DE131 - 3TC
 @activity: HIV.D8 Capture or update client history
@@ -5360,10 +5543,11 @@ define "3TC":
 define "3TC Condition":
   [Condition: Concepts."3TC"]
 define "3TC Observation":
-  "3TC Observation" O
+  [Observation: Concepts."3TC"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."3TC"
-// End of 3TC
+/* End of 3TC */
+
 /*
 @dataElement: HIV.D.DE132 - AZT
 @activity: HIV.D8 Capture or update client history
@@ -5376,10 +5560,11 @@ define "AZT":
 define "AZT Condition":
   [Condition: Concepts."AZT"]
 define "AZT Observation":
-  "AZT Observation" O
+  [Observation: Concepts."AZT"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."AZT"
-// End of AZT
+/* End of AZT */
+
 /*
 @dataElement: HIV.D.DE133 - DDI
 @activity: HIV.D8 Capture or update client history
@@ -5392,10 +5577,11 @@ define "DDI":
 define "DDI Condition":
   [Condition: Concepts."DDI"]
 define "DDI Observation":
-  "DDI Observation" O
+  [Observation: Concepts."DDI"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."DDI"
-// End of DDI
+/* End of DDI */
+
 /*
 @dataElement: HIV.D.DE134 - D4T
 @activity: HIV.D8 Capture or update client history
@@ -5408,10 +5594,11 @@ define "D4T":
 define "D4T Condition":
   [Condition: Concepts."D4T"]
 define "D4T Observation":
-  "D4T Observation" O
+  [Observation: Concepts."D4T"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."D4T"
-// End of D4T
+/* End of D4T */
+
 /*
 @dataElement: HIV.D.DE135 - TDF - HIV.D.DE135
 @activity: HIV.D8 Capture or update client history
@@ -5424,10 +5611,11 @@ define "TDF - HIV.D.DE135":
 define "TDF - HIV.D.DE135 Condition":
   [Condition: Concepts."TDF - HIV.D.DE135"]
 define "TDF - HIV.D.DE135 Observation":
-  "TDF - HIV.D.DE128 Observation" O
+  [Observation: Concepts."TDF - HIV.D.DE128"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."TDF - HIV.D.DE135"
-// End of TDF - HIV.D.DE135
+/* End of TDF - HIV.D.DE135 */
+
 /*
 @dataElement: HIV.D.DE136 - EFV
 @activity: HIV.D8 Capture or update client history
@@ -5440,10 +5628,11 @@ define "EFV":
 define "EFV Condition":
   [Condition: Concepts."EFV"]
 define "EFV Observation":
-  "EFV Observation" O
+  [Observation: Concepts."EFV"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."EFV"
-// End of EFV
+/* End of EFV */
+
 /*
 @dataElement: HIV.D.DE137 - ETV
 @activity: HIV.D8 Capture or update client history
@@ -5456,10 +5645,11 @@ define "ETV":
 define "ETV Condition":
   [Condition: Concepts."ETV"]
 define "ETV Observation":
-  "ETV Observation" O
+  [Observation: Concepts."ETV"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."ETV"
-// End of ETV
+/* End of ETV */
+
 /*
 @dataElement: HIV.D.DE138 - NVP
 @activity: HIV.D8 Capture or update client history
@@ -5472,10 +5662,11 @@ define "NVP":
 define "NVP Condition":
   [Condition: Concepts."NVP"]
 define "NVP Observation":
-  "NVP Observation" O
+  [Observation: Concepts."NVP"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."NVP"
-// End of NVP
+/* End of NVP */
+
 /*
 @dataElement: HIV.D.DE139 - RIL
 @activity: HIV.D8 Capture or update client history
@@ -5488,10 +5679,11 @@ define "RIL":
 define "RIL Condition":
   [Condition: Concepts."RIL"]
 define "RIL Observation":
-  "RIL Observation" O
+  [Observation: Concepts."RIL"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."RIL"
-// End of RIL
+/* End of RIL */
+
 /*
 @dataElement: HIV.D.DE140 - ATV/r - HIV.D.DE140
 @activity: HIV.D8 Capture or update client history
@@ -5504,10 +5696,11 @@ define "ATV/r - HIV.D.DE140":
 define "ATV/r - HIV.D.DE140 Condition":
   [Condition: Concepts."ATV/r - HIV.D.DE140"]
 define "ATV/r - HIV.D.DE140 Observation":
-  "ATV/r - HIV.D.DE128 Observation" O
+  [Observation: Concepts."ATV/r - HIV.D.DE128"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."ATV/r - HIV.D.DE140"
-// End of ATV/r - HIV.D.DE140
+/* End of ATV/r - HIV.D.DE140 */
+
 /*
 @dataElement: HIV.D.DE141 - LPV/r - HIV.D.DE141
 @activity: HIV.D8 Capture or update client history
@@ -5520,10 +5713,11 @@ define "LPV/r - HIV.D.DE141":
 define "LPV/r - HIV.D.DE141 Condition":
   [Condition: Concepts."LPV/r - HIV.D.DE141"]
 define "LPV/r - HIV.D.DE141 Observation":
-  "LPV/r - HIV.D.DE128 Observation" O
+  [Observation: Concepts."LPV/r - HIV.D.DE128"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."LPV/r - HIV.D.DE141"
-// End of LPV/r - HIV.D.DE141
+/* End of LPV/r - HIV.D.DE141 */
+
 /*
 @dataElement: HIV.D.DE142 - DRV/r - HIV.D.DE142
 @activity: HIV.D8 Capture or update client history
@@ -5536,10 +5730,11 @@ define "DRV/r - HIV.D.DE142":
 define "DRV/r - HIV.D.DE142 Condition":
   [Condition: Concepts."DRV/r - HIV.D.DE142"]
 define "DRV/r - HIV.D.DE142 Observation":
-  "DRV/r - HIV.D.DE128 Observation" O
+  [Observation: Concepts."DRV/r - HIV.D.DE128"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."DRV/r - HIV.D.DE142"
-// End of DRV/r - HIV.D.DE142
+/* End of DRV/r - HIV.D.DE142 */
+
 /*
 @dataElement: HIV.D.DE143 - RTV
 @activity: HIV.D8 Capture or update client history
@@ -5552,10 +5747,11 @@ define "RTV":
 define "RTV Condition":
   [Condition: Concepts."RTV"]
 define "RTV Observation":
-  "RTV Observation" O
+  [Observation: Concepts."RTV"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."RTV"
-// End of RTV
+/* End of RTV */
+
 /*
 @dataElement: HIV.D.DE144 - DTG - HIV.D.DE144
 @activity: HIV.D8 Capture or update client history
@@ -5568,10 +5764,11 @@ define "DTG - HIV.D.DE144":
 define "DTG - HIV.D.DE144 Condition":
   [Condition: Concepts."DTG - HIV.D.DE144"]
 define "DTG - HIV.D.DE144 Observation":
-  "DTG - HIV.D.DE128 Observation" O
+  [Observation: Concepts."DTG - HIV.D.DE128"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."DTG - HIV.D.DE144"
-// End of DTG - HIV.D.DE144
+/* End of DTG - HIV.D.DE144 */
+
 /*
 @dataElement: HIV.D.DE145 - RAL - HIV.D.DE145
 @activity: HIV.D8 Capture or update client history
@@ -5584,10 +5781,11 @@ define "RAL - HIV.D.DE145":
 define "RAL - HIV.D.DE145 Condition":
   [Condition: Concepts."RAL - HIV.D.DE145"]
 define "RAL - HIV.D.DE145 Observation":
-  "RAL - HIV.D.DE128 Observation" O
+  [Observation: Concepts."RAL - HIV.D.DE128"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."RAL - HIV.D.DE145"
-// End of RAL - HIV.D.DE145
+/* End of RAL - HIV.D.DE145 */
+
 /*
 @dataElement: HIV.D.DE152 - Prevention services offered and referrals - HIV.D.DE152
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5597,7 +5795,8 @@ define "RAL - HIV.D.DE145 Observation":
 define "Prevention services offered and referrals - HIV.D.DE152 Observation":
   [Observation: Concepts."Prevention services offered and referrals - HIV.D.DE152"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Prevention services offered and referrals - HIV.D.DE152
+/* End of Prevention services offered and referrals - HIV.D.DE152 */
+
 /*
 @dataElement: HIV.D.DE153 - Offer male and female condoms and condom-compatible lubricants - HIV.D.DE153
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -5610,10 +5809,11 @@ define "Offer male and female condoms and condom-compatible lubricants - HIV.D.D
 define "Offer male and female condoms and condom-compatible lubricants - HIV.D.DE153 Condition":
   [Condition: Concepts."Offer male and female condoms and condom-compatible lubricants - HIV.D.DE153"]
 define "Offer male and female condoms and condom-compatible lubricants - HIV.D.DE153 Observation":
-  "Offer male and female condoms and condom-compatible lubricants - HIV.D.DE152 Observation" O
+  [Observation: Concepts."Offer male and female condoms and condom-compatible lubricants - HIV.D.DE152"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Offer male and female condoms and condom-compatible lubricants - HIV.D.DE153"
-// End of Offer male and female condoms and condom-compatible lubricants - HIV.D.DE153
+/* End of Offer male and female condoms and condom-compatible lubricants - HIV.D.DE153 */
+
 /*
 @dataElement: HIV.D.DE154 - Harm reduction for people who inject drugs - HIV.D.DE154
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5626,10 +5826,11 @@ define "Harm reduction for people who inject drugs - HIV.D.DE154":
 define "Harm reduction for people who inject drugs - HIV.D.DE154 Condition":
   [Condition: Concepts."Harm reduction for people who inject drugs - HIV.D.DE154"]
 define "Harm reduction for people who inject drugs - HIV.D.DE154 Observation":
-  "Harm reduction for people who inject drugs - HIV.D.DE152 Observation" O
+  [Observation: Concepts."Harm reduction for people who inject drugs - HIV.D.DE152"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Harm reduction for people who inject drugs - HIV.D.DE154"
-// End of Harm reduction for people who inject drugs - HIV.D.DE154
+/* End of Harm reduction for people who inject drugs - HIV.D.DE154 */
+
 /*
 @dataElement: HIV.D.DE155 - Behavioural interventions to support risk reduction - HIV.D.DE155
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5642,10 +5843,11 @@ define "Behavioural interventions to support risk reduction - HIV.D.DE155":
 define "Behavioural interventions to support risk reduction - HIV.D.DE155 Condition":
   [Condition: Concepts."Behavioural interventions to support risk reduction - HIV.D.DE155"]
 define "Behavioural interventions to support risk reduction - HIV.D.DE155 Observation":
-  "Behavioural interventions to support risk reduction - HIV.D.DE152 Observation" O
+  [Observation: Concepts."Behavioural interventions to support risk reduction - HIV.D.DE152"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Behavioural interventions to support risk reduction - HIV.D.DE155"
-// End of Behavioural interventions to support risk reduction - HIV.D.DE155
+/* End of Behavioural interventions to support risk reduction - HIV.D.DE155 */
+
 /*
 @dataElement: HIV.D.DE156 - Sexual and reproductive health integrated services - HIV.D.DE156
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5655,7 +5857,8 @@ define "Behavioural interventions to support risk reduction - HIV.D.DE155 Observ
 define "Sexual and reproductive health integrated services - HIV.D.DE156 Observation":
   [Observation: Concepts."Sexual and reproductive health integrated services - HIV.D.DE156"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Sexual and reproductive health integrated services - HIV.D.DE156
+/* End of Sexual and reproductive health integrated services - HIV.D.DE156 */
+
 /*
 @dataElement: HIV.D.DE157 - Contraception and family planning - HIV.D.DE157
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5668,10 +5871,11 @@ define "Contraception and family planning - HIV.D.DE157":
 define "Contraception and family planning - HIV.D.DE157 Condition":
   [Condition: Concepts."Contraception and family planning - HIV.D.DE157"]
 define "Contraception and family planning - HIV.D.DE157 Observation":
-  "Contraception and family planning - HIV.D.DE156 Observation" O
+  [Observation: Concepts."Contraception and family planning - HIV.D.DE156"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Contraception and family planning - HIV.D.DE157"
-// End of Contraception and family planning - HIV.D.DE157
+/* End of Contraception and family planning - HIV.D.DE157 */
+
 /*
 @dataElement: HIV.D.DE158 - Check pregnancy status - HIV.D.DE158
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5684,10 +5888,11 @@ define "Check pregnancy status - HIV.D.DE158":
 define "Check pregnancy status - HIV.D.DE158 Condition":
   [Condition: Concepts."Check pregnancy status - HIV.D.DE158"]
 define "Check pregnancy status - HIV.D.DE158 Observation":
-  "Check pregnancy status - HIV.D.DE156 Observation" O
+  [Observation: Concepts."Check pregnancy status - HIV.D.DE156"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Check pregnancy status - HIV.D.DE158"
-// End of Check pregnancy status - HIV.D.DE158
+/* End of Check pregnancy status - HIV.D.DE158 */
+
 /*
 @dataElement: HIV.D.DE159 - Prevention of mother-to-child transmission
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5700,10 +5905,11 @@ define "Prevention of mother-to-child transmission":
 define "Prevention of mother-to-child transmission Condition":
   [Condition: Concepts."Prevention of mother-to-child transmission"]
 define "Prevention of mother-to-child transmission Observation":
-  "Prevention of mother-to-child transmission Observation" O
+  [Observation: Concepts."Prevention of mother-to-child transmission"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Prevention of mother-to-child transmission"
-// End of Prevention of mother-to-child transmission
+/* End of Prevention of mother-to-child transmission */
+
 /*
 @dataElement: HIV.D.DE160 - STI testing and treatment - HIV.D.DE160
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5716,10 +5922,11 @@ define "STI testing and treatment - HIV.D.DE160":
 define "STI testing and treatment - HIV.D.DE160 Condition":
   [Condition: Concepts."STI testing and treatment - HIV.D.DE160"]
 define "STI testing and treatment - HIV.D.DE160 Observation":
-  "STI testing and treatment - HIV.D.DE156 Observation" O
+  [Observation: Concepts."STI testing and treatment - HIV.D.DE156"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."STI testing and treatment - HIV.D.DE160"
-// End of STI testing and treatment - HIV.D.DE160
+/* End of STI testing and treatment - HIV.D.DE160 */
+
 /*
 @dataElement: HIV.D.DE161 - HBsAg test date - HIV.D.DE161
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5727,14 +5934,11 @@ define "STI testing and treatment - HIV.D.DE160 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "HBsAg test date - HIV.D.DE161":
-  exists "HBsAg test date - HIV.D.DE161 Observation"
-    or exists "HBsAg test date - HIV.D.DE161 Condition"
-define "HBsAg test date - HIV.D.DE161 Condition":
-  [Condition: Concepts."HBsAg test date - HIV.D.DE161"]
-define "HBsAg test date - HIV.D.DE161 Observation":
   [Observation: Concepts."HBsAg test date - HIV.D.DE161"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HBsAg test date - HIV.D.DE161
+    return O.value
+/* End of HBsAg test date - HIV.D.DE161 */
+
 /*
 @dataElement: HIV.D.DE162 - HBsAg test result - HIV.D.DE162
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5744,7 +5948,8 @@ define "HBsAg test date - HIV.D.DE161 Observation":
 define "HBsAg test result - HIV.D.DE162 Observation":
   [Observation: Concepts."HBsAg test result - HIV.D.DE162"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HBsAg test result - HIV.D.DE162
+/* End of HBsAg test result - HIV.D.DE162 */
+
 /*
 @dataElement: HIV.D.DE163 - Positive - HIV.D.DE163
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5757,10 +5962,11 @@ define "Positive - HIV.D.DE163":
 define "Positive - HIV.D.DE163 Condition":
   [Condition: Concepts."Positive - HIV.D.DE163"]
 define "Positive - HIV.D.DE163 Observation":
-  "Positive - HIV.D.DE162 Observation" O
+  [Observation: Concepts."Positive - HIV.D.DE162"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Positive - HIV.D.DE163"
-// End of Positive - HIV.D.DE163
+/* End of Positive - HIV.D.DE163 */
+
 /*
 @dataElement: HIV.D.DE164 - Negative - HIV.D.DE164
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5773,10 +5979,11 @@ define "Negative - HIV.D.DE164":
 define "Negative - HIV.D.DE164 Condition":
   [Condition: Concepts."Negative - HIV.D.DE164"]
 define "Negative - HIV.D.DE164 Observation":
-  "Negative - HIV.D.DE162 Observation" O
+  [Observation: Concepts."Negative - HIV.D.DE162"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Negative - HIV.D.DE164"
-// End of Negative - HIV.D.DE164
+/* End of Negative - HIV.D.DE164 */
+
 /*
 @dataElement: HIV.D.DE165 - Indeterminate - HIV.D.DE165
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5789,10 +5996,11 @@ define "Indeterminate - HIV.D.DE165":
 define "Indeterminate - HIV.D.DE165 Condition":
   [Condition: Concepts."Indeterminate - HIV.D.DE165"]
 define "Indeterminate - HIV.D.DE165 Observation":
-  "Indeterminate - HIV.D.DE162 Observation" O
+  [Observation: Concepts."Indeterminate - HIV.D.DE162"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Indeterminate - HIV.D.DE165"
-// End of Indeterminate - HIV.D.DE165
+/* End of Indeterminate - HIV.D.DE165 */
+
 /*
 @dataElement: HIV.D.DE167 - HBV treatment TDF start date
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5800,14 +6008,11 @@ define "Indeterminate - HIV.D.DE165 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "HBV treatment TDF start date":
-  exists "HBV treatment TDF start date Observation"
-    or exists "HBV treatment TDF start date Condition"
-define "HBV treatment TDF start date Condition":
-  [Condition: Concepts."HBV treatment TDF start date"]
-define "HBV treatment TDF start date Observation":
   [Observation: Concepts."HBV treatment TDF start date"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HBV treatment TDF start date
+    return O.value
+/* End of HBV treatment TDF start date */
+
 /*
 @dataElement: HIV.D.DE169 - HCV test date - HIV.D.DE169
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5815,14 +6020,11 @@ define "HBV treatment TDF start date Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "HCV test date - HIV.D.DE169":
-  exists "HCV test date - HIV.D.DE169 Observation"
-    or exists "HCV test date - HIV.D.DE169 Condition"
-define "HCV test date - HIV.D.DE169 Condition":
-  [Condition: Concepts."HCV test date - HIV.D.DE169"]
-define "HCV test date - HIV.D.DE169 Observation":
   [Observation: Concepts."HCV test date - HIV.D.DE169"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HCV test date - HIV.D.DE169
+    return O.value
+/* End of HCV test date - HIV.D.DE169 */
+
 /*
 @dataElement: HIV.D.DE170 - HCV test result - HIV.D.DE170
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5832,7 +6034,8 @@ define "HCV test date - HIV.D.DE169 Observation":
 define "HCV test result - HIV.D.DE170 Observation":
   [Observation: Concepts."HCV test result - HIV.D.DE170"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HCV test result - HIV.D.DE170
+/* End of HCV test result - HIV.D.DE170 */
+
 /*
 @dataElement: HIV.D.DE171 - Positive - HIV.D.DE171
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5845,10 +6048,11 @@ define "Positive - HIV.D.DE171":
 define "Positive - HIV.D.DE171 Condition":
   [Condition: Concepts."Positive - HIV.D.DE171"]
 define "Positive - HIV.D.DE171 Observation":
-  "Positive - HIV.D.DE170 Observation" O
+  [Observation: Concepts."Positive - HIV.D.DE170"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Positive - HIV.D.DE171"
-// End of Positive - HIV.D.DE171
+/* End of Positive - HIV.D.DE171 */
+
 /*
 @dataElement: HIV.D.DE172 - Negative - HIV.D.DE172
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5861,10 +6065,11 @@ define "Negative - HIV.D.DE172":
 define "Negative - HIV.D.DE172 Condition":
   [Condition: Concepts."Negative - HIV.D.DE172"]
 define "Negative - HIV.D.DE172 Observation":
-  "Negative - HIV.D.DE170 Observation" O
+  [Observation: Concepts."Negative - HIV.D.DE170"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Negative - HIV.D.DE172"
-// End of Negative - HIV.D.DE172
+/* End of Negative - HIV.D.DE172 */
+
 /*
 @dataElement: HIV.D.DE173 - Indeterminate - HIV.D.DE173
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5877,10 +6082,11 @@ define "Indeterminate - HIV.D.DE173":
 define "Indeterminate - HIV.D.DE173 Condition":
   [Condition: Concepts."Indeterminate - HIV.D.DE173"]
 define "Indeterminate - HIV.D.DE173 Observation":
-  "Indeterminate - HIV.D.DE170 Observation" O
+  [Observation: Concepts."Indeterminate - HIV.D.DE170"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Indeterminate - HIV.D.DE173"
-// End of Indeterminate - HIV.D.DE173
+/* End of Indeterminate - HIV.D.DE173 */
+
 /*
 @dataElement: HIV.D.DE175 - HCV treatment start date
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5888,14 +6094,11 @@ define "Indeterminate - HIV.D.DE173 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "HCV treatment start date":
-  exists "HCV treatment start date Observation"
-    or exists "HCV treatment start date Condition"
-define "HCV treatment start date Condition":
-  [Condition: Concepts."HCV treatment start date"]
-define "HCV treatment start date Observation":
   [Observation: Concepts."HCV treatment start date"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HCV treatment start date
+    return O.value
+/* End of HCV treatment start date */
+
 /*
 @dataElement: HIV.D.DE176 - HCV treatment completion date
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5903,14 +6106,11 @@ define "HCV treatment start date Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "HCV treatment completion date":
-  exists "HCV treatment completion date Observation"
-    or exists "HCV treatment completion date Condition"
-define "HCV treatment completion date Condition":
-  [Condition: Concepts."HCV treatment completion date"]
-define "HCV treatment completion date Observation":
   [Observation: Concepts."HCV treatment completion date"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HCV treatment completion date
+    return O.value
+/* End of HCV treatment completion date */
+
 /*
 @dataElement: HIV.D.DE178 - HCV viral load test date - HIV.D.DE178
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5918,14 +6118,11 @@ define "HCV treatment completion date Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "HCV viral load test date - HIV.D.DE178":
-  exists "HCV viral load test date - HIV.D.DE178 Observation"
-    or exists "HCV viral load test date - HIV.D.DE178 Condition"
-define "HCV viral load test date - HIV.D.DE178 Condition":
-  [Condition: Concepts."HCV viral load test date - HIV.D.DE178"]
-define "HCV viral load test date - HIV.D.DE178 Observation":
   [Observation: Concepts."HCV viral load test date - HIV.D.DE178"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HCV viral load test date - HIV.D.DE178
+    return O.value
+/* End of HCV viral load test date - HIV.D.DE178 */
+
 /*
 @dataElement: HIV.D.DE179 - HCV viral load test result - HIV.D.DE179
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5935,7 +6132,8 @@ define "HCV viral load test date - HIV.D.DE178 Observation":
 define "HCV viral load test result - HIV.D.DE179 Observation":
   [Observation: Concepts."HCV viral load test result - HIV.D.DE179"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HCV viral load test result - HIV.D.DE179
+/* End of HCV viral load test result - HIV.D.DE179 */
+
 /*
 @dataElement: HIV.D.DE180 - Detected - HIV.D.DE180
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5948,10 +6146,11 @@ define "Detected - HIV.D.DE180":
 define "Detected - HIV.D.DE180 Condition":
   [Condition: Concepts."Detected - HIV.D.DE180"]
 define "Detected - HIV.D.DE180 Observation":
-  "Detected - HIV.D.DE179 Observation" O
+  [Observation: Concepts."Detected - HIV.D.DE179"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Detected - HIV.D.DE180"
-// End of Detected - HIV.D.DE180
+/* End of Detected - HIV.D.DE180 */
+
 /*
 @dataElement: HIV.D.DE181 - Not detected - HIV.D.DE181
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5964,10 +6163,11 @@ define "Not detected - HIV.D.DE181":
 define "Not detected - HIV.D.DE181 Condition":
   [Condition: Concepts."Not detected - HIV.D.DE181"]
 define "Not detected - HIV.D.DE181 Observation":
-  "Not detected - HIV.D.DE179 Observation" O
+  [Observation: Concepts."Not detected - HIV.D.DE179"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Not detected - HIV.D.DE181"
-// End of Not detected - HIV.D.DE181
+/* End of Not detected - HIV.D.DE181 */
+
 /*
 @dataElement: HIV.D.DE182 - HCV medicine type
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5977,7 +6177,8 @@ define "Not detected - HIV.D.DE181 Observation":
 define "HCV medicine type Observation":
   [Observation: Concepts."HCV medicine type"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HCV medicine type
+/* End of HCV medicine type */
+
 /*
 @dataElement: HIV.D.DE183 - Interferon
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -5990,10 +6191,11 @@ define "Interferon":
 define "Interferon Condition":
   [Condition: Concepts."Interferon"]
 define "Interferon Observation":
-  "Interferon Observation" O
+  [Observation: Concepts."Interferon"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Interferon"
-// End of Interferon
+/* End of Interferon */
+
 /*
 @dataElement: HIV.D.DE184 - Direct acting antivirals
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -6006,10 +6208,11 @@ define "Direct acting antivirals":
 define "Direct acting antivirals Condition":
   [Condition: Concepts."Direct acting antivirals"]
 define "Direct acting antivirals Observation":
-  "Direct acting antivirals Observation" O
+  [Observation: Concepts."Direct acting antivirals"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Direct acting antivirals"
-// End of Direct acting antivirals
+/* End of Direct acting antivirals */
+
 /*
 @dataElement: HIV.D.DE185 - Currently on TDF-based ART
 @activity: HIV.D12 Determine recommended screenings and tests
@@ -6017,14 +6220,11 @@ define "Direct acting antivirals Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Currently on TDF-based ART":
-  exists "Currently on TDF-based ART Observation"
-    or exists "Currently on TDF-based ART Condition"
-define "Currently on TDF-based ART Condition":
-  [Condition: Concepts."Currently on TDF-based ART"]
-define "Currently on TDF-based ART Observation":
   [Observation: Concepts."Currently on TDF-based ART"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Currently on TDF-based ART
+    return O.value
+/* End of Currently on TDF-based ART */
+
 /*
 @dataElement: HIV.D.DE186 - HIV clinical stage - HIV.D.DE186
 @activity: HIV.D8 Capture or update client history
@@ -6034,7 +6234,8 @@ define "Currently on TDF-based ART Observation":
 define "HIV clinical stage - HIV.D.DE186 Observation":
   [Observation: Concepts."HIV clinical stage - HIV.D.DE186"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HIV clinical stage - HIV.D.DE186
+/* End of HIV clinical stage - HIV.D.DE186 */
+
 /*
 @dataElement: HIV.D.DE187 - WHO HIV clinical stage 1
 @activity: HIV.D8 Capture or update client history
@@ -6047,10 +6248,11 @@ define "WHO HIV clinical stage 1":
 define "WHO HIV clinical stage 1 Condition":
   [Condition: Concepts."WHO HIV clinical stage 1"]
 define "WHO HIV clinical stage 1 Observation":
-  "WHO HIV clinical stage 1 Observation" O
+  [Observation: Concepts."WHO HIV clinical stage 1"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."WHO HIV clinical stage 1"
-// End of WHO HIV clinical stage 1
+/* End of WHO HIV clinical stage 1 */
+
 /*
 @dataElement: HIV.D.DE188 - WHO HIV clinical stage 2
 @activity: HIV.D8 Capture or update client history
@@ -6063,10 +6265,11 @@ define "WHO HIV clinical stage 2":
 define "WHO HIV clinical stage 2 Condition":
   [Condition: Concepts."WHO HIV clinical stage 2"]
 define "WHO HIV clinical stage 2 Observation":
-  "WHO HIV clinical stage 2 Observation" O
+  [Observation: Concepts."WHO HIV clinical stage 2"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."WHO HIV clinical stage 2"
-// End of WHO HIV clinical stage 2
+/* End of WHO HIV clinical stage 2 */
+
 /*
 @dataElement: HIV.D.DE189 - WHO HIV clinical stage 3
 @activity: HIV.D8 Capture or update client history
@@ -6079,10 +6282,11 @@ define "WHO HIV clinical stage 3":
 define "WHO HIV clinical stage 3 Condition":
   [Condition: Concepts."WHO HIV clinical stage 3"]
 define "WHO HIV clinical stage 3 Observation":
-  "WHO HIV clinical stage 3 Observation" O
+  [Observation: Concepts."WHO HIV clinical stage 3"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."WHO HIV clinical stage 3"
-// End of WHO HIV clinical stage 3
+/* End of WHO HIV clinical stage 3 */
+
 /*
 @dataElement: HIV.D.DE190 - WHO HIV clinical stage 4
 @activity: HIV.D8 Capture or update client history
@@ -6095,10 +6299,11 @@ define "WHO HIV clinical stage 4":
 define "WHO HIV clinical stage 4 Condition":
   [Condition: Concepts."WHO HIV clinical stage 4"]
 define "WHO HIV clinical stage 4 Observation":
-  "WHO HIV clinical stage 4 Observation" O
+  [Observation: Concepts."WHO HIV clinical stage 4"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."WHO HIV clinical stage 4"
-// End of WHO HIV clinical stage 4
+/* End of WHO HIV clinical stage 4 */
+
 /*
 @dataElement: HIV.D.DE193 - Date viral load test results received by client - HIV.D.DE193
 @activity: HIV.D10 Counsel returning client
@@ -6106,14 +6311,11 @@ define "WHO HIV clinical stage 4 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date viral load test results received by client - HIV.D.DE193":
-  exists "Date viral load test results received by client - HIV.D.DE193 Observation"
-    or exists "Date viral load test results received by client - HIV.D.DE193 Condition"
-define "Date viral load test results received by client - HIV.D.DE193 Condition":
-  [Condition: Concepts."Date viral load test results received by client - HIV.D.DE193"]
-define "Date viral load test results received by client - HIV.D.DE193 Observation":
   [Observation: Concepts."Date viral load test results received by client - HIV.D.DE193"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date viral load test results received by client - HIV.D.DE193
+    return O.value
+/* End of Date viral load test results received by client - HIV.D.DE193 */
+
 /*
 @dataElement: HIV.D.DE194 - Date of viral load sample collection - HIV.D.DE194
 @activity: HIV.D10 Counsel returning client
@@ -6121,14 +6323,11 @@ define "Date viral load test results received by client - HIV.D.DE193 Observatio
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date of viral load sample collection - HIV.D.DE194":
-  exists "Date of viral load sample collection - HIV.D.DE194 Observation"
-    or exists "Date of viral load sample collection - HIV.D.DE194 Condition"
-define "Date of viral load sample collection - HIV.D.DE194 Condition":
-  [Condition: Concepts."Date of viral load sample collection - HIV.D.DE194"]
-define "Date of viral load sample collection - HIV.D.DE194 Observation":
   [Observation: Concepts."Date of viral load sample collection - HIV.D.DE194"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date of viral load sample collection - HIV.D.DE194
+    return O.value
+/* End of Date of viral load sample collection - HIV.D.DE194 */
+
 /*
 @dataElement: HIV.D.DE195 - Date of scheduled review of viral load test results
 @activity: HIV.D10 Counsel returning client
@@ -6136,14 +6335,11 @@ define "Date of viral load sample collection - HIV.D.DE194 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date of scheduled review of viral load test results":
-  exists "Date of scheduled review of viral load test results Observation"
-    or exists "Date of scheduled review of viral load test results Condition"
-define "Date of scheduled review of viral load test results Condition":
-  [Condition: Concepts."Date of scheduled review of viral load test results"]
-define "Date of scheduled review of viral load test results Observation":
   [Observation: Concepts."Date of scheduled review of viral load test results"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date of scheduled review of viral load test results
+    return O.value
+/* End of Date of scheduled review of viral load test results */
+
 /*
 @dataElement: HIV.D.DE217 - Reason ART stopped - HIV.D.DE217
 @activity: HIV.D10 Counsel returning client
@@ -6153,7 +6349,8 @@ define "Date of scheduled review of viral load test results Observation":
 define "Reason ART stopped - HIV.D.DE217 Observation":
   [Observation: Concepts."Reason ART stopped - HIV.D.DE217"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Reason ART stopped - HIV.D.DE217
+/* End of Reason ART stopped - HIV.D.DE217 */
+
 /*
 @dataElement: HIV.D.DE218 - Toxicity/side effects - HIV.D.DE218
 @activity: HIV.D10 Counsel returning client
@@ -6166,10 +6363,11 @@ define "Toxicity/side effects - HIV.D.DE218":
 define "Toxicity/side effects - HIV.D.DE218 Condition":
   [Condition: Concepts."Toxicity/side effects - HIV.D.DE218"]
 define "Toxicity/side effects - HIV.D.DE218 Observation":
-  "Toxicity/side effects - HIV.D.DE217 Observation" O
+  [Observation: Concepts."Toxicity/side effects - HIV.D.DE217"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Toxicity/side effects - HIV.D.DE218"
-// End of Toxicity/side effects - HIV.D.DE218
+/* End of Toxicity/side effects - HIV.D.DE218 */
+
 /*
 @dataElement: HIV.D.DE219 - Severe illness, hospitalization - HIV.D.DE219
 @activity: HIV.D10 Counsel returning client
@@ -6182,10 +6380,11 @@ define "Severe illness, hospitalization - HIV.D.DE219":
 define "Severe illness, hospitalization - HIV.D.DE219 Condition":
   [Condition: Concepts."Severe illness, hospitalization - HIV.D.DE219"]
 define "Severe illness, hospitalization - HIV.D.DE219 Observation":
-  "Severe illness, hospitalization - HIV.D.DE217 Observation" O
+  [Observation: Concepts."Severe illness, hospitalization - HIV.D.DE217"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Severe illness, hospitalization - HIV.D.DE219"
-// End of Severe illness, hospitalization - HIV.D.DE219
+/* End of Severe illness, hospitalization - HIV.D.DE219 */
+
 /*
 @dataElement: HIV.D.DE220 - Drugs out of stock
 @activity: HIV.D10 Counsel returning client
@@ -6198,10 +6397,11 @@ define "Drugs out of stock":
 define "Drugs out of stock Condition":
   [Condition: Concepts."Drugs out of stock"]
 define "Drugs out of stock Observation":
-  "Drugs out of stock Observation" O
+  [Observation: Concepts."Drugs out of stock"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Drugs out of stock"
-// End of Drugs out of stock
+/* End of Drugs out of stock */
+
 /*
 @dataElement: HIV.D.DE221 - Client lacks finances
 @activity: HIV.D10 Counsel returning client
@@ -6214,10 +6414,11 @@ define "Client lacks finances":
 define "Client lacks finances Condition":
   [Condition: Concepts."Client lacks finances"]
 define "Client lacks finances Observation":
-  "Client lacks finances Observation" O
+  [Observation: Concepts."Client lacks finances"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Client lacks finances"
-// End of Client lacks finances
+/* End of Client lacks finances */
+
 /*
 @dataElement: HIV.D.DE222 - Excluded HIV infection in infant - HIV.D.DE222
 @activity: HIV.D10 Counsel returning client
@@ -6230,10 +6431,11 @@ define "Excluded HIV infection in infant - HIV.D.DE222":
 define "Excluded HIV infection in infant - HIV.D.DE222 Condition":
   [Condition: Concepts."Excluded HIV infection in infant - HIV.D.DE222"]
 define "Excluded HIV infection in infant - HIV.D.DE222 Observation":
-  "Excluded HIV infection in infant - HIV.D.DE217 Observation" O
+  [Observation: Concepts."Excluded HIV infection in infant - HIV.D.DE217"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Excluded HIV infection in infant - HIV.D.DE222"
-// End of Excluded HIV infection in infant - HIV.D.DE222
+/* End of Excluded HIV infection in infant - HIV.D.DE222 */
+
 /*
 @dataElement: HIV.D.DE223 - Other reason for stopping ART - HIV.D.DE223
 @activity: HIV.D10 Counsel returning client
@@ -6246,10 +6448,11 @@ define "Other reason for stopping ART - HIV.D.DE223":
 define "Other reason for stopping ART - HIV.D.DE223 Condition":
   [Condition: Concepts."Other reason for stopping ART - HIV.D.DE223"]
 define "Other reason for stopping ART - HIV.D.DE223 Observation":
-  "Other reason for stopping ART - HIV.D.DE217 Observation" O
+  [Observation: Concepts."Other reason for stopping ART - HIV.D.DE217"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other reason for stopping ART - HIV.D.DE223"
-// End of Other reason for stopping ART - HIV.D.DE223
+/* End of Other reason for stopping ART - HIV.D.DE223 */
+
 /*
 @dataElement: HIV.D.DE225 - Treatment failure
 @activity: HIV.D17 Check for signs of treatment failure
@@ -6259,7 +6462,8 @@ define "Other reason for stopping ART - HIV.D.DE223 Observation":
 define "Treatment failure Observation":
   [Observation: Concepts."Treatment failure"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Treatment failure
+/* End of Treatment failure */
+
 /*
 @dataElement: HIV.D.DE226 - Clinical failure
 @activity: HIV.D17 Check for signs of treatment failure
@@ -6272,10 +6476,11 @@ define "Clinical failure":
 define "Clinical failure Condition":
   [Condition: Concepts."Clinical failure"]
 define "Clinical failure Observation":
-  "Clinical failure Observation" O
+  [Observation: Concepts."Clinical failure"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Clinical failure"
-// End of Clinical failure
+/* End of Clinical failure */
+
 /*
 @dataElement: HIV.D.DE227 - Immunological failure
 @activity: HIV.D17 Check for signs of treatment failure
@@ -6288,10 +6493,11 @@ define "Immunological failure":
 define "Immunological failure Condition":
   [Condition: Concepts."Immunological failure"]
 define "Immunological failure Observation":
-  "Immunological failure Observation" O
+  [Observation: Concepts."Immunological failure"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Immunological failure"
-// End of Immunological failure
+/* End of Immunological failure */
+
 /*
 @dataElement: HIV.D.DE228 - Virological failure
 @activity: HIV.D17 Check for signs of treatment failure
@@ -6304,10 +6510,11 @@ define "Virological failure":
 define "Virological failure Condition":
   [Condition: Concepts."Virological failure"]
 define "Virological failure Observation":
-  "Virological failure Observation" O
+  [Observation: Concepts."Virological failure"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Virological failure"
-// End of Virological failure
+/* End of Virological failure */
+
 /*
 @dataElement: HIV.D.DE282 - Presumptive TB - HIV.D.DE282
 @activity: HIV.D14 Prevent, screen, and manage comorbidities and coinfections
@@ -6320,10 +6527,11 @@ define "Presumptive TB - HIV.D.DE282":
 define "Presumptive TB - HIV.D.DE282 Condition":
   [Condition: Concepts."Presumptive TB - HIV.D.DE282"]
 define "Presumptive TB - HIV.D.DE282 Observation":
-  "Presumptive TB - HIV.D.DE259 Observation" O
+  [Observation: Concepts."Presumptive TB - HIV.D.DE259"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Presumptive TB - HIV.D.DE282"
-// End of Presumptive TB - HIV.D.DE282
+/* End of Presumptive TB - HIV.D.DE282 */
+
 /*
 @dataElement: HIV.D.DE289 - WHO HIV clinical stage condition or symptom - HIV.D.DE289
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6333,7 +6541,8 @@ define "Presumptive TB - HIV.D.DE282 Observation":
 define "WHO HIV clinical stage condition or symptom - HIV.D.DE289 Observation":
   [Observation: Concepts."WHO HIV clinical stage condition or symptom - HIV.D.DE289"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of WHO HIV clinical stage condition or symptom - HIV.D.DE289
+/* End of WHO HIV clinical stage condition or symptom - HIV.D.DE289 */
+
 /*
 @dataElement: HIV.D.DE290 - Asymptomatic
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6346,10 +6555,11 @@ define "Asymptomatic":
 define "Asymptomatic Condition":
   [Condition: Concepts."Asymptomatic"]
 define "Asymptomatic Observation":
-  "Asymptomatic Observation" O
+  [Observation: Concepts."Asymptomatic"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Asymptomatic"
-// End of Asymptomatic
+/* End of Asymptomatic */
+
 /*
 @dataElement: HIV.D.DE291 - Persistent generalized lymphadenopathy
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6362,10 +6572,11 @@ define "Persistent generalized lymphadenopathy":
 define "Persistent generalized lymphadenopathy Condition":
   [Condition: Concepts."Persistent generalized lymphadenopathy"]
 define "Persistent generalized lymphadenopathy Observation":
-  "Persistent generalized lymphadenopathy Observation" O
+  [Observation: Concepts."Persistent generalized lymphadenopathy"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Persistent generalized lymphadenopathy"
-// End of Persistent generalized lymphadenopathy
+/* End of Persistent generalized lymphadenopathy */
+
 /*
 @dataElement: HIV.D.DE292 - Moderate unexplained weight loss
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6378,10 +6589,11 @@ define "Moderate unexplained weight loss":
 define "Moderate unexplained weight loss Condition":
   [Condition: Concepts."Moderate unexplained weight loss"]
 define "Moderate unexplained weight loss Observation":
-  "Moderate unexplained weight loss Observation" O
+  [Observation: Concepts."Moderate unexplained weight loss"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Moderate unexplained weight loss"
-// End of Moderate unexplained weight loss
+/* End of Moderate unexplained weight loss */
+
 /*
 @dataElement: HIV.D.DE293 - Recurrent respiratory tract infections
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6394,10 +6606,11 @@ define "Recurrent respiratory tract infections":
 define "Recurrent respiratory tract infections Condition":
   [Condition: Concepts."Recurrent respiratory tract infections"]
 define "Recurrent respiratory tract infections Observation":
-  "Recurrent respiratory tract infections Observation" O
+  [Observation: Concepts."Recurrent respiratory tract infections"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Recurrent respiratory tract infections"
-// End of Recurrent respiratory tract infections
+/* End of Recurrent respiratory tract infections */
+
 /*
 @dataElement: HIV.D.DE294 - Unexplained persistent hepatosplenomegaly
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6410,10 +6623,11 @@ define "Unexplained persistent hepatosplenomegaly":
 define "Unexplained persistent hepatosplenomegaly Condition":
   [Condition: Concepts."Unexplained persistent hepatosplenomegaly"]
 define "Unexplained persistent hepatosplenomegaly Observation":
-  "Unexplained persistent hepatosplenomegaly Observation" O
+  [Observation: Concepts."Unexplained persistent hepatosplenomegaly"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Unexplained persistent hepatosplenomegaly"
-// End of Unexplained persistent hepatosplenomegaly
+/* End of Unexplained persistent hepatosplenomegaly */
+
 /*
 @dataElement: HIV.D.DE295 - Herpes zoster
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6426,10 +6640,11 @@ define "Herpes zoster":
 define "Herpes zoster Condition":
   [Condition: Concepts."Herpes zoster"]
 define "Herpes zoster Observation":
-  "Herpes zoster Observation" O
+  [Observation: Concepts."Herpes zoster"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Herpes zoster"
-// End of Herpes zoster
+/* End of Herpes zoster */
+
 /*
 @dataElement: HIV.D.DE296 - Angular cheilitis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6442,10 +6657,11 @@ define "Angular cheilitis":
 define "Angular cheilitis Condition":
   [Condition: Concepts."Angular cheilitis"]
 define "Angular cheilitis Observation":
-  "Angular cheilitis Observation" O
+  [Observation: Concepts."Angular cheilitis"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Angular cheilitis"
-// End of Angular cheilitis
+/* End of Angular cheilitis */
+
 /*
 @dataElement: HIV.D.DE297 - Linear gingival erythema
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6458,10 +6674,11 @@ define "Linear gingival erythema":
 define "Linear gingival erythema Condition":
   [Condition: Concepts."Linear gingival erythema"]
 define "Linear gingival erythema Observation":
-  "Linear gingival erythema Observation" O
+  [Observation: Concepts."Linear gingival erythema"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Linear gingival erythema"
-// End of Linear gingival erythema
+/* End of Linear gingival erythema */
+
 /*
 @dataElement: HIV.D.DE298 - Recurrent oral ulceration
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6474,10 +6691,11 @@ define "Recurrent oral ulceration":
 define "Recurrent oral ulceration Condition":
   [Condition: Concepts."Recurrent oral ulceration"]
 define "Recurrent oral ulceration Observation":
-  "Recurrent oral ulceration Observation" O
+  [Observation: Concepts."Recurrent oral ulceration"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Recurrent oral ulceration"
-// End of Recurrent oral ulceration
+/* End of Recurrent oral ulceration */
+
 /*
 @dataElement: HIV.D.DE299 - Papular pruritic eruption
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6490,10 +6708,11 @@ define "Papular pruritic eruption":
 define "Papular pruritic eruption Condition":
   [Condition: Concepts."Papular pruritic eruption"]
 define "Papular pruritic eruption Observation":
-  "Papular pruritic eruption Observation" O
+  [Observation: Concepts."Papular pruritic eruption"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Papular pruritic eruption"
-// End of Papular pruritic eruption
+/* End of Papular pruritic eruption */
+
 /*
 @dataElement: HIV.D.DE300 - Fungal nail infections
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6506,10 +6725,11 @@ define "Fungal nail infections":
 define "Fungal nail infections Condition":
   [Condition: Concepts."Fungal nail infections"]
 define "Fungal nail infections Observation":
-  "Fungal nail infections Observation" O
+  [Observation: Concepts."Fungal nail infections"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Fungal nail infections"
-// End of Fungal nail infections
+/* End of Fungal nail infections */
+
 /*
 @dataElement: HIV.D.DE301 - Seborrhoeic dermatitis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6522,10 +6742,11 @@ define "Seborrhoeic dermatitis":
 define "Seborrhoeic dermatitis Condition":
   [Condition: Concepts."Seborrhoeic dermatitis"]
 define "Seborrhoeic dermatitis Observation":
-  "Seborrhoeic dermatitis Observation" O
+  [Observation: Concepts."Seborrhoeic dermatitis"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Seborrhoeic dermatitis"
-// End of Seborrhoeic dermatitis
+/* End of Seborrhoeic dermatitis */
+
 /*
 @dataElement: HIV.D.DE302 - Extensive wart virus infection
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6538,10 +6759,11 @@ define "Extensive wart virus infection":
 define "Extensive wart virus infection Condition":
   [Condition: Concepts."Extensive wart virus infection"]
 define "Extensive wart virus infection Observation":
-  "Extensive wart virus infection Observation" O
+  [Observation: Concepts."Extensive wart virus infection"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Extensive wart virus infection"
-// End of Extensive wart virus infection
+/* End of Extensive wart virus infection */
+
 /*
 @dataElement: HIV.D.DE303 - Extensive molluscum contagiosum
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6554,10 +6776,11 @@ define "Extensive molluscum contagiosum":
 define "Extensive molluscum contagiosum Condition":
   [Condition: Concepts."Extensive molluscum contagiosum"]
 define "Extensive molluscum contagiosum Observation":
-  "Extensive molluscum contagiosum Observation" O
+  [Observation: Concepts."Extensive molluscum contagiosum"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Extensive molluscum contagiosum"
-// End of Extensive molluscum contagiosum
+/* End of Extensive molluscum contagiosum */
+
 /*
 @dataElement: HIV.D.DE304 - Unexplained persistent parotid enlargement
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6570,10 +6793,11 @@ define "Unexplained persistent parotid enlargement":
 define "Unexplained persistent parotid enlargement Condition":
   [Condition: Concepts."Unexplained persistent parotid enlargement"]
 define "Unexplained persistent parotid enlargement Observation":
-  "Unexplained persistent parotid enlargement Observation" O
+  [Observation: Concepts."Unexplained persistent parotid enlargement"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Unexplained persistent parotid enlargement"
-// End of Unexplained persistent parotid enlargement
+/* End of Unexplained persistent parotid enlargement */
+
 /*
 @dataElement: HIV.D.DE305 - Unexplained severe weight loss in adults
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6586,10 +6810,11 @@ define "Unexplained severe weight loss in adults":
 define "Unexplained severe weight loss in adults Condition":
   [Condition: Concepts."Unexplained severe weight loss in adults"]
 define "Unexplained severe weight loss in adults Observation":
-  "Unexplained severe weight loss in adults Observation" O
+  [Observation: Concepts."Unexplained severe weight loss in adults"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Unexplained severe weight loss in adults"
-// End of Unexplained severe weight loss in adults
+/* End of Unexplained severe weight loss in adults */
+
 /*
 @dataElement: HIV.D.DE306 - Unexplained moderate malnutrition not adequately responding to standard therapy
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6602,10 +6827,11 @@ define "Unexplained moderate malnutrition not adequately responding to standard 
 define "Unexplained moderate malnutrition not adequately responding to standard therapy Condition":
   [Condition: Concepts."Unexplained moderate malnutrition not adequately responding to standard therapy"]
 define "Unexplained moderate malnutrition not adequately responding to standard therapy Observation":
-  "Unexplained moderate malnutrition not adequately responding to standard therapy Observation" O
+  [Observation: Concepts."Unexplained moderate malnutrition not adequately responding to standard therapy"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Unexplained moderate malnutrition not adequately responding to standard therapy"
-// End of Unexplained moderate malnutrition not adequately responding to standard therapy
+/* End of Unexplained moderate malnutrition not adequately responding to standard therapy */
+
 /*
 @dataElement: HIV.D.DE307 - Unexplained chronic diarrhoea for longer than 1 month
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6618,10 +6844,11 @@ define "Unexplained chronic diarrhoea for longer than 1 month":
 define "Unexplained chronic diarrhoea for longer than 1 month Condition":
   [Condition: Concepts."Unexplained chronic diarrhoea for longer than 1 month"]
 define "Unexplained chronic diarrhoea for longer than 1 month Observation":
-  "Unexplained chronic diarrhoea for longer than 1 month Observation" O
+  [Observation: Concepts."Unexplained chronic diarrhoea for longer than 1 month"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Unexplained chronic diarrhoea for longer than 1 month"
-// End of Unexplained chronic diarrhoea for longer than 1 month
+/* End of Unexplained chronic diarrhoea for longer than 1 month */
+
 /*
 @dataElement: HIV.D.DE308 - Unexplained persistent diarrhoea 14 days or more
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6634,10 +6861,11 @@ define "Unexplained persistent diarrhoea 14 days or more":
 define "Unexplained persistent diarrhoea 14 days or more Condition":
   [Condition: Concepts."Unexplained persistent diarrhoea 14 days or more"]
 define "Unexplained persistent diarrhoea 14 days or more Observation":
-  "Unexplained persistent diarrhoea 14 days or more Observation" O
+  [Observation: Concepts."Unexplained persistent diarrhoea 14 days or more"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Unexplained persistent diarrhoea 14 days or more"
-// End of Unexplained persistent diarrhoea 14 days or more
+/* End of Unexplained persistent diarrhoea 14 days or more */
+
 /*
 @dataElement: HIV.D.DE309 - Unexplained persistent fever above 37.5 C, intermittent or constant, for longer than one 1 month
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6650,10 +6878,11 @@ define "Unexplained persistent fever above 37.5 C, intermittent or constant, for
 define "Unexplained persistent fever above 37.5 C, intermittent or constant, for longer than one 1 month Condition":
   [Condition: Concepts."Unexplained persistent fever above 37.5 C, intermittent or constant, for longer than one 1 month"]
 define "Unexplained persistent fever above 37.5 C, intermittent or constant, for longer than one 1 month Observation":
-  "Unexplained persistent fever above 37.5 C, intermittent or constant, for longer than one 1 month Observation" O
+  [Observation: Concepts."Unexplained persistent fever above 37.5 C, intermittent or constant, for longer than one 1 month"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Unexplained persistent fever above 37.5 C, intermittent or constant, for longer than one 1 month"
-// End of Unexplained persistent fever above 37.5 C, intermittent or constant, for longer than one 1 month
+/* End of Unexplained persistent fever above 37.5 C, intermittent or constant, for longer than one 1 month */
+
 /*
 @dataElement: HIV.D.DE310 - Persistent oral candidiasis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6666,10 +6895,11 @@ define "Persistent oral candidiasis":
 define "Persistent oral candidiasis Condition":
   [Condition: Concepts."Persistent oral candidiasis"]
 define "Persistent oral candidiasis Observation":
-  "Persistent oral candidiasis Observation" O
+  [Observation: Concepts."Persistent oral candidiasis"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Persistent oral candidiasis"
-// End of Persistent oral candidiasis
+/* End of Persistent oral candidiasis */
+
 /*
 @dataElement: HIV.D.DE311 - Oral hairy leukoplakia
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6682,10 +6912,11 @@ define "Oral hairy leukoplakia":
 define "Oral hairy leukoplakia Condition":
   [Condition: Concepts."Oral hairy leukoplakia"]
 define "Oral hairy leukoplakia Observation":
-  "Oral hairy leukoplakia Observation" O
+  [Observation: Concepts."Oral hairy leukoplakia"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Oral hairy leukoplakia"
-// End of Oral hairy leukoplakia
+/* End of Oral hairy leukoplakia */
+
 /*
 @dataElement: HIV.D.DE312 - Pulmonary TB - HIV.D.DE312
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6698,10 +6929,11 @@ define "Pulmonary TB - HIV.D.DE312":
 define "Pulmonary TB - HIV.D.DE312 Condition":
   [Condition: Concepts."Pulmonary TB - HIV.D.DE312"]
 define "Pulmonary TB - HIV.D.DE312 Observation":
-  "Pulmonary TB - HIV.D.DE289 Observation" O
+  [Observation: Concepts."Pulmonary TB - HIV.D.DE289"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Pulmonary TB - HIV.D.DE312"
-// End of Pulmonary TB - HIV.D.DE312
+/* End of Pulmonary TB - HIV.D.DE312 */
+
 /*
 @dataElement: HIV.D.DE313 - Lymph node TB - HIV.D.DE313
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6714,10 +6946,11 @@ define "Lymph node TB - HIV.D.DE313":
 define "Lymph node TB - HIV.D.DE313 Condition":
   [Condition: Concepts."Lymph node TB - HIV.D.DE313"]
 define "Lymph node TB - HIV.D.DE313 Observation":
-  "Lymph node TB - HIV.D.DE289 Observation" O
+  [Observation: Concepts."Lymph node TB - HIV.D.DE289"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Lymph node TB - HIV.D.DE313"
-// End of Lymph node TB - HIV.D.DE313
+/* End of Lymph node TB - HIV.D.DE313 */
+
 /*
 @dataElement: HIV.D.DE314 - Severe bacterial infections such as pneumonia, empyema, pyomyositis, bone or joint infection, meningitis, bacteraemia
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6730,10 +6963,11 @@ define "Severe bacterial infections such as pneumonia, empyema, pyomyositis, bon
 define "Severe bacterial infections such as pneumonia, empyema, pyomyositis, bone or joint infection, meningitis, bacteraemia Condition":
   [Condition: Concepts."Severe bacterial infections such as pneumonia, empyema, pyomyositis, bone or joint infection, meningitis, bacteraemia"]
 define "Severe bacterial infections such as pneumonia, empyema, pyomyositis, bone or joint infection, meningitis, bacteraemia Observation":
-  "Severe bacterial infections such as pneumonia, empyema, pyomyositis, bone or joint infection, meningitis, bacteraemia Observation" O
+  [Observation: Concepts."Severe bacterial infections such as pneumonia, empyema, pyomyositis, bone or joint infection, meningitis, bacteraemia"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Severe bacterial infections such as pneumonia, empyema, pyomyositis, bone or joint infection, meningitis, bacteraemia"
-// End of Severe bacterial infections such as pneumonia, empyema, pyomyositis, bone or joint infection, meningitis, bacteraemia
+/* End of Severe bacterial infections such as pneumonia, empyema, pyomyositis, bone or joint infection, meningitis, bacteraemia */
+
 /*
 @dataElement: HIV.D.DE315 - Severe recurrent bacterial pneumonia
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6746,10 +6980,11 @@ define "Severe recurrent bacterial pneumonia":
 define "Severe recurrent bacterial pneumonia Condition":
   [Condition: Concepts."Severe recurrent bacterial pneumonia"]
 define "Severe recurrent bacterial pneumonia Observation":
-  "Severe recurrent bacterial pneumonia Observation" O
+  [Observation: Concepts."Severe recurrent bacterial pneumonia"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Severe recurrent bacterial pneumonia"
-// End of Severe recurrent bacterial pneumonia
+/* End of Severe recurrent bacterial pneumonia */
+
 /*
 @dataElement: HIV.D.DE316 - Acute necrotizing ulcerative stomatitis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6762,10 +6997,11 @@ define "Acute necrotizing ulcerative stomatitis":
 define "Acute necrotizing ulcerative stomatitis Condition":
   [Condition: Concepts."Acute necrotizing ulcerative stomatitis"]
 define "Acute necrotizing ulcerative stomatitis Observation":
-  "Acute necrotizing ulcerative stomatitis Observation" O
+  [Observation: Concepts."Acute necrotizing ulcerative stomatitis"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Acute necrotizing ulcerative stomatitis"
-// End of Acute necrotizing ulcerative stomatitis
+/* End of Acute necrotizing ulcerative stomatitis */
+
 /*
 @dataElement: HIV.D.DE317 - Acute necrotizing ulcerative gingivitis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6778,10 +7014,11 @@ define "Acute necrotizing ulcerative gingivitis":
 define "Acute necrotizing ulcerative gingivitis Condition":
   [Condition: Concepts."Acute necrotizing ulcerative gingivitis"]
 define "Acute necrotizing ulcerative gingivitis Observation":
-  "Acute necrotizing ulcerative gingivitis Observation" O
+  [Observation: Concepts."Acute necrotizing ulcerative gingivitis"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Acute necrotizing ulcerative gingivitis"
-// End of Acute necrotizing ulcerative gingivitis
+/* End of Acute necrotizing ulcerative gingivitis */
+
 /*
 @dataElement: HIV.D.DE318 - Acute necrotizing ulcerative periodontitis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6794,10 +7031,11 @@ define "Acute necrotizing ulcerative periodontitis":
 define "Acute necrotizing ulcerative periodontitis Condition":
   [Condition: Concepts."Acute necrotizing ulcerative periodontitis"]
 define "Acute necrotizing ulcerative periodontitis Observation":
-  "Acute necrotizing ulcerative periodontitis Observation" O
+  [Observation: Concepts."Acute necrotizing ulcerative periodontitis"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Acute necrotizing ulcerative periodontitis"
-// End of Acute necrotizing ulcerative periodontitis
+/* End of Acute necrotizing ulcerative periodontitis */
+
 /*
 @dataElement: HIV.D.DE319 - Unexplained anaemia <8 g/dL
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6810,10 +7048,11 @@ define "Unexplained anaemia <8 g/dL":
 define "Unexplained anaemia <8 g/dL Condition":
   [Condition: Concepts."Unexplained anaemia <8 g/dL"]
 define "Unexplained anaemia <8 g/dL Observation":
-  "Unexplained anaemia <8 g/dL Observation" O
+  [Observation: Concepts."Unexplained anaemia <8 g/dL"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Unexplained anaemia <8 g/dL"
-// End of Unexplained anaemia <8 g/dL
+/* End of Unexplained anaemia <8 g/dL */
+
 /*
 @dataElement: HIV.D.DE320 - Neutropaenia <0.5 x 10^9/L
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6826,10 +7065,11 @@ define "Neutropaenia <0.5 x 10^9/L":
 define "Neutropaenia <0.5 x 10^9/L Condition":
   [Condition: Concepts."Neutropaenia <0.5 x 10^9/L"]
 define "Neutropaenia <0.5 x 10^9/L Observation":
-  "Neutropaenia <0.5 x 10^9/L Observation" O
+  [Observation: Concepts."Neutropaenia <0.5 x 10^9/L"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Neutropaenia <0.5 x 10^9/L"
-// End of Neutropaenia <0.5 x 10^9/L
+/* End of Neutropaenia <0.5 x 10^9/L */
+
 /*
 @dataElement: HIV.D.DE321 - Chronic thrombocytopaenia <50 x 10^9/L
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6842,10 +7082,11 @@ define "Chronic thrombocytopaenia <50 x 10^9/L":
 define "Chronic thrombocytopaenia <50 x 10^9/L Condition":
   [Condition: Concepts."Chronic thrombocytopaenia <50 x 10^9/L"]
 define "Chronic thrombocytopaenia <50 x 10^9/L Observation":
-  "Chronic thrombocytopaenia <50 x 10^9/L Observation" O
+  [Observation: Concepts."Chronic thrombocytopaenia <50 x 10^9/L"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Chronic thrombocytopaenia <50 x 10^9/L"
-// End of Chronic thrombocytopaenia <50 x 10^9/L
+/* End of Chronic thrombocytopaenia <50 x 10^9/L */
+
 /*
 @dataElement: HIV.D.DE322 - Symptomatic lymphoid interstitial pneumonitis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6858,10 +7099,11 @@ define "Symptomatic lymphoid interstitial pneumonitis":
 define "Symptomatic lymphoid interstitial pneumonitis Condition":
   [Condition: Concepts."Symptomatic lymphoid interstitial pneumonitis"]
 define "Symptomatic lymphoid interstitial pneumonitis Observation":
-  "Symptomatic lymphoid interstitial pneumonitis Observation" O
+  [Observation: Concepts."Symptomatic lymphoid interstitial pneumonitis"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Symptomatic lymphoid interstitial pneumonitis"
-// End of Symptomatic lymphoid interstitial pneumonitis
+/* End of Symptomatic lymphoid interstitial pneumonitis */
+
 /*
 @dataElement: HIV.D.DE323 - Chronic HIV-associated lung disease, including bronchiectasis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6874,10 +7116,11 @@ define "Chronic HIV-associated lung disease, including bronchiectasis":
 define "Chronic HIV-associated lung disease, including bronchiectasis Condition":
   [Condition: Concepts."Chronic HIV-associated lung disease, including bronchiectasis"]
 define "Chronic HIV-associated lung disease, including bronchiectasis Observation":
-  "Chronic HIV-associated lung disease, including bronchiectasis Observation" O
+  [Observation: Concepts."Chronic HIV-associated lung disease, including bronchiectasis"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Chronic HIV-associated lung disease, including bronchiectasis"
-// End of Chronic HIV-associated lung disease, including bronchiectasis
+/* End of Chronic HIV-associated lung disease, including bronchiectasis */
+
 /*
 @dataElement: HIV.D.DE324 - HIV wasting syndrome
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6890,10 +7133,11 @@ define "HIV wasting syndrome":
 define "HIV wasting syndrome Condition":
   [Condition: Concepts."HIV wasting syndrome"]
 define "HIV wasting syndrome Observation":
-  "HIV wasting syndrome Observation" O
+  [Observation: Concepts."HIV wasting syndrome"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV wasting syndrome"
-// End of HIV wasting syndrome
+/* End of HIV wasting syndrome */
+
 /*
 @dataElement: HIV.D.DE325 - Unexplained severe wasting not responding to standard therapy
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6906,10 +7150,11 @@ define "Unexplained severe wasting not responding to standard therapy":
 define "Unexplained severe wasting not responding to standard therapy Condition":
   [Condition: Concepts."Unexplained severe wasting not responding to standard therapy"]
 define "Unexplained severe wasting not responding to standard therapy Observation":
-  "Unexplained severe wasting not responding to standard therapy Observation" O
+  [Observation: Concepts."Unexplained severe wasting not responding to standard therapy"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Unexplained severe wasting not responding to standard therapy"
-// End of Unexplained severe wasting not responding to standard therapy
+/* End of Unexplained severe wasting not responding to standard therapy */
+
 /*
 @dataElement: HIV.D.DE326 - Unexplained stunting not responding to standard therapy
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6922,10 +7167,11 @@ define "Unexplained stunting not responding to standard therapy":
 define "Unexplained stunting not responding to standard therapy Condition":
   [Condition: Concepts."Unexplained stunting not responding to standard therapy"]
 define "Unexplained stunting not responding to standard therapy Observation":
-  "Unexplained stunting not responding to standard therapy Observation" O
+  [Observation: Concepts."Unexplained stunting not responding to standard therapy"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Unexplained stunting not responding to standard therapy"
-// End of Unexplained stunting not responding to standard therapy
+/* End of Unexplained stunting not responding to standard therapy */
+
 /*
 @dataElement: HIV.D.DE327 - Unexplained severe malnutrition not responding to standard therapy
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6938,10 +7184,11 @@ define "Unexplained severe malnutrition not responding to standard therapy":
 define "Unexplained severe malnutrition not responding to standard therapy Condition":
   [Condition: Concepts."Unexplained severe malnutrition not responding to standard therapy"]
 define "Unexplained severe malnutrition not responding to standard therapy Observation":
-  "Unexplained severe malnutrition not responding to standard therapy Observation" O
+  [Observation: Concepts."Unexplained severe malnutrition not responding to standard therapy"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Unexplained severe malnutrition not responding to standard therapy"
-// End of Unexplained severe malnutrition not responding to standard therapy
+/* End of Unexplained severe malnutrition not responding to standard therapy */
+
 /*
 @dataElement: HIV.D.DE328 - Pneumocystis jirovecii pneumonia
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6954,10 +7201,11 @@ define "Pneumocystis jirovecii pneumonia":
 define "Pneumocystis jirovecii pneumonia Condition":
   [Condition: Concepts."Pneumocystis jirovecii pneumonia"]
 define "Pneumocystis jirovecii pneumonia Observation":
-  "Pneumocystis jirovecii pneumonia Observation" O
+  [Observation: Concepts."Pneumocystis jirovecii pneumonia"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Pneumocystis jirovecii pneumonia"
-// End of Pneumocystis jirovecii pneumonia
+/* End of Pneumocystis jirovecii pneumonia */
+
 /*
 @dataElement: HIV.D.DE329 - Recurrent severe bacterial pneumonia
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6970,10 +7218,11 @@ define "Recurrent severe bacterial pneumonia":
 define "Recurrent severe bacterial pneumonia Condition":
   [Condition: Concepts."Recurrent severe bacterial pneumonia"]
 define "Recurrent severe bacterial pneumonia Observation":
-  "Recurrent severe bacterial pneumonia Observation" O
+  [Observation: Concepts."Recurrent severe bacterial pneumonia"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Recurrent severe bacterial pneumonia"
-// End of Recurrent severe bacterial pneumonia
+/* End of Recurrent severe bacterial pneumonia */
+
 /*
 @dataElement: HIV.D.DE330 - Recurrent severe bacterial infections such as empyema, pyomyositis, bone or joint infection, meningitis, but excluding pneumonia
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -6986,10 +7235,11 @@ define "Recurrent severe bacterial infections such as empyema, pyomyositis, bone
 define "Recurrent severe bacterial infections such as empyema, pyomyositis, bone or joint infection, meningitis, but excluding pneumonia Condition":
   [Condition: Concepts."Recurrent severe bacterial infections such as empyema, pyomyositis, bone or joint infection, meningitis, but excluding pneumonia"]
 define "Recurrent severe bacterial infections such as empyema, pyomyositis, bone or joint infection, meningitis, but excluding pneumonia Observation":
-  "Recurrent severe bacterial infections such as empyema, pyomyositis, bone or joint infection, meningitis, but excluding pneumonia Observation" O
+  [Observation: Concepts."Recurrent severe bacterial infections such as empyema, pyomyositis, bone or joint infection, meningitis, but excluding pneumonia"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Recurrent severe bacterial infections such as empyema, pyomyositis, bone or joint infection, meningitis, but excluding pneumonia"
-// End of Recurrent severe bacterial infections such as empyema, pyomyositis, bone or joint infection, meningitis, but excluding pneumonia
+/* End of Recurrent severe bacterial infections such as empyema, pyomyositis, bone or joint infection, meningitis, but excluding pneumonia */
+
 /*
 @dataElement: HIV.D.DE331 - Empyema
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7002,10 +7252,11 @@ define "Empyema":
 define "Empyema Condition":
   [Condition: Concepts."Empyema"]
 define "Empyema Observation":
-  "Empyema Observation" O
+  [Observation: Concepts."Empyema"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Empyema"
-// End of Empyema
+/* End of Empyema */
+
 /*
 @dataElement: HIV.D.DE332 - Pyomyositis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7018,10 +7269,11 @@ define "Pyomyositis":
 define "Pyomyositis Condition":
   [Condition: Concepts."Pyomyositis"]
 define "Pyomyositis Observation":
-  "Pyomyositis Observation" O
+  [Observation: Concepts."Pyomyositis"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Pyomyositis"
-// End of Pyomyositis
+/* End of Pyomyositis */
+
 /*
 @dataElement: HIV.D.DE333 - Bone or joint infection
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7034,10 +7286,11 @@ define "Bone or joint infection":
 define "Bone or joint infection Condition":
   [Condition: Concepts."Bone or joint infection"]
 define "Bone or joint infection Observation":
-  "Bone or joint infection Observation" O
+  [Observation: Concepts."Bone or joint infection"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Bone or joint infection"
-// End of Bone or joint infection
+/* End of Bone or joint infection */
+
 /*
 @dataElement: HIV.D.DE334 - Meningitis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7050,10 +7303,11 @@ define "Meningitis":
 define "Meningitis Condition":
   [Condition: Concepts."Meningitis"]
 define "Meningitis Observation":
-  "Meningitis Observation" O
+  [Observation: Concepts."Meningitis"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Meningitis"
-// End of Meningitis
+/* End of Meningitis */
+
 /*
 @dataElement: HIV.D.DE335 - Chronic herpes simplex infection orolabial or cutaneous of more than 1 month duration or visceral at any site
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7066,10 +7320,11 @@ define "Chronic herpes simplex infection orolabial or cutaneous of more than 1 m
 define "Chronic herpes simplex infection orolabial or cutaneous of more than 1 month duration or visceral at any site Condition":
   [Condition: Concepts."Chronic herpes simplex infection orolabial or cutaneous of more than 1 month duration or visceral at any site"]
 define "Chronic herpes simplex infection orolabial or cutaneous of more than 1 month duration or visceral at any site Observation":
-  "Chronic herpes simplex infection orolabial or cutaneous of more than 1 month duration or visceral at any site Observation" O
+  [Observation: Concepts."Chronic herpes simplex infection orolabial or cutaneous of more than 1 month duration or visceral at any site"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Chronic herpes simplex infection orolabial or cutaneous of more than 1 month duration or visceral at any site"
-// End of Chronic herpes simplex infection orolabial or cutaneous of more than 1 month duration or visceral at any site
+/* End of Chronic herpes simplex infection orolabial or cutaneous of more than 1 month duration or visceral at any site */
+
 /*
 @dataElement: HIV.D.DE336 - Chronic herpes simplex infection orolabial, genital or anorectal of more than 1 month in duration or visceral at any site
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7082,10 +7337,11 @@ define "Chronic herpes simplex infection orolabial, genital or anorectal of more
 define "Chronic herpes simplex infection orolabial, genital or anorectal of more than 1 month in duration or visceral at any site Condition":
   [Condition: Concepts."Chronic herpes simplex infection orolabial, genital or anorectal of more than 1 month in duration or visceral at any site"]
 define "Chronic herpes simplex infection orolabial, genital or anorectal of more than 1 month in duration or visceral at any site Observation":
-  "Chronic herpes simplex infection orolabial, genital or anorectal of more than 1 month in duration or visceral at any site Observation" O
+  [Observation: Concepts."Chronic herpes simplex infection orolabial, genital or anorectal of more than 1 month in duration or visceral at any site"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Chronic herpes simplex infection orolabial, genital or anorectal of more than 1 month in duration or visceral at any site"
-// End of Chronic herpes simplex infection orolabial, genital or anorectal of more than 1 month in duration or visceral at any site
+/* End of Chronic herpes simplex infection orolabial, genital or anorectal of more than 1 month in duration or visceral at any site */
+
 /*
 @dataElement: HIV.D.DE337 - Oesophageal candidiasis or candidiasis of trachea, bronchi or lungs
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7098,10 +7354,11 @@ define "Oesophageal candidiasis or candidiasis of trachea, bronchi or lungs":
 define "Oesophageal candidiasis or candidiasis of trachea, bronchi or lungs Condition":
   [Condition: Concepts."Oesophageal candidiasis or candidiasis of trachea, bronchi or lungs"]
 define "Oesophageal candidiasis or candidiasis of trachea, bronchi or lungs Observation":
-  "Oesophageal candidiasis or candidiasis of trachea, bronchi or lungs Observation" O
+  [Observation: Concepts."Oesophageal candidiasis or candidiasis of trachea, bronchi or lungs"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Oesophageal candidiasis or candidiasis of trachea, bronchi or lungs"
-// End of Oesophageal candidiasis or candidiasis of trachea, bronchi or lungs
+/* End of Oesophageal candidiasis or candidiasis of trachea, bronchi or lungs */
+
 /*
 @dataElement: HIV.D.DE338 - Extrapulmonary TB - HIV.D.DE338
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7114,10 +7371,11 @@ define "Extrapulmonary TB - HIV.D.DE338":
 define "Extrapulmonary TB - HIV.D.DE338 Condition":
   [Condition: Concepts."Extrapulmonary TB - HIV.D.DE338"]
 define "Extrapulmonary TB - HIV.D.DE338 Observation":
-  "Extrapulmonary TB - HIV.D.DE289 Observation" O
+  [Observation: Concepts."Extrapulmonary TB - HIV.D.DE289"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Extrapulmonary TB - HIV.D.DE338"
-// End of Extrapulmonary TB - HIV.D.DE338
+/* End of Extrapulmonary TB - HIV.D.DE338 */
+
 /*
 @dataElement: HIV.D.DE339 - Kaposi sarcoma
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7130,10 +7388,11 @@ define "Kaposi sarcoma":
 define "Kaposi sarcoma Condition":
   [Condition: Concepts."Kaposi sarcoma"]
 define "Kaposi sarcoma Observation":
-  "Kaposi sarcoma Observation" O
+  [Observation: Concepts."Kaposi sarcoma"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Kaposi sarcoma"
-// End of Kaposi sarcoma
+/* End of Kaposi sarcoma */
+
 /*
 @dataElement: HIV.D.DE340 - Cytomegalovirus infection retinitis or infection of other organs
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7146,10 +7405,11 @@ define "Cytomegalovirus infection retinitis or infection of other organs":
 define "Cytomegalovirus infection retinitis or infection of other organs Condition":
   [Condition: Concepts."Cytomegalovirus infection retinitis or infection of other organs"]
 define "Cytomegalovirus infection retinitis or infection of other organs Observation":
-  "Cytomegalovirus infection retinitis or infection of other organs Observation" O
+  [Observation: Concepts."Cytomegalovirus infection retinitis or infection of other organs"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Cytomegalovirus infection retinitis or infection of other organs"
-// End of Cytomegalovirus infection retinitis or infection of other organs
+/* End of Cytomegalovirus infection retinitis or infection of other organs */
+
 /*
 @dataElement: HIV.D.DE341 - Central nervous system toxoplasmosis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7162,10 +7422,11 @@ define "Central nervous system toxoplasmosis":
 define "Central nervous system toxoplasmosis Condition":
   [Condition: Concepts."Central nervous system toxoplasmosis"]
 define "Central nervous system toxoplasmosis Observation":
-  "Central nervous system toxoplasmosis Observation" O
+  [Observation: Concepts."Central nervous system toxoplasmosis"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Central nervous system toxoplasmosis"
-// End of Central nervous system toxoplasmosis
+/* End of Central nervous system toxoplasmosis */
+
 /*
 @dataElement: HIV.D.DE342 - HIV encephalopathy
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7178,10 +7439,11 @@ define "HIV encephalopathy":
 define "HIV encephalopathy Condition":
   [Condition: Concepts."HIV encephalopathy"]
 define "HIV encephalopathy Observation":
-  "HIV encephalopathy Observation" O
+  [Observation: Concepts."HIV encephalopathy"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV encephalopathy"
-// End of HIV encephalopathy
+/* End of HIV encephalopathy */
+
 /*
 @dataElement: HIV.D.DE343 - Extrapulmonary cryptococcosis, including meningitis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7194,10 +7456,11 @@ define "Extrapulmonary cryptococcosis, including meningitis":
 define "Extrapulmonary cryptococcosis, including meningitis Condition":
   [Condition: Concepts."Extrapulmonary cryptococcosis, including meningitis"]
 define "Extrapulmonary cryptococcosis, including meningitis Observation":
-  "Extrapulmonary cryptococcosis, including meningitis Observation" O
+  [Observation: Concepts."Extrapulmonary cryptococcosis, including meningitis"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Extrapulmonary cryptococcosis, including meningitis"
-// End of Extrapulmonary cryptococcosis, including meningitis
+/* End of Extrapulmonary cryptococcosis, including meningitis */
+
 /*
 @dataElement: HIV.D.DE344 - Disseminated nontuberculous mycobacterial infection
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7210,10 +7473,11 @@ define "Disseminated nontuberculous mycobacterial infection":
 define "Disseminated nontuberculous mycobacterial infection Condition":
   [Condition: Concepts."Disseminated nontuberculous mycobacterial infection"]
 define "Disseminated nontuberculous mycobacterial infection Observation":
-  "Disseminated nontuberculous mycobacterial infection Observation" O
+  [Observation: Concepts."Disseminated nontuberculous mycobacterial infection"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Disseminated nontuberculous mycobacterial infection"
-// End of Disseminated nontuberculous mycobacterial infection
+/* End of Disseminated nontuberculous mycobacterial infection */
+
 /*
 @dataElement: HIV.D.DE345 - Progressive multifocal leukoencephalopathy
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7226,10 +7490,11 @@ define "Progressive multifocal leukoencephalopathy":
 define "Progressive multifocal leukoencephalopathy Condition":
   [Condition: Concepts."Progressive multifocal leukoencephalopathy"]
 define "Progressive multifocal leukoencephalopathy Observation":
-  "Progressive multifocal leukoencephalopathy Observation" O
+  [Observation: Concepts."Progressive multifocal leukoencephalopathy"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Progressive multifocal leukoencephalopathy"
-// End of Progressive multifocal leukoencephalopathy
+/* End of Progressive multifocal leukoencephalopathy */
+
 /*
 @dataElement: HIV.D.DE346 - Chronic cryptosporidiosis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7242,10 +7507,11 @@ define "Chronic cryptosporidiosis":
 define "Chronic cryptosporidiosis Condition":
   [Condition: Concepts."Chronic cryptosporidiosis"]
 define "Chronic cryptosporidiosis Observation":
-  "Chronic cryptosporidiosis Observation" O
+  [Observation: Concepts."Chronic cryptosporidiosis"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Chronic cryptosporidiosis"
-// End of Chronic cryptosporidiosis
+/* End of Chronic cryptosporidiosis */
+
 /*
 @dataElement: HIV.D.DE347 - Chronic cryptosporidiosis with diarrhoea
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7258,10 +7524,11 @@ define "Chronic cryptosporidiosis with diarrhoea":
 define "Chronic cryptosporidiosis with diarrhoea Condition":
   [Condition: Concepts."Chronic cryptosporidiosis with diarrhoea"]
 define "Chronic cryptosporidiosis with diarrhoea Observation":
-  "Chronic cryptosporidiosis with diarrhoea Observation" O
+  [Observation: Concepts."Chronic cryptosporidiosis with diarrhoea"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Chronic cryptosporidiosis with diarrhoea"
-// End of Chronic cryptosporidiosis with diarrhoea
+/* End of Chronic cryptosporidiosis with diarrhoea */
+
 /*
 @dataElement: HIV.D.DE348 - Chronic isosporiasis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7274,10 +7541,11 @@ define "Chronic isosporiasis":
 define "Chronic isosporiasis Condition":
   [Condition: Concepts."Chronic isosporiasis"]
 define "Chronic isosporiasis Observation":
-  "Chronic isosporiasis Observation" O
+  [Observation: Concepts."Chronic isosporiasis"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Chronic isosporiasis"
-// End of Chronic isosporiasis
+/* End of Chronic isosporiasis */
+
 /*
 @dataElement: HIV.D.DE349 - Disseminated mycosis extrapulmonary histoplasmosis, coccidioidomycosis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7290,10 +7558,11 @@ define "Disseminated mycosis extrapulmonary histoplasmosis, coccidioidomycosis":
 define "Disseminated mycosis extrapulmonary histoplasmosis, coccidioidomycosis Condition":
   [Condition: Concepts."Disseminated mycosis extrapulmonary histoplasmosis, coccidioidomycosis"]
 define "Disseminated mycosis extrapulmonary histoplasmosis, coccidioidomycosis Observation":
-  "Disseminated mycosis extrapulmonary histoplasmosis, coccidioidomycosis Observation" O
+  [Observation: Concepts."Disseminated mycosis extrapulmonary histoplasmosis, coccidioidomycosis"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Disseminated mycosis extrapulmonary histoplasmosis, coccidioidomycosis"
-// End of Disseminated mycosis extrapulmonary histoplasmosis, coccidioidomycosis
+/* End of Disseminated mycosis extrapulmonary histoplasmosis, coccidioidomycosis */
+
 /*
 @dataElement: HIV.D.DE350 - Disseminated endemic mycosis extrapulmonary histoplasmosis, coccidioidomycosis, penicilliosis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7306,10 +7575,11 @@ define "Disseminated endemic mycosis extrapulmonary histoplasmosis, coccidioidom
 define "Disseminated endemic mycosis extrapulmonary histoplasmosis, coccidioidomycosis, penicilliosis Condition":
   [Condition: Concepts."Disseminated endemic mycosis extrapulmonary histoplasmosis, coccidioidomycosis, penicilliosis"]
 define "Disseminated endemic mycosis extrapulmonary histoplasmosis, coccidioidomycosis, penicilliosis Observation":
-  "Disseminated endemic mycosis extrapulmonary histoplasmosis, coccidioidomycosis, penicilliosis Observation" O
+  [Observation: Concepts."Disseminated endemic mycosis extrapulmonary histoplasmosis, coccidioidomycosis, penicilliosis"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Disseminated endemic mycosis extrapulmonary histoplasmosis, coccidioidomycosis, penicilliosis"
-// End of Disseminated endemic mycosis extrapulmonary histoplasmosis, coccidioidomycosis, penicilliosis
+/* End of Disseminated endemic mycosis extrapulmonary histoplasmosis, coccidioidomycosis, penicilliosis */
+
 /*
 @dataElement: HIV.D.DE351 - Cerebral lymphoma
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7322,10 +7592,11 @@ define "Cerebral lymphoma":
 define "Cerebral lymphoma Condition":
   [Condition: Concepts."Cerebral lymphoma"]
 define "Cerebral lymphoma Observation":
-  "Cerebral lymphoma Observation" O
+  [Observation: Concepts."Cerebral lymphoma"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Cerebral lymphoma"
-// End of Cerebral lymphoma
+/* End of Cerebral lymphoma */
+
 /*
 @dataElement: HIV.D.DE352 - B-cell non-Hodgkin lymphoma
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7338,10 +7609,11 @@ define "B-cell non-Hodgkin lymphoma":
 define "B-cell non-Hodgkin lymphoma Condition":
   [Condition: Concepts."B-cell non-Hodgkin lymphoma"]
 define "B-cell non-Hodgkin lymphoma Observation":
-  "B-cell non-Hodgkin lymphoma Observation" O
+  [Observation: Concepts."B-cell non-Hodgkin lymphoma"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."B-cell non-Hodgkin lymphoma"
-// End of B-cell non-Hodgkin lymphoma
+/* End of B-cell non-Hodgkin lymphoma */
+
 /*
 @dataElement: HIV.D.DE353 - HIV-associated nephropathy or cardiomyopathy
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7354,10 +7626,11 @@ define "HIV-associated nephropathy or cardiomyopathy":
 define "HIV-associated nephropathy or cardiomyopathy Condition":
   [Condition: Concepts."HIV-associated nephropathy or cardiomyopathy"]
 define "HIV-associated nephropathy or cardiomyopathy Observation":
-  "HIV-associated nephropathy or cardiomyopathy Observation" O
+  [Observation: Concepts."HIV-associated nephropathy or cardiomyopathy"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV-associated nephropathy or cardiomyopathy"
-// End of HIV-associated nephropathy or cardiomyopathy
+/* End of HIV-associated nephropathy or cardiomyopathy */
+
 /*
 @dataElement: HIV.D.DE354 - Recurrent septicaemia including nontyphoidal Salmonella
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7370,10 +7643,11 @@ define "Recurrent septicaemia including nontyphoidal Salmonella":
 define "Recurrent septicaemia including nontyphoidal Salmonella Condition":
   [Condition: Concepts."Recurrent septicaemia including nontyphoidal Salmonella"]
 define "Recurrent septicaemia including nontyphoidal Salmonella Observation":
-  "Recurrent septicaemia including nontyphoidal Salmonella Observation" O
+  [Observation: Concepts."Recurrent septicaemia including nontyphoidal Salmonella"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Recurrent septicaemia including nontyphoidal Salmonella"
-// End of Recurrent septicaemia including nontyphoidal Salmonella
+/* End of Recurrent septicaemia including nontyphoidal Salmonella */
+
 /*
 @dataElement: HIV.D.DE355 - Invasive cervical carcinoma
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7386,10 +7660,11 @@ define "Invasive cervical carcinoma":
 define "Invasive cervical carcinoma Condition":
   [Condition: Concepts."Invasive cervical carcinoma"]
 define "Invasive cervical carcinoma Observation":
-  "Invasive cervical carcinoma Observation" O
+  [Observation: Concepts."Invasive cervical carcinoma"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Invasive cervical carcinoma"
-// End of Invasive cervical carcinoma
+/* End of Invasive cervical carcinoma */
+
 /*
 @dataElement: HIV.D.DE356 - Atypical disseminated leishmaniasis
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7402,10 +7677,11 @@ define "Atypical disseminated leishmaniasis":
 define "Atypical disseminated leishmaniasis Condition":
   [Condition: Concepts."Atypical disseminated leishmaniasis"]
 define "Atypical disseminated leishmaniasis Observation":
-  "Atypical disseminated leishmaniasis Observation" O
+  [Observation: Concepts."Atypical disseminated leishmaniasis"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Atypical disseminated leishmaniasis"
-// End of Atypical disseminated leishmaniasis
+/* End of Atypical disseminated leishmaniasis */
+
 /*
 @dataElement: HIV.D.DE357 - Neutropenia
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -7418,10 +7694,11 @@ define "Neutropenia":
 define "Neutropenia Condition":
   [Condition: Concepts."Neutropenia"]
 define "Neutropenia Observation":
-  "Neutropenia Observation" O
+  [Observation: Concepts."Neutropenia"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Neutropenia"
-// End of Neutropenia
+/* End of Neutropenia */
+
 /*
 @dataElement: HIV.D.DE364 - CD4 count - HIV.D.DE364
 @activity: HIV.D20 Diagnostics
@@ -7429,14 +7706,11 @@ define "Neutropenia Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "CD4 count - HIV.D.DE364":
-  exists "CD4 count - HIV.D.DE364 Observation"
-    or exists "CD4 count - HIV.D.DE364 Condition"
-define "CD4 count - HIV.D.DE364 Condition":
-  [Condition: Concepts."CD4 count - HIV.D.DE364"]
-define "CD4 count - HIV.D.DE364 Observation":
   [Observation: Concepts."CD4 count - HIV.D.DE364"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of CD4 count - HIV.D.DE364
+    return O.value
+/* End of CD4 count - HIV.D.DE364 */
+
 /*
 @dataElement: HIV.D.DE367 - Baseline CD4 count - HIV.D.DE367
 @activity: HIV.D20 Diagnostics
@@ -7444,14 +7718,11 @@ define "CD4 count - HIV.D.DE364 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Baseline CD4 count - HIV.D.DE367":
-  exists "Baseline CD4 count - HIV.D.DE367 Observation"
-    or exists "Baseline CD4 count - HIV.D.DE367 Condition"
-define "Baseline CD4 count - HIV.D.DE367 Condition":
-  [Condition: Concepts."Baseline CD4 count - HIV.D.DE367"]
-define "Baseline CD4 count - HIV.D.DE367 Observation":
   [Observation: Concepts."Baseline CD4 count - HIV.D.DE367"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Baseline CD4 count - HIV.D.DE367
+    return O.value
+/* End of Baseline CD4 count - HIV.D.DE367 */
+
 /*
 @dataElement: HIV.D.DE368 - Date of baseline CD4 count test - HIV.D.DE368
 @activity: HIV.D20 Diagnostics
@@ -7459,14 +7730,11 @@ define "Baseline CD4 count - HIV.D.DE367 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date of baseline CD4 count test - HIV.D.DE368":
-  exists "Date of baseline CD4 count test - HIV.D.DE368 Observation"
-    or exists "Date of baseline CD4 count test - HIV.D.DE368 Condition"
-define "Date of baseline CD4 count test - HIV.D.DE368 Condition":
-  [Condition: Concepts."Date of baseline CD4 count test - HIV.D.DE368"]
-define "Date of baseline CD4 count test - HIV.D.DE368 Observation":
   [Observation: Concepts."Date of baseline CD4 count test - HIV.D.DE368"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date of baseline CD4 count test - HIV.D.DE368
+    return O.value
+/* End of Date of baseline CD4 count test - HIV.D.DE368 */
+
 /*
 @dataElement: HIV.D.DE383 - Time to start ART
 @activity: HIV.D8 Capture or update client history
@@ -7476,7 +7744,8 @@ define "Date of baseline CD4 count test - HIV.D.DE368 Observation":
 define "Time to start ART Observation":
   [Observation: Concepts."Time to start ART"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Time to start ART
+/* End of Time to start ART */
+
 /*
 @dataElement: HIV.D.DE384 - Within 7 days of HIV diagnosis
 @activity: HIV.D8 Capture or update client history
@@ -7489,10 +7758,11 @@ define "Within 7 days of HIV diagnosis":
 define "Within 7 days of HIV diagnosis Condition":
   [Condition: Concepts."Within 7 days of HIV diagnosis"]
 define "Within 7 days of HIV diagnosis Observation":
-  "Within 7 days of HIV diagnosis Observation" O
+  [Observation: Concepts."Within 7 days of HIV diagnosis"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Within 7 days of HIV diagnosis"
-// End of Within 7 days of HIV diagnosis
+/* End of Within 7 days of HIV diagnosis */
+
 /*
 @dataElement: HIV.D.DE385 - Within 30 days of HIV diagnosis
 @activity: HIV.D8 Capture or update client history
@@ -7505,10 +7775,11 @@ define "Within 30 days of HIV diagnosis":
 define "Within 30 days of HIV diagnosis Condition":
   [Condition: Concepts."Within 30 days of HIV diagnosis"]
 define "Within 30 days of HIV diagnosis Observation":
-  "Within 30 days of HIV diagnosis Observation" O
+  [Observation: Concepts."Within 30 days of HIV diagnosis"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Within 30 days of HIV diagnosis"
-// End of Within 30 days of HIV diagnosis
+/* End of Within 30 days of HIV diagnosis */
+
 /*
 @dataElement: HIV.D.DE386 - Within 90 days of HIV diagnosis
 @activity: HIV.D8 Capture or update client history
@@ -7521,10 +7792,11 @@ define "Within 90 days of HIV diagnosis":
 define "Within 90 days of HIV diagnosis Condition":
   [Condition: Concepts."Within 90 days of HIV diagnosis"]
 define "Within 90 days of HIV diagnosis Observation":
-  "Within 90 days of HIV diagnosis Observation" O
+  [Observation: Concepts."Within 90 days of HIV diagnosis"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Within 90 days of HIV diagnosis"
-// End of Within 90 days of HIV diagnosis
+/* End of Within 90 days of HIV diagnosis */
+
 /*
 @dataElement: HIV.D.DE387 - Viral load test result - HIV.D.DE387
 @activity: HIV.D20 Diagnostics
@@ -7532,14 +7804,11 @@ define "Within 90 days of HIV diagnosis Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Viral load test result - HIV.D.DE387":
-  exists "Viral load test result - HIV.D.DE387 Observation"
-    or exists "Viral load test result - HIV.D.DE387 Condition"
-define "Viral load test result - HIV.D.DE387 Condition":
-  [Condition: Concepts."Viral load test result - HIV.D.DE387"]
-define "Viral load test result - HIV.D.DE387 Observation":
   [Observation: Concepts."Viral load test result - HIV.D.DE387"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Viral load test result - HIV.D.DE387
+    return O.value
+/* End of Viral load test result - HIV.D.DE387 */
+
 /*
 @dataElement: HIV.D.DE391 - Reason for HIV viral load test
 @activity: HIV.D20 Diagnostics
@@ -7549,7 +7818,8 @@ define "Viral load test result - HIV.D.DE387 Observation":
 define "Reason for HIV viral load test Observation":
   [Observation: Concepts."Reason for HIV viral load test"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Reason for HIV viral load test
+/* End of Reason for HIV viral load test */
+
 /*
 @dataElement: HIV.D.DE392 - Routine viral load test
 @activity: HIV.D20 Diagnostics
@@ -7562,10 +7832,11 @@ define "Routine viral load test":
 define "Routine viral load test Condition":
   [Condition: Concepts."Routine viral load test"]
 define "Routine viral load test Observation":
-  "Routine viral load test Observation" O
+  [Observation: Concepts."Routine viral load test"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Routine viral load test"
-// End of Routine viral load test
+/* End of Routine viral load test */
+
 /*
 @dataElement: HIV.D.DE393 - Targeted viral load monitoring
 @activity: HIV.D20 Diagnostics
@@ -7578,10 +7849,11 @@ define "Targeted viral load monitoring":
 define "Targeted viral load monitoring Condition":
   [Condition: Concepts."Targeted viral load monitoring"]
 define "Targeted viral load monitoring Observation":
-  "Targeted viral load monitoring Observation" O
+  [Observation: Concepts."Targeted viral load monitoring"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Targeted viral load monitoring"
-// End of Targeted viral load monitoring
+/* End of Targeted viral load monitoring */
+
 /*
 @dataElement: HIV.D.DE394 - Initial viral load test
 @activity: HIV.D20 Diagnostics
@@ -7594,10 +7866,11 @@ define "Initial viral load test":
 define "Initial viral load test Condition":
   [Condition: Concepts."Initial viral load test"]
 define "Initial viral load test Observation":
-  "Initial viral load test Observation" O
+  [Observation: Concepts."Initial viral load test"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Initial viral load test"
-// End of Initial viral load test
+/* End of Initial viral load test */
+
 /*
 @dataElement: HIV.D.DE395 - Follow-up viral load test after receiving enhanced adherence counselling
 @activity: HIV.D20 Diagnostics
@@ -7610,10 +7883,11 @@ define "Follow-up viral load test after receiving enhanced adherence counselling
 define "Follow-up viral load test after receiving enhanced adherence counselling Condition":
   [Condition: Concepts."Follow-up viral load test after receiving enhanced adherence counselling"]
 define "Follow-up viral load test after receiving enhanced adherence counselling Observation":
-  "Follow-up viral load test after receiving enhanced adherence counselling Observation" O
+  [Observation: Concepts."Follow-up viral load test after receiving enhanced adherence counselling"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Follow-up viral load test after receiving enhanced adherence counselling"
-// End of Follow-up viral load test after receiving enhanced adherence counselling
+/* End of Follow-up viral load test after receiving enhanced adherence counselling */
+
 /*
 @dataElement: HIV.D.DE399 - Monitoring examinations
 @activity: HIV.D20 Diagnostics
@@ -7623,7 +7897,8 @@ define "Follow-up viral load test after receiving enhanced adherence counselling
 define "Monitoring examinations Observation":
   [Observation: Concepts."Monitoring examinations"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Monitoring examinations
+/* End of Monitoring examinations */
+
 /*
 @dataElement: HIV.D.DE400 - Haemoglobin Hb
 @activity: HIV.D20 Diagnostics
@@ -7636,10 +7911,11 @@ define "Haemoglobin Hb":
 define "Haemoglobin Hb Condition":
   [Condition: Concepts."Haemoglobin Hb"]
 define "Haemoglobin Hb Observation":
-  "Haemoglobin Hb Observation" O
+  [Observation: Concepts."Haemoglobin Hb"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Haemoglobin Hb"
-// End of Haemoglobin Hb
+/* End of Haemoglobin Hb */
+
 /*
 @dataElement: HIV.D.DE401 - Pregnancy test
 @activity: HIV.D20 Diagnostics
@@ -7652,10 +7928,11 @@ define "Pregnancy test":
 define "Pregnancy test Condition":
   [Condition: Concepts."Pregnancy test"]
 define "Pregnancy test Observation":
-  "Pregnancy test Observation" O
+  [Observation: Concepts."Pregnancy test"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Pregnancy test"
-// End of Pregnancy test
+/* End of Pregnancy test */
+
 /*
 @dataElement: HIV.D.DE402 - Syphilis test
 @activity: HIV.D20 Diagnostics
@@ -7668,10 +7945,11 @@ define "Syphilis test":
 define "Syphilis test Condition":
   [Condition: Concepts."Syphilis test"]
 define "Syphilis test Observation":
-  "Syphilis test Observation" O
+  [Observation: Concepts."Syphilis test"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Syphilis test"
-// End of Syphilis test
+/* End of Syphilis test */
+
 /*
 @dataElement: HIV.D.DE403 - Chest X-ray CXR
 @activity: HIV.D20 Diagnostics
@@ -7684,10 +7962,11 @@ define "Chest X-ray CXR":
 define "Chest X-ray CXR Condition":
   [Condition: Concepts."Chest X-ray CXR"]
 define "Chest X-ray CXR Observation":
-  "Chest X-ray CXR Observation" O
+  [Observation: Concepts."Chest X-ray CXR"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Chest X-ray CXR"
-// End of Chest X-ray CXR
+/* End of Chest X-ray CXR */
+
 /*
 @dataElement: HIV.D.DE404 - Sputum or culture for TB
 @activity: HIV.D20 Diagnostics
@@ -7700,10 +7979,11 @@ define "Sputum or culture for TB":
 define "Sputum or culture for TB Condition":
   [Condition: Concepts."Sputum or culture for TB"]
 define "Sputum or culture for TB Observation":
-  "Sputum or culture for TB Observation" O
+  [Observation: Concepts."Sputum or culture for TB"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Sputum or culture for TB"
-// End of Sputum or culture for TB
+/* End of Sputum or culture for TB */
+
 /*
 @dataElement: HIV.D.DE405 - HBsAg test HBV
 @activity: HIV.D20 Diagnostics
@@ -7716,10 +7996,11 @@ define "HBsAg test HBV":
 define "HBsAg test HBV Condition":
   [Condition: Concepts."HBsAg test HBV"]
 define "HBsAg test HBV Observation":
-  "HBsAg test HBV Observation" O
+  [Observation: Concepts."HBsAg test HBV"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HBsAg test HBV"
-// End of HBsAg test HBV
+/* End of HBsAg test HBV */
+
 /*
 @dataElement: HIV.D.DE406 - HIV viral load test ordered
 @activity: HIV.D20 Diagnostics
@@ -7732,10 +8013,11 @@ define "HIV viral load test ordered":
 define "HIV viral load test ordered Condition":
   [Condition: Concepts."HIV viral load test ordered"]
 define "HIV viral load test ordered Observation":
-  "HIV viral load test ordered Observation" O
+  [Observation: Concepts."HIV viral load test ordered"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV viral load test ordered"
-// End of HIV viral load test ordered
+/* End of HIV viral load test ordered */
+
 /*
 @dataElement: HIV.D.DE407 - HIV viral load test scheduled
 @activity: HIV.D20 Diagnostics
@@ -7748,10 +8030,11 @@ define "HIV viral load test scheduled":
 define "HIV viral load test scheduled Condition":
   [Condition: Concepts."HIV viral load test scheduled"]
 define "HIV viral load test scheduled Observation":
-  "HIV viral load test scheduled Observation" O
+  [Observation: Concepts."HIV viral load test scheduled"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV viral load test scheduled"
-// End of HIV viral load test scheduled
+/* End of HIV viral load test scheduled */
+
 /*
 @dataElement: HIV.D.DE408 - CD4 count ordered
 @activity: HIV.D20 Diagnostics
@@ -7764,10 +8047,11 @@ define "CD4 count ordered":
 define "CD4 count ordered Condition":
   [Condition: Concepts."CD4 count ordered"]
 define "CD4 count ordered Observation":
-  "CD4 count ordered Observation" O
+  [Observation: Concepts."CD4 count ordered"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."CD4 count ordered"
-// End of CD4 count ordered
+/* End of CD4 count ordered */
+
 /*
 @dataElement: HIV.D.DE409 - CD4 count test scheduled
 @activity: HIV.D20 Diagnostics
@@ -7780,10 +8064,11 @@ define "CD4 count test scheduled":
 define "CD4 count test scheduled Condition":
   [Condition: Concepts."CD4 count test scheduled"]
 define "CD4 count test scheduled Observation":
-  "CD4 count test scheduled Observation" O
+  [Observation: Concepts."CD4 count test scheduled"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."CD4 count test scheduled"
-// End of CD4 count test scheduled
+/* End of CD4 count test scheduled */
+
 /*
 @dataElement: HIV.D.DE410 - Cryptococcal antigen test
 @activity: HIV.D20 Diagnostics
@@ -7796,10 +8081,11 @@ define "Cryptococcal antigen test":
 define "Cryptococcal antigen test Condition":
   [Condition: Concepts."Cryptococcal antigen test"]
 define "Cryptococcal antigen test Observation":
-  "Cryptococcal antigen test Observation" O
+  [Observation: Concepts."Cryptococcal antigen test"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Cryptococcal antigen test"
-// End of Cryptococcal antigen test
+/* End of Cryptococcal antigen test */
+
 /*
 @dataElement: HIV.D.DE411 - Histoplasmosis antigen test
 @activity: HIV.D20 Diagnostics
@@ -7812,10 +8098,11 @@ define "Histoplasmosis antigen test":
 define "Histoplasmosis antigen test Condition":
   [Condition: Concepts."Histoplasmosis antigen test"]
 define "Histoplasmosis antigen test Observation":
-  "Histoplasmosis antigen test Observation" O
+  [Observation: Concepts."Histoplasmosis antigen test"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Histoplasmosis antigen test"
-// End of Histoplasmosis antigen test
+/* End of Histoplasmosis antigen test */
+
 /*
 @dataElement: HIV.D.DE412 - Cervical cancer screening scheduled
 @activity: HIV.D28 Offer other services
@@ -7828,10 +8115,11 @@ define "Cervical cancer screening scheduled":
 define "Cervical cancer screening scheduled Condition":
   [Condition: Concepts."Cervical cancer screening scheduled"]
 define "Cervical cancer screening scheduled Observation":
-  "Cervical cancer screening scheduled Observation" O
+  [Observation: Concepts."Cervical cancer screening scheduled"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Cervical cancer screening scheduled"
-// End of Cervical cancer screening scheduled
+/* End of Cervical cancer screening scheduled */
+
 /*
 @dataElement: HIV.D.DE413 - Date of scheduled monitoring examination
 @activity: HIV.D28 Offer other services
@@ -7839,14 +8127,11 @@ define "Cervical cancer screening scheduled Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date of scheduled monitoring examination":
-  exists "Date of scheduled monitoring examination Observation"
-    or exists "Date of scheduled monitoring examination Condition"
-define "Date of scheduled monitoring examination Condition":
-  [Condition: Concepts."Date of scheduled monitoring examination"]
-define "Date of scheduled monitoring examination Observation":
   [Observation: Concepts."Date of scheduled monitoring examination"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date of scheduled monitoring examination
+    return O.value
+/* End of Date of scheduled monitoring examination */
+
 /*
 @dataElement: HIV.D.DE417 - Date viral load test results received by client - HIV.D.DE417
 @activity: HIV.D20 Diagnostics
@@ -7854,14 +8139,11 @@ define "Date of scheduled monitoring examination Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date viral load test results received by client - HIV.D.DE417":
-  exists "Date viral load test results received by client - HIV.D.DE417 Observation"
-    or exists "Date viral load test results received by client - HIV.D.DE417 Condition"
-define "Date viral load test results received by client - HIV.D.DE417 Condition":
-  [Condition: Concepts."Date viral load test results received by client - HIV.D.DE417"]
-define "Date viral load test results received by client - HIV.D.DE417 Observation":
   [Observation: Concepts."Date viral load test results received by client - HIV.D.DE417"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date viral load test results received by client - HIV.D.DE417
+    return O.value
+/* End of Date viral load test results received by client - HIV.D.DE417 */
+
 /*
 @dataElement: HIV.D.DE418 - Reason for ARV drug regimen substitution
 @activity: HIV.D21 Determine regimen and treatment options
@@ -7871,7 +8153,8 @@ define "Date viral load test results received by client - HIV.D.DE417 Observatio
 define "Reason for ARV drug regimen substitution Observation":
   [Observation: Concepts."Reason for ARV drug regimen substitution"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Reason for ARV drug regimen substitution
+/* End of Reason for ARV drug regimen substitution */
+
 /*
 @dataElement: HIV.D.DE419 - Toxicity/side effects - HIV.D.DE419
 @activity: HIV.D21 Determine regimen and treatment options
@@ -7884,10 +8167,11 @@ define "Toxicity/side effects - HIV.D.DE419":
 define "Toxicity/side effects - HIV.D.DE419 Condition":
   [Condition: Concepts."Toxicity/side effects - HIV.D.DE419"]
 define "Toxicity/side effects - HIV.D.DE419 Observation":
-  "Toxicity/side effects - HIV.D.DE418 Observation" O
+  [Observation: Concepts."Toxicity/side effects - HIV.D.DE418"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Toxicity/side effects - HIV.D.DE419"
-// End of Toxicity/side effects - HIV.D.DE419
+/* End of Toxicity/side effects - HIV.D.DE419 */
+
 /*
 @dataElement: HIV.D.DE420 - Drug-drug interaction
 @activity: HIV.D21 Determine regimen and treatment options
@@ -7900,10 +8184,11 @@ define "Drug-drug interaction":
 define "Drug-drug interaction Condition":
   [Condition: Concepts."Drug-drug interaction"]
 define "Drug-drug interaction Observation":
-  "Drug-drug interaction Observation" O
+  [Observation: Concepts."Drug-drug interaction"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Drug-drug interaction"
-// End of Drug-drug interaction
+/* End of Drug-drug interaction */
+
 /*
 @dataElement: HIV.D.DE421 - Pregnancy
 @activity: HIV.D21 Determine regimen and treatment options
@@ -7916,10 +8201,11 @@ define "Pregnancy":
 define "Pregnancy Condition":
   [Condition: Concepts."Pregnancy"]
 define "Pregnancy Observation":
-  "Pregnancy Observation" O
+  [Observation: Concepts."Pregnancy"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Pregnancy"
-// End of Pregnancy
+/* End of Pregnancy */
+
 /*
 @dataElement: HIV.D.DE422 - New TB
 @activity: HIV.D21 Determine regimen and treatment options
@@ -7932,10 +8218,11 @@ define "New TB":
 define "New TB Condition":
   [Condition: Concepts."New TB"]
 define "New TB Observation":
-  "New TB Observation" O
+  [Observation: Concepts."New TB"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."New TB"
-// End of New TB
+/* End of New TB */
+
 /*
 @dataElement: HIV.D.DE423 - New drug available
 @activity: HIV.D21 Determine regimen and treatment options
@@ -7948,10 +8235,11 @@ define "New drug available":
 define "New drug available Condition":
   [Condition: Concepts."New drug available"]
 define "New drug available Observation":
-  "New drug available Observation" O
+  [Observation: Concepts."New drug available"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."New drug available"
-// End of New drug available
+/* End of New drug available */
+
 /*
 @dataElement: HIV.D.DE424 - Drug out of stock
 @activity: HIV.D21 Determine regimen and treatment options
@@ -7964,10 +8252,11 @@ define "Drug out of stock":
 define "Drug out of stock Condition":
   [Condition: Concepts."Drug out of stock"]
 define "Drug out of stock Observation":
-  "Drug out of stock Observation" O
+  [Observation: Concepts."Drug out of stock"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Drug out of stock"
-// End of Drug out of stock
+/* End of Drug out of stock */
+
 /*
 @dataElement: HIV.D.DE425 - Other reason for regimen substitution
 @activity: HIV.D21 Determine regimen and treatment options
@@ -7980,10 +8269,11 @@ define "Other reason for regimen substitution":
 define "Other reason for regimen substitution Condition":
   [Condition: Concepts."Other reason for regimen substitution"]
 define "Other reason for regimen substitution Observation":
-  "Other reason for regimen substitution Observation" O
+  [Observation: Concepts."Other reason for regimen substitution"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other reason for regimen substitution"
-// End of Other reason for regimen substitution
+/* End of Other reason for regimen substitution */
+
 /*
 @dataElement: HIV.D.DE427 - Switch to second-line ART regimen recommended
 @activity: HIV.D21 Determine regimen and treatment options
@@ -7991,14 +8281,11 @@ define "Other reason for regimen substitution Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Switch to second-line ART regimen recommended":
-  exists "Switch to second-line ART regimen recommended Observation"
-    or exists "Switch to second-line ART regimen recommended Condition"
-define "Switch to second-line ART regimen recommended Condition":
-  [Condition: Concepts."Switch to second-line ART regimen recommended"]
-define "Switch to second-line ART regimen recommended Observation":
   [Observation: Concepts."Switch to second-line ART regimen recommended"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Switch to second-line ART regimen recommended
+    return O.value
+/* End of Switch to second-line ART regimen recommended */
+
 /*
 @dataElement: HIV.D.DE436 - Regimen substitution recommended
 @activity: HIV.D23 Prescribe
@@ -8006,14 +8293,11 @@ define "Switch to second-line ART regimen recommended Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Regimen substitution recommended":
-  exists "Regimen substitution recommended Observation"
-    or exists "Regimen substitution recommended Condition"
-define "Regimen substitution recommended Condition":
-  [Condition: Concepts."Regimen substitution recommended"]
-define "Regimen substitution recommended Observation":
   [Observation: Concepts."Regimen substitution recommended"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Regimen substitution recommended
+    return O.value
+/* End of Regimen substitution recommended */
+
 /*
 @dataElement: HIV.D.DE437 - Dose adjustment recommended
 @activity: HIV.D23 Prescribe
@@ -8021,14 +8305,11 @@ define "Regimen substitution recommended Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Dose adjustment recommended":
-  exists "Dose adjustment recommended Observation"
-    or exists "Dose adjustment recommended Condition"
-define "Dose adjustment recommended Condition":
-  [Condition: Concepts."Dose adjustment recommended"]
-define "Dose adjustment recommended Observation":
   [Observation: Concepts."Dose adjustment recommended"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Dose adjustment recommended
+    return O.value
+/* End of Dose adjustment recommended */
+
 /*
 @dataElement: HIV.D.DE443 - Suspicion of treatment failure or interruption
 @activity: HIV.D23 Prescribe
@@ -8036,14 +8317,11 @@ define "Dose adjustment recommended Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Suspicion of treatment failure or interruption":
-  exists "Suspicion of treatment failure or interruption Observation"
-    or exists "Suspicion of treatment failure or interruption Condition"
-define "Suspicion of treatment failure or interruption Condition":
-  [Condition: Concepts."Suspicion of treatment failure or interruption"]
-define "Suspicion of treatment failure or interruption Observation":
   [Observation: Concepts."Suspicion of treatment failure or interruption"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Suspicion of treatment failure or interruption
+    return O.value
+/* End of Suspicion of treatment failure or interruption */
+
 /*
 @dataElement: HIV.D.DE457 - Medications prescribed - HIV.D.DE457
 @activity: HIV.D23 Prescribe
@@ -8053,7 +8331,8 @@ define "Suspicion of treatment failure or interruption Observation":
 define "Medications prescribed - HIV.D.DE457 Observation":
   [Observation: Concepts."Medications prescribed - HIV.D.DE457"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Medications prescribed - HIV.D.DE457
+/* End of Medications prescribed - HIV.D.DE457 */
+
 /*
 @dataElement: HIV.D.DE458 - Date medications prescribed - HIV.D.DE458
 @activity: HIV.D23 Prescribe
@@ -8061,14 +8340,11 @@ define "Medications prescribed - HIV.D.DE457 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date medications prescribed - HIV.D.DE458":
-  exists "Date medications prescribed - HIV.D.DE458 Observation"
-    or exists "Date medications prescribed - HIV.D.DE458 Condition"
-define "Date medications prescribed - HIV.D.DE458 Condition":
-  [Condition: Concepts."Date medications prescribed - HIV.D.DE458"]
-define "Date medications prescribed - HIV.D.DE458 Observation":
   [Observation: Concepts."Date medications prescribed - HIV.D.DE458"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date medications prescribed - HIV.D.DE458
+    return O.value
+/* End of Date medications prescribed - HIV.D.DE458 */
+
 /*
 @dataElement: HIV.D.DE459 - Dose of medications prescribed
 @activity: HIV.D23 Prescribe
@@ -8076,14 +8352,11 @@ define "Date medications prescribed - HIV.D.DE458 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Dose of medications prescribed":
-  exists "Dose of medications prescribed Observation"
-    or exists "Dose of medications prescribed Condition"
-define "Dose of medications prescribed Condition":
-  [Condition: Concepts."Dose of medications prescribed"]
-define "Dose of medications prescribed Observation":
   [Observation: Concepts."Dose of medications prescribed"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Dose of medications prescribed
+    return O.value
+/* End of Dose of medications prescribed */
+
 /*
 @dataElement: HIV.D.DE460 - Number of days medications prescribed
 @activity: HIV.D23 Prescribe
@@ -8091,14 +8364,11 @@ define "Dose of medications prescribed Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Number of days medications prescribed":
-  exists "Number of days medications prescribed Observation"
-    or exists "Number of days medications prescribed Condition"
-define "Number of days medications prescribed Condition":
-  [Condition: Concepts."Number of days medications prescribed"]
-define "Number of days medications prescribed Observation":
   [Observation: Concepts."Number of days medications prescribed"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Number of days medications prescribed
+    return O.value
+/* End of Number of days medications prescribed */
+
 /*
 @dataElement: HIV.D.DE465 - Adherence counselling provided - HIV.D.DE465
 @activity: HIV.D24 Counsel
@@ -8106,14 +8376,11 @@ define "Number of days medications prescribed Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Adherence counselling provided - HIV.D.DE465":
-  exists "Adherence counselling provided - HIV.D.DE465 Observation"
-    or exists "Adherence counselling provided - HIV.D.DE465 Condition"
-define "Adherence counselling provided - HIV.D.DE465 Condition":
-  [Condition: Concepts."Adherence counselling provided - HIV.D.DE465"]
-define "Adherence counselling provided - HIV.D.DE465 Observation":
   [Observation: Concepts."Adherence counselling provided - HIV.D.DE465"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Adherence counselling provided - HIV.D.DE465
+    return O.value
+/* End of Adherence counselling provided - HIV.D.DE465 */
+
 /*
 @dataElement: HIV.D.DE466 - Type of treatment-limiting toxicity
 @activity: HIV.D21 Determine regimen and treatment options
@@ -8123,7 +8390,8 @@ define "Adherence counselling provided - HIV.D.DE465 Observation":
 define "Type of treatment-limiting toxicity Observation":
   [Observation: Concepts."Type of treatment-limiting toxicity"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Type of treatment-limiting toxicity
+/* End of Type of treatment-limiting toxicity */
+
 /*
 @dataElement: HIV.D.DE467 - Gastrointestinal
 @activity: HIV.D21 Determine regimen and treatment options
@@ -8136,10 +8404,11 @@ define "Gastrointestinal":
 define "Gastrointestinal Condition":
   [Condition: Concepts."Gastrointestinal"]
 define "Gastrointestinal Observation":
-  "Gastrointestinal Observation" O
+  [Observation: Concepts."Gastrointestinal"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Gastrointestinal"
-// End of Gastrointestinal
+/* End of Gastrointestinal */
+
 /*
 @dataElement: HIV.D.DE468 - Skin issues
 @activity: HIV.D21 Determine regimen and treatment options
@@ -8152,10 +8421,11 @@ define "Skin issues":
 define "Skin issues Condition":
   [Condition: Concepts."Skin issues"]
 define "Skin issues Observation":
-  "Skin issues Observation" O
+  [Observation: Concepts."Skin issues"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Skin issues"
-// End of Skin issues
+/* End of Skin issues */
+
 /*
 @dataElement: HIV.D.DE469 - Peripheral neuropathy
 @activity: HIV.D21 Determine regimen and treatment options
@@ -8168,10 +8438,11 @@ define "Peripheral neuropathy":
 define "Peripheral neuropathy Condition":
   [Condition: Concepts."Peripheral neuropathy"]
 define "Peripheral neuropathy Observation":
-  "Peripheral neuropathy Observation" O
+  [Observation: Concepts."Peripheral neuropathy"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Peripheral neuropathy"
-// End of Peripheral neuropathy
+/* End of Peripheral neuropathy */
+
 /*
 @dataElement: HIV.D.DE470 - Central nervous system symptoms
 @activity: HIV.D21 Determine regimen and treatment options
@@ -8184,10 +8455,11 @@ define "Central nervous system symptoms":
 define "Central nervous system symptoms Condition":
   [Condition: Concepts."Central nervous system symptoms"]
 define "Central nervous system symptoms Observation":
-  "Central nervous system symptoms Observation" O
+  [Observation: Concepts."Central nervous system symptoms"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Central nervous system symptoms"
-// End of Central nervous system symptoms
+/* End of Central nervous system symptoms */
+
 /*
 @dataElement: HIV.D.DE471 - Weight gain
 @activity: HIV.D21 Determine regimen and treatment options
@@ -8200,10 +8472,11 @@ define "Weight gain":
 define "Weight gain Condition":
   [Condition: Concepts."Weight gain"]
 define "Weight gain Observation":
-  "Weight gain Observation" O
+  [Observation: Concepts."Weight gain"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Weight gain"
-// End of Weight gain
+/* End of Weight gain */
+
 /*
 @dataElement: HIV.D.DE472 - Hepatic dysfunction
 @activity: HIV.D21 Determine regimen and treatment options
@@ -8216,10 +8489,11 @@ define "Hepatic dysfunction":
 define "Hepatic dysfunction Condition":
   [Condition: Concepts."Hepatic dysfunction"]
 define "Hepatic dysfunction Observation":
-  "Hepatic dysfunction Observation" O
+  [Observation: Concepts."Hepatic dysfunction"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Hepatic dysfunction"
-// End of Hepatic dysfunction
+/* End of Hepatic dysfunction */
+
 /*
 @dataElement: HIV.D.DE473 - Haematological disorders
 @activity: HIV.D21 Determine regimen and treatment options
@@ -8232,10 +8506,11 @@ define "Haematological disorders":
 define "Haematological disorders Condition":
   [Condition: Concepts."Haematological disorders"]
 define "Haematological disorders Observation":
-  "Haematological disorders Observation" O
+  [Observation: Concepts."Haematological disorders"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Haematological disorders"
-// End of Haematological disorders
+/* End of Haematological disorders */
+
 /*
 @dataElement: HIV.D.DE474 - Fatigue
 @activity: HIV.D21 Determine regimen and treatment options
@@ -8248,10 +8523,11 @@ define "Fatigue":
 define "Fatigue Condition":
   [Condition: Concepts."Fatigue"]
 define "Fatigue Observation":
-  "Fatigue Observation" O
+  [Observation: Concepts."Fatigue"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Fatigue"
-// End of Fatigue
+/* End of Fatigue */
+
 /*
 @dataElement: HIV.D.DE475 - Headache - HIV.D.DE475
 @activity: HIV.D21 Determine regimen and treatment options
@@ -8264,10 +8540,11 @@ define "Headache - HIV.D.DE475":
 define "Headache - HIV.D.DE475 Condition":
   [Condition: Concepts."Headache - HIV.D.DE475"]
 define "Headache - HIV.D.DE475 Observation":
-  "Headache - HIV.D.DE466 Observation" O
+  [Observation: Concepts."Headache - HIV.D.DE466"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Headache - HIV.D.DE475"
-// End of Headache - HIV.D.DE475
+/* End of Headache - HIV.D.DE475 */
+
 /*
 @dataElement: HIV.D.DE476 - Bone dysfunction
 @activity: HIV.D21 Determine regimen and treatment options
@@ -8280,10 +8557,11 @@ define "Bone dysfunction":
 define "Bone dysfunction Condition":
   [Condition: Concepts."Bone dysfunction"]
 define "Bone dysfunction Observation":
-  "Bone dysfunction Observation" O
+  [Observation: Concepts."Bone dysfunction"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Bone dysfunction"
-// End of Bone dysfunction
+/* End of Bone dysfunction */
+
 /*
 @dataElement: HIV.D.DE477 - Metabolic symptoms
 @activity: HIV.D21 Determine regimen and treatment options
@@ -8296,10 +8574,11 @@ define "Metabolic symptoms":
 define "Metabolic symptoms Condition":
   [Condition: Concepts."Metabolic symptoms"]
 define "Metabolic symptoms Observation":
-  "Metabolic symptoms Observation" O
+  [Observation: Concepts."Metabolic symptoms"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Metabolic symptoms"
-// End of Metabolic symptoms
+/* End of Metabolic symptoms */
+
 /*
 @dataElement: HIV.D.DE478 - Kidney dysfunction
 @activity: HIV.D21 Determine regimen and treatment options
@@ -8312,10 +8591,11 @@ define "Kidney dysfunction":
 define "Kidney dysfunction Condition":
   [Condition: Concepts."Kidney dysfunction"]
 define "Kidney dysfunction Observation":
-  "Kidney dysfunction Observation" O
+  [Observation: Concepts."Kidney dysfunction"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Kidney dysfunction"
-// End of Kidney dysfunction
+/* End of Kidney dysfunction */
+
 /*
 @dataElement: HIV.D.DE479 - Unexpected adverse drug reaction
 @activity: HIV.D21 Determine regimen and treatment options
@@ -8328,10 +8608,11 @@ define "Unexpected adverse drug reaction":
 define "Unexpected adverse drug reaction Condition":
   [Condition: Concepts."Unexpected adverse drug reaction"]
 define "Unexpected adverse drug reaction Observation":
-  "Unexpected adverse drug reaction Observation" O
+  [Observation: Concepts."Unexpected adverse drug reaction"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Unexpected adverse drug reaction"
-// End of Unexpected adverse drug reaction
+/* End of Unexpected adverse drug reaction */
+
 /*
 @dataElement: HIV.D.DE487 - Dates of substitution within second-line regimen
 @activity: HIV.D21 Determine regimen and treatment options
@@ -8339,14 +8620,11 @@ define "Unexpected adverse drug reaction Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Dates of substitution within second-line regimen":
-  exists "Dates of substitution within second-line regimen Observation"
-    or exists "Dates of substitution within second-line regimen Condition"
-define "Dates of substitution within second-line regimen Condition":
-  [Condition: Concepts."Dates of substitution within second-line regimen"]
-define "Dates of substitution within second-line regimen Observation":
   [Observation: Concepts."Dates of substitution within second-line regimen"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Dates of substitution within second-line regimen
+    return O.value
+/* End of Dates of substitution within second-line regimen */
+
 /*
 @dataElement: HIV.D.DE493 - Dates of substitution within third-line regimen
 @activity: HIV.D21 Determine regimen and treatment options
@@ -8354,14 +8632,11 @@ define "Dates of substitution within second-line regimen Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Dates of substitution within third-line regimen":
-  exists "Dates of substitution within third-line regimen Observation"
-    or exists "Dates of substitution within third-line regimen Condition"
-define "Dates of substitution within third-line regimen Condition":
-  [Condition: Concepts."Dates of substitution within third-line regimen"]
-define "Dates of substitution within third-line regimen Observation":
   [Observation: Concepts."Dates of substitution within third-line regimen"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Dates of substitution within third-line regimen
+    return O.value
+/* End of Dates of substitution within third-line regimen */
+
 /*
 @dataElement: HIV.D.DE496 - Enhanced adherence counselling provided
 @activity: HIV.D24 Counsel
@@ -8369,14 +8644,11 @@ define "Dates of substitution within third-line regimen Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Enhanced adherence counselling provided":
-  exists "Enhanced adherence counselling provided Observation"
-    or exists "Enhanced adherence counselling provided Condition"
-define "Enhanced adherence counselling provided Condition":
-  [Condition: Concepts."Enhanced adherence counselling provided"]
-define "Enhanced adherence counselling provided Observation":
   [Observation: Concepts."Enhanced adherence counselling provided"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Enhanced adherence counselling provided
+    return O.value
+/* End of Enhanced adherence counselling provided */
+
 /*
 @dataElement: HIV.D.DE507 - Counselling provided on diagnoses
 @activity: HIV.D24 Counsel
@@ -8384,14 +8656,11 @@ define "Enhanced adherence counselling provided Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Counselling provided on diagnoses":
-  exists "Counselling provided on diagnoses Observation"
-    or exists "Counselling provided on diagnoses Condition"
-define "Counselling provided on diagnoses Condition":
-  [Condition: Concepts."Counselling provided on diagnoses"]
-define "Counselling provided on diagnoses Observation":
   [Observation: Concepts."Counselling provided on diagnoses"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Counselling provided on diagnoses
+    return O.value
+/* End of Counselling provided on diagnoses */
+
 /*
 @dataElement: HIV.D.DE510 - Syphilis counselling and treatment
 @activity: HIV.D24 Counsel
@@ -8399,14 +8668,11 @@ define "Counselling provided on diagnoses Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Syphilis counselling and treatment":
-  exists "Syphilis counselling and treatment Observation"
-    or exists "Syphilis counselling and treatment Condition"
-define "Syphilis counselling and treatment Condition":
-  [Condition: Concepts."Syphilis counselling and treatment"]
-define "Syphilis counselling and treatment Observation":
   [Observation: Concepts."Syphilis counselling and treatment"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Syphilis counselling and treatment
+    return O.value
+/* End of Syphilis counselling and treatment */
+
 /*
 @dataElement: HIV.D.DE519 - Other support services - HIV.D.DE519
 @activity: HIV.D28 Offer other services
@@ -8416,7 +8682,8 @@ define "Syphilis counselling and treatment Observation":
 define "Other support services - HIV.D.DE519 Observation":
   [Observation: Concepts."Other support services - HIV.D.DE519"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Other support services - HIV.D.DE519
+/* End of Other support services - HIV.D.DE519 */
+
 /*
 @dataElement: HIV.D.DE520 - Mental health services - HIV.D.DE520
 @activity: HIV.D28 Offer other services
@@ -8429,10 +8696,11 @@ define "Mental health services - HIV.D.DE520":
 define "Mental health services - HIV.D.DE520 Condition":
   [Condition: Concepts."Mental health services - HIV.D.DE520"]
 define "Mental health services - HIV.D.DE520 Observation":
-  "Mental health services - HIV.D.DE519 Observation" O
+  [Observation: Concepts."Mental health services - HIV.D.DE519"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Mental health services - HIV.D.DE520"
-// End of Mental health services - HIV.D.DE520
+/* End of Mental health services - HIV.D.DE520 */
+
 /*
 @dataElement: HIV.D.DE521 - Psychosocial counselling, support and treatment adherence counselling - HIV.D.DE521
 @activity: HIV.D28 Offer other services
@@ -8445,10 +8713,11 @@ define "Psychosocial counselling, support and treatment adherence counselling - 
 define "Psychosocial counselling, support and treatment adherence counselling - HIV.D.DE521 Condition":
   [Condition: Concepts."Psychosocial counselling, support and treatment adherence counselling - HIV.D.DE521"]
 define "Psychosocial counselling, support and treatment adherence counselling - HIV.D.DE521 Observation":
-  "Psychosocial counselling, support and treatment adherence counselling - HIV.D.DE519 Observation" O
+  [Observation: Concepts."Psychosocial counselling, support and treatment adherence counselling - HIV.D.DE519"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Psychosocial counselling, support and treatment adherence counselling - HIV.D.DE521"
-// End of Psychosocial counselling, support and treatment adherence counselling - HIV.D.DE521
+/* End of Psychosocial counselling, support and treatment adherence counselling - HIV.D.DE521 */
+
 /*
 @dataElement: HIV.D.DE522 - Legal and social services - HIV.D.DE522
 @activity: HIV.D28 Offer other services
@@ -8461,10 +8730,11 @@ define "Legal and social services - HIV.D.DE522":
 define "Legal and social services - HIV.D.DE522 Condition":
   [Condition: Concepts."Legal and social services - HIV.D.DE522"]
 define "Legal and social services - HIV.D.DE522 Observation":
-  "Legal and social services - HIV.D.DE519 Observation" O
+  [Observation: Concepts."Legal and social services - HIV.D.DE519"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Legal and social services - HIV.D.DE522"
-// End of Legal and social services - HIV.D.DE522
+/* End of Legal and social services - HIV.D.DE522 */
+
 /*
 @dataElement: HIV.D.DE523 - Services for responding to violence against women - HIV.D.DE523
 @activity: HIV.D28 Offer other services
@@ -8477,10 +8747,11 @@ define "Services for responding to violence against women - HIV.D.DE523":
 define "Services for responding to violence against women - HIV.D.DE523 Condition":
   [Condition: Concepts."Services for responding to violence against women - HIV.D.DE523"]
 define "Services for responding to violence against women - HIV.D.DE523 Observation":
-  "Services for responding to violence against women - HIV.D.DE519 Observation" O
+  [Observation: Concepts."Services for responding to violence against women - HIV.D.DE519"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Services for responding to violence against women - HIV.D.DE523"
-// End of Services for responding to violence against women - HIV.D.DE523
+/* End of Services for responding to violence against women - HIV.D.DE523 */
+
 /*
 @dataElement: HIV.D.DE524 - Date/time of follow-up appointment - HIV.D.DE524
 @activity: HIV.D29 Schedule follow-up
@@ -8488,14 +8759,11 @@ define "Services for responding to violence against women - HIV.D.DE523 Observat
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date/time of follow-up appointment - HIV.D.DE524":
-  exists "Date/time of follow-up appointment - HIV.D.DE524 Observation"
-    or exists "Date/time of follow-up appointment - HIV.D.DE524 Condition"
-define "Date/time of follow-up appointment - HIV.D.DE524 Condition":
-  [Condition: Concepts."Date/time of follow-up appointment - HIV.D.DE524"]
-define "Date/time of follow-up appointment - HIV.D.DE524 Observation":
   [Observation: Concepts."Date/time of follow-up appointment - HIV.D.DE524"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date/time of follow-up appointment - HIV.D.DE524
+    return O.value
+/* End of Date/time of follow-up appointment - HIV.D.DE524 */
+
 /*
 @dataElement: HIV.D.DE525 - Type of follow-up appointment - HIV.D.DE525
 @activity: HIV.D29 Schedule follow-up
@@ -8505,7 +8773,8 @@ define "Date/time of follow-up appointment - HIV.D.DE524 Observation":
 define "Type of follow-up appointment - HIV.D.DE525 Observation":
   [Observation: Concepts."Type of follow-up appointment - HIV.D.DE525"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Type of follow-up appointment - HIV.D.DE525
+/* End of Type of follow-up appointment - HIV.D.DE525 */
+
 /*
 @dataElement: HIV.D.DE526 - Clinical visit - HIV.D.DE526
 @activity: HIV.D29 Schedule follow-up
@@ -8518,10 +8787,11 @@ define "Clinical visit - HIV.D.DE526":
 define "Clinical visit - HIV.D.DE526 Condition":
   [Condition: Concepts."Clinical visit - HIV.D.DE526"]
 define "Clinical visit - HIV.D.DE526 Observation":
-  "Clinical visit - HIV.D.DE525 Observation" O
+  [Observation: Concepts."Clinical visit - HIV.D.DE525"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Clinical visit - HIV.D.DE526"
-// End of Clinical visit - HIV.D.DE526
+/* End of Clinical visit - HIV.D.DE526 */
+
 /*
 @dataElement: HIV.D.DE527 - Antiretroviral drug pick up
 @activity: HIV.D29 Schedule follow-up
@@ -8534,10 +8804,11 @@ define "Antiretroviral drug pick up":
 define "Antiretroviral drug pick up Condition":
   [Condition: Concepts."Antiretroviral drug pick up"]
 define "Antiretroviral drug pick up Observation":
-  "Antiretroviral drug pick up Observation" O
+  [Observation: Concepts."Antiretroviral drug pick up"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Antiretroviral drug pick up"
-// End of Antiretroviral drug pick up
+/* End of Antiretroviral drug pick up */
+
 /*
 @dataElement: HIV.D.DE528 - Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE528
 @activity: HIV.D29 Schedule follow-up
@@ -8550,10 +8821,11 @@ define "Post-treatment follow-up visit for cervical precancer lesions or invasiv
 define "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE528 Condition":
   [Condition: Concepts."Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE528"]
 define "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE528 Observation":
-  "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE525 Observation" O
+  [Observation: Concepts."Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE525"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE528"
-// End of Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE528
+/* End of Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE528 */
+
 /*
 @dataElement: HIV.D.DE529 - Other - HIV.D.DE529
 @activity: HIV.D29 Schedule follow-up
@@ -8566,10 +8838,11 @@ define "Other - HIV.D.DE529":
 define "Other - HIV.D.DE529 Condition":
   [Condition: Concepts."Other - HIV.D.DE529"]
 define "Other - HIV.D.DE529 Observation":
-  "Other - HIV.D.DE525 Observation" O
+  [Observation: Concepts."Other - HIV.D.DE525"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other - HIV.D.DE529"
-// End of Other - HIV.D.DE529
+/* End of Other - HIV.D.DE529 */
+
 /*
 @dataElement: HIV.D.DE531 - Follow-up test recommended date
 @activity: HIV.D29 Schedule follow-up
@@ -8577,14 +8850,11 @@ define "Other - HIV.D.DE529 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Follow-up test recommended date":
-  exists "Follow-up test recommended date Observation"
-    or exists "Follow-up test recommended date Condition"
-define "Follow-up test recommended date Condition":
-  [Condition: Concepts."Follow-up test recommended date"]
-define "Follow-up test recommended date Observation":
   [Observation: Concepts."Follow-up test recommended date"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Follow-up test recommended date
+    return O.value
+/* End of Follow-up test recommended date */
+
 /*
 @dataElement: HIV.D.DE537 - Current medications
 @activity: HIV.D8 Capture or update client history
@@ -8594,7 +8864,8 @@ define "Follow-up test recommended date Observation":
 define "Current medications Observation":
   [Observation: Concepts."Current medications"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Current medications
+/* End of Current medications */
+
 /*
 @dataElement: HIV.D.DE538 - No medications
 @activity: HIV.D8 Capture or update client history
@@ -8607,10 +8878,11 @@ define "No medications":
 define "No medications Condition":
   [Condition: Concepts."No medications"]
 define "No medications Observation":
-  "No medications Observation" O
+  [Observation: Concepts."No medications"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."No medications"
-// End of No medications
+/* End of No medications */
+
 /*
 @dataElement: HIV.D.DE539 - Dont know of any current medications
 @activity: HIV.D8 Capture or update client history
@@ -8623,10 +8895,11 @@ define "Dont know of any current medications":
 define "Dont know of any current medications Condition":
   [Condition: Concepts."Dont know of any current medications"]
 define "Dont know of any current medications Observation":
-  "Dont know of any current medications Observation" O
+  [Observation: Concepts."Dont know of any current medications"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Dont know of any current medications"
-// End of Dont know of any current medications
+/* End of Dont know of any current medications */
+
 /*
 @dataElement: HIV.D.DE540 - Analgesic
 @activity: HIV.D8 Capture or update client history
@@ -8639,10 +8912,11 @@ define "Analgesic":
 define "Analgesic Condition":
   [Condition: Concepts."Analgesic"]
 define "Analgesic Observation":
-  "Analgesic Observation" O
+  [Observation: Concepts."Analgesic"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Analgesic"
-// End of Analgesic
+/* End of Analgesic */
+
 /*
 @dataElement: HIV.D.DE541 - Antacids
 @activity: HIV.D8 Capture or update client history
@@ -8655,10 +8929,11 @@ define "Antacids":
 define "Antacids Condition":
   [Condition: Concepts."Antacids"]
 define "Antacids Observation":
-  "Antacids Observation" O
+  [Observation: Concepts."Antacids"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Antacids"
-// End of Antacids
+/* End of Antacids */
+
 /*
 @dataElement: HIV.D.DE542 - Antibiotics broad-spectrum
 @activity: HIV.D8 Capture or update client history
@@ -8671,10 +8946,11 @@ define "Antibiotics broad-spectrum":
 define "Antibiotics broad-spectrum Condition":
   [Condition: Concepts."Antibiotics broad-spectrum"]
 define "Antibiotics broad-spectrum Observation":
-  "Antibiotics broad-spectrum Observation" O
+  [Observation: Concepts."Antibiotics broad-spectrum"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Antibiotics broad-spectrum"
-// End of Antibiotics broad-spectrum
+/* End of Antibiotics broad-spectrum */
+
 /*
 @dataElement: HIV.D.DE543 - Anticonvulsive
 @activity: HIV.D8 Capture or update client history
@@ -8687,10 +8963,11 @@ define "Anticonvulsive":
 define "Anticonvulsive Condition":
   [Condition: Concepts."Anticonvulsive"]
 define "Anticonvulsive Observation":
-  "Anticonvulsive Observation" O
+  [Observation: Concepts."Anticonvulsive"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Anticonvulsive"
-// End of Anticonvulsive
+/* End of Anticonvulsive */
+
 /*
 @dataElement: HIV.D.DE544 - Antidiabetic
 @activity: HIV.D8 Capture or update client history
@@ -8703,10 +8980,11 @@ define "Antidiabetic":
 define "Antidiabetic Condition":
   [Condition: Concepts."Antidiabetic"]
 define "Antidiabetic Observation":
-  "Antidiabetic Observation" O
+  [Observation: Concepts."Antidiabetic"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Antidiabetic"
-// End of Antidiabetic
+/* End of Antidiabetic */
+
 /*
 @dataElement: HIV.D.DE545 - Antifungals
 @activity: HIV.D8 Capture or update client history
@@ -8719,10 +8997,11 @@ define "Antifungals":
 define "Antifungals Condition":
   [Condition: Concepts."Antifungals"]
 define "Antifungals Observation":
-  "Antifungals Observation" O
+  [Observation: Concepts."Antifungals"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Antifungals"
-// End of Antifungals
+/* End of Antifungals */
+
 /*
 @dataElement: HIV.D.DE546 - Antihelmintic
 @activity: HIV.D8 Capture or update client history
@@ -8735,10 +9014,11 @@ define "Antihelmintic":
 define "Antihelmintic Condition":
   [Condition: Concepts."Antihelmintic"]
 define "Antihelmintic Observation":
-  "Antihelmintic Observation" O
+  [Observation: Concepts."Antihelmintic"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Antihelmintic"
-// End of Antihelmintic
+/* End of Antihelmintic */
+
 /*
 @dataElement: HIV.D.DE547 - Antihypertensive
 @activity: HIV.D8 Capture or update client history
@@ -8751,10 +9031,11 @@ define "Antihypertensive":
 define "Antihypertensive Condition":
   [Condition: Concepts."Antihypertensive"]
 define "Antihypertensive Observation":
-  "Antihypertensive Observation" O
+  [Observation: Concepts."Antihypertensive"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Antihypertensive"
-// End of Antihypertensive
+/* End of Antihypertensive */
+
 /*
 @dataElement: HIV.D.DE548 - Antimalarials
 @activity: HIV.D8 Capture or update client history
@@ -8767,10 +9048,11 @@ define "Antimalarials":
 define "Antimalarials Condition":
   [Condition: Concepts."Antimalarials"]
 define "Antimalarials Observation":
-  "Antimalarials Observation" O
+  [Observation: Concepts."Antimalarials"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Antimalarials"
-// End of Antimalarials
+/* End of Antimalarials */
+
 /*
 @dataElement: HIV.D.DE549 - Antiretrovirals ARVs
 @activity: HIV.D8 Capture or update client history
@@ -8783,10 +9065,11 @@ define "Antiretrovirals ARVs":
 define "Antiretrovirals ARVs Condition":
   [Condition: Concepts."Antiretrovirals ARVs"]
 define "Antiretrovirals ARVs Observation":
-  "Antiretrovirals ARVs Observation" O
+  [Observation: Concepts."Antiretrovirals ARVs"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Antiretrovirals ARVs"
-// End of Antiretrovirals ARVs
+/* End of Antiretrovirals ARVs */
+
 /*
 @dataElement: HIV.D.DE550 - Antiparasitics
 @activity: HIV.D8 Capture or update client history
@@ -8799,10 +9082,11 @@ define "Antiparasitics":
 define "Antiparasitics Condition":
   [Condition: Concepts."Antiparasitics"]
 define "Antiparasitics Observation":
-  "Antiparasitics Observation" O
+  [Observation: Concepts."Antiparasitics"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Antiparasitics"
-// End of Antiparasitics
+/* End of Antiparasitics */
+
 /*
 @dataElement: HIV.D.DE551 - Antivirals
 @activity: HIV.D8 Capture or update client history
@@ -8815,10 +9099,11 @@ define "Antivirals":
 define "Antivirals Condition":
   [Condition: Concepts."Antivirals"]
 define "Antivirals Observation":
-  "Antivirals Observation" O
+  [Observation: Concepts."Antivirals"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Antivirals"
-// End of Antivirals
+/* End of Antivirals */
+
 /*
 @dataElement: HIV.D.DE552 - Buprenorphine - HIV.D.DE552
 @activity: HIV.D8 Capture or update client history
@@ -8831,10 +9116,11 @@ define "Buprenorphine - HIV.D.DE552":
 define "Buprenorphine - HIV.D.DE552 Condition":
   [Condition: Concepts."Buprenorphine - HIV.D.DE552"]
 define "Buprenorphine - HIV.D.DE552 Observation":
-  "Buprenorphine - HIV.D.DE537 Observation" O
+  [Observation: Concepts."Buprenorphine - HIV.D.DE537"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Buprenorphine - HIV.D.DE552"
-// End of Buprenorphine - HIV.D.DE552
+/* End of Buprenorphine - HIV.D.DE552 */
+
 /*
 @dataElement: HIV.D.DE553 - Co-trimoxazole preventive therapy CPT
 @activity: HIV.D8 Capture or update client history
@@ -8847,10 +9133,11 @@ define "Co-trimoxazole preventive therapy CPT":
 define "Co-trimoxazole preventive therapy CPT Condition":
   [Condition: Concepts."Co-trimoxazole preventive therapy CPT"]
 define "Co-trimoxazole preventive therapy CPT Observation":
-  "Co-trimoxazole preventive therapy CPT Observation" O
+  [Observation: Concepts."Co-trimoxazole preventive therapy CPT"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Co-trimoxazole preventive therapy CPT"
-// End of Co-trimoxazole preventive therapy CPT
+/* End of Co-trimoxazole preventive therapy CPT */
+
 /*
 @dataElement: HIV.D.DE554 - Hormonal family planning method
 @activity: HIV.D8 Capture or update client history
@@ -8863,10 +9150,11 @@ define "Hormonal family planning method":
 define "Hormonal family planning method Condition":
   [Condition: Concepts."Hormonal family planning method"]
 define "Hormonal family planning method Observation":
-  "Hormonal family planning method Observation" O
+  [Observation: Concepts."Hormonal family planning method"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Hormonal family planning method"
-// End of Hormonal family planning method
+/* End of Hormonal family planning method */
+
 /*
 @dataElement: HIV.D.DE555 - Methadone - HIV.D.DE555
 @activity: HIV.D8 Capture or update client history
@@ -8879,10 +9167,11 @@ define "Methadone - HIV.D.DE555":
 define "Methadone - HIV.D.DE555 Condition":
   [Condition: Concepts."Methadone - HIV.D.DE555"]
 define "Methadone - HIV.D.DE555 Observation":
-  "Methadone - HIV.D.DE537 Observation" O
+  [Observation: Concepts."Methadone - HIV.D.DE537"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Methadone - HIV.D.DE555"
-// End of Methadone - HIV.D.DE555
+/* End of Methadone - HIV.D.DE555 */
+
 /*
 @dataElement: HIV.D.DE556 - PrEP to prevent HIV
 @activity: HIV.D8 Capture or update client history
@@ -8895,10 +9184,11 @@ define "PrEP to prevent HIV":
 define "PrEP to prevent HIV Condition":
   [Condition: Concepts."PrEP to prevent HIV"]
 define "PrEP to prevent HIV Observation":
-  "PrEP to prevent HIV Observation" O
+  [Observation: Concepts."PrEP to prevent HIV"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."PrEP to prevent HIV"
-// End of PrEP to prevent HIV
+/* End of PrEP to prevent HIV */
+
 /*
 @dataElement: HIV.D.DE557 - Other antibiotics
 @activity: HIV.D8 Capture or update client history
@@ -8911,10 +9201,11 @@ define "Other antibiotics":
 define "Other antibiotics Condition":
   [Condition: Concepts."Other antibiotics"]
 define "Other antibiotics Observation":
-  "Other antibiotics Observation" O
+  [Observation: Concepts."Other antibiotics"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other antibiotics"
-// End of Other antibiotics
+/* End of Other antibiotics */
+
 /*
 @dataElement: HIV.D.DE558 - Other medications
 @activity: HIV.D8 Capture or update client history
@@ -8927,10 +9218,11 @@ define "Other medications":
 define "Other medications Condition":
   [Condition: Concepts."Other medications"]
 define "Other medications Observation":
-  "Other medications Observation" O
+  [Observation: Concepts."Other medications"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other medications"
-// End of Other medications
+/* End of Other medications */
+
 /*
 @dataElement: HIV.D.DE656 - Date of cervical cancer screening test
 @activity: HIV.D28 Offer other services
@@ -8938,14 +9230,11 @@ define "Other medications Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date of cervical cancer screening test":
-  exists "Date of cervical cancer screening test Observation"
-    or exists "Date of cervical cancer screening test Condition"
-define "Date of cervical cancer screening test Condition":
-  [Condition: Concepts."Date of cervical cancer screening test"]
-define "Date of cervical cancer screening test Observation":
   [Observation: Concepts."Date of cervical cancer screening test"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date of cervical cancer screening test
+    return O.value
+/* End of Date of cervical cancer screening test */
+
 /*
 @dataElement: HIV.D.DE657 - Lifetime screening test number
 @activity: HIV.D28 Offer other services
@@ -8953,14 +9242,11 @@ define "Date of cervical cancer screening test Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Lifetime screening test number":
-  exists "Lifetime screening test number Observation"
-    or exists "Lifetime screening test number Condition"
-define "Lifetime screening test number Condition":
-  [Condition: Concepts."Lifetime screening test number"]
-define "Lifetime screening test number Observation":
   [Observation: Concepts."Lifetime screening test number"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Lifetime screening test number
+    return O.value
+/* End of Lifetime screening test number */
+
 /*
 @dataElement: HIV.D.DE658 - Cervical cancer primary screening test type
 @activity: HIV.D28 Offer other services
@@ -8970,7 +9256,8 @@ define "Lifetime screening test number Observation":
 define "Cervical cancer primary screening test type Observation":
   [Observation: Concepts."Cervical cancer primary screening test type"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Cervical cancer primary screening test type
+/* End of Cervical cancer primary screening test type */
+
 /*
 @dataElement: HIV.D.DE659 - HPV-DNA
 @activity: HIV.D28 Offer other services
@@ -8983,10 +9270,11 @@ define "HPV-DNA":
 define "HPV-DNA Condition":
   [Condition: Concepts."HPV-DNA"]
 define "HPV-DNA Observation":
-  "HPV-DNA Observation" O
+  [Observation: Concepts."HPV-DNA"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HPV-DNA"
-// End of HPV-DNA
+/* End of HPV-DNA */
+
 /*
 @dataElement: HIV.D.DE660 - VIA
 @activity: HIV.D28 Offer other services
@@ -8999,10 +9287,11 @@ define "VIA":
 define "VIA Condition":
   [Condition: Concepts."VIA"]
 define "VIA Observation":
-  "VIA Observation" O
+  [Observation: Concepts."VIA"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."VIA"
-// End of VIA
+/* End of VIA */
+
 /*
 @dataElement: HIV.D.DE661 - Cervical cytology
 @activity: HIV.D28 Offer other services
@@ -9015,10 +9304,11 @@ define "Cervical cytology":
 define "Cervical cytology Condition":
   [Condition: Concepts."Cervical cytology"]
 define "Cervical cytology Observation":
-  "Cervical cytology Observation" O
+  [Observation: Concepts."Cervical cytology"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Cervical cytology"
-// End of Cervical cytology
+/* End of Cervical cytology */
+
 /*
 @dataElement: HIV.D.DE662 - Other - HIV.D.DE662
 @activity: HIV.D28 Offer other services
@@ -9031,10 +9321,11 @@ define "Other - HIV.D.DE662":
 define "Other - HIV.D.DE662 Condition":
   [Condition: Concepts."Other - HIV.D.DE662"]
 define "Other - HIV.D.DE662 Observation":
-  "Other - HIV.D.DE658 Observation" O
+  [Observation: Concepts."Other - HIV.D.DE658"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other - HIV.D.DE662"
-// End of Other - HIV.D.DE662
+/* End of Other - HIV.D.DE662 */
+
 /*
 @dataElement: HIV.D.DE705 - Date of diagnosis of cervical precancer lesions or invasive cervical cancer
 @activity: HIV.D28 Offer other services
@@ -9042,14 +9333,11 @@ define "Other - HIV.D.DE662 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date of diagnosis of cervical precancer lesions or invasive cervical cancer":
-  exists "Date of diagnosis of cervical precancer lesions or invasive cervical cancer Observation"
-    or exists "Date of diagnosis of cervical precancer lesions or invasive cervical cancer Condition"
-define "Date of diagnosis of cervical precancer lesions or invasive cervical cancer Condition":
-  [Condition: Concepts."Date of diagnosis of cervical precancer lesions or invasive cervical cancer"]
-define "Date of diagnosis of cervical precancer lesions or invasive cervical cancer Observation":
   [Observation: Concepts."Date of diagnosis of cervical precancer lesions or invasive cervical cancer"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date of diagnosis of cervical precancer lesions or invasive cervical cancer
+    return O.value
+/* End of Date of diagnosis of cervical precancer lesions or invasive cervical cancer */
+
 /*
 @dataElement: HIV.D.DE706 - Cervical cancer screening outcome
 @activity: HIV.D28 Offer other services
@@ -9059,7 +9347,8 @@ define "Date of diagnosis of cervical precancer lesions or invasive cervical can
 define "Cervical cancer screening outcome Observation":
   [Observation: Concepts."Cervical cancer screening outcome"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Cervical cancer screening outcome
+/* End of Cervical cancer screening outcome */
+
 /*
 @dataElement: HIV.D.DE707 - Positive for cervical precancer lesions
 @activity: HIV.D28 Offer other services
@@ -9072,10 +9361,11 @@ define "Positive for cervical precancer lesions":
 define "Positive for cervical precancer lesions Condition":
   [Condition: Concepts."Positive for cervical precancer lesions"]
 define "Positive for cervical precancer lesions Observation":
-  "Positive for cervical precancer lesions Observation" O
+  [Observation: Concepts."Positive for cervical precancer lesions"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Positive for cervical precancer lesions"
-// End of Positive for cervical precancer lesions
+/* End of Positive for cervical precancer lesions */
+
 /*
 @dataElement: HIV.D.DE708 - Negative for cervical precancer lesions
 @activity: HIV.D28 Offer other services
@@ -9088,10 +9378,11 @@ define "Negative for cervical precancer lesions":
 define "Negative for cervical precancer lesions Condition":
   [Condition: Concepts."Negative for cervical precancer lesions"]
 define "Negative for cervical precancer lesions Observation":
-  "Negative for cervical precancer lesions Observation" O
+  [Observation: Concepts."Negative for cervical precancer lesions"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Negative for cervical precancer lesions"
-// End of Negative for cervical precancer lesions
+/* End of Negative for cervical precancer lesions */
+
 /*
 @dataElement: HIV.D.DE709 - Cervical cancer diagnosis
 @activity: HIV.D28 Offer other services
@@ -9101,7 +9392,8 @@ define "Negative for cervical precancer lesions Observation":
 define "Cervical cancer diagnosis Observation":
   [Observation: Concepts."Cervical cancer diagnosis"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Cervical cancer diagnosis
+/* End of Cervical cancer diagnosis */
+
 /*
 @dataElement: HIV.D.DE710 - Cervical precancer lesions
 @activity: HIV.D28 Offer other services
@@ -9114,10 +9406,11 @@ define "Cervical precancer lesions":
 define "Cervical precancer lesions Condition":
   [Condition: Concepts."Cervical precancer lesions"]
 define "Cervical precancer lesions Observation":
-  "Cervical precancer lesions Observation" O
+  [Observation: Concepts."Cervical precancer lesions"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Cervical precancer lesions"
-// End of Cervical precancer lesions
+/* End of Cervical precancer lesions */
+
 /*
 @dataElement: HIV.D.DE711 - Invasive cervical cancer
 @activity: HIV.D28 Offer other services
@@ -9130,10 +9423,11 @@ define "Invasive cervical cancer":
 define "Invasive cervical cancer Condition":
   [Condition: Concepts."Invasive cervical cancer"]
 define "Invasive cervical cancer Observation":
-  "Invasive cervical cancer Observation" O
+  [Observation: Concepts."Invasive cervical cancer"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Invasive cervical cancer"
-// End of Invasive cervical cancer
+/* End of Invasive cervical cancer */
+
 /*
 @dataElement: HIV.D.DE712 - Cervical cancer stage at diagnosis
 @activity: HIV.D28 Offer other services
@@ -9143,7 +9437,8 @@ define "Invasive cervical cancer Observation":
 define "Cervical cancer stage at diagnosis Observation":
   [Observation: Concepts."Cervical cancer stage at diagnosis"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Cervical cancer stage at diagnosis
+/* End of Cervical cancer stage at diagnosis */
+
 /*
 @dataElement: HIV.D.DE713 - Stage 0
 @activity: HIV.D28 Offer other services
@@ -9156,10 +9451,11 @@ define "Stage 0":
 define "Stage 0 Condition":
   [Condition: Concepts."Stage 0"]
 define "Stage 0 Observation":
-  "Stage 0 Observation" O
+  [Observation: Concepts."Stage 0"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Stage 0"
-// End of Stage 0
+/* End of Stage 0 */
+
 /*
 @dataElement: HIV.D.DE714 - Stage I
 @activity: HIV.D28 Offer other services
@@ -9172,10 +9468,11 @@ define "Stage I":
 define "Stage I Condition":
   [Condition: Concepts."Stage I"]
 define "Stage I Observation":
-  "Stage I Observation" O
+  [Observation: Concepts."Stage I"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Stage I"
-// End of Stage I
+/* End of Stage I */
+
 /*
 @dataElement: HIV.D.DE715 - Stage II
 @activity: HIV.D28 Offer other services
@@ -9188,10 +9485,11 @@ define "Stage II":
 define "Stage II Condition":
   [Condition: Concepts."Stage II"]
 define "Stage II Observation":
-  "Stage II Observation" O
+  [Observation: Concepts."Stage II"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Stage II"
-// End of Stage II
+/* End of Stage II */
+
 /*
 @dataElement: HIV.D.DE716 - Stage III
 @activity: HIV.D28 Offer other services
@@ -9204,10 +9502,11 @@ define "Stage III":
 define "Stage III Condition":
   [Condition: Concepts."Stage III"]
 define "Stage III Observation":
-  "Stage III Observation" O
+  [Observation: Concepts."Stage III"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Stage III"
-// End of Stage III
+/* End of Stage III */
+
 /*
 @dataElement: HIV.D.DE717 - Stage IV
 @activity: HIV.D28 Offer other services
@@ -9220,10 +9519,11 @@ define "Stage IV":
 define "Stage IV Condition":
   [Condition: Concepts."Stage IV"]
 define "Stage IV Observation":
-  "Stage IV Observation" O
+  [Observation: Concepts."Stage IV"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Stage IV"
-// End of Stage IV
+/* End of Stage IV */
+
 /*
 @dataElement: HIV.D.DE718 - Date of treatment for cervical precancer lesions
 @activity: HIV.D28 Offer other services
@@ -9231,14 +9531,11 @@ define "Stage IV Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date of treatment for cervical precancer lesions":
-  exists "Date of treatment for cervical precancer lesions Observation"
-    or exists "Date of treatment for cervical precancer lesions Condition"
-define "Date of treatment for cervical precancer lesions Condition":
-  [Condition: Concepts."Date of treatment for cervical precancer lesions"]
-define "Date of treatment for cervical precancer lesions Observation":
   [Observation: Concepts."Date of treatment for cervical precancer lesions"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date of treatment for cervical precancer lesions
+    return O.value
+/* End of Date of treatment for cervical precancer lesions */
+
 /*
 @dataElement: HIV.D.DE730 - Invasive cervical cancer treatment episode
 @activity: HIV.D28 Offer other services
@@ -9246,14 +9543,11 @@ define "Date of treatment for cervical precancer lesions Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Invasive cervical cancer treatment episode":
-  exists "Invasive cervical cancer treatment episode Observation"
-    or exists "Invasive cervical cancer treatment episode Condition"
-define "Invasive cervical cancer treatment episode Condition":
-  [Condition: Concepts."Invasive cervical cancer treatment episode"]
-define "Invasive cervical cancer treatment episode Observation":
   [Observation: Concepts."Invasive cervical cancer treatment episode"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Invasive cervical cancer treatment episode
+    return O.value
+/* End of Invasive cervical cancer treatment episode */
+
 /*
 @dataElement: HIV.D.DE731 - Invasive cervical cancer treatment method
 @activity: HIV.D28 Offer other services
@@ -9263,7 +9557,8 @@ define "Invasive cervical cancer treatment episode Observation":
 define "Invasive cervical cancer treatment method Observation":
   [Observation: Concepts."Invasive cervical cancer treatment method"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Invasive cervical cancer treatment method
+/* End of Invasive cervical cancer treatment method */
+
 /*
 @dataElement: HIV.D.DE732 - Conization
 @activity: HIV.D28 Offer other services
@@ -9276,10 +9571,11 @@ define "Conization":
 define "Conization Condition":
   [Condition: Concepts."Conization"]
 define "Conization Observation":
-  "Conization Observation" O
+  [Observation: Concepts."Conization"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Conization"
-// End of Conization
+/* End of Conization */
+
 /*
 @dataElement: HIV.D.DE733 - Trachelectomy
 @activity: HIV.D28 Offer other services
@@ -9292,10 +9588,11 @@ define "Trachelectomy":
 define "Trachelectomy Condition":
   [Condition: Concepts."Trachelectomy"]
 define "Trachelectomy Observation":
-  "Trachelectomy Observation" O
+  [Observation: Concepts."Trachelectomy"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Trachelectomy"
-// End of Trachelectomy
+/* End of Trachelectomy */
+
 /*
 @dataElement: HIV.D.DE734 - Hysterectomy
 @activity: HIV.D28 Offer other services
@@ -9308,10 +9605,11 @@ define "Hysterectomy":
 define "Hysterectomy Condition":
   [Condition: Concepts."Hysterectomy"]
 define "Hysterectomy Observation":
-  "Hysterectomy Observation" O
+  [Observation: Concepts."Hysterectomy"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Hysterectomy"
-// End of Hysterectomy
+/* End of Hysterectomy */
+
 /*
 @dataElement: HIV.D.DE735 - Management of invasive cervical cancer
 @activity: HIV.D28 Offer other services
@@ -9324,10 +9622,11 @@ define "Management of invasive cervical cancer":
 define "Management of invasive cervical cancer Condition":
   [Condition: Concepts."Management of invasive cervical cancer"]
 define "Management of invasive cervical cancer Observation":
-  "Management of invasive cervical cancer Observation" O
+  [Observation: Concepts."Management of invasive cervical cancer"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Management of invasive cervical cancer"
-// End of Management of invasive cervical cancer
+/* End of Management of invasive cervical cancer */
+
 /*
 @dataElement: HIV.D.DE736 - Radiotherapy
 @activity: HIV.D28 Offer other services
@@ -9340,10 +9639,11 @@ define "Radiotherapy":
 define "Radiotherapy Condition":
   [Condition: Concepts."Radiotherapy"]
 define "Radiotherapy Observation":
-  "Radiotherapy Observation" O
+  [Observation: Concepts."Radiotherapy"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Radiotherapy"
-// End of Radiotherapy
+/* End of Radiotherapy */
+
 /*
 @dataElement: HIV.D.DE737 - Chemotherapy
 @activity: HIV.D28 Offer other services
@@ -9356,10 +9656,11 @@ define "Chemotherapy":
 define "Chemotherapy Condition":
   [Condition: Concepts."Chemotherapy"]
 define "Chemotherapy Observation":
-  "Chemotherapy Observation" O
+  [Observation: Concepts."Chemotherapy"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Chemotherapy"
-// End of Chemotherapy
+/* End of Chemotherapy */
+
 /*
 @dataElement: HIV.D.DE738 - Chemoradiation
 @activity: HIV.D28 Offer other services
@@ -9372,10 +9673,11 @@ define "Chemoradiation":
 define "Chemoradiation Condition":
   [Condition: Concepts."Chemoradiation"]
 define "Chemoradiation Observation":
-  "Chemoradiation Observation" O
+  [Observation: Concepts."Chemoradiation"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Chemoradiation"
-// End of Chemoradiation
+/* End of Chemoradiation */
+
 /*
 @dataElement: HIV.D.DE739 - Other - HIV.D.DE739
 @activity: HIV.D28 Offer other services
@@ -9388,10 +9690,11 @@ define "Other - HIV.D.DE739":
 define "Other - HIV.D.DE739 Condition":
   [Condition: Concepts."Other - HIV.D.DE739"]
 define "Other - HIV.D.DE739 Observation":
-  "Other - HIV.D.DE731 Observation" O
+  [Observation: Concepts."Other - HIV.D.DE731"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other - HIV.D.DE739"
-// End of Other - HIV.D.DE739
+/* End of Other - HIV.D.DE739 */
+
 /*
 @dataElement: HIV.D.DE745 - Cervical cancer screening interval amongst WLHIV
 @activity: HIV.D28 Offer other services
@@ -9399,14 +9702,11 @@ define "Other - HIV.D.DE739 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Cervical cancer screening interval amongst WLHIV":
-  exists "Cervical cancer screening interval amongst WLHIV Observation"
-    or exists "Cervical cancer screening interval amongst WLHIV Condition"
-define "Cervical cancer screening interval amongst WLHIV Condition":
-  [Condition: Concepts."Cervical cancer screening interval amongst WLHIV"]
-define "Cervical cancer screening interval amongst WLHIV Observation":
   [Observation: Concepts."Cervical cancer screening interval amongst WLHIV"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Cervical cancer screening interval amongst WLHIV
+    return O.value
+/* End of Cervical cancer screening interval amongst WLHIV */
+
 /*
 @dataElement: HIV.D.DE753 - Offer other clinical services - HIV.D.DE753
 @activity: HIV.D28 Offer other services
@@ -9416,7 +9716,8 @@ define "Cervical cancer screening interval amongst WLHIV Observation":
 define "Offer other clinical services - HIV.D.DE753 Observation":
   [Observation: Concepts."Offer other clinical services - HIV.D.DE753"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Offer other clinical services - HIV.D.DE753
+/* End of Offer other clinical services - HIV.D.DE753 */
+
 /*
 @dataElement: HIV.D.DE754 - Assessment and provision of vaccinations - HIV.D.DE754
 @activity: HIV.D28 Offer other services
@@ -9429,10 +9730,11 @@ define "Assessment and provision of vaccinations - HIV.D.DE754":
 define "Assessment and provision of vaccinations - HIV.D.DE754 Condition":
   [Condition: Concepts."Assessment and provision of vaccinations - HIV.D.DE754"]
 define "Assessment and provision of vaccinations - HIV.D.DE754 Observation":
-  "Assessment and provision of vaccinations - HIV.D.DE753 Observation" O
+  [Observation: Concepts."Assessment and provision of vaccinations - HIV.D.DE753"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Assessment and provision of vaccinations - HIV.D.DE754"
-// End of Assessment and provision of vaccinations - HIV.D.DE754
+/* End of Assessment and provision of vaccinations - HIV.D.DE754 */
+
 /*
 @dataElement: HIV.D.DE755 - Hepatitis B HBV and hepatitis C virus HCV testing and treatment
 @activity: HIV.D28 Offer other services
@@ -9445,10 +9747,11 @@ define "Hepatitis B HBV and hepatitis C virus HCV testing and treatment":
 define "Hepatitis B HBV and hepatitis C virus HCV testing and treatment Condition":
   [Condition: Concepts."Hepatitis B HBV and hepatitis C virus HCV testing and treatment"]
 define "Hepatitis B HBV and hepatitis C virus HCV testing and treatment Observation":
-  "Hepatitis B HBV and hepatitis C virus HCV testing and treatment Observation" O
+  [Observation: Concepts."Hepatitis B HBV and hepatitis C virus HCV testing and treatment"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Hepatitis B HBV and hepatitis C virus HCV testing and treatment"
-// End of Hepatitis B HBV and hepatitis C virus HCV testing and treatment
+/* End of Hepatitis B HBV and hepatitis C virus HCV testing and treatment */
+
 /*
 @dataElement: HIV.D.DE756 - Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.D.DE756
 @activity: HIV.D28 Offer other services
@@ -9461,10 +9764,11 @@ define "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumoni
 define "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.D.DE756 Condition":
   [Condition: Concepts."Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.D.DE756"]
 define "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.D.DE756 Observation":
-  "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.D.DE753 Observation" O
+  [Observation: Concepts."Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.D.DE753"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.D.DE756"
-// End of Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.D.DE756
+/* End of Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.D.DE756 */
+
 /*
 @dataElement: HIV.D.DE757 - Intensified TB case finding and linkage to TB treatment - HIV.D.DE757
 @activity: HIV.D28 Offer other services
@@ -9477,10 +9781,11 @@ define "Intensified TB case finding and linkage to TB treatment - HIV.D.DE757":
 define "Intensified TB case finding and linkage to TB treatment - HIV.D.DE757 Condition":
   [Condition: Concepts."Intensified TB case finding and linkage to TB treatment - HIV.D.DE757"]
 define "Intensified TB case finding and linkage to TB treatment - HIV.D.DE757 Observation":
-  "Intensified TB case finding and linkage to TB treatment - HIV.D.DE753 Observation" O
+  [Observation: Concepts."Intensified TB case finding and linkage to TB treatment - HIV.D.DE753"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Intensified TB case finding and linkage to TB treatment - HIV.D.DE757"
-// End of Intensified TB case finding and linkage to TB treatment - HIV.D.DE757
+/* End of Intensified TB case finding and linkage to TB treatment - HIV.D.DE757 */
+
 /*
 @dataElement: HIV.D.DE758 - Provision of isoniazid preventive therapy if person does not have TB - HIV.D.DE758
 @activity: HIV.D28 Offer other services
@@ -9493,10 +9798,11 @@ define "Provision of isoniazid preventive therapy if person does not have TB - H
 define "Provision of isoniazid preventive therapy if person does not have TB - HIV.D.DE758 Condition":
   [Condition: Concepts."Provision of isoniazid preventive therapy if person does not have TB - HIV.D.DE758"]
 define "Provision of isoniazid preventive therapy if person does not have TB - HIV.D.DE758 Observation":
-  "Provision of isoniazid preventive therapy if person does not have TB - HIV.D.DE753 Observation" O
+  [Observation: Concepts."Provision of isoniazid preventive therapy if person does not have TB - HIV.D.DE753"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Provision of isoniazid preventive therapy if person does not have TB - HIV.D.DE758"
-// End of Provision of isoniazid preventive therapy if person does not have TB - HIV.D.DE758
+/* End of Provision of isoniazid preventive therapy if person does not have TB - HIV.D.DE758 */
+
 /*
 @dataElement: HIV.D.DE759 - Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.D.DE759
 @activity: HIV.D28 Offer other services
@@ -9509,10 +9815,11 @@ define "Malaria prevention such as bed nets and prophylaxis, depending on epidem
 define "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.D.DE759 Condition":
   [Condition: Concepts."Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.D.DE759"]
 define "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.D.DE759 Observation":
-  "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.D.DE753 Observation" O
+  [Observation: Concepts."Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.D.DE753"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.D.DE759"
-// End of Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.D.DE759
+/* End of Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.D.DE759 */
+
 /*
 @dataElement: HIV.D.DE760 - Eligible for DSD ART
 @activity: HIV.D21 Determine regimen and treatment options
@@ -9520,14 +9827,11 @@ define "Malaria prevention such as bed nets and prophylaxis, depending on epidem
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Eligible for DSD ART":
-  exists "Eligible for DSD ART Observation"
-    or exists "Eligible for DSD ART Condition"
-define "Eligible for DSD ART Condition":
-  [Condition: Concepts."Eligible for DSD ART"]
-define "Eligible for DSD ART Observation":
   [Observation: Concepts."Eligible for DSD ART"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Eligible for DSD ART
+    return O.value
+/* End of Eligible for DSD ART */
+
 /*
 @dataElement: HIV.D.DE761 - Date DSD ART eligibility assessed
 @activity: HIV.D21 Determine regimen and treatment options
@@ -9535,14 +9839,11 @@ define "Eligible for DSD ART Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date DSD ART eligibility assessed":
-  exists "Date DSD ART eligibility assessed Observation"
-    or exists "Date DSD ART eligibility assessed Condition"
-define "Date DSD ART eligibility assessed Condition":
-  [Condition: Concepts."Date DSD ART eligibility assessed"]
-define "Date DSD ART eligibility assessed Observation":
   [Observation: Concepts."Date DSD ART eligibility assessed"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date DSD ART eligibility assessed
+    return O.value
+/* End of Date DSD ART eligibility assessed */
+
 /*
 @dataElement: HIV.D.DE762 - Currently enrolled in DSD ART model
 @activity: HIV.D21 Determine regimen and treatment options
@@ -9550,14 +9851,11 @@ define "Date DSD ART eligibility assessed Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Currently enrolled in DSD ART model":
-  exists "Currently enrolled in DSD ART model Observation"
-    or exists "Currently enrolled in DSD ART model Condition"
-define "Currently enrolled in DSD ART model Condition":
-  [Condition: Concepts."Currently enrolled in DSD ART model"]
-define "Currently enrolled in DSD ART model Observation":
   [Observation: Concepts."Currently enrolled in DSD ART model"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Currently enrolled in DSD ART model
+    return O.value
+/* End of Currently enrolled in DSD ART model */
+
 /*
 @dataElement: HIV.D.DE763 - DSD ART start date
 @activity: HIV.D21 Determine regimen and treatment options
@@ -9565,14 +9863,11 @@ define "Currently enrolled in DSD ART model Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "DSD ART start date":
-  exists "DSD ART start date Observation"
-    or exists "DSD ART start date Condition"
-define "DSD ART start date Condition":
-  [Condition: Concepts."DSD ART start date"]
-define "DSD ART start date Observation":
   [Observation: Concepts."DSD ART start date"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of DSD ART start date
+    return O.value
+/* End of DSD ART start date */
+
 /*
 @dataElement: HIV.D.DE764 - DSD ART models
 @activity: HIV.D21 Determine regimen and treatment options
@@ -9582,7 +9877,8 @@ define "DSD ART start date Observation":
 define "DSD ART models Observation":
   [Observation: Concepts."DSD ART models"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of DSD ART models
+/* End of DSD ART models */
+
 /*
 @dataElement: HIV.D.DE765 - Fast track ART refill
 @activity: HIV.D21 Determine regimen and treatment options
@@ -9595,10 +9891,11 @@ define "Fast track ART refill":
 define "Fast track ART refill Condition":
   [Condition: Concepts."Fast track ART refill"]
 define "Fast track ART refill Observation":
-  "Fast track ART refill Observation" O
+  [Observation: Concepts."Fast track ART refill"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Fast track ART refill"
-// End of Fast track ART refill
+/* End of Fast track ART refill */
+
 /*
 @dataElement: HIV.D.DE766 - Facility adherence club
 @activity: HIV.D21 Determine regimen and treatment options
@@ -9611,10 +9908,11 @@ define "Facility adherence club":
 define "Facility adherence club Condition":
   [Condition: Concepts."Facility adherence club"]
 define "Facility adherence club Observation":
-  "Facility adherence club Observation" O
+  [Observation: Concepts."Facility adherence club"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Facility adherence club"
-// End of Facility adherence club
+/* End of Facility adherence club */
+
 /*
 @dataElement: HIV.D.DE767 - Community ART distribution point
 @activity: HIV.D21 Determine regimen and treatment options
@@ -9627,10 +9925,11 @@ define "Community ART distribution point":
 define "Community ART distribution point Condition":
   [Condition: Concepts."Community ART distribution point"]
 define "Community ART distribution point Observation":
-  "Community ART distribution point Observation" O
+  [Observation: Concepts."Community ART distribution point"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Community ART distribution point"
-// End of Community ART distribution point
+/* End of Community ART distribution point */
+
 /*
 @dataElement: HIV.D.DE768 - CHW/peer educator community ART group
 @activity: HIV.D21 Determine regimen and treatment options
@@ -9643,10 +9942,11 @@ define "CHW/peer educator community ART group":
 define "CHW/peer educator community ART group Condition":
   [Condition: Concepts."CHW/peer educator community ART group"]
 define "CHW/peer educator community ART group Observation":
-  "CHW/peer educator community ART group Observation" O
+  [Observation: Concepts."CHW/peer educator community ART group"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."CHW/peer educator community ART group"
-// End of CHW/peer educator community ART group
+/* End of CHW/peer educator community ART group */
+
 /*
 @dataElement: HIV.D.DE769 - Patient/client community ART group
 @activity: HIV.D21 Determine regimen and treatment options
@@ -9659,10 +9959,11 @@ define "Patient/client community ART group":
 define "Patient/client community ART group Condition":
   [Condition: Concepts."Patient/client community ART group"]
 define "Patient/client community ART group Observation":
-  "Patient/client community ART group Observation" O
+  [Observation: Concepts."Patient/client community ART group"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Patient/client community ART group"
-// End of Patient/client community ART group
+/* End of Patient/client community ART group */
+
 /*
 @dataElement: HIV.D.DE770 - Other DSD ART model
 @activity: HIV.D21 Determine regimen and treatment options
@@ -9675,10 +9976,11 @@ define "Other DSD ART model":
 define "Other DSD ART model Condition":
   [Condition: Concepts."Other DSD ART model"]
 define "Other DSD ART model Observation":
-  "Other DSD ART model Observation" O
+  [Observation: Concepts."Other DSD ART model"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other DSD ART model"
-// End of Other DSD ART model
+/* End of Other DSD ART model */
+
 /*
 @dataElement: HIV.D.DE778 - Syndrome/STI diagnosed - HIV.D.DE778
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -9688,7 +9990,8 @@ define "Other DSD ART model Observation":
 define "Syndrome/STI diagnosed - HIV.D.DE778 Observation":
   [Observation: Concepts."Syndrome/STI diagnosed - HIV.D.DE778"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Syndrome/STI diagnosed - HIV.D.DE778
+/* End of Syndrome/STI diagnosed - HIV.D.DE778 */
+
 /*
 @dataElement: HIV.D.DE779 - Urethral discharge syndrome - HIV.D.DE779
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -9701,10 +10004,11 @@ define "Urethral discharge syndrome - HIV.D.DE779":
 define "Urethral discharge syndrome - HIV.D.DE779 Condition":
   [Condition: Concepts."Urethral discharge syndrome - HIV.D.DE779"]
 define "Urethral discharge syndrome - HIV.D.DE779 Observation":
-  "Urethral discharge syndrome - HIV.D.DE778 Observation" O
+  [Observation: Concepts."Urethral discharge syndrome - HIV.D.DE778"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Urethral discharge syndrome - HIV.D.DE779"
-// End of Urethral discharge syndrome - HIV.D.DE779
+/* End of Urethral discharge syndrome - HIV.D.DE779 */
+
 /*
 @dataElement: HIV.D.DE780 - Vaginal discharge syndrome - HIV.D.DE780
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -9717,10 +10021,11 @@ define "Vaginal discharge syndrome - HIV.D.DE780":
 define "Vaginal discharge syndrome - HIV.D.DE780 Condition":
   [Condition: Concepts."Vaginal discharge syndrome - HIV.D.DE780"]
 define "Vaginal discharge syndrome - HIV.D.DE780 Observation":
-  "Vaginal discharge syndrome - HIV.D.DE778 Observation" O
+  [Observation: Concepts."Vaginal discharge syndrome - HIV.D.DE778"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Vaginal discharge syndrome - HIV.D.DE780"
-// End of Vaginal discharge syndrome - HIV.D.DE780
+/* End of Vaginal discharge syndrome - HIV.D.DE780 */
+
 /*
 @dataElement: HIV.D.DE781 - Lower Abdominal pain  - HIV.D.DE781
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -9733,10 +10038,11 @@ define "Lower Abdominal pain  - HIV.D.DE781":
 define "Lower Abdominal pain  - HIV.D.DE781 Condition":
   [Condition: Concepts."Lower Abdominal pain  - HIV.D.DE781"]
 define "Lower Abdominal pain  - HIV.D.DE781 Observation":
-  "Lower Abdominal pain  - HIV.D.DE778 Observation" O
+  [Observation: Concepts."Lower Abdominal pain  - HIV.D.DE778"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Lower Abdominal pain  - HIV.D.DE781"
-// End of Lower Abdominal pain  - HIV.D.DE781
+/* End of Lower Abdominal pain  - HIV.D.DE781 */
+
 /*
 @dataElement: HIV.D.DE782 - Genital ulcer disease syndrome - HIV.D.DE782
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -9749,10 +10055,11 @@ define "Genital ulcer disease syndrome - HIV.D.DE782":
 define "Genital ulcer disease syndrome - HIV.D.DE782 Condition":
   [Condition: Concepts."Genital ulcer disease syndrome - HIV.D.DE782"]
 define "Genital ulcer disease syndrome - HIV.D.DE782 Observation":
-  "Genital ulcer disease syndrome - HIV.D.DE778 Observation" O
+  [Observation: Concepts."Genital ulcer disease syndrome - HIV.D.DE778"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Genital ulcer disease syndrome - HIV.D.DE782"
-// End of Genital ulcer disease syndrome - HIV.D.DE782
+/* End of Genital ulcer disease syndrome - HIV.D.DE782 */
+
 /*
 @dataElement: HIV.D.DE783 - Anorectal discharge - HIV.D.DE783
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -9765,10 +10072,11 @@ define "Anorectal discharge - HIV.D.DE783":
 define "Anorectal discharge - HIV.D.DE783 Condition":
   [Condition: Concepts."Anorectal discharge - HIV.D.DE783"]
 define "Anorectal discharge - HIV.D.DE783 Observation":
-  "Anorectal discharge - HIV.D.DE778 Observation" O
+  [Observation: Concepts."Anorectal discharge - HIV.D.DE778"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Anorectal discharge - HIV.D.DE783"
-// End of Anorectal discharge - HIV.D.DE783
+/* End of Anorectal discharge - HIV.D.DE783 */
+
 /*
 @dataElement: HIV.D.DE784 - Sent for testing - HIV.D.DE784
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -9781,10 +10089,11 @@ define "Sent for testing - HIV.D.DE784":
 define "Sent for testing - HIV.D.DE784 Condition":
   [Condition: Concepts."Sent for testing - HIV.D.DE784"]
 define "Sent for testing - HIV.D.DE784 Observation":
-  "Sent for testing - HIV.D.DE778 Observation" O
+  [Observation: Concepts."Sent for testing - HIV.D.DE778"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Sent for testing - HIV.D.DE784"
-// End of Sent for testing - HIV.D.DE784
+/* End of Sent for testing - HIV.D.DE784 */
+
 /*
 @dataElement: HIV.D.DE785 - Other - HIV.D.DE785
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -9797,10 +10106,11 @@ define "Other - HIV.D.DE785":
 define "Other - HIV.D.DE785 Condition":
   [Condition: Concepts."Other - HIV.D.DE785"]
 define "Other - HIV.D.DE785 Observation":
-  "Other - HIV.D.DE778 Observation" O
+  [Observation: Concepts."Other - HIV.D.DE778"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other - HIV.D.DE785"
-// End of Other - HIV.D.DE785
+/* End of Other - HIV.D.DE785 */
+
 /*
 @dataElement: HIV.D.DE787 - Any STI syndrome diagnosed - HIV.D.DE787
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -9808,14 +10118,11 @@ define "Other - HIV.D.DE785 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Any STI syndrome diagnosed - HIV.D.DE787":
-  exists "Any STI syndrome diagnosed - HIV.D.DE787 Observation"
-    or exists "Any STI syndrome diagnosed - HIV.D.DE787 Condition"
-define "Any STI syndrome diagnosed - HIV.D.DE787 Condition":
-  [Condition: Concepts."Any STI syndrome diagnosed - HIV.D.DE787"]
-define "Any STI syndrome diagnosed - HIV.D.DE787 Observation":
   [Observation: Concepts."Any STI syndrome diagnosed - HIV.D.DE787"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Any STI syndrome diagnosed - HIV.D.DE787
+    return O.value
+/* End of Any STI syndrome diagnosed - HIV.D.DE787 */
+
 /*
 @dataElement: HIV.D.DE801 - Syphilis test date - HIV.D.DE801
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -9823,14 +10130,11 @@ define "Any STI syndrome diagnosed - HIV.D.DE787 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Syphilis test date - HIV.D.DE801":
-  exists "Syphilis test date - HIV.D.DE801 Observation"
-    or exists "Syphilis test date - HIV.D.DE801 Condition"
-define "Syphilis test date - HIV.D.DE801 Condition":
-  [Condition: Concepts."Syphilis test date - HIV.D.DE801"]
-define "Syphilis test date - HIV.D.DE801 Observation":
   [Observation: Concepts."Syphilis test date - HIV.D.DE801"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Syphilis test date - HIV.D.DE801
+    return O.value
+/* End of Syphilis test date - HIV.D.DE801 */
+
 /*
 @dataElement: HIV.D.DE802 - Syphilis test result - HIV.D.DE802
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -9840,7 +10144,8 @@ define "Syphilis test date - HIV.D.DE801 Observation":
 define "Syphilis test result - HIV.D.DE802 Observation":
   [Observation: Concepts."Syphilis test result - HIV.D.DE802"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Syphilis test result - HIV.D.DE802
+/* End of Syphilis test result - HIV.D.DE802 */
+
 /*
 @dataElement: HIV.D.DE803 - Positive - HIV.D.DE803
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -9853,10 +10158,11 @@ define "Positive - HIV.D.DE803":
 define "Positive - HIV.D.DE803 Condition":
   [Condition: Concepts."Positive - HIV.D.DE803"]
 define "Positive - HIV.D.DE803 Observation":
-  "Positive - HIV.D.DE802 Observation" O
+  [Observation: Concepts."Positive - HIV.D.DE802"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Positive - HIV.D.DE803"
-// End of Positive - HIV.D.DE803
+/* End of Positive - HIV.D.DE803 */
+
 /*
 @dataElement: HIV.D.DE804 - Negative - HIV.D.DE804
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -9869,10 +10175,11 @@ define "Negative - HIV.D.DE804":
 define "Negative - HIV.D.DE804 Condition":
   [Condition: Concepts."Negative - HIV.D.DE804"]
 define "Negative - HIV.D.DE804 Observation":
-  "Negative - HIV.D.DE802 Observation" O
+  [Observation: Concepts."Negative - HIV.D.DE802"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Negative - HIV.D.DE804"
-// End of Negative - HIV.D.DE804
+/* End of Negative - HIV.D.DE804 */
+
 /*
 @dataElement: HIV.D.DE805 - Inconclusive - HIV.D.DE805
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -9885,10 +10192,11 @@ define "Inconclusive - HIV.D.DE805":
 define "Inconclusive - HIV.D.DE805 Condition":
   [Condition: Concepts."Inconclusive - HIV.D.DE805"]
 define "Inconclusive - HIV.D.DE805 Observation":
-  "Inconclusive - HIV.D.DE802 Observation" O
+  [Observation: Concepts."Inconclusive - HIV.D.DE802"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Inconclusive - HIV.D.DE805"
-// End of Inconclusive - HIV.D.DE805
+/* End of Inconclusive - HIV.D.DE805 */
+
 /*
 @dataElement: HIV.D.DE806 - Syphilis treatment start date - HIV.D.DE806
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -9896,14 +10204,11 @@ define "Inconclusive - HIV.D.DE805 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Syphilis treatment start date - HIV.D.DE806":
-  exists "Syphilis treatment start date - HIV.D.DE806 Observation"
-    or exists "Syphilis treatment start date - HIV.D.DE806 Condition"
-define "Syphilis treatment start date - HIV.D.DE806 Condition":
-  [Condition: Concepts."Syphilis treatment start date - HIV.D.DE806"]
-define "Syphilis treatment start date - HIV.D.DE806 Observation":
   [Observation: Concepts."Syphilis treatment start date - HIV.D.DE806"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Syphilis treatment start date - HIV.D.DE806
+    return O.value
+/* End of Syphilis treatment start date - HIV.D.DE806 */
+
 /*
 @dataElement: HIV.D.DE807 - Gonorrhoea test date - HIV.D.DE807
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -9911,14 +10216,11 @@ define "Syphilis treatment start date - HIV.D.DE806 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Gonorrhoea test date - HIV.D.DE807":
-  exists "Gonorrhoea test date - HIV.D.DE807 Observation"
-    or exists "Gonorrhoea test date - HIV.D.DE807 Condition"
-define "Gonorrhoea test date - HIV.D.DE807 Condition":
-  [Condition: Concepts."Gonorrhoea test date - HIV.D.DE807"]
-define "Gonorrhoea test date - HIV.D.DE807 Observation":
   [Observation: Concepts."Gonorrhoea test date - HIV.D.DE807"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Gonorrhoea test date - HIV.D.DE807
+    return O.value
+/* End of Gonorrhoea test date - HIV.D.DE807 */
+
 /*
 @dataElement: HIV.D.DE808 - Gonorrhoea test result - HIV.D.DE808
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -9928,7 +10230,8 @@ define "Gonorrhoea test date - HIV.D.DE807 Observation":
 define "Gonorrhoea test result - HIV.D.DE808 Observation":
   [Observation: Concepts."Gonorrhoea test result - HIV.D.DE808"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Gonorrhoea test result - HIV.D.DE808
+/* End of Gonorrhoea test result - HIV.D.DE808 */
+
 /*
 @dataElement: HIV.D.DE809 - Positive - HIV.D.DE809
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -9941,10 +10244,11 @@ define "Positive - HIV.D.DE809":
 define "Positive - HIV.D.DE809 Condition":
   [Condition: Concepts."Positive - HIV.D.DE809"]
 define "Positive - HIV.D.DE809 Observation":
-  "Positive - HIV.D.DE808 Observation" O
+  [Observation: Concepts."Positive - HIV.D.DE808"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Positive - HIV.D.DE809"
-// End of Positive - HIV.D.DE809
+/* End of Positive - HIV.D.DE809 */
+
 /*
 @dataElement: HIV.D.DE810 - Negative - HIV.D.DE810
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -9957,10 +10261,11 @@ define "Negative - HIV.D.DE810":
 define "Negative - HIV.D.DE810 Condition":
   [Condition: Concepts."Negative - HIV.D.DE810"]
 define "Negative - HIV.D.DE810 Observation":
-  "Negative - HIV.D.DE808 Observation" O
+  [Observation: Concepts."Negative - HIV.D.DE808"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Negative - HIV.D.DE810"
-// End of Negative - HIV.D.DE810
+/* End of Negative - HIV.D.DE810 */
+
 /*
 @dataElement: HIV.D.DE811 - Inconclusive - HIV.D.DE811
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -9973,10 +10278,11 @@ define "Inconclusive - HIV.D.DE811":
 define "Inconclusive - HIV.D.DE811 Condition":
   [Condition: Concepts."Inconclusive - HIV.D.DE811"]
 define "Inconclusive - HIV.D.DE811 Observation":
-  "Inconclusive - HIV.D.DE808 Observation" O
+  [Observation: Concepts."Inconclusive - HIV.D.DE808"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Inconclusive - HIV.D.DE811"
-// End of Inconclusive - HIV.D.DE811
+/* End of Inconclusive - HIV.D.DE811 */
+
 /*
 @dataElement: HIV.D.DE812 - Gonorrhoea treatment start date - HIV.D.DE812
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -9984,14 +10290,11 @@ define "Inconclusive - HIV.D.DE811 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Gonorrhoea treatment start date - HIV.D.DE812":
-  exists "Gonorrhoea treatment start date - HIV.D.DE812 Observation"
-    or exists "Gonorrhoea treatment start date - HIV.D.DE812 Condition"
-define "Gonorrhoea treatment start date - HIV.D.DE812 Condition":
-  [Condition: Concepts."Gonorrhoea treatment start date - HIV.D.DE812"]
-define "Gonorrhoea treatment start date - HIV.D.DE812 Observation":
   [Observation: Concepts."Gonorrhoea treatment start date - HIV.D.DE812"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Gonorrhoea treatment start date - HIV.D.DE812
+    return O.value
+/* End of Gonorrhoea treatment start date - HIV.D.DE812 */
+
 /*
 @dataElement: HIV.D.DE813 - Type of specimen - HIV.D.DE813
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -10001,7 +10304,8 @@ define "Gonorrhoea treatment start date - HIV.D.DE812 Observation":
 define "Type of specimen - HIV.D.DE813 Observation":
   [Observation: Concepts."Type of specimen - HIV.D.DE813"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Type of specimen - HIV.D.DE813
+/* End of Type of specimen - HIV.D.DE813 */
+
 /*
 @dataElement: HIV.D.DE814 - Blood - HIV.D.DE814
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -10014,10 +10318,11 @@ define "Blood - HIV.D.DE814":
 define "Blood - HIV.D.DE814 Condition":
   [Condition: Concepts."Blood - HIV.D.DE814"]
 define "Blood - HIV.D.DE814 Observation":
-  "Blood - HIV.D.DE813 Observation" O
+  [Observation: Concepts."Blood - HIV.D.DE813"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Blood - HIV.D.DE814"
-// End of Blood - HIV.D.DE814
+/* End of Blood - HIV.D.DE814 */
+
 /*
 @dataElement: HIV.D.DE815 - Urine - HIV.D.DE815
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -10030,10 +10335,11 @@ define "Urine - HIV.D.DE815":
 define "Urine - HIV.D.DE815 Condition":
   [Condition: Concepts."Urine - HIV.D.DE815"]
 define "Urine - HIV.D.DE815 Observation":
-  "Urine - HIV.D.DE813 Observation" O
+  [Observation: Concepts."Urine - HIV.D.DE813"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Urine - HIV.D.DE815"
-// End of Urine - HIV.D.DE815
+/* End of Urine - HIV.D.DE815 */
+
 /*
 @dataElement: HIV.D.DE816 - Cervical or vaginal swab - HIV.D.DE816
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -10046,10 +10352,11 @@ define "Cervical or vaginal swab - HIV.D.DE816":
 define "Cervical or vaginal swab - HIV.D.DE816 Condition":
   [Condition: Concepts."Cervical or vaginal swab - HIV.D.DE816"]
 define "Cervical or vaginal swab - HIV.D.DE816 Observation":
-  "Cervical or vaginal swab - HIV.D.DE813 Observation" O
+  [Observation: Concepts."Cervical or vaginal swab - HIV.D.DE813"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Cervical or vaginal swab - HIV.D.DE816"
-// End of Cervical or vaginal swab - HIV.D.DE816
+/* End of Cervical or vaginal swab - HIV.D.DE816 */
+
 /*
 @dataElement: HIV.D.DE817 - Urethral or penile swab - HIV.D.DE817
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -10062,10 +10369,11 @@ define "Urethral or penile swab - HIV.D.DE817":
 define "Urethral or penile swab - HIV.D.DE817 Condition":
   [Condition: Concepts."Urethral or penile swab - HIV.D.DE817"]
 define "Urethral or penile swab - HIV.D.DE817 Observation":
-  "Urethral or penile swab - HIV.D.DE813 Observation" O
+  [Observation: Concepts."Urethral or penile swab - HIV.D.DE813"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Urethral or penile swab - HIV.D.DE817"
-// End of Urethral or penile swab - HIV.D.DE817
+/* End of Urethral or penile swab - HIV.D.DE817 */
+
 /*
 @dataElement: HIV.D.DE818 - Rectal swab - HIV.D.DE818
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -10078,10 +10386,11 @@ define "Rectal swab - HIV.D.DE818":
 define "Rectal swab - HIV.D.DE818 Condition":
   [Condition: Concepts."Rectal swab - HIV.D.DE818"]
 define "Rectal swab - HIV.D.DE818 Observation":
-  "Rectal swab - HIV.D.DE813 Observation" O
+  [Observation: Concepts."Rectal swab - HIV.D.DE813"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Rectal swab - HIV.D.DE818"
-// End of Rectal swab - HIV.D.DE818
+/* End of Rectal swab - HIV.D.DE818 */
+
 /*
 @dataElement: HIV.D.DE819 - Other - HIV.D.DE819
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -10094,10 +10403,11 @@ define "Other - HIV.D.DE819":
 define "Other - HIV.D.DE819 Condition":
   [Condition: Concepts."Other - HIV.D.DE819"]
 define "Other - HIV.D.DE819 Observation":
-  "Other - HIV.D.DE813 Observation" O
+  [Observation: Concepts."Other - HIV.D.DE813"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other - HIV.D.DE819"
-// End of Other - HIV.D.DE819
+/* End of Other - HIV.D.DE819 */
+
 /*
 @dataElement: HIV.D.DE828 - Neisseria gonorrhoeae test type - HIV.D.DE828
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -10107,7 +10417,8 @@ define "Other - HIV.D.DE819 Observation":
 define "Neisseria gonorrhoeae test type - HIV.D.DE828 Observation":
   [Observation: Concepts."Neisseria gonorrhoeae test type - HIV.D.DE828"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Neisseria gonorrhoeae test type - HIV.D.DE828
+/* End of Neisseria gonorrhoeae test type - HIV.D.DE828 */
+
 /*
 @dataElement: HIV.D.DE829 - NAAT - HIV.D.DE829
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -10120,10 +10431,11 @@ define "NAAT - HIV.D.DE829":
 define "NAAT - HIV.D.DE829 Condition":
   [Condition: Concepts."NAAT - HIV.D.DE829"]
 define "NAAT - HIV.D.DE829 Observation":
-  "NAAT - HIV.D.DE828 Observation" O
+  [Observation: Concepts."NAAT - HIV.D.DE828"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."NAAT - HIV.D.DE829"
-// End of NAAT - HIV.D.DE829
+/* End of NAAT - HIV.D.DE829 */
+
 /*
 @dataElement: HIV.D.DE830 - POC Test - HIV.D.DE830
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -10136,10 +10448,11 @@ define "POC Test - HIV.D.DE830":
 define "POC Test - HIV.D.DE830 Condition":
   [Condition: Concepts."POC Test - HIV.D.DE830"]
 define "POC Test - HIV.D.DE830 Observation":
-  "POC Test - HIV.D.DE828 Observation" O
+  [Observation: Concepts."POC Test - HIV.D.DE828"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."POC Test - HIV.D.DE830"
-// End of POC Test - HIV.D.DE830
+/* End of POC Test - HIV.D.DE830 */
+
 /*
 @dataElement: HIV.D.DE831 - Culture - HIV.D.DE831
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -10152,10 +10465,11 @@ define "Culture - HIV.D.DE831":
 define "Culture - HIV.D.DE831 Condition":
   [Condition: Concepts."Culture - HIV.D.DE831"]
 define "Culture - HIV.D.DE831 Observation":
-  "Culture - HIV.D.DE828 Observation" O
+  [Observation: Concepts."Culture - HIV.D.DE828"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Culture - HIV.D.DE831"
-// End of Culture - HIV.D.DE831
+/* End of Culture - HIV.D.DE831 */
+
 /*
 @dataElement: HIV.D.DE832 - Microscopy - HIV.D.DE832
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -10168,10 +10482,11 @@ define "Microscopy - HIV.D.DE832":
 define "Microscopy - HIV.D.DE832 Condition":
   [Condition: Concepts."Microscopy - HIV.D.DE832"]
 define "Microscopy - HIV.D.DE832 Observation":
-  "Microscopy - HIV.D.DE828 Observation" O
+  [Observation: Concepts."Microscopy - HIV.D.DE828"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Microscopy - HIV.D.DE832"
-// End of Microscopy - HIV.D.DE832
+/* End of Microscopy - HIV.D.DE832 */
+
 /*
 @dataElement: HIV.D.DE833 - Other - HIV.D.DE833
 @activity: HIV.D26 Offer sexual and reproductive health services
@@ -10184,10 +10499,11 @@ define "Other - HIV.D.DE833":
 define "Other - HIV.D.DE833 Condition":
   [Condition: Concepts."Other - HIV.D.DE833"]
 define "Other - HIV.D.DE833 Observation":
-  "Other - HIV.D.DE828 Observation" O
+  [Observation: Concepts."Other - HIV.D.DE828"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other - HIV.D.DE833"
-// End of Other - HIV.D.DE833
+/* End of Other - HIV.D.DE833 */
+
 /*
 @dataElement: HIV.D.DE903 - Medication/drug
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10197,7 +10513,8 @@ define "Other - HIV.D.DE833 Observation":
 define "Medication/drug Observation":
   [Observation: Concepts."Medication/drug"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Medication/drug
+/* End of Medication/drug */
+
 /*
 @dataElement: HIV.D.DE904 - Rifampicin
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10210,10 +10527,11 @@ define "Rifampicin":
 define "Rifampicin Condition":
   [Condition: Concepts."Rifampicin"]
 define "Rifampicin Observation":
-  "Rifampicin Observation" O
+  [Observation: Concepts."Rifampicin"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Rifampicin"
-// End of Rifampicin
+/* End of Rifampicin */
+
 /*
 @dataElement: HIV.D.DE905 - Halofantrine
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10226,10 +10544,11 @@ define "Halofantrine":
 define "Halofantrine Condition":
   [Condition: Concepts."Halofantrine"]
 define "Halofantrine Observation":
-  "Halofantrine Observation" O
+  [Observation: Concepts."Halofantrine"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Halofantrine"
-// End of Halofantrine
+/* End of Halofantrine */
+
 /*
 @dataElement: HIV.D.DE906 - Lovastatin
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10242,10 +10561,11 @@ define "Lovastatin":
 define "Lovastatin Condition":
   [Condition: Concepts."Lovastatin"]
 define "Lovastatin Observation":
-  "Lovastatin Observation" O
+  [Observation: Concepts."Lovastatin"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Lovastatin"
-// End of Lovastatin
+/* End of Lovastatin */
+
 /*
 @dataElement: HIV.D.DE907 - Simvastatin
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10258,10 +10578,11 @@ define "Simvastatin":
 define "Simvastatin Condition":
   [Condition: Concepts."Simvastatin"]
 define "Simvastatin Observation":
-  "Simvastatin Observation" O
+  [Observation: Concepts."Simvastatin"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Simvastatin"
-// End of Simvastatin
+/* End of Simvastatin */
+
 /*
 @dataElement: HIV.D.DE908 - Hormonal contraception
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10274,10 +10595,11 @@ define "Hormonal contraception":
 define "Hormonal contraception Condition":
   [Condition: Concepts."Hormonal contraception"]
 define "Hormonal contraception Observation":
-  "Hormonal contraception Observation" O
+  [Observation: Concepts."Hormonal contraception"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Hormonal contraception"
-// End of Hormonal contraception
+/* End of Hormonal contraception */
+
 /*
 @dataElement: HIV.D.DE909 - Metformin
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10290,10 +10612,11 @@ define "Metformin":
 define "Metformin Condition":
   [Condition: Concepts."Metformin"]
 define "Metformin Observation":
-  "Metformin Observation" O
+  [Observation: Concepts."Metformin"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Metformin"
-// End of Metformin
+/* End of Metformin */
+
 /*
 @dataElement: HIV.D.DE910 - Astemizole
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10306,10 +10629,11 @@ define "Astemizole":
 define "Astemizole Condition":
   [Condition: Concepts."Astemizole"]
 define "Astemizole Observation":
-  "Astemizole Observation" O
+  [Observation: Concepts."Astemizole"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Astemizole"
-// End of Astemizole
+/* End of Astemizole */
+
 /*
 @dataElement: HIV.D.DE911 - Terfenadine
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10322,10 +10646,11 @@ define "Terfenadine":
 define "Terfenadine Condition":
   [Condition: Concepts."Terfenadine"]
 define "Terfenadine Observation":
-  "Terfenadine Observation" O
+  [Observation: Concepts."Terfenadine"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Terfenadine"
-// End of Terfenadine
+/* End of Terfenadine */
+
 /*
 @dataElement: HIV.D.DE912 - TDF - HIV.D.DE912
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10338,10 +10663,11 @@ define "TDF - HIV.D.DE912":
 define "TDF - HIV.D.DE912 Condition":
   [Condition: Concepts."TDF - HIV.D.DE912"]
 define "TDF - HIV.D.DE912 Observation":
-  "TDF - HIV.D.DE903 Observation" O
+  [Observation: Concepts."TDF - HIV.D.DE903"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."TDF - HIV.D.DE912"
-// End of TDF - HIV.D.DE912
+/* End of TDF - HIV.D.DE912 */
+
 /*
 @dataElement: HIV.D.DE913 - Simeprevir
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10354,10 +10680,11 @@ define "Simeprevir":
 define "Simeprevir Condition":
   [Condition: Concepts."Simeprevir"]
 define "Simeprevir Observation":
-  "Simeprevir Observation" O
+  [Observation: Concepts."Simeprevir"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Simeprevir"
-// End of Simeprevir
+/* End of Simeprevir */
+
 /*
 @dataElement: HIV.D.DE914 - Ombitasvir + paritaprevir/ritonavir + dasabuvir
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10370,10 +10697,11 @@ define "Ombitasvir + paritaprevir/ritonavir + dasabuvir":
 define "Ombitasvir + paritaprevir/ritonavir + dasabuvir Condition":
   [Condition: Concepts."Ombitasvir + paritaprevir/ritonavir + dasabuvir"]
 define "Ombitasvir + paritaprevir/ritonavir + dasabuvir Observation":
-  "Ombitasvir + paritaprevir/ritonavir + dasabuvir Observation" O
+  [Observation: Concepts."Ombitasvir + paritaprevir/ritonavir + dasabuvir"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Ombitasvir + paritaprevir/ritonavir + dasabuvir"
-// End of Ombitasvir + paritaprevir/ritonavir + dasabuvir
+/* End of Ombitasvir + paritaprevir/ritonavir + dasabuvir */
+
 /*
 @dataElement: HIV.D.DE915 - Methadone - HIV.D.DE915
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10386,10 +10714,11 @@ define "Methadone - HIV.D.DE915":
 define "Methadone - HIV.D.DE915 Condition":
   [Condition: Concepts."Methadone - HIV.D.DE915"]
 define "Methadone - HIV.D.DE915 Observation":
-  "Methadone - HIV.D.DE903 Observation" O
+  [Observation: Concepts."Methadone - HIV.D.DE903"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Methadone - HIV.D.DE915"
-// End of Methadone - HIV.D.DE915
+/* End of Methadone - HIV.D.DE915 */
+
 /*
 @dataElement: HIV.D.DE916 - Buprenorphine - HIV.D.DE916
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10402,10 +10731,11 @@ define "Buprenorphine - HIV.D.DE916":
 define "Buprenorphine - HIV.D.DE916 Condition":
   [Condition: Concepts."Buprenorphine - HIV.D.DE916"]
 define "Buprenorphine - HIV.D.DE916 Observation":
-  "Buprenorphine - HIV.D.DE903 Observation" O
+  [Observation: Concepts."Buprenorphine - HIV.D.DE903"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Buprenorphine - HIV.D.DE916"
-// End of Buprenorphine - HIV.D.DE916
+/* End of Buprenorphine - HIV.D.DE916 */
+
 /*
 @dataElement: HIV.D.DE917 - Dofetilide
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10418,10 +10748,11 @@ define "Dofetilide":
 define "Dofetilide Condition":
   [Condition: Concepts."Dofetilide"]
 define "Dofetilide Observation":
-  "Dofetilide Observation" O
+  [Observation: Concepts."Dofetilide"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Dofetilide"
-// End of Dofetilide
+/* End of Dofetilide */
+
 /*
 @dataElement: HIV.D.DE918 - Carbamazepine
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10434,10 +10765,11 @@ define "Carbamazepine":
 define "Carbamazepine Condition":
   [Condition: Concepts."Carbamazepine"]
 define "Carbamazepine Observation":
-  "Carbamazepine Observation" O
+  [Observation: Concepts."Carbamazepine"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Carbamazepine"
-// End of Carbamazepine
+/* End of Carbamazepine */
+
 /*
 @dataElement: HIV.D.DE919 - Phenobarbital
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10450,10 +10782,11 @@ define "Phenobarbital":
 define "Phenobarbital Condition":
   [Condition: Concepts."Phenobarbital"]
 define "Phenobarbital Observation":
-  "Phenobarbital Observation" O
+  [Observation: Concepts."Phenobarbital"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Phenobarbital"
-// End of Phenobarbital
+/* End of Phenobarbital */
+
 /*
 @dataElement: HIV.D.DE920 - Phenytoin
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10466,10 +10799,11 @@ define "Phenytoin":
 define "Phenytoin Condition":
   [Condition: Concepts."Phenytoin"]
 define "Phenytoin Observation":
-  "Phenytoin Observation" O
+  [Observation: Concepts."Phenytoin"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Phenytoin"
-// End of Phenytoin
+/* End of Phenytoin */
+
 /*
 @dataElement: HIV.D.DE921 - Polyvalent cation products containing Mg, Al, Fe, Ca and Zn
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10482,10 +10816,11 @@ define "Polyvalent cation products containing Mg, Al, Fe, Ca and Zn":
 define "Polyvalent cation products containing Mg, Al, Fe, Ca and Zn Condition":
   [Condition: Concepts."Polyvalent cation products containing Mg, Al, Fe, Ca and Zn"]
 define "Polyvalent cation products containing Mg, Al, Fe, Ca and Zn Observation":
-  "Polyvalent cation products containing Mg, Al, Fe, Ca and Zn Observation" O
+  [Observation: Concepts."Polyvalent cation products containing Mg, Al, Fe, Ca and Zn"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Polyvalent cation products containing Mg, Al, Fe, Ca and Zn"
-// End of Polyvalent cation products containing Mg, Al, Fe, Ca and Zn
+/* End of Polyvalent cation products containing Mg, Al, Fe, Ca and Zn */
+
 /*
 @dataElement: HIV.D.DE922 - Amodiaquine
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10498,10 +10833,11 @@ define "Amodiaquine":
 define "Amodiaquine Condition":
   [Condition: Concepts."Amodiaquine"]
 define "Amodiaquine Observation":
-  "Amodiaquine Observation" O
+  [Observation: Concepts."Amodiaquine"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Amodiaquine"
-// End of Amodiaquine
+/* End of Amodiaquine */
+
 /*
 @dataElement: HIV.D.DE923 - Cisapride
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10514,10 +10850,11 @@ define "Cisapride":
 define "Cisapride Condition":
   [Condition: Concepts."Cisapride"]
 define "Cisapride Observation":
-  "Cisapride Observation" O
+  [Observation: Concepts."Cisapride"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Cisapride"
-// End of Cisapride
+/* End of Cisapride */
+
 /*
 @dataElement: HIV.D.DE924 - Ergotamine
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10530,10 +10867,11 @@ define "Ergotamine":
 define "Ergotamine Condition":
   [Condition: Concepts."Ergotamine"]
 define "Ergotamine Observation":
-  "Ergotamine Observation" O
+  [Observation: Concepts."Ergotamine"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Ergotamine"
-// End of Ergotamine
+/* End of Ergotamine */
+
 /*
 @dataElement: HIV.D.DE925 - Dihydroergotamine
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10546,10 +10884,11 @@ define "Dihydroergotamine":
 define "Dihydroergotamine Condition":
   [Condition: Concepts."Dihydroergotamine"]
 define "Dihydroergotamine Observation":
-  "Dihydroergotamine Observation" O
+  [Observation: Concepts."Dihydroergotamine"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Dihydroergotamine"
-// End of Dihydroergotamine
+/* End of Dihydroergotamine */
+
 /*
 @dataElement: HIV.D.DE926 - Midazolam
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10562,10 +10901,11 @@ define "Midazolam":
 define "Midazolam Condition":
   [Condition: Concepts."Midazolam"]
 define "Midazolam Observation":
-  "Midazolam Observation" O
+  [Observation: Concepts."Midazolam"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Midazolam"
-// End of Midazolam
+/* End of Midazolam */
+
 /*
 @dataElement: HIV.D.DE927 - Triazolam
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10578,10 +10918,11 @@ define "Triazolam":
 define "Triazolam Condition":
   [Condition: Concepts."Triazolam"]
 define "Triazolam Observation":
-  "Triazolam Observation" O
+  [Observation: Concepts."Triazolam"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Triazolam"
-// End of Triazolam
+/* End of Triazolam */
+
 /*
 @dataElement: HIV.D.DE928 - Estrogen-based hormonal contraception
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10594,10 +10935,11 @@ define "Estrogen-based hormonal contraception":
 define "Estrogen-based hormonal contraception Condition":
   [Condition: Concepts."Estrogen-based hormonal contraception"]
 define "Estrogen-based hormonal contraception Observation":
-  "Estrogen-based hormonal contraception Observation" O
+  [Observation: Concepts."Estrogen-based hormonal contraception"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Estrogen-based hormonal contraception"
-// End of Estrogen-based hormonal contraception
+/* End of Estrogen-based hormonal contraception */
+
 /*
 @dataElement: HIV.D.DE929 - Ribavirin
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10610,10 +10952,11 @@ define "Ribavirin":
 define "Ribavirin Condition":
   [Condition: Concepts."Ribavirin"]
 define "Ribavirin Observation":
-  "Ribavirin Observation" O
+  [Observation: Concepts."Ribavirin"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Ribavirin"
-// End of Ribavirin
+/* End of Ribavirin */
+
 /*
 @dataElement: HIV.D.DE930 - Peginterferon alfa-2a
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10626,10 +10969,11 @@ define "Peginterferon alfa-2a":
 define "Peginterferon alfa-2a Condition":
   [Condition: Concepts."Peginterferon alfa-2a"]
 define "Peginterferon alfa-2a Observation":
-  "Peginterferon alfa-2a Observation" O
+  [Observation: Concepts."Peginterferon alfa-2a"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Peginterferon alfa-2a"
-// End of Peginterferon alfa-2a
+/* End of Peginterferon alfa-2a */
+
 /*
 @dataElement: HIV.D.DE931 - Other - HIV.D.DE931
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10642,10 +10986,11 @@ define "Other - HIV.D.DE931":
 define "Other - HIV.D.DE931 Condition":
   [Condition: Concepts."Other - HIV.D.DE931"]
 define "Other - HIV.D.DE931 Observation":
-  "Other - HIV.D.DE903 Observation" O
+  [Observation: Concepts."Other - HIV.D.DE903"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other - HIV.D.DE931"
-// End of Other - HIV.D.DE931
+/* End of Other - HIV.D.DE931 */
+
 /*
 @dataElement: HIV.D.DE933 - Medication change recommended
 @activity: HIV.D21 Determine regimen and treatment options
@@ -10653,14 +10998,11 @@ define "Other - HIV.D.DE931 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Medication change recommended":
-  exists "Medication change recommended Observation"
-    or exists "Medication change recommended Condition"
-define "Medication change recommended Condition":
-  [Condition: Concepts."Medication change recommended"]
-define "Medication change recommended Observation":
   [Observation: Concepts."Medication change recommended"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Medication change recommended
+    return O.value
+/* End of Medication change recommended */
+
 /*
 @dataElement: HIV.D.DE934 - WHO HIV clinical stage condition or symptom - HIV.D.DE934
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -10670,7 +11012,8 @@ define "Medication change recommended Observation":
 define "WHO HIV clinical stage condition or symptom - HIV.D.DE934 Observation":
   [Observation: Concepts."WHO HIV clinical stage condition or symptom - HIV.D.DE934"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of WHO HIV clinical stage condition or symptom - HIV.D.DE934
+/* End of WHO HIV clinical stage condition or symptom - HIV.D.DE934 */
+
 /*
 @dataElement: HIV.D.DE935 - Pulmonary TB - HIV.D.DE935
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -10683,10 +11026,11 @@ define "Pulmonary TB - HIV.D.DE935":
 define "Pulmonary TB - HIV.D.DE935 Condition":
   [Condition: Concepts."Pulmonary TB - HIV.D.DE935"]
 define "Pulmonary TB - HIV.D.DE935 Observation":
-  "Pulmonary TB - HIV.D.DE934 Observation" O
+  [Observation: Concepts."Pulmonary TB - HIV.D.DE934"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Pulmonary TB - HIV.D.DE935"
-// End of Pulmonary TB - HIV.D.DE935
+/* End of Pulmonary TB - HIV.D.DE935 */
+
 /*
 @dataElement: HIV.D.DE936 - Lymph node TB - HIV.D.DE936
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -10699,10 +11043,11 @@ define "Lymph node TB - HIV.D.DE936":
 define "Lymph node TB - HIV.D.DE936 Condition":
   [Condition: Concepts."Lymph node TB - HIV.D.DE936"]
 define "Lymph node TB - HIV.D.DE936 Observation":
-  "Lymph node TB - HIV.D.DE934 Observation" O
+  [Observation: Concepts."Lymph node TB - HIV.D.DE934"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Lymph node TB - HIV.D.DE936"
-// End of Lymph node TB - HIV.D.DE936
+/* End of Lymph node TB - HIV.D.DE936 */
+
 /*
 @dataElement: HIV.D.DE937 - Extrapulmonary TB - HIV.D.DE937
 @activity: HIV.D15 Determine clinical stage of HIV
@@ -10715,10 +11060,11 @@ define "Extrapulmonary TB - HIV.D.DE937":
 define "Extrapulmonary TB - HIV.D.DE937 Condition":
   [Condition: Concepts."Extrapulmonary TB - HIV.D.DE937"]
 define "Extrapulmonary TB - HIV.D.DE937 Observation":
-  "Extrapulmonary TB - HIV.D.DE934 Observation" O
+  [Observation: Concepts."Extrapulmonary TB - HIV.D.DE934"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Extrapulmonary TB - HIV.D.DE937"
-// End of Extrapulmonary TB - HIV.D.DE937
+/* End of Extrapulmonary TB - HIV.D.DE937 */
+
 /*
 @dataElement: HIV.D.DE939 - TB diagnosis result
 @activity: HIV.D8 Capture or update client history
@@ -10728,7 +11074,8 @@ define "Extrapulmonary TB - HIV.D.DE937 Observation":
 define "TB diagnosis result Observation":
   [Observation: Concepts."TB diagnosis result"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of TB diagnosis result
+/* End of TB diagnosis result */
+
 /*
 @dataElement: HIV.D.DE940 - Diagnosed TB
 @activity: HIV.D8 Capture or update client history
@@ -10741,10 +11088,11 @@ define "Diagnosed TB":
 define "Diagnosed TB Condition":
   [Condition: Concepts."Diagnosed TB"]
 define "Diagnosed TB Observation":
-  "Diagnosed TB Observation" O
+  [Observation: Concepts."Diagnosed TB"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Diagnosed TB"
-// End of Diagnosed TB
+/* End of Diagnosed TB */
+
 /*
 @dataElement: HIV.D.DE941 - TB excluded
 @activity: HIV.D8 Capture or update client history
@@ -10757,10 +11105,11 @@ define "TB excluded":
 define "TB excluded Condition":
   [Condition: Concepts."TB excluded"]
 define "TB excluded Observation":
-  "TB excluded Observation" O
+  [Observation: Concepts."TB excluded"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."TB excluded"
-// End of TB excluded
+/* End of TB excluded */
+
 /*
 @dataElement: HIV.D.DE945 - Presumptive TB - HIV.D.DE945
 @activity: HIV.D8 Capture or update client history
@@ -10768,14 +11117,11 @@ define "TB excluded Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Presumptive TB - HIV.D.DE945":
-  exists "Presumptive TB - HIV.D.DE945 Observation"
-    or exists "Presumptive TB - HIV.D.DE945 Condition"
-define "Presumptive TB - HIV.D.DE945 Condition":
-  [Condition: Concepts."Presumptive TB - HIV.D.DE945"]
-define "Presumptive TB - HIV.D.DE945 Observation":
   [Observation: Concepts."Presumptive TB - HIV.D.DE945"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Presumptive TB - HIV.D.DE945
+    return O.value
+/* End of Presumptive TB - HIV.D.DE945 */
+
 /*
 @dataElement: HIV.D.DE952 - Date of TB diagnosis
 @activity: HIV.D8 Capture or update client history
@@ -10783,14 +11129,11 @@ define "Presumptive TB - HIV.D.DE945 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date of TB diagnosis":
-  exists "Date of TB diagnosis Observation"
-    or exists "Date of TB diagnosis Condition"
-define "Date of TB diagnosis Condition":
-  [Condition: Concepts."Date of TB diagnosis"]
-define "Date of TB diagnosis Observation":
   [Observation: Concepts."Date of TB diagnosis"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date of TB diagnosis
+    return O.value
+/* End of Date of TB diagnosis */
+
 /*
 @dataElement: HIV.D.DE954 - TB preventive treatment TPT start date
 @activity: HIV.D8 Capture or update client history
@@ -10798,14 +11141,11 @@ define "Date of TB diagnosis Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "TB preventive treatment TPT start date":
-  exists "TB preventive treatment TPT start date Observation"
-    or exists "TB preventive treatment TPT start date Condition"
-define "TB preventive treatment TPT start date Condition":
-  [Condition: Concepts."TB preventive treatment TPT start date"]
-define "TB preventive treatment TPT start date Observation":
   [Observation: Concepts."TB preventive treatment TPT start date"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of TB preventive treatment TPT start date
+    return O.value
+/* End of TB preventive treatment TPT start date */
+
 /*
 @dataElement: HIV.D.DE956 - TB screening algorithm
 @activity: HIV.D4 Screen for TB
@@ -10815,7 +11155,8 @@ define "TB preventive treatment TPT start date Observation":
 define "TB screening algorithm Observation":
   [Observation: Concepts."TB screening algorithm"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of TB screening algorithm
+/* End of TB screening algorithm */
+
 /*
 @dataElement: HIV.D.DE957 - Screening with cough
 @activity: HIV.D4 Screen for TB
@@ -10828,10 +11169,11 @@ define "Screening with cough":
 define "Screening with cough Condition":
   [Condition: Concepts."Screening with cough"]
 define "Screening with cough Observation":
-  "Screening with cough Observation" O
+  [Observation: Concepts."Screening with cough"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Screening with cough"
-// End of Screening with cough
+/* End of Screening with cough */
+
 /*
 @dataElement: HIV.D.DE958 - Screening with any TB symptom
 @activity: HIV.D4 Screen for TB
@@ -10844,10 +11186,11 @@ define "Screening with any TB symptom":
 define "Screening with any TB symptom Condition":
   [Condition: Concepts."Screening with any TB symptom"]
 define "Screening with any TB symptom Observation":
-  "Screening with any TB symptom Observation" O
+  [Observation: Concepts."Screening with any TB symptom"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Screening with any TB symptom"
-// End of Screening with any TB symptom
+/* End of Screening with any TB symptom */
+
 /*
 @dataElement: HIV.D.DE959 - W4SS single screening algorithm
 @activity: HIV.D4 Screen for TB
@@ -10860,10 +11203,11 @@ define "W4SS single screening algorithm":
 define "W4SS single screening algorithm Condition":
   [Condition: Concepts."W4SS single screening algorithm"]
 define "W4SS single screening algorithm Observation":
-  "W4SS single screening algorithm Observation" O
+  [Observation: Concepts."W4SS single screening algorithm"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."W4SS single screening algorithm"
-// End of W4SS single screening algorithm
+/* End of W4SS single screening algorithm */
+
 /*
 @dataElement: HIV.D.DE960 - CRP single screening algorithm
 @activity: HIV.D4 Screen for TB
@@ -10876,10 +11220,11 @@ define "CRP single screening algorithm":
 define "CRP single screening algorithm Condition":
   [Condition: Concepts."CRP single screening algorithm"]
 define "CRP single screening algorithm Observation":
-  "CRP single screening algorithm Observation" O
+  [Observation: Concepts."CRP single screening algorithm"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."CRP single screening algorithm"
-// End of CRP single screening algorithm
+/* End of CRP single screening algorithm */
+
 /*
 @dataElement: HIV.D.DE961 - CXR single screening algorithm
 @activity: HIV.D4 Screen for TB
@@ -10892,10 +11237,11 @@ define "CXR single screening algorithm":
 define "CXR single screening algorithm Condition":
   [Condition: Concepts."CXR single screening algorithm"]
 define "CXR single screening algorithm Observation":
-  "CXR single screening algorithm Observation" O
+  [Observation: Concepts."CXR single screening algorithm"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."CXR single screening algorithm"
-// End of CXR single screening algorithm
+/* End of CXR single screening algorithm */
+
 /*
 @dataElement: HIV.D.DE962 - Parallel screening algorithm with W4SS and CRP
 @activity: HIV.D4 Screen for TB
@@ -10908,10 +11254,11 @@ define "Parallel screening algorithm with W4SS and CRP":
 define "Parallel screening algorithm with W4SS and CRP Condition":
   [Condition: Concepts."Parallel screening algorithm with W4SS and CRP"]
 define "Parallel screening algorithm with W4SS and CRP Observation":
-  "Parallel screening algorithm with W4SS and CRP Observation" O
+  [Observation: Concepts."Parallel screening algorithm with W4SS and CRP"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Parallel screening algorithm with W4SS and CRP"
-// End of Parallel screening algorithm with W4SS and CRP
+/* End of Parallel screening algorithm with W4SS and CRP */
+
 /*
 @dataElement: HIV.D.DE963 - Sequential positive screening algorithm with W4SS and CRP
 @activity: HIV.D4 Screen for TB
@@ -10924,10 +11271,11 @@ define "Sequential positive screening algorithm with W4SS and CRP":
 define "Sequential positive screening algorithm with W4SS and CRP Condition":
   [Condition: Concepts."Sequential positive screening algorithm with W4SS and CRP"]
 define "Sequential positive screening algorithm with W4SS and CRP Observation":
-  "Sequential positive screening algorithm with W4SS and CRP Observation" O
+  [Observation: Concepts."Sequential positive screening algorithm with W4SS and CRP"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Sequential positive screening algorithm with W4SS and CRP"
-// End of Sequential positive screening algorithm with W4SS and CRP
+/* End of Sequential positive screening algorithm with W4SS and CRP */
+
 /*
 @dataElement: HIV.D.DE964 - Sequential negative screening algorithm with W4SS and CRP
 @activity: HIV.D4 Screen for TB
@@ -10940,10 +11288,11 @@ define "Sequential negative screening algorithm with W4SS and CRP":
 define "Sequential negative screening algorithm with W4SS and CRP Condition":
   [Condition: Concepts."Sequential negative screening algorithm with W4SS and CRP"]
 define "Sequential negative screening algorithm with W4SS and CRP Observation":
-  "Sequential negative screening algorithm with W4SS and CRP Observation" O
+  [Observation: Concepts."Sequential negative screening algorithm with W4SS and CRP"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Sequential negative screening algorithm with W4SS and CRP"
-// End of Sequential negative screening algorithm with W4SS and CRP
+/* End of Sequential negative screening algorithm with W4SS and CRP */
+
 /*
 @dataElement: HIV.D.DE965 - Parallel screening algorithm with W4SS and CXR
 @activity: HIV.D4 Screen for TB
@@ -10956,10 +11305,11 @@ define "Parallel screening algorithm with W4SS and CXR":
 define "Parallel screening algorithm with W4SS and CXR Condition":
   [Condition: Concepts."Parallel screening algorithm with W4SS and CXR"]
 define "Parallel screening algorithm with W4SS and CXR Observation":
-  "Parallel screening algorithm with W4SS and CXR Observation" O
+  [Observation: Concepts."Parallel screening algorithm with W4SS and CXR"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Parallel screening algorithm with W4SS and CXR"
-// End of Parallel screening algorithm with W4SS and CXR
+/* End of Parallel screening algorithm with W4SS and CXR */
+
 /*
 @dataElement: HIV.D.DE966 - Sequential positive screening algorithm with W4SS and CXR
 @activity: HIV.D4 Screen for TB
@@ -10972,10 +11322,11 @@ define "Sequential positive screening algorithm with W4SS and CXR":
 define "Sequential positive screening algorithm with W4SS and CXR Condition":
   [Condition: Concepts."Sequential positive screening algorithm with W4SS and CXR"]
 define "Sequential positive screening algorithm with W4SS and CXR Observation":
-  "Sequential positive screening algorithm with W4SS and CXR Observation" O
+  [Observation: Concepts."Sequential positive screening algorithm with W4SS and CXR"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Sequential positive screening algorithm with W4SS and CXR"
-// End of Sequential positive screening algorithm with W4SS and CXR
+/* End of Sequential positive screening algorithm with W4SS and CXR */
+
 /*
 @dataElement: HIV.D.DE967 - Sequential negative screening algorithm with W4SS and CXR
 @activity: HIV.D4 Screen for TB
@@ -10988,10 +11339,11 @@ define "Sequential negative screening algorithm with W4SS and CXR":
 define "Sequential negative screening algorithm with W4SS and CXR Condition":
   [Condition: Concepts."Sequential negative screening algorithm with W4SS and CXR"]
 define "Sequential negative screening algorithm with W4SS and CXR Observation":
-  "Sequential negative screening algorithm with W4SS and CXR Observation" O
+  [Observation: Concepts."Sequential negative screening algorithm with W4SS and CXR"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Sequential negative screening algorithm with W4SS and CXR"
-// End of Sequential negative screening algorithm with W4SS and CXR
+/* End of Sequential negative screening algorithm with W4SS and CXR */
+
 /*
 @dataElement: HIV.D.DE968 - Screening with mWRD
 @activity: HIV.D4 Screen for TB
@@ -11004,10 +11356,11 @@ define "Screening with mWRD":
 define "Screening with mWRD Condition":
   [Condition: Concepts."Screening with mWRD"]
 define "Screening with mWRD Observation":
-  "Screening with mWRD Observation" O
+  [Observation: Concepts."Screening with mWRD"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Screening with mWRD"
-// End of Screening with mWRD
+/* End of Screening with mWRD */
+
 /*
 @dataElement: HIV.D.DE969 - Clinical assessment
 @activity: HIV.D4 Screen for TB
@@ -11020,10 +11373,11 @@ define "Clinical assessment":
 define "Clinical assessment Condition":
   [Condition: Concepts."Clinical assessment"]
 define "Clinical assessment Observation":
-  "Clinical assessment Observation" O
+  [Observation: Concepts."Clinical assessment"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Clinical assessment"
-// End of Clinical assessment
+/* End of Clinical assessment */
+
 /*
 @dataElement: HIV.D.DE970 - Other TB screening algorithm
 @activity: HIV.D4 Screen for TB
@@ -11036,10 +11390,11 @@ define "Other TB screening algorithm":
 define "Other TB screening algorithm Condition":
   [Condition: Concepts."Other TB screening algorithm"]
 define "Other TB screening algorithm Observation":
-  "Other TB screening algorithm Observation" O
+  [Observation: Concepts."Other TB screening algorithm"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other TB screening algorithm"
-// End of Other TB screening algorithm
+/* End of Other TB screening algorithm */
+
 /*
 @dataElement: HIV.D.DE973 - Symptoms of TB
 @activity: HIV.D4 Screen for TB
@@ -11049,7 +11404,8 @@ define "Other TB screening algorithm Observation":
 define "Symptoms of TB Observation":
   [Observation: Concepts."Symptoms of TB"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Symptoms of TB
+/* End of Symptoms of TB */
+
 /*
 @dataElement: HIV.D.DE974 - Current cough
 @activity: HIV.D4 Screen for TB
@@ -11062,10 +11418,11 @@ define "Current cough":
 define "Current cough Condition":
   [Condition: Concepts."Current cough"]
 define "Current cough Observation":
-  "Current cough Observation" O
+  [Observation: Concepts."Current cough"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Current cough"
-// End of Current cough
+/* End of Current cough */
+
 /*
 @dataElement: HIV.D.DE975 - Prolonged cough >=2w
 @activity: HIV.D4 Screen for TB
@@ -11078,10 +11435,11 @@ define "Prolonged cough >=2w":
 define "Prolonged cough >=2w Condition":
   [Condition: Concepts."Prolonged cough >=2w"]
 define "Prolonged cough >=2w Observation":
-  "Prolonged cough >=2w Observation" O
+  [Observation: Concepts."Prolonged cough >=2w"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Prolonged cough >=2w"
-// End of Prolonged cough >=2w
+/* End of Prolonged cough >=2w */
+
 /*
 @dataElement: HIV.D.DE976 - Fever of 39 °C or greater
 @activity: HIV.D4 Screen for TB
@@ -11094,10 +11452,11 @@ define "Fever of 39 °C or greater":
 define "Fever of 39 °C or greater Condition":
   [Condition: Concepts."Fever of 39 °C or greater"]
 define "Fever of 39 °C or greater Observation":
-  "Fever of 39 °C or greater Observation" O
+  [Observation: Concepts."Fever of 39 °C or greater"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Fever of 39 °C or greater"
-// End of Fever of 39 °C or greater
+/* End of Fever of 39 °C or greater */
+
 /*
 @dataElement: HIV.D.DE977 - Weight loss reported
 @activity: HIV.D4 Screen for TB
@@ -11110,10 +11469,11 @@ define "Weight loss reported":
 define "Weight loss reported Condition":
   [Condition: Concepts."Weight loss reported"]
 define "Weight loss reported Observation":
-  "Weight loss reported Observation" O
+  [Observation: Concepts."Weight loss reported"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Weight loss reported"
-// End of Weight loss reported
+/* End of Weight loss reported */
+
 /*
 @dataElement: HIV.D.DE978 - Night sweats
 @activity: HIV.D4 Screen for TB
@@ -11126,10 +11486,11 @@ define "Night sweats":
 define "Night sweats Condition":
   [Condition: Concepts."Night sweats"]
 define "Night sweats Observation":
-  "Night sweats Observation" O
+  [Observation: Concepts."Night sweats"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Night sweats"
-// End of Night sweats
+/* End of Night sweats */
+
 /*
 @dataElement: HIV.D.DE979 - Poor weight gain
 @activity: HIV.D4 Screen for TB
@@ -11142,10 +11503,11 @@ define "Poor weight gain":
 define "Poor weight gain Condition":
   [Condition: Concepts."Poor weight gain"]
 define "Poor weight gain Observation":
-  "Poor weight gain Observation" O
+  [Observation: Concepts."Poor weight gain"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Poor weight gain"
-// End of Poor weight gain
+/* End of Poor weight gain */
+
 /*
 @dataElement: HIV.D.DE980 - Reduced playfulness
 @activity: HIV.D4 Screen for TB
@@ -11158,10 +11520,11 @@ define "Reduced playfulness":
 define "Reduced playfulness Condition":
   [Condition: Concepts."Reduced playfulness"]
 define "Reduced playfulness Observation":
-  "Reduced playfulness Observation" O
+  [Observation: Concepts."Reduced playfulness"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Reduced playfulness"
-// End of Reduced playfulness
+/* End of Reduced playfulness */
+
 /*
 @dataElement: HIV.D.DE981 - Chest pain
 @activity: HIV.D4 Screen for TB
@@ -11174,10 +11537,11 @@ define "Chest pain":
 define "Chest pain Condition":
   [Condition: Concepts."Chest pain"]
 define "Chest pain Observation":
-  "Chest pain Observation" O
+  [Observation: Concepts."Chest pain"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Chest pain"
-// End of Chest pain
+/* End of Chest pain */
+
 /*
 @dataElement: HIV.D.DE982 - Haemoptysis
 @activity: HIV.D4 Screen for TB
@@ -11190,10 +11554,11 @@ define "Haemoptysis":
 define "Haemoptysis Condition":
   [Condition: Concepts."Haemoptysis"]
 define "Haemoptysis Observation":
-  "Haemoptysis Observation" O
+  [Observation: Concepts."Haemoptysis"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Haemoptysis"
-// End of Haemoptysis
+/* End of Haemoptysis */
+
 /*
 @dataElement: HIV.D.DE983 - Lethargy - HIV.D.DE983
 @activity: HIV.D4 Screen for TB
@@ -11206,10 +11571,11 @@ define "Lethargy - HIV.D.DE983":
 define "Lethargy - HIV.D.DE983 Condition":
   [Condition: Concepts."Lethargy - HIV.D.DE983"]
 define "Lethargy - HIV.D.DE983 Observation":
-  "Lethargy - HIV.D.DE973 Observation" O
+  [Observation: Concepts."Lethargy - HIV.D.DE973"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Lethargy - HIV.D.DE983"
-// End of Lethargy - HIV.D.DE983
+/* End of Lethargy - HIV.D.DE983 */
+
 /*
 @dataElement: HIV.D.DE984 - None
 @activity: HIV.D4 Screen for TB
@@ -11222,10 +11588,11 @@ define "None":
 define "None Condition":
   [Condition: Concepts."None"]
 define "None Observation":
-  "None Observation" O
+  [Observation: Concepts."None"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."None"
-// End of None
+/* End of None */
+
 /*
 @dataElement: HIV.D.DE985 - History of contact with a person with TB
 @activity: HIV.D4 Screen for TB
@@ -11233,14 +11600,11 @@ define "None Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "History of contact with a person with TB":
-  exists "History of contact with a person with TB Observation"
-    or exists "History of contact with a person with TB Condition"
-define "History of contact with a person with TB Condition":
-  [Condition: Concepts."History of contact with a person with TB"]
-define "History of contact with a person with TB Observation":
   [Observation: Concepts."History of contact with a person with TB"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of History of contact with a person with TB
+    return O.value
+/* End of History of contact with a person with TB */
+
 /*
 @dataElement: HIV.D.DE986 - TB screening result
 @activity: HIV.D4 Screen for TB
@@ -11250,7 +11614,8 @@ define "History of contact with a person with TB Observation":
 define "TB screening result Observation":
   [Observation: Concepts."TB screening result"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of TB screening result
+/* End of TB screening result */
+
 /*
 @dataElement: HIV.D.DE987 - Screen positive for TB
 @activity: HIV.D4 Screen for TB
@@ -11263,10 +11628,11 @@ define "Screen positive for TB":
 define "Screen positive for TB Condition":
   [Condition: Concepts."Screen positive for TB"]
 define "Screen positive for TB Observation":
-  "Screen positive for TB Observation" O
+  [Observation: Concepts."Screen positive for TB"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Screen positive for TB"
-// End of Screen positive for TB
+/* End of Screen positive for TB */
+
 /*
 @dataElement: HIV.D.DE988 - Screen negative for TB
 @activity: HIV.D4 Screen for TB
@@ -11279,10 +11645,11 @@ define "Screen negative for TB":
 define "Screen negative for TB Condition":
   [Condition: Concepts."Screen negative for TB"]
 define "Screen negative for TB Observation":
-  "Screen negative for TB Observation" O
+  [Observation: Concepts."Screen negative for TB"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Screen negative for TB"
-// End of Screen negative for TB
+/* End of Screen negative for TB */
+
 /*
 @dataElement: HIV.D.DE989 - Inconclusive - HIV.D.DE989
 @activity: HIV.D4 Screen for TB
@@ -11295,10 +11662,11 @@ define "Inconclusive - HIV.D.DE989":
 define "Inconclusive - HIV.D.DE989 Condition":
   [Condition: Concepts."Inconclusive - HIV.D.DE989"]
 define "Inconclusive - HIV.D.DE989 Observation":
-  "Inconclusive - HIV.D.DE986 Observation" O
+  [Observation: Concepts."Inconclusive - HIV.D.DE986"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Inconclusive - HIV.D.DE989"
-// End of Inconclusive - HIV.D.DE989
+/* End of Inconclusive - HIV.D.DE989 */
+
 /*
 @dataElement: HIV.D.DE990 - TB screening date
 @activity: HIV.D4 Screen for TB
@@ -11306,14 +11674,11 @@ define "Inconclusive - HIV.D.DE989 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "TB screening date":
-  exists "TB screening date Observation"
-    or exists "TB screening date Condition"
-define "TB screening date Condition":
-  [Condition: Concepts."TB screening date"]
-define "TB screening date Observation":
   [Observation: Concepts."TB screening date"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of TB screening date
+    return O.value
+/* End of TB screening date */
+
 /*
 @dataElement: HIV.D.DE992 - TB diagnostic test category
 @activity: HIV.D4 Screen for TB
@@ -11323,7 +11688,8 @@ define "TB screening date Observation":
 define "TB diagnostic test category Observation":
   [Observation: Concepts."TB diagnostic test category"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of TB diagnostic test category
+/* End of TB diagnostic test category */
+
 /*
 @dataElement: HIV.D.DE993 - LF-LAM
 @activity: HIV.D4 Screen for TB
@@ -11336,10 +11702,11 @@ define "LF-LAM":
 define "LF-LAM Condition":
   [Condition: Concepts."LF-LAM"]
 define "LF-LAM Observation":
-  "LF-LAM Observation" O
+  [Observation: Concepts."LF-LAM"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."LF-LAM"
-// End of LF-LAM
+/* End of LF-LAM */
+
 /*
 @dataElement: HIV.D.DE994 - mWRD test for TB
 @activity: HIV.D4 Screen for TB
@@ -11352,10 +11719,11 @@ define "mWRD test for TB":
 define "mWRD test for TB Condition":
   [Condition: Concepts."mWRD test for TB"]
 define "mWRD test for TB Observation":
-  "mWRD test for TB Observation" O
+  [Observation: Concepts."mWRD test for TB"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."mWRD test for TB"
-// End of mWRD test for TB
+/* End of mWRD test for TB */
+
 /*
 @dataElement: HIV.D.DE995 - Microscopy - Sputum acid-fast bacilli AFB
 @activity: HIV.D4 Screen for TB
@@ -11368,10 +11736,11 @@ define "Microscopy - Sputum acid-fast bacilli AFB":
 define "Microscopy - Sputum acid-fast bacilli AFB Condition":
   [Condition: Concepts."Microscopy - Sputum acid-fast bacilli AFB"]
 define "Microscopy - Sputum acid-fast bacilli AFB Observation":
-  "Microscopy - Sputum acid-fast bacilli AFB Observation" O
+  [Observation: Concepts."Microscopy - Sputum acid-fast bacilli AFB"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Microscopy - Sputum acid-fast bacilli AFB"
-// End of Microscopy - Sputum acid-fast bacilli AFB
+/* End of Microscopy - Sputum acid-fast bacilli AFB */
+
 /*
 @dataElement: HIV.D.DE996 - TB Culture
 @activity: HIV.D4 Screen for TB
@@ -11384,10 +11753,11 @@ define "TB Culture":
 define "TB Culture Condition":
   [Condition: Concepts."TB Culture"]
 define "TB Culture Observation":
-  "TB Culture Observation" O
+  [Observation: Concepts."TB Culture"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."TB Culture"
-// End of TB Culture
+/* End of TB Culture */
+
 /*
 @dataElement: HIV.D.DE997 - TB diagnostic test date
 @activity: HIV.D4 Screen for TB
@@ -11395,14 +11765,11 @@ define "TB Culture Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "TB diagnostic test date":
-  exists "TB diagnostic test date Observation"
-    or exists "TB diagnostic test date Condition"
-define "TB diagnostic test date Condition":
-  [Condition: Concepts."TB diagnostic test date"]
-define "TB diagnostic test date Observation":
   [Observation: Concepts."TB diagnostic test date"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of TB diagnostic test date
+    return O.value
+/* End of TB diagnostic test date */
+
 /*
 @dataElement: HIV.D.DE1001 - TB treatment start date
 @activity: HIV.D8 Capture or update client history
@@ -11410,14 +11777,11 @@ define "TB diagnostic test date Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "TB treatment start date":
-  exists "TB treatment start date Observation"
-    or exists "TB treatment start date Condition"
-define "TB treatment start date Condition":
-  [Condition: Concepts."TB treatment start date"]
-define "TB treatment start date Observation":
   [Observation: Concepts."TB treatment start date"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of TB treatment start date
+    return O.value
+/* End of TB treatment start date */
+
 /*
 @dataElement: HIV.D.DE1017 - Eligible for TB preventive treatment
 @activity: HIV.D14 Prevent, screen, and manage comorbidities and coinfections
@@ -11425,14 +11789,11 @@ define "TB treatment start date Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Eligible for TB preventive treatment":
-  exists "Eligible for TB preventive treatment Observation"
-    or exists "Eligible for TB preventive treatment Condition"
-define "Eligible for TB preventive treatment Condition":
-  [Condition: Concepts."Eligible for TB preventive treatment"]
-define "Eligible for TB preventive treatment Observation":
   [Observation: Concepts."Eligible for TB preventive treatment"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Eligible for TB preventive treatment
+    return O.value
+/* End of Eligible for TB preventive treatment */
+
 /*
 @dataElement: HIV.D.DE1023 - TB prevention services accepted
 @activity: HIV.D21 Determine regimen and treatment options
@@ -11440,14 +11801,11 @@ define "Eligible for TB preventive treatment Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "TB prevention services accepted":
-  exists "TB prevention services accepted Observation"
-    or exists "TB prevention services accepted Condition"
-define "TB prevention services accepted Condition":
-  [Condition: Concepts."TB prevention services accepted"]
-define "TB prevention services accepted Observation":
   [Observation: Concepts."TB prevention services accepted"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of TB prevention services accepted
+    return O.value
+/* End of TB prevention services accepted */
+
 /*
 @dataElement: HIV.D.DE1026 - C reactive protein test result
 @activity: HIV.D4 Screen for TB
@@ -11455,14 +11813,11 @@ define "TB prevention services accepted Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "C reactive protein test result":
-  exists "C reactive protein test result Observation"
-    or exists "C reactive protein test result Condition"
-define "C reactive protein test result Condition":
-  [Condition: Concepts."C reactive protein test result"]
-define "C reactive protein test result Observation":
   [Observation: Concepts."C reactive protein test result"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of C reactive protein test result
+    return O.value
+/* End of C reactive protein test result */
+
 /*
 @dataElement: HIV.D.DE1028 - TPT regimen type
 @activity: HIV.D4 Screen for TB
@@ -11472,7 +11827,8 @@ define "C reactive protein test result Observation":
 define "TPT regimen type Observation":
   [Observation: Concepts."TPT regimen type"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of TPT regimen type
+/* End of TPT regimen type */
+
 /*
 @dataElement: HIV.D.DE1029 - 3HP
 @activity: HIV.D4 Screen for TB
@@ -11485,10 +11841,11 @@ define "3HP":
 define "3HP Condition":
   [Condition: Concepts."3HP"]
 define "3HP Observation":
-  "3HP Observation" O
+  [Observation: Concepts."3HP"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."3HP"
-// End of 3HP
+/* End of 3HP */
+
 /*
 @dataElement: HIV.D.DE1030 - 1HP
 @activity: HIV.D4 Screen for TB
@@ -11501,10 +11858,11 @@ define "1HP":
 define "1HP Condition":
   [Condition: Concepts."1HP"]
 define "1HP Observation":
-  "1HP Observation" O
+  [Observation: Concepts."1HP"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."1HP"
-// End of 1HP
+/* End of 1HP */
+
 /*
 @dataElement: HIV.D.DE1031 - 6H
 @activity: HIV.D4 Screen for TB
@@ -11517,10 +11875,11 @@ define "6H":
 define "6H Condition":
   [Condition: Concepts."6H"]
 define "6H Observation":
-  "6H Observation" O
+  [Observation: Concepts."6H"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."6H"
-// End of 6H
+/* End of 6H */
+
 /*
 @dataElement: HIV.D.DE1032 - Six months of levofloxacin daily
 @activity: HIV.D4 Screen for TB
@@ -11533,10 +11892,11 @@ define "Six months of levofloxacin daily":
 define "Six months of levofloxacin daily Condition":
   [Condition: Concepts."Six months of levofloxacin daily"]
 define "Six months of levofloxacin daily Observation":
-  "Six months of levofloxacin daily Observation" O
+  [Observation: Concepts."Six months of levofloxacin daily"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Six months of levofloxacin daily"
-// End of Six months of levofloxacin daily
+/* End of Six months of levofloxacin daily */
+
 /*
 @dataElement: HIV.D.DE1033 - Other TB preventive treatment TPT regimen
 @activity: HIV.D4 Screen for TB
@@ -11549,10 +11909,11 @@ define "Other TB preventive treatment TPT regimen":
 define "Other TB preventive treatment TPT regimen Condition":
   [Condition: Concepts."Other TB preventive treatment TPT regimen"]
 define "Other TB preventive treatment TPT regimen Observation":
-  "Other TB preventive treatment TPT regimen Observation" O
+  [Observation: Concepts."Other TB preventive treatment TPT regimen"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other TB preventive treatment TPT regimen"
-// End of Other TB preventive treatment TPT regimen
+/* End of Other TB preventive treatment TPT regimen */
+
 /*
 @dataElement: HIV.D.DE1034 - TB preventive treatment TPT status
 @activity: HIV.D4 Screen for TB
@@ -11562,7 +11923,8 @@ define "Other TB preventive treatment TPT regimen Observation":
 define "TB preventive treatment TPT status Observation":
   [Observation: Concepts."TB preventive treatment TPT status"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of TB preventive treatment TPT status
+/* End of TB preventive treatment TPT status */
+
 /*
 @dataElement: HIV.D.DE1035 - Not started
 @activity: HIV.D4 Screen for TB
@@ -11575,10 +11937,11 @@ define "Not started":
 define "Not started Condition":
   [Condition: Concepts."Not started"]
 define "Not started Observation":
-  "Not started Observation" O
+  [Observation: Concepts."Not started"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Not started"
-// End of Not started
+/* End of Not started */
+
 /*
 @dataElement: HIV.D.DE1036 - On TPT
 @activity: HIV.D4 Screen for TB
@@ -11591,10 +11954,11 @@ define "On TPT":
 define "On TPT Condition":
   [Condition: Concepts."On TPT"]
 define "On TPT Observation":
-  "On TPT Observation" O
+  [Observation: Concepts."On TPT"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."On TPT"
-// End of On TPT
+/* End of On TPT */
+
 /*
 @dataElement: HIV.D.DE1037 - On TPT with interruptions
 @activity: HIV.D4 Screen for TB
@@ -11607,14 +11971,15 @@ define "On TPT with interruptions":
 define "On TPT with interruptions Condition":
   [Condition: Concepts."On TPT with interruptions"]
 define "On TPT with interruptions Observation":
-  "On TPT with interruptions Observation" O
+  [Observation: Concepts."On TPT with interruptions"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."On TPT with interruptions"
-// End of On TPT with interruptions
+/* End of On TPT with interruptions */
+
 /*
 @dataElement: HIV.D.DE1038 - On hold
 @activity: HIV.D4 Screen for TB
-@description: The health care worker has temporarily stopped the TB preventive treatment (TPT), but TPT is expected to continue again later. May also be called "suspended".
+@description: The health care worker has temporarily stopped the TB preventive treatment (TPT), but TPT is expected to continue again later. May also be called 'suspended'.
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "On hold":
@@ -11623,10 +11988,11 @@ define "On hold":
 define "On hold Condition":
   [Condition: Concepts."On hold"]
 define "On hold Observation":
-  "On hold Observation" O
+  [Observation: Concepts."On hold"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."On hold"
-// End of On hold
+/* End of On hold */
+
 /*
 @dataElement: HIV.D.DE1039 - Completed
 @activity: HIV.D4 Screen for TB
@@ -11639,10 +12005,11 @@ define "Completed":
 define "Completed Condition":
   [Condition: Concepts."Completed"]
 define "Completed Observation":
-  "Completed Observation" O
+  [Observation: Concepts."Completed"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Completed"
-// End of Completed
+/* End of Completed */
+
 /*
 @dataElement: HIV.E.DE41 - Timing of ART initiation
 @activity: HIV.E1 Capture or update mother's history
@@ -11652,7 +12019,8 @@ define "Completed Observation":
 define "Timing of ART initiation Observation":
   [Observation: Concepts."Timing of ART initiation"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Timing of ART initiation
+/* End of Timing of ART initiation */
+
 /*
 @dataElement: HIV.E.DE42 - Already on ART at first antenatal care visit
 @activity: HIV.E1 Capture or update mother's history
@@ -11665,10 +12033,11 @@ define "Already on ART at first antenatal care visit":
 define "Already on ART at first antenatal care visit Condition":
   [Condition: Concepts."Already on ART at first antenatal care visit"]
 define "Already on ART at first antenatal care visit Observation":
-  "Already on ART at first antenatal care visit Observation" O
+  [Observation: Concepts."Already on ART at first antenatal care visit"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Already on ART at first antenatal care visit"
-// End of Already on ART at first antenatal care visit
+/* End of Already on ART at first antenatal care visit */
+
 /*
 @dataElement: HIV.E.DE43 - Newly on ART during pregnancy
 @activity: HIV.E1 Capture or update mother's history
@@ -11681,10 +12050,11 @@ define "Newly on ART during pregnancy":
 define "Newly on ART during pregnancy Condition":
   [Condition: Concepts."Newly on ART during pregnancy"]
 define "Newly on ART during pregnancy Observation":
-  "Newly on ART during pregnancy Observation" O
+  [Observation: Concepts."Newly on ART during pregnancy"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Newly on ART during pregnancy"
-// End of Newly on ART during pregnancy
+/* End of Newly on ART during pregnancy */
+
 /*
 @dataElement: HIV.E.DE44 - Newly on ART during labour and delivery
 @activity: HIV.E1 Capture or update mother's history
@@ -11697,10 +12067,11 @@ define "Newly on ART during labour and delivery":
 define "Newly on ART during labour and delivery Condition":
   [Condition: Concepts."Newly on ART during labour and delivery"]
 define "Newly on ART during labour and delivery Observation":
-  "Newly on ART during labour and delivery Observation" O
+  [Observation: Concepts."Newly on ART during labour and delivery"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Newly on ART during labour and delivery"
-// End of Newly on ART during labour and delivery
+/* End of Newly on ART during labour and delivery */
+
 /*
 @dataElement: HIV.E.DE46 - Delivery date
 @activity: HIV.E1 Capture or update mother's history
@@ -11708,14 +12079,11 @@ define "Newly on ART during labour and delivery Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Delivery date":
-  exists "Delivery date Observation"
-    or exists "Delivery date Condition"
-define "Delivery date Condition":
-  [Condition: Concepts."Delivery date"]
-define "Delivery date Observation":
   [Observation: Concepts."Delivery date"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Delivery date
+    return O.value
+/* End of Delivery date */
+
 /*
 @dataElement: HIV.E.DE67 - Place of delivery
 @activity: HIV.E1 Capture or update mother's history
@@ -11725,7 +12093,8 @@ define "Delivery date Observation":
 define "Place of delivery Observation":
   [Observation: Concepts."Place of delivery"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Place of delivery
+/* End of Place of delivery */
+
 /*
 @dataElement: HIV.E.DE68 - Health facility
 @activity: HIV.E1 Capture or update mother's history
@@ -11738,10 +12107,11 @@ define "Health facility":
 define "Health facility Condition":
   [Condition: Concepts."Health facility"]
 define "Health facility Observation":
-  "Health facility Observation" O
+  [Observation: Concepts."Health facility"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Health facility"
-// End of Health facility
+/* End of Health facility */
+
 /*
 @dataElement: HIV.E.DE69 - Home
 @activity: HIV.E1 Capture or update mother's history
@@ -11754,10 +12124,11 @@ define "Home":
 define "Home Condition":
   [Condition: Concepts."Home"]
 define "Home Observation":
-  "Home Observation" O
+  [Observation: Concepts."Home"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Home"
-// End of Home
+/* End of Home */
+
 /*
 @dataElement: HIV.E.DE70 - Other - HIV.E.DE70
 @activity: HIV.E1 Capture or update mother's history
@@ -11770,10 +12141,11 @@ define "Other - HIV.E.DE70":
 define "Other - HIV.E.DE70 Condition":
   [Condition: Concepts."Other - HIV.E.DE70"]
 define "Other - HIV.E.DE70 Observation":
-  "Other - HIV.E.DE67 Observation" O
+  [Observation: Concepts."Other - HIV.E.DE67"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other - HIV.E.DE70"
-// End of Other - HIV.E.DE70
+/* End of Other - HIV.E.DE70 */
+
 /*
 @dataElement: HIV.E.DE85 - ANC contact date - HIV.E.DE85
 @activity: HIV.E1 Capture or update mother's history
@@ -11781,14 +12153,11 @@ define "Other - HIV.E.DE70 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "ANC contact date - HIV.E.DE85":
-  exists "ANC contact date - HIV.E.DE85 Observation"
-    or exists "ANC contact date - HIV.E.DE85 Condition"
-define "ANC contact date - HIV.E.DE85 Condition":
-  [Condition: Concepts."ANC contact date - HIV.E.DE85"]
-define "ANC contact date - HIV.E.DE85 Observation":
   [Observation: Concepts."ANC contact date - HIV.E.DE85"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of ANC contact date - HIV.E.DE85
+    return O.value
+/* End of ANC contact date - HIV.E.DE85 */
+
 /*
 @dataElement: HIV.E.DE87 - Infant date of birth
 @activity: HIV.E1 Capture or update mother's history
@@ -11796,14 +12165,11 @@ define "ANC contact date - HIV.E.DE85 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Infant date of birth":
-  exists "Infant date of birth Observation"
-    or exists "Infant date of birth Condition"
-define "Infant date of birth Condition":
-  [Condition: Concepts."Infant date of birth"]
-define "Infant date of birth Observation":
   [Observation: Concepts."Infant date of birth"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Infant date of birth
+    return O.value
+/* End of Infant date of birth */
+
 /*
 @dataElement: HIV.E.DE90 - Age of infant
 @activity: HIV.E1 Capture or update mother's history
@@ -11811,14 +12177,11 @@ define "Infant date of birth Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Age of infant":
-  exists "Age of infant Observation"
-    or exists "Age of infant Condition"
-define "Age of infant Condition":
-  [Condition: Concepts."Age of infant"]
-define "Age of infant Observation":
   [Observation: Concepts."Age of infant"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Age of infant
+    return O.value
+/* End of Age of infant */
+
 /*
 @dataElement: HIV.E.DE112 - HIV-exposed infant or child - HIV.E.DE112
 @activity: HIV.F6 Check whether infant/child had HIV exposure
@@ -11826,14 +12189,11 @@ define "Age of infant Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "HIV-exposed infant or child - HIV.E.DE112":
-  exists "HIV-exposed infant or child - HIV.E.DE112 Observation"
-    or exists "HIV-exposed infant or child - HIV.E.DE112 Condition"
-define "HIV-exposed infant or child - HIV.E.DE112 Condition":
-  [Condition: Concepts."HIV-exposed infant or child - HIV.E.DE112"]
-define "HIV-exposed infant or child - HIV.E.DE112 Observation":
   [Observation: Concepts."HIV-exposed infant or child - HIV.E.DE112"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HIV-exposed infant or child - HIV.E.DE112
+    return O.value
+/* End of HIV-exposed infant or child - HIV.E.DE112 */
+
 /*
 @dataElement: HIV.E.DE113 - Key population member* - HIV.E.DE113
 @activity: HIV.E1 Capture or update mother's history
@@ -11841,14 +12201,11 @@ define "HIV-exposed infant or child - HIV.E.DE112 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Key population member* - HIV.E.DE113":
-  exists "Key population member* - HIV.E.DE113 Observation"
-    or exists "Key population member* - HIV.E.DE113 Condition"
-define "Key population member* - HIV.E.DE113 Condition":
-  [Condition: Concepts."Key population member* - HIV.E.DE113"]
-define "Key population member* - HIV.E.DE113 Observation":
   [Observation: Concepts."Key population member* - HIV.E.DE113"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Key population member* - HIV.E.DE113
+    return O.value
+/* End of Key population member* - HIV.E.DE113 */
+
 /*
 @dataElement: HIV.E.DE114 - Key population member type* - HIV.E.DE114
 @activity: HIV.E1 Capture or update mother's history
@@ -11858,7 +12215,8 @@ define "Key population member* - HIV.E.DE113 Observation":
 define "Key population member type* - HIV.E.DE114 Observation":
   [Observation: Concepts."Key population member type* - HIV.E.DE114"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Key population member type* - HIV.E.DE114
+/* End of Key population member type* - HIV.E.DE114 */
+
 /*
 @dataElement: HIV.E.DE115 - Sex worker - HIV.E.DE115
 @activity: HIV.E1 Capture or update mother's history
@@ -11871,10 +12229,11 @@ define "Sex worker - HIV.E.DE115":
 define "Sex worker - HIV.E.DE115 Condition":
   [Condition: Concepts."Sex worker - HIV.E.DE115"]
 define "Sex worker - HIV.E.DE115 Observation":
-  "Sex worker - HIV.E.DE114 Observation" O
+  [Observation: Concepts."Sex worker - HIV.E.DE114"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Sex worker - HIV.E.DE115"
-// End of Sex worker - HIV.E.DE115
+/* End of Sex worker - HIV.E.DE115 */
+
 /*
 @dataElement: HIV.E.DE116 - People who inject drugs - HIV.E.DE116
 @activity: HIV.E1 Capture or update mother's history
@@ -11887,10 +12246,11 @@ define "People who inject drugs - HIV.E.DE116":
 define "People who inject drugs - HIV.E.DE116 Condition":
   [Condition: Concepts."People who inject drugs - HIV.E.DE116"]
 define "People who inject drugs - HIV.E.DE116 Observation":
-  "People who inject drugs - HIV.E.DE114 Observation" O
+  [Observation: Concepts."People who inject drugs - HIV.E.DE114"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."People who inject drugs - HIV.E.DE116"
-// End of People who inject drugs - HIV.E.DE116
+/* End of People who inject drugs - HIV.E.DE116 */
+
 /*
 @dataElement: HIV.E.DE117 - Trans and gender-diverse people - HIV.E.DE117
 @activity: HIV.E1 Capture or update mother's history
@@ -11903,10 +12263,11 @@ define "Trans and gender-diverse people - HIV.E.DE117":
 define "Trans and gender-diverse people - HIV.E.DE117 Condition":
   [Condition: Concepts."Trans and gender-diverse people - HIV.E.DE117"]
 define "Trans and gender-diverse people - HIV.E.DE117 Observation":
-  "Trans and gender-diverse people - HIV.E.DE114 Observation" O
+  [Observation: Concepts."Trans and gender-diverse people - HIV.E.DE114"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Trans and gender-diverse people - HIV.E.DE117"
-// End of Trans and gender-diverse people - HIV.E.DE117
+/* End of Trans and gender-diverse people - HIV.E.DE117 */
+
 /*
 @dataElement: HIV.E.DE118 - People living in prisons and other closed setting
 @activity: HIV.E1 Capture or update mother's history
@@ -11919,10 +12280,11 @@ define "People living in prisons and other closed setting":
 define "People living in prisons and other closed setting Condition":
   [Condition: Concepts."People living in prisons and other closed setting"]
 define "People living in prisons and other closed setting Observation":
-  "People living in prisons and other closed setting Observation" O
+  [Observation: Concepts."People living in prisons and other closed setting"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."People living in prisons and other closed setting"
-// End of People living in prisons and other closed setting
+/* End of People living in prisons and other closed setting */
+
 /*
 @dataElement: HIV.E.DE155 - Signs of substantial risk of HIV infection - HIV.E.DE155
 @activity: HIV.E1 Capture or update mother's history
@@ -11932,7 +12294,8 @@ define "People living in prisons and other closed setting Observation":
 define "Signs of substantial risk of HIV infection - HIV.E.DE155 Observation":
   [Observation: Concepts."Signs of substantial risk of HIV infection - HIV.E.DE155"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Signs of substantial risk of HIV infection - HIV.E.DE155
+/* End of Signs of substantial risk of HIV infection - HIV.E.DE155 */
+
 /*
 @dataElement: HIV.E.DE156 - No condom use during sex with more than one partner in the past 6 months - HIV.E.DE156
 @activity: HIV.E1 Capture or update mother's history
@@ -11945,10 +12308,11 @@ define "No condom use during sex with more than one partner in the past 6 months
 define "No condom use during sex with more than one partner in the past 6 months - HIV.E.DE156 Condition":
   [Condition: Concepts."No condom use during sex with more than one partner in the past 6 months - HIV.E.DE156"]
 define "No condom use during sex with more than one partner in the past 6 months - HIV.E.DE156 Observation":
-  "No condom use during sex with more than one partner in the past 6 months - HIV.E.DE155 Observation" O
+  [Observation: Concepts."No condom use during sex with more than one partner in the past 6 months - HIV.E.DE155"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."No condom use during sex with more than one partner in the past 6 months - HIV.E.DE156"
-// End of No condom use during sex with more than one partner in the past 6 months - HIV.E.DE156
+/* End of No condom use during sex with more than one partner in the past 6 months - HIV.E.DE156 */
+
 /*
 @dataElement: HIV.E.DE157 - STI in the past 6 months - HIV.E.DE157
 @activity: HIV.E1 Capture or update mother's history
@@ -11961,10 +12325,11 @@ define "STI in the past 6 months - HIV.E.DE157":
 define "STI in the past 6 months - HIV.E.DE157 Condition":
   [Condition: Concepts."STI in the past 6 months - HIV.E.DE157"]
 define "STI in the past 6 months - HIV.E.DE157 Observation":
-  "STI in the past 6 months - HIV.E.DE155 Observation" O
+  [Observation: Concepts."STI in the past 6 months - HIV.E.DE155"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."STI in the past 6 months - HIV.E.DE157"
-// End of STI in the past 6 months - HIV.E.DE157
+/* End of STI in the past 6 months - HIV.E.DE157 */
+
 /*
 @dataElement: HIV.E.DE158 - A sexual partner in the past 6 months had one or more HIV risk factors - HIV.E.DE158
 @activity: HIV.E1 Capture or update mother's history
@@ -11977,10 +12342,11 @@ define "A sexual partner in the past 6 months had one or more HIV risk factors -
 define "A sexual partner in the past 6 months had one or more HIV risk factors - HIV.E.DE158 Condition":
   [Condition: Concepts."A sexual partner in the past 6 months had one or more HIV risk factors - HIV.E.DE158"]
 define "A sexual partner in the past 6 months had one or more HIV risk factors - HIV.E.DE158 Observation":
-  "A sexual partner in the past 6 months had one or more HIV risk factors - HIV.E.DE155 Observation" O
+  [Observation: Concepts."A sexual partner in the past 6 months had one or more HIV risk factors - HIV.E.DE155"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."A sexual partner in the past 6 months had one or more HIV risk factors - HIV.E.DE158"
-// End of A sexual partner in the past 6 months had one or more HIV risk factors - HIV.E.DE158
+/* End of A sexual partner in the past 6 months had one or more HIV risk factors - HIV.E.DE158 */
+
 /*
 @dataElement: HIV.E.DE159 - PrEP requested by client - HIV.E.DE159
 @activity: HIV.E1 Capture or update mother's history
@@ -11993,10 +12359,11 @@ define "PrEP requested by client - HIV.E.DE159":
 define "PrEP requested by client - HIV.E.DE159 Condition":
   [Condition: Concepts."PrEP requested by client - HIV.E.DE159"]
 define "PrEP requested by client - HIV.E.DE159 Observation":
-  "PrEP requested by client - HIV.E.DE155 Observation" O
+  [Observation: Concepts."PrEP requested by client - HIV.E.DE155"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."PrEP requested by client - HIV.E.DE159"
-// End of PrEP requested by client - HIV.E.DE159
+/* End of PrEP requested by client - HIV.E.DE159 */
+
 /*
 @dataElement: HIV.E.DE160 - Serodiscordant partner - HIV.E.DE160
 @activity: HIV.E1 Capture or update mother's history
@@ -12004,14 +12371,11 @@ define "PrEP requested by client - HIV.E.DE159 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Serodiscordant partner - HIV.E.DE160":
-  exists "Serodiscordant partner - HIV.E.DE160 Observation"
-    or exists "Serodiscordant partner - HIV.E.DE160 Condition"
-define "Serodiscordant partner - HIV.E.DE160 Condition":
-  [Condition: Concepts."Serodiscordant partner - HIV.E.DE160"]
-define "Serodiscordant partner - HIV.E.DE160 Observation":
   [Observation: Concepts."Serodiscordant partner - HIV.E.DE160"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Serodiscordant partner - HIV.E.DE160
+    return O.value
+/* End of Serodiscordant partner - HIV.E.DE160 */
+
 /*
 @dataElement: HIV.E.DE168 - HIV test type - HIV.E.DE168
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12021,7 +12385,8 @@ define "Serodiscordant partner - HIV.E.DE160 Observation":
 define "HIV test type - HIV.E.DE168 Observation":
   [Observation: Concepts."HIV test type - HIV.E.DE168"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HIV test type - HIV.E.DE168
+/* End of HIV test type - HIV.E.DE168 */
+
 /*
 @dataElement: HIV.E.DE169 - Rapid diagnostic test for HIV - HIV.E.DE169
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12034,10 +12399,11 @@ define "Rapid diagnostic test for HIV - HIV.E.DE169":
 define "Rapid diagnostic test for HIV - HIV.E.DE169 Condition":
   [Condition: Concepts."Rapid diagnostic test for HIV - HIV.E.DE169"]
 define "Rapid diagnostic test for HIV - HIV.E.DE169 Observation":
-  "Rapid diagnostic test for HIV - HIV.E.DE168 Observation" O
+  [Observation: Concepts."Rapid diagnostic test for HIV - HIV.E.DE168"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Rapid diagnostic test for HIV - HIV.E.DE169"
-// End of Rapid diagnostic test for HIV - HIV.E.DE169
+/* End of Rapid diagnostic test for HIV - HIV.E.DE169 */
+
 /*
 @dataElement: HIV.E.DE170 - Enzyme immunoassay for HIV - HIV.E.DE170
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12050,10 +12416,11 @@ define "Enzyme immunoassay for HIV - HIV.E.DE170":
 define "Enzyme immunoassay for HIV - HIV.E.DE170 Condition":
   [Condition: Concepts."Enzyme immunoassay for HIV - HIV.E.DE170"]
 define "Enzyme immunoassay for HIV - HIV.E.DE170 Observation":
-  "Enzyme immunoassay for HIV - HIV.E.DE168 Observation" O
+  [Observation: Concepts."Enzyme immunoassay for HIV - HIV.E.DE168"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Enzyme immunoassay for HIV - HIV.E.DE170"
-// End of Enzyme immunoassay for HIV - HIV.E.DE170
+/* End of Enzyme immunoassay for HIV - HIV.E.DE170 */
+
 /*
 @dataElement: HIV.E.DE171 - Nucleic acid test for HIV - HIV.E.DE171
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12066,10 +12433,11 @@ define "Nucleic acid test for HIV - HIV.E.DE171":
 define "Nucleic acid test for HIV - HIV.E.DE171 Condition":
   [Condition: Concepts."Nucleic acid test for HIV - HIV.E.DE171"]
 define "Nucleic acid test for HIV - HIV.E.DE171 Observation":
-  "Nucleic acid test for HIV - HIV.E.DE168 Observation" O
+  [Observation: Concepts."Nucleic acid test for HIV - HIV.E.DE168"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Nucleic acid test for HIV - HIV.E.DE171"
-// End of Nucleic acid test for HIV - HIV.E.DE171
+/* End of Nucleic acid test for HIV - HIV.E.DE171 */
+
 /*
 @dataElement: HIV.E.DE172 - Dual HIV/syphilis rapid diagnostic test - HIV.E.DE172
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12082,10 +12450,11 @@ define "Dual HIV/syphilis rapid diagnostic test - HIV.E.DE172":
 define "Dual HIV/syphilis rapid diagnostic test - HIV.E.DE172 Condition":
   [Condition: Concepts."Dual HIV/syphilis rapid diagnostic test - HIV.E.DE172"]
 define "Dual HIV/syphilis rapid diagnostic test - HIV.E.DE172 Observation":
-  "Dual HIV/syphilis rapid diagnostic test - HIV.E.DE168 Observation" O
+  [Observation: Concepts."Dual HIV/syphilis rapid diagnostic test - HIV.E.DE168"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Dual HIV/syphilis rapid diagnostic test - HIV.E.DE172"
-// End of Dual HIV/syphilis rapid diagnostic test - HIV.E.DE172
+/* End of Dual HIV/syphilis rapid diagnostic test - HIV.E.DE172 */
+
 /*
 @dataElement: HIV.E.DE173 - Maternal and child health service visit
 @activity: HIV.E1 Capture or update mother's history
@@ -12095,7 +12464,8 @@ define "Dual HIV/syphilis rapid diagnostic test - HIV.E.DE172 Observation":
 define "Maternal and child health service visit Observation":
   [Observation: Concepts."Maternal and child health service visit"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Maternal and child health service visit
+/* End of Maternal and child health service visit */
+
 /*
 @dataElement: HIV.E.DE174 - 12-month visit
 @activity: HIV.E1 Capture or update mother's history
@@ -12108,10 +12478,11 @@ define "12-month visit":
 define "12-month visit Condition":
   [Condition: Concepts."12-month visit"]
 define "12-month visit Observation":
-  "12-month visit Observation" O
+  [Observation: Concepts."12-month visit"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."12-month visit"
-// End of 12-month visit
+/* End of 12-month visit */
+
 /*
 @dataElement: HIV.E.DE175 - 24-month visit
 @activity: HIV.E1 Capture or update mother's history
@@ -12124,10 +12495,11 @@ define "24-month visit":
 define "24-month visit Condition":
   [Condition: Concepts."24-month visit"]
 define "24-month visit Observation":
-  "24-month visit Observation" O
+  [Observation: Concepts."24-month visit"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."24-month visit"
-// End of 24-month visit
+/* End of 24-month visit */
+
 /*
 @dataElement: HIV.E.DE176 - First visit after the end of breastfeeding
 @activity: HIV.E1 Capture or update mother's history
@@ -12140,10 +12512,11 @@ define "First visit after the end of breastfeeding":
 define "First visit after the end of breastfeeding Condition":
   [Condition: Concepts."First visit after the end of breastfeeding"]
 define "First visit after the end of breastfeeding Observation":
-  "First visit after the end of breastfeeding Observation" O
+  [Observation: Concepts."First visit after the end of breastfeeding"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."First visit after the end of breastfeeding"
-// End of First visit after the end of breastfeeding
+/* End of First visit after the end of breastfeeding */
+
 /*
 @dataElement: HIV.E.DE179 - Registered in birth cohort
 @activity: HIV.F3 Capture or update infant's/child's history
@@ -12151,14 +12524,11 @@ define "First visit after the end of breastfeeding Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Registered in birth cohort":
-  exists "Registered in birth cohort Observation"
-    or exists "Registered in birth cohort Condition"
-define "Registered in birth cohort Condition":
-  [Condition: Concepts."Registered in birth cohort"]
-define "Registered in birth cohort Observation":
   [Observation: Concepts."Registered in birth cohort"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Registered in birth cohort
+    return O.value
+/* End of Registered in birth cohort */
+
 /*
 @dataElement: HIV.E.DE180 - EID sample number
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -12168,7 +12538,8 @@ define "Registered in birth cohort Observation":
 define "EID sample number Observation":
   [Observation: Concepts."EID sample number"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of EID sample number
+/* End of EID sample number */
+
 /*
 @dataElement: HIV.E.DE181 - EID sample 1
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -12181,10 +12552,11 @@ define "EID sample 1":
 define "EID sample 1 Condition":
   [Condition: Concepts."EID sample 1"]
 define "EID sample 1 Observation":
-  "EID sample 1 Observation" O
+  [Observation: Concepts."EID sample 1"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."EID sample 1"
-// End of EID sample 1
+/* End of EID sample 1 */
+
 /*
 @dataElement: HIV.E.DE182 - EID sample 2
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -12197,10 +12569,11 @@ define "EID sample 2":
 define "EID sample 2 Condition":
   [Condition: Concepts."EID sample 2"]
 define "EID sample 2 Observation":
-  "EID sample 2 Observation" O
+  [Observation: Concepts."EID sample 2"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."EID sample 2"
-// End of EID sample 2
+/* End of EID sample 2 */
+
 /*
 @dataElement: HIV.E.DE183 - EID test number
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -12210,7 +12583,8 @@ define "EID sample 2 Observation":
 define "EID test number Observation":
   [Observation: Concepts."EID test number"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of EID test number
+/* End of EID test number */
+
 /*
 @dataElement: HIV.E.DE184 - EID test number 1
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -12223,10 +12597,11 @@ define "EID test number 1":
 define "EID test number 1 Condition":
   [Condition: Concepts."EID test number 1"]
 define "EID test number 1 Observation":
-  "EID test number 1 Observation" O
+  [Observation: Concepts."EID test number 1"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."EID test number 1"
-// End of EID test number 1
+/* End of EID test number 1 */
+
 /*
 @dataElement: HIV.E.DE185 - EID test number 2
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -12239,10 +12614,11 @@ define "EID test number 2":
 define "EID test number 2 Condition":
   [Condition: Concepts."EID test number 2"]
 define "EID test number 2 Observation":
-  "EID test number 2 Observation" O
+  [Observation: Concepts."EID test number 2"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."EID test number 2"
-// End of EID test number 2
+/* End of EID test number 2 */
+
 /*
 @dataElement: HIV.E.DE186 - EID test number 1 test result
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -12252,7 +12628,8 @@ define "EID test number 2 Observation":
 define "EID test number 1 test result Observation":
   [Observation: Concepts."EID test number 1 test result"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of EID test number 1 test result
+/* End of EID test number 1 test result */
+
 /*
 @dataElement: HIV.E.DE187 - Positive - HIV.E.DE187
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -12265,10 +12642,11 @@ define "Positive - HIV.E.DE187":
 define "Positive - HIV.E.DE187 Condition":
   [Condition: Concepts."Positive - HIV.E.DE187"]
 define "Positive - HIV.E.DE187 Observation":
-  "Positive - HIV.E.DE186 Observation" O
+  [Observation: Concepts."Positive - HIV.E.DE186"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Positive - HIV.E.DE187"
-// End of Positive - HIV.E.DE187
+/* End of Positive - HIV.E.DE187 */
+
 /*
 @dataElement: HIV.E.DE188 - Negative - HIV.E.DE188
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -12281,10 +12659,11 @@ define "Negative - HIV.E.DE188":
 define "Negative - HIV.E.DE188 Condition":
   [Condition: Concepts."Negative - HIV.E.DE188"]
 define "Negative - HIV.E.DE188 Observation":
-  "Negative - HIV.E.DE186 Observation" O
+  [Observation: Concepts."Negative - HIV.E.DE186"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Negative - HIV.E.DE188"
-// End of Negative - HIV.E.DE188
+/* End of Negative - HIV.E.DE188 */
+
 /*
 @dataElement: HIV.E.DE189 - Indeterminate - HIV.E.DE189
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -12297,10 +12676,11 @@ define "Indeterminate - HIV.E.DE189":
 define "Indeterminate - HIV.E.DE189 Condition":
   [Condition: Concepts."Indeterminate - HIV.E.DE189"]
 define "Indeterminate - HIV.E.DE189 Observation":
-  "Indeterminate - HIV.E.DE186 Observation" O
+  [Observation: Concepts."Indeterminate - HIV.E.DE186"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Indeterminate - HIV.E.DE189"
-// End of Indeterminate - HIV.E.DE189
+/* End of Indeterminate - HIV.E.DE189 */
+
 /*
 @dataElement: HIV.E.DE190 - EID test number 2 test result
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -12310,7 +12690,8 @@ define "Indeterminate - HIV.E.DE189 Observation":
 define "EID test number 2 test result Observation":
   [Observation: Concepts."EID test number 2 test result"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of EID test number 2 test result
+/* End of EID test number 2 test result */
+
 /*
 @dataElement: HIV.E.DE191 - Positive - HIV.E.DE191
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -12323,10 +12704,11 @@ define "Positive - HIV.E.DE191":
 define "Positive - HIV.E.DE191 Condition":
   [Condition: Concepts."Positive - HIV.E.DE191"]
 define "Positive - HIV.E.DE191 Observation":
-  "Positive - HIV.E.DE190 Observation" O
+  [Observation: Concepts."Positive - HIV.E.DE190"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Positive - HIV.E.DE191"
-// End of Positive - HIV.E.DE191
+/* End of Positive - HIV.E.DE191 */
+
 /*
 @dataElement: HIV.E.DE192 - Negative - HIV.E.DE192
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -12339,10 +12721,11 @@ define "Negative - HIV.E.DE192":
 define "Negative - HIV.E.DE192 Condition":
   [Condition: Concepts."Negative - HIV.E.DE192"]
 define "Negative - HIV.E.DE192 Observation":
-  "Negative - HIV.E.DE190 Observation" O
+  [Observation: Concepts."Negative - HIV.E.DE190"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Negative - HIV.E.DE192"
-// End of Negative - HIV.E.DE192
+/* End of Negative - HIV.E.DE192 */
+
 /*
 @dataElement: HIV.E.DE193 - Indeterminate - HIV.E.DE193
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -12355,10 +12738,11 @@ define "Indeterminate - HIV.E.DE193":
 define "Indeterminate - HIV.E.DE193 Condition":
   [Condition: Concepts."Indeterminate - HIV.E.DE193"]
 define "Indeterminate - HIV.E.DE193 Observation":
-  "Indeterminate - HIV.E.DE190 Observation" O
+  [Observation: Concepts."Indeterminate - HIV.E.DE190"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Indeterminate - HIV.E.DE193"
-// End of Indeterminate - HIV.E.DE193
+/* End of Indeterminate - HIV.E.DE193 */
+
 /*
 @dataElement: HIV.E.DE194 - Assay number in testing strategy - HIV.E.DE194
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12368,7 +12752,8 @@ define "Indeterminate - HIV.E.DE193 Observation":
 define "Assay number in testing strategy - HIV.E.DE194 Observation":
   [Observation: Concepts."Assay number in testing strategy - HIV.E.DE194"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Assay number in testing strategy - HIV.E.DE194
+/* End of Assay number in testing strategy - HIV.E.DE194 */
+
 /*
 @dataElement: HIV.E.DE195 - Assay 0 - HIV.E.DE195
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12381,10 +12766,11 @@ define "Assay 0 - HIV.E.DE195":
 define "Assay 0 - HIV.E.DE195 Condition":
   [Condition: Concepts."Assay 0 - HIV.E.DE195"]
 define "Assay 0 - HIV.E.DE195 Observation":
-  "Assay 0 - HIV.E.DE194 Observation" O
+  [Observation: Concepts."Assay 0 - HIV.E.DE194"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Assay 0 - HIV.E.DE195"
-// End of Assay 0 - HIV.E.DE195
+/* End of Assay 0 - HIV.E.DE195 */
+
 /*
 @dataElement: HIV.E.DE196 - Assay 1 - HIV.E.DE196
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12397,10 +12783,11 @@ define "Assay 1 - HIV.E.DE196":
 define "Assay 1 - HIV.E.DE196 Condition":
   [Condition: Concepts."Assay 1 - HIV.E.DE196"]
 define "Assay 1 - HIV.E.DE196 Observation":
-  "Assay 1 - HIV.E.DE194 Observation" O
+  [Observation: Concepts."Assay 1 - HIV.E.DE194"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Assay 1 - HIV.E.DE196"
-// End of Assay 1 - HIV.E.DE196
+/* End of Assay 1 - HIV.E.DE196 */
+
 /*
 @dataElement: HIV.E.DE197 - Assay 2 - HIV.E.DE197
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12413,10 +12800,11 @@ define "Assay 2 - HIV.E.DE197":
 define "Assay 2 - HIV.E.DE197 Condition":
   [Condition: Concepts."Assay 2 - HIV.E.DE197"]
 define "Assay 2 - HIV.E.DE197 Observation":
-  "Assay 2 - HIV.E.DE194 Observation" O
+  [Observation: Concepts."Assay 2 - HIV.E.DE194"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Assay 2 - HIV.E.DE197"
-// End of Assay 2 - HIV.E.DE197
+/* End of Assay 2 - HIV.E.DE197 */
+
 /*
 @dataElement: HIV.E.DE198 - Assay 3 - HIV.E.DE198
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12429,10 +12817,11 @@ define "Assay 3 - HIV.E.DE198":
 define "Assay 3 - HIV.E.DE198 Condition":
   [Condition: Concepts."Assay 3 - HIV.E.DE198"]
 define "Assay 3 - HIV.E.DE198 Observation":
-  "Assay 3 - HIV.E.DE194 Observation" O
+  [Observation: Concepts."Assay 3 - HIV.E.DE194"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Assay 3 - HIV.E.DE198"
-// End of Assay 3 - HIV.E.DE198
+/* End of Assay 3 - HIV.E.DE198 */
+
 /*
 @dataElement: HIV.E.DE199 - Assay 1 repeated - HIV.E.DE199
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12445,10 +12834,11 @@ define "Assay 1 repeated - HIV.E.DE199":
 define "Assay 1 repeated - HIV.E.DE199 Condition":
   [Condition: Concepts."Assay 1 repeated - HIV.E.DE199"]
 define "Assay 1 repeated - HIV.E.DE199 Observation":
-  "Assay 1 repeated - HIV.E.DE194 Observation" O
+  [Observation: Concepts."Assay 1 repeated - HIV.E.DE194"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Assay 1 repeated - HIV.E.DE199"
-// End of Assay 1 repeated - HIV.E.DE199
+/* End of Assay 1 repeated - HIV.E.DE199 */
+
 /*
 @dataElement: HIV.E.DE200 - Test result of HIV assay 1 - HIV.E.DE200
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12458,7 +12848,8 @@ define "Assay 1 repeated - HIV.E.DE199 Observation":
 define "Test result of HIV assay 1 - HIV.E.DE200 Observation":
   [Observation: Concepts."Test result of HIV assay 1 - HIV.E.DE200"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Test result of HIV assay 1 - HIV.E.DE200
+/* End of Test result of HIV assay 1 - HIV.E.DE200 */
+
 /*
 @dataElement: HIV.E.DE201 - Reactive - HIV.E.DE201
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12471,10 +12862,11 @@ define "Reactive - HIV.E.DE201":
 define "Reactive - HIV.E.DE201 Condition":
   [Condition: Concepts."Reactive - HIV.E.DE201"]
 define "Reactive - HIV.E.DE201 Observation":
-  "Reactive - HIV.E.DE200 Observation" O
+  [Observation: Concepts."Reactive - HIV.E.DE200"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Reactive - HIV.E.DE201"
-// End of Reactive - HIV.E.DE201
+/* End of Reactive - HIV.E.DE201 */
+
 /*
 @dataElement: HIV.E.DE202 - Non-reactive - HIV.E.DE202
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12487,10 +12879,11 @@ define "Non-reactive - HIV.E.DE202":
 define "Non-reactive - HIV.E.DE202 Condition":
   [Condition: Concepts."Non-reactive - HIV.E.DE202"]
 define "Non-reactive - HIV.E.DE202 Observation":
-  "Non-reactive - HIV.E.DE200 Observation" O
+  [Observation: Concepts."Non-reactive - HIV.E.DE200"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Non-reactive - HIV.E.DE202"
-// End of Non-reactive - HIV.E.DE202
+/* End of Non-reactive - HIV.E.DE202 */
+
 /*
 @dataElement: HIV.E.DE203 - Invalid - HIV.E.DE203
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12503,10 +12896,11 @@ define "Invalid - HIV.E.DE203":
 define "Invalid - HIV.E.DE203 Condition":
   [Condition: Concepts."Invalid - HIV.E.DE203"]
 define "Invalid - HIV.E.DE203 Observation":
-  "Invalid - HIV.E.DE200 Observation" O
+  [Observation: Concepts."Invalid - HIV.E.DE200"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Invalid - HIV.E.DE203"
-// End of Invalid - HIV.E.DE203
+/* End of Invalid - HIV.E.DE203 */
+
 /*
 @dataElement: HIV.E.DE204 - Test result of HIV assay 2 - HIV.E.DE204
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12516,7 +12910,8 @@ define "Invalid - HIV.E.DE203 Observation":
 define "Test result of HIV assay 2 - HIV.E.DE204 Observation":
   [Observation: Concepts."Test result of HIV assay 2 - HIV.E.DE204"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Test result of HIV assay 2 - HIV.E.DE204
+/* End of Test result of HIV assay 2 - HIV.E.DE204 */
+
 /*
 @dataElement: HIV.E.DE205 - Reactive - HIV.E.DE205
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12529,10 +12924,11 @@ define "Reactive - HIV.E.DE205":
 define "Reactive - HIV.E.DE205 Condition":
   [Condition: Concepts."Reactive - HIV.E.DE205"]
 define "Reactive - HIV.E.DE205 Observation":
-  "Reactive - HIV.E.DE204 Observation" O
+  [Observation: Concepts."Reactive - HIV.E.DE204"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Reactive - HIV.E.DE205"
-// End of Reactive - HIV.E.DE205
+/* End of Reactive - HIV.E.DE205 */
+
 /*
 @dataElement: HIV.E.DE206 - Non-reactive - HIV.E.DE206
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12545,10 +12941,11 @@ define "Non-reactive - HIV.E.DE206":
 define "Non-reactive - HIV.E.DE206 Condition":
   [Condition: Concepts."Non-reactive - HIV.E.DE206"]
 define "Non-reactive - HIV.E.DE206 Observation":
-  "Non-reactive - HIV.E.DE204 Observation" O
+  [Observation: Concepts."Non-reactive - HIV.E.DE204"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Non-reactive - HIV.E.DE206"
-// End of Non-reactive - HIV.E.DE206
+/* End of Non-reactive - HIV.E.DE206 */
+
 /*
 @dataElement: HIV.E.DE207 - Invalid - HIV.E.DE207
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12561,10 +12958,11 @@ define "Invalid - HIV.E.DE207":
 define "Invalid - HIV.E.DE207 Condition":
   [Condition: Concepts."Invalid - HIV.E.DE207"]
 define "Invalid - HIV.E.DE207 Observation":
-  "Invalid - HIV.E.DE204 Observation" O
+  [Observation: Concepts."Invalid - HIV.E.DE204"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Invalid - HIV.E.DE207"
-// End of Invalid - HIV.E.DE207
+/* End of Invalid - HIV.E.DE207 */
+
 /*
 @dataElement: HIV.E.DE208 - Test result of HIV assay 3 - HIV.E.DE208
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12574,7 +12972,8 @@ define "Invalid - HIV.E.DE207 Observation":
 define "Test result of HIV assay 3 - HIV.E.DE208 Observation":
   [Observation: Concepts."Test result of HIV assay 3 - HIV.E.DE208"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Test result of HIV assay 3 - HIV.E.DE208
+/* End of Test result of HIV assay 3 - HIV.E.DE208 */
+
 /*
 @dataElement: HIV.E.DE209 - Reactive - HIV.E.DE209
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12587,10 +12986,11 @@ define "Reactive - HIV.E.DE209":
 define "Reactive - HIV.E.DE209 Condition":
   [Condition: Concepts."Reactive - HIV.E.DE209"]
 define "Reactive - HIV.E.DE209 Observation":
-  "Reactive - HIV.E.DE208 Observation" O
+  [Observation: Concepts."Reactive - HIV.E.DE208"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Reactive - HIV.E.DE209"
-// End of Reactive - HIV.E.DE209
+/* End of Reactive - HIV.E.DE209 */
+
 /*
 @dataElement: HIV.E.DE210 - Non-reactive - HIV.E.DE210
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12603,10 +13003,11 @@ define "Non-reactive - HIV.E.DE210":
 define "Non-reactive - HIV.E.DE210 Condition":
   [Condition: Concepts."Non-reactive - HIV.E.DE210"]
 define "Non-reactive - HIV.E.DE210 Observation":
-  "Non-reactive - HIV.E.DE208 Observation" O
+  [Observation: Concepts."Non-reactive - HIV.E.DE208"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Non-reactive - HIV.E.DE210"
-// End of Non-reactive - HIV.E.DE210
+/* End of Non-reactive - HIV.E.DE210 */
+
 /*
 @dataElement: HIV.E.DE211 - Invalid - HIV.E.DE211
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12619,10 +13020,11 @@ define "Invalid - HIV.E.DE211":
 define "Invalid - HIV.E.DE211 Condition":
   [Condition: Concepts."Invalid - HIV.E.DE211"]
 define "Invalid - HIV.E.DE211 Observation":
-  "Invalid - HIV.E.DE208 Observation" O
+  [Observation: Concepts."Invalid - HIV.E.DE208"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Invalid - HIV.E.DE211"
-// End of Invalid - HIV.E.DE211
+/* End of Invalid - HIV.E.DE211 */
+
 /*
 @dataElement: HIV.E.DE212 - Test result of HIV assay 1 repeated - HIV.E.DE212
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12632,7 +13034,8 @@ define "Invalid - HIV.E.DE211 Observation":
 define "Test result of HIV assay 1 repeated - HIV.E.DE212 Observation":
   [Observation: Concepts."Test result of HIV assay 1 repeated - HIV.E.DE212"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Test result of HIV assay 1 repeated - HIV.E.DE212
+/* End of Test result of HIV assay 1 repeated - HIV.E.DE212 */
+
 /*
 @dataElement: HIV.E.DE213 - Reactive - HIV.E.DE213
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12645,10 +13048,11 @@ define "Reactive - HIV.E.DE213":
 define "Reactive - HIV.E.DE213 Condition":
   [Condition: Concepts."Reactive - HIV.E.DE213"]
 define "Reactive - HIV.E.DE213 Observation":
-  "Reactive - HIV.E.DE212 Observation" O
+  [Observation: Concepts."Reactive - HIV.E.DE212"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Reactive - HIV.E.DE213"
-// End of Reactive - HIV.E.DE213
+/* End of Reactive - HIV.E.DE213 */
+
 /*
 @dataElement: HIV.E.DE214 - Non-reactive - HIV.E.DE214
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12661,10 +13065,11 @@ define "Non-reactive - HIV.E.DE214":
 define "Non-reactive - HIV.E.DE214 Condition":
   [Condition: Concepts."Non-reactive - HIV.E.DE214"]
 define "Non-reactive - HIV.E.DE214 Observation":
-  "Non-reactive - HIV.E.DE212 Observation" O
+  [Observation: Concepts."Non-reactive - HIV.E.DE212"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Non-reactive - HIV.E.DE214"
-// End of Non-reactive - HIV.E.DE214
+/* End of Non-reactive - HIV.E.DE214 */
+
 /*
 @dataElement: HIV.E.DE215 - Invalid - HIV.E.DE215
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12677,10 +13082,11 @@ define "Invalid - HIV.E.DE215":
 define "Invalid - HIV.E.DE215 Condition":
   [Condition: Concepts."Invalid - HIV.E.DE215"]
 define "Invalid - HIV.E.DE215 Observation":
-  "Invalid - HIV.E.DE212 Observation" O
+  [Observation: Concepts."Invalid - HIV.E.DE212"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Invalid - HIV.E.DE215"
-// End of Invalid - HIV.E.DE215
+/* End of Invalid - HIV.E.DE215 */
+
 /*
 @dataElement: HIV.E.DE216 - Test result of syphilis assay 1
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12690,7 +13096,8 @@ define "Invalid - HIV.E.DE215 Observation":
 define "Test result of syphilis assay 1 Observation":
   [Observation: Concepts."Test result of syphilis assay 1"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Test result of syphilis assay 1
+/* End of Test result of syphilis assay 1 */
+
 /*
 @dataElement: HIV.E.DE217 - Reactive - HIV.E.DE217
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12703,10 +13110,11 @@ define "Reactive - HIV.E.DE217":
 define "Reactive - HIV.E.DE217 Condition":
   [Condition: Concepts."Reactive - HIV.E.DE217"]
 define "Reactive - HIV.E.DE217 Observation":
-  "Reactive - HIV.E.DE216 Observation" O
+  [Observation: Concepts."Reactive - HIV.E.DE216"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Reactive - HIV.E.DE217"
-// End of Reactive - HIV.E.DE217
+/* End of Reactive - HIV.E.DE217 */
+
 /*
 @dataElement: HIV.E.DE218 - Non-reactive - HIV.E.DE218
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12719,10 +13127,11 @@ define "Non-reactive - HIV.E.DE218":
 define "Non-reactive - HIV.E.DE218 Condition":
   [Condition: Concepts."Non-reactive - HIV.E.DE218"]
 define "Non-reactive - HIV.E.DE218 Observation":
-  "Non-reactive - HIV.E.DE216 Observation" O
+  [Observation: Concepts."Non-reactive - HIV.E.DE216"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Non-reactive - HIV.E.DE218"
-// End of Non-reactive - HIV.E.DE218
+/* End of Non-reactive - HIV.E.DE218 */
+
 /*
 @dataElement: HIV.E.DE219 - Invalid - HIV.E.DE219
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12735,10 +13144,11 @@ define "Invalid - HIV.E.DE219":
 define "Invalid - HIV.E.DE219 Condition":
   [Condition: Concepts."Invalid - HIV.E.DE219"]
 define "Invalid - HIV.E.DE219 Observation":
-  "Invalid - HIV.E.DE216 Observation" O
+  [Observation: Concepts."Invalid - HIV.E.DE216"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Invalid - HIV.E.DE219"
-// End of Invalid - HIV.E.DE219
+/* End of Invalid - HIV.E.DE219 */
+
 /*
 @dataElement: HIV.E.DE220 - Test result of syphilis assay 1 repeated
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12748,7 +13158,8 @@ define "Invalid - HIV.E.DE219 Observation":
 define "Test result of syphilis assay 1 repeated Observation":
   [Observation: Concepts."Test result of syphilis assay 1 repeated"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Test result of syphilis assay 1 repeated
+/* End of Test result of syphilis assay 1 repeated */
+
 /*
 @dataElement: HIV.E.DE221 - Reactive - HIV.E.DE221
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12761,10 +13172,11 @@ define "Reactive - HIV.E.DE221":
 define "Reactive - HIV.E.DE221 Condition":
   [Condition: Concepts."Reactive - HIV.E.DE221"]
 define "Reactive - HIV.E.DE221 Observation":
-  "Reactive - HIV.E.DE220 Observation" O
+  [Observation: Concepts."Reactive - HIV.E.DE220"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Reactive - HIV.E.DE221"
-// End of Reactive - HIV.E.DE221
+/* End of Reactive - HIV.E.DE221 */
+
 /*
 @dataElement: HIV.E.DE222 - Non-reactive - HIV.E.DE222
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12777,10 +13189,11 @@ define "Non-reactive - HIV.E.DE222":
 define "Non-reactive - HIV.E.DE222 Condition":
   [Condition: Concepts."Non-reactive - HIV.E.DE222"]
 define "Non-reactive - HIV.E.DE222 Observation":
-  "Non-reactive - HIV.E.DE220 Observation" O
+  [Observation: Concepts."Non-reactive - HIV.E.DE220"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Non-reactive - HIV.E.DE222"
-// End of Non-reactive - HIV.E.DE222
+/* End of Non-reactive - HIV.E.DE222 */
+
 /*
 @dataElement: HIV.E.DE223 - Invalid - HIV.E.DE223
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -12793,10 +13206,11 @@ define "Invalid - HIV.E.DE223":
 define "Invalid - HIV.E.DE223 Condition":
   [Condition: Concepts."Invalid - HIV.E.DE223"]
 define "Invalid - HIV.E.DE223 Observation":
-  "Invalid - HIV.E.DE220 Observation" O
+  [Observation: Concepts."Invalid - HIV.E.DE220"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Invalid - HIV.E.DE223"
-// End of Invalid - HIV.E.DE223
+/* End of Invalid - HIV.E.DE223 */
+
 /*
 @dataElement: HIV.E.DE224 - HIV test date - HIV.E.DE224
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -12804,14 +13218,11 @@ define "Invalid - HIV.E.DE223 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "HIV test date - HIV.E.DE224":
-  exists "HIV test date - HIV.E.DE224 Observation"
-    or exists "HIV test date - HIV.E.DE224 Condition"
-define "HIV test date - HIV.E.DE224 Condition":
-  [Condition: Concepts."HIV test date - HIV.E.DE224"]
-define "HIV test date - HIV.E.DE224 Observation":
   [Observation: Concepts."HIV test date - HIV.E.DE224"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HIV test date - HIV.E.DE224
+    return O.value
+/* End of HIV test date - HIV.E.DE224 */
+
 /*
 @dataElement: HIV.E.DE225 - Infant HIV status
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -12821,7 +13232,8 @@ define "HIV test date - HIV.E.DE224 Observation":
 define "Infant HIV status Observation":
   [Observation: Concepts."Infant HIV status"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Infant HIV status
+/* End of Infant HIV status */
+
 /*
 @dataElement: HIV.E.DE226 - HIV-positive - HIV.E.DE226
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -12834,10 +13246,11 @@ define "HIV-positive - HIV.E.DE226":
 define "HIV-positive - HIV.E.DE226 Condition":
   [Condition: Concepts."HIV-positive - HIV.E.DE226"]
 define "HIV-positive - HIV.E.DE226 Observation":
-  "HIV-positive - HIV.E.DE225 Observation" O
+  [Observation: Concepts."HIV-positive - HIV.E.DE225"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV-positive - HIV.E.DE226"
-// End of HIV-positive - HIV.E.DE226
+/* End of HIV-positive - HIV.E.DE226 */
+
 /*
 @dataElement: HIV.E.DE227 - HIV-negative - HIV.E.DE227
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -12850,10 +13263,11 @@ define "HIV-negative - HIV.E.DE227":
 define "HIV-negative - HIV.E.DE227 Condition":
   [Condition: Concepts."HIV-negative - HIV.E.DE227"]
 define "HIV-negative - HIV.E.DE227 Observation":
-  "HIV-negative - HIV.E.DE225 Observation" O
+  [Observation: Concepts."HIV-negative - HIV.E.DE225"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV-negative - HIV.E.DE227"
-// End of HIV-negative - HIV.E.DE227
+/* End of HIV-negative - HIV.E.DE227 */
+
 /*
 @dataElement: HIV.E.DE228 - Unknown - HIV.E.DE228
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -12866,10 +13280,11 @@ define "Unknown - HIV.E.DE228":
 define "Unknown - HIV.E.DE228 Condition":
   [Condition: Concepts."Unknown - HIV.E.DE228"]
 define "Unknown - HIV.E.DE228 Observation":
-  "Unknown - HIV.E.DE225 Observation" O
+  [Observation: Concepts."Unknown - HIV.E.DE225"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Unknown - HIV.E.DE228"
-// End of Unknown - HIV.E.DE228
+/* End of Unknown - HIV.E.DE228 */
+
 /*
 @dataElement: HIV.E.DE229 - Infant ART start date
 @activity: HIV.F16 Immediately start infant on ART
@@ -12877,14 +13292,11 @@ define "Unknown - HIV.E.DE228 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Infant ART start date":
-  exists "Infant ART start date Observation"
-    or exists "Infant ART start date Condition"
-define "Infant ART start date Condition":
-  [Condition: Concepts."Infant ART start date"]
-define "Infant ART start date Observation":
   [Observation: Concepts."Infant ART start date"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Infant ART start date
+    return O.value
+/* End of Infant ART start date */
+
 /*
 @dataElement: HIV.E.DE230 - Final diagnosis of HIV-exposed infant - HIV.E.DE230
 @activity: HIV.F20 Record infant's/child's final HIV diagnosis
@@ -12894,7 +13306,8 @@ define "Infant ART start date Observation":
 define "Final diagnosis of HIV-exposed infant - HIV.E.DE230 Observation":
   [Observation: Concepts."Final diagnosis of HIV-exposed infant - HIV.E.DE230"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Final diagnosis of HIV-exposed infant - HIV.E.DE230
+/* End of Final diagnosis of HIV-exposed infant - HIV.E.DE230 */
+
 /*
 @dataElement: HIV.E.DE231 - HIV-positive - HIV.E.DE231
 @activity: HIV.F20 Record infant's/child's final HIV diagnosis
@@ -12907,10 +13320,11 @@ define "HIV-positive - HIV.E.DE231":
 define "HIV-positive - HIV.E.DE231 Condition":
   [Condition: Concepts."HIV-positive - HIV.E.DE231"]
 define "HIV-positive - HIV.E.DE231 Observation":
-  "HIV-positive - HIV.E.DE230 Observation" O
+  [Observation: Concepts."HIV-positive - HIV.E.DE230"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV-positive - HIV.E.DE231"
-// End of HIV-positive - HIV.E.DE231
+/* End of HIV-positive - HIV.E.DE231 */
+
 /*
 @dataElement: HIV.E.DE232 - HIV-negative and no longer breastfeeding
 @activity: HIV.F20 Record infant's/child's final HIV diagnosis
@@ -12923,10 +13337,11 @@ define "HIV-negative and no longer breastfeeding":
 define "HIV-negative and no longer breastfeeding Condition":
   [Condition: Concepts."HIV-negative and no longer breastfeeding"]
 define "HIV-negative and no longer breastfeeding Observation":
-  "HIV-negative and no longer breastfeeding Observation" O
+  [Observation: Concepts."HIV-negative and no longer breastfeeding"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV-negative and no longer breastfeeding"
-// End of HIV-negative and no longer breastfeeding
+/* End of HIV-negative and no longer breastfeeding */
+
 /*
 @dataElement: HIV.E.DE233 - HIV status unknown
 @activity: HIV.F20 Record infant's/child's final HIV diagnosis
@@ -12939,10 +13354,11 @@ define "HIV status unknown":
 define "HIV status unknown Condition":
   [Condition: Concepts."HIV status unknown"]
 define "HIV status unknown Observation":
-  "HIV status unknown Observation" O
+  [Observation: Concepts."HIV status unknown"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV status unknown"
-// End of HIV status unknown
+/* End of HIV status unknown */
+
 /*
 @dataElement: HIV.G.DE1 - CD4 count - HIV.G.DE1
 @activity: HIV.D20 Diagnostics
@@ -12950,14 +13366,11 @@ define "HIV status unknown Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "CD4 count - HIV.G.DE1":
-  exists "CD4 count - HIV.G.DE1 Observation"
-    or exists "CD4 count - HIV.G.DE1 Condition"
-define "CD4 count - HIV.G.DE1 Condition":
-  [Condition: Concepts."CD4 count - HIV.G.DE1"]
-define "CD4 count - HIV.G.DE1 Observation":
   [Observation: Concepts."CD4 count - HIV.G.DE1"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of CD4 count - HIV.G.DE1
+    return O.value
+/* End of CD4 count - HIV.G.DE1 */
+
 /*
 @dataElement: HIV.G.DE3 - Baseline CD4 count - HIV.G.DE3
 @activity: HIV.D20 Diagnostics
@@ -12965,14 +13378,11 @@ define "CD4 count - HIV.G.DE1 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Baseline CD4 count - HIV.G.DE3":
-  exists "Baseline CD4 count - HIV.G.DE3 Observation"
-    or exists "Baseline CD4 count - HIV.G.DE3 Condition"
-define "Baseline CD4 count - HIV.G.DE3 Condition":
-  [Condition: Concepts."Baseline CD4 count - HIV.G.DE3"]
-define "Baseline CD4 count - HIV.G.DE3 Observation":
   [Observation: Concepts."Baseline CD4 count - HIV.G.DE3"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Baseline CD4 count - HIV.G.DE3
+    return O.value
+/* End of Baseline CD4 count - HIV.G.DE3 */
+
 /*
 @dataElement: HIV.G.DE8 - Date of viral load sample collection - HIV.G.DE8
 @activity: HIV.D20 Diagnostics
@@ -12980,14 +13390,11 @@ define "Baseline CD4 count - HIV.G.DE3 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date of viral load sample collection - HIV.G.DE8":
-  exists "Date of viral load sample collection - HIV.G.DE8 Observation"
-    or exists "Date of viral load sample collection - HIV.G.DE8 Condition"
-define "Date of viral load sample collection - HIV.G.DE8 Condition":
-  [Condition: Concepts."Date of viral load sample collection - HIV.G.DE8"]
-define "Date of viral load sample collection - HIV.G.DE8 Observation":
   [Observation: Concepts."Date of viral load sample collection - HIV.G.DE8"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date of viral load sample collection - HIV.G.DE8
+    return O.value
+/* End of Date of viral load sample collection - HIV.G.DE8 */
+
 /*
 @dataElement: HIV.G.DE12 - Viral load test result - HIV.G.DE12
 @activity: HIV.D20 Diagnostics
@@ -12995,14 +13402,11 @@ define "Date of viral load sample collection - HIV.G.DE8 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Viral load test result - HIV.G.DE12":
-  exists "Viral load test result - HIV.G.DE12 Observation"
-    or exists "Viral load test result - HIV.G.DE12 Condition"
-define "Viral load test result - HIV.G.DE12 Condition":
-  [Condition: Concepts."Viral load test result - HIV.G.DE12"]
-define "Viral load test result - HIV.G.DE12 Observation":
   [Observation: Concepts."Viral load test result - HIV.G.DE12"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Viral load test result - HIV.G.DE12
+    return O.value
+/* End of Viral load test result - HIV.G.DE12 */
+
 /*
 @dataElement: HIV.G.DE17 - HBsAg test date - HIV.G.DE17
 @activity: HIV.D20 Diagnostics
@@ -13010,14 +13414,11 @@ define "Viral load test result - HIV.G.DE12 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "HBsAg test date - HIV.G.DE17":
-  exists "HBsAg test date - HIV.G.DE17 Observation"
-    or exists "HBsAg test date - HIV.G.DE17 Condition"
-define "HBsAg test date - HIV.G.DE17 Condition":
-  [Condition: Concepts."HBsAg test date - HIV.G.DE17"]
-define "HBsAg test date - HIV.G.DE17 Observation":
   [Observation: Concepts."HBsAg test date - HIV.G.DE17"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HBsAg test date - HIV.G.DE17
+    return O.value
+/* End of HBsAg test date - HIV.G.DE17 */
+
 /*
 @dataElement: HIV.G.DE18 - HBsAg test result - HIV.G.DE18
 @activity: HIV.D20 Diagnostics
@@ -13027,7 +13428,8 @@ define "HBsAg test date - HIV.G.DE17 Observation":
 define "HBsAg test result - HIV.G.DE18 Observation":
   [Observation: Concepts."HBsAg test result - HIV.G.DE18"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HBsAg test result - HIV.G.DE18
+/* End of HBsAg test result - HIV.G.DE18 */
+
 /*
 @dataElement: HIV.G.DE19 - Positive - HIV.G.DE19
 @activity: HIV.D20 Diagnostics
@@ -13040,10 +13442,11 @@ define "Positive - HIV.G.DE19":
 define "Positive - HIV.G.DE19 Condition":
   [Condition: Concepts."Positive - HIV.G.DE19"]
 define "Positive - HIV.G.DE19 Observation":
-  "Positive - HIV.G.DE18 Observation" O
+  [Observation: Concepts."Positive - HIV.G.DE18"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Positive - HIV.G.DE19"
-// End of Positive - HIV.G.DE19
+/* End of Positive - HIV.G.DE19 */
+
 /*
 @dataElement: HIV.G.DE20 - Negative - HIV.G.DE20
 @activity: HIV.D20 Diagnostics
@@ -13056,10 +13459,11 @@ define "Negative - HIV.G.DE20":
 define "Negative - HIV.G.DE20 Condition":
   [Condition: Concepts."Negative - HIV.G.DE20"]
 define "Negative - HIV.G.DE20 Observation":
-  "Negative - HIV.G.DE18 Observation" O
+  [Observation: Concepts."Negative - HIV.G.DE18"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Negative - HIV.G.DE20"
-// End of Negative - HIV.G.DE20
+/* End of Negative - HIV.G.DE20 */
+
 /*
 @dataElement: HIV.G.DE21 - Indeterminate - HIV.G.DE21
 @activity: HIV.D20 Diagnostics
@@ -13072,10 +13476,11 @@ define "Indeterminate - HIV.G.DE21":
 define "Indeterminate - HIV.G.DE21 Condition":
   [Condition: Concepts."Indeterminate - HIV.G.DE21"]
 define "Indeterminate - HIV.G.DE21 Observation":
-  "Indeterminate - HIV.G.DE18 Observation" O
+  [Observation: Concepts."Indeterminate - HIV.G.DE18"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Indeterminate - HIV.G.DE21"
-// End of Indeterminate - HIV.G.DE21
+/* End of Indeterminate - HIV.G.DE21 */
+
 /*
 @dataElement: HIV.G.DE42 - HCV test date - HIV.G.DE42
 @activity: HIV.D20 Diagnostics
@@ -13083,14 +13488,11 @@ define "Indeterminate - HIV.G.DE21 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "HCV test date - HIV.G.DE42":
-  exists "HCV test date - HIV.G.DE42 Observation"
-    or exists "HCV test date - HIV.G.DE42 Condition"
-define "HCV test date - HIV.G.DE42 Condition":
-  [Condition: Concepts."HCV test date - HIV.G.DE42"]
-define "HCV test date - HIV.G.DE42 Observation":
   [Observation: Concepts."HCV test date - HIV.G.DE42"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HCV test date - HIV.G.DE42
+    return O.value
+/* End of HCV test date - HIV.G.DE42 */
+
 /*
 @dataElement: HIV.G.DE43 - HCV test result - HIV.G.DE43
 @activity: HIV.D20 Diagnostics
@@ -13100,7 +13502,8 @@ define "HCV test date - HIV.G.DE42 Observation":
 define "HCV test result - HIV.G.DE43 Observation":
   [Observation: Concepts."HCV test result - HIV.G.DE43"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HCV test result - HIV.G.DE43
+/* End of HCV test result - HIV.G.DE43 */
+
 /*
 @dataElement: HIV.G.DE44 - Positive - HIV.G.DE44
 @activity: HIV.D20 Diagnostics
@@ -13113,10 +13516,11 @@ define "Positive - HIV.G.DE44":
 define "Positive - HIV.G.DE44 Condition":
   [Condition: Concepts."Positive - HIV.G.DE44"]
 define "Positive - HIV.G.DE44 Observation":
-  "Positive - HIV.G.DE43 Observation" O
+  [Observation: Concepts."Positive - HIV.G.DE43"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Positive - HIV.G.DE44"
-// End of Positive - HIV.G.DE44
+/* End of Positive - HIV.G.DE44 */
+
 /*
 @dataElement: HIV.G.DE45 - Negative - HIV.G.DE45
 @activity: HIV.D20 Diagnostics
@@ -13129,10 +13533,11 @@ define "Negative - HIV.G.DE45":
 define "Negative - HIV.G.DE45 Condition":
   [Condition: Concepts."Negative - HIV.G.DE45"]
 define "Negative - HIV.G.DE45 Observation":
-  "Negative - HIV.G.DE43 Observation" O
+  [Observation: Concepts."Negative - HIV.G.DE43"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Negative - HIV.G.DE45"
-// End of Negative - HIV.G.DE45
+/* End of Negative - HIV.G.DE45 */
+
 /*
 @dataElement: HIV.G.DE46 - Indeterminate - HIV.G.DE46
 @activity: HIV.D20 Diagnostics
@@ -13145,10 +13550,11 @@ define "Indeterminate - HIV.G.DE46":
 define "Indeterminate - HIV.G.DE46 Condition":
   [Condition: Concepts."Indeterminate - HIV.G.DE46"]
 define "Indeterminate - HIV.G.DE46 Observation":
-  "Indeterminate - HIV.G.DE43 Observation" O
+  [Observation: Concepts."Indeterminate - HIV.G.DE43"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Indeterminate - HIV.G.DE46"
-// End of Indeterminate - HIV.G.DE46
+/* End of Indeterminate - HIV.G.DE46 */
+
 /*
 @dataElement: HIV.G.DE47 - HCV viral load test date - HIV.G.DE47
 @activity: HIV.D20 Diagnostics
@@ -13156,14 +13562,11 @@ define "Indeterminate - HIV.G.DE46 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "HCV viral load test date - HIV.G.DE47":
-  exists "HCV viral load test date - HIV.G.DE47 Observation"
-    or exists "HCV viral load test date - HIV.G.DE47 Condition"
-define "HCV viral load test date - HIV.G.DE47 Condition":
-  [Condition: Concepts."HCV viral load test date - HIV.G.DE47"]
-define "HCV viral load test date - HIV.G.DE47 Observation":
   [Observation: Concepts."HCV viral load test date - HIV.G.DE47"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HCV viral load test date - HIV.G.DE47
+    return O.value
+/* End of HCV viral load test date - HIV.G.DE47 */
+
 /*
 @dataElement: HIV.G.DE48 - HCV viral load test result - HIV.G.DE48
 @activity: HIV.D20 Diagnostics
@@ -13173,7 +13576,8 @@ define "HCV viral load test date - HIV.G.DE47 Observation":
 define "HCV viral load test result - HIV.G.DE48 Observation":
   [Observation: Concepts."HCV viral load test result - HIV.G.DE48"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HCV viral load test result - HIV.G.DE48
+/* End of HCV viral load test result - HIV.G.DE48 */
+
 /*
 @dataElement: HIV.G.DE49 - Detected - HIV.G.DE49
 @activity: HIV.D20 Diagnostics
@@ -13186,10 +13590,11 @@ define "Detected - HIV.G.DE49":
 define "Detected - HIV.G.DE49 Condition":
   [Condition: Concepts."Detected - HIV.G.DE49"]
 define "Detected - HIV.G.DE49 Observation":
-  "Detected - HIV.G.DE48 Observation" O
+  [Observation: Concepts."Detected - HIV.G.DE48"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Detected - HIV.G.DE49"
-// End of Detected - HIV.G.DE49
+/* End of Detected - HIV.G.DE49 */
+
 /*
 @dataElement: HIV.G.DE50 - Not detected - HIV.G.DE50
 @activity: HIV.D20 Diagnostics
@@ -13202,10 +13607,11 @@ define "Not detected - HIV.G.DE50":
 define "Not detected - HIV.G.DE50 Condition":
   [Condition: Concepts."Not detected - HIV.G.DE50"]
 define "Not detected - HIV.G.DE50 Observation":
-  "Not detected - HIV.G.DE48 Observation" O
+  [Observation: Concepts."Not detected - HIV.G.DE48"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Not detected - HIV.G.DE50"
-// End of Not detected - HIV.G.DE50
+/* End of Not detected - HIV.G.DE50 */
+
 /*
 @dataElement: HIV.G.DE69 - Syphilis test date - HIV.G.DE69
 @activity: HIV.D20 Diagnostics
@@ -13213,14 +13619,11 @@ define "Not detected - HIV.G.DE50 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Syphilis test date - HIV.G.DE69":
-  exists "Syphilis test date - HIV.G.DE69 Observation"
-    or exists "Syphilis test date - HIV.G.DE69 Condition"
-define "Syphilis test date - HIV.G.DE69 Condition":
-  [Condition: Concepts."Syphilis test date - HIV.G.DE69"]
-define "Syphilis test date - HIV.G.DE69 Observation":
   [Observation: Concepts."Syphilis test date - HIV.G.DE69"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Syphilis test date - HIV.G.DE69
+    return O.value
+/* End of Syphilis test date - HIV.G.DE69 */
+
 /*
 @dataElement: HIV.G.DE70 - Syphilis test result - HIV.G.DE70
 @activity: HIV.D20 Diagnostics
@@ -13230,7 +13633,8 @@ define "Syphilis test date - HIV.G.DE69 Observation":
 define "Syphilis test result - HIV.G.DE70 Observation":
   [Observation: Concepts."Syphilis test result - HIV.G.DE70"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Syphilis test result - HIV.G.DE70
+/* End of Syphilis test result - HIV.G.DE70 */
+
 /*
 @dataElement: HIV.G.DE71 - Positive - HIV.G.DE71
 @activity: HIV.D20 Diagnostics
@@ -13243,10 +13647,11 @@ define "Positive - HIV.G.DE71":
 define "Positive - HIV.G.DE71 Condition":
   [Condition: Concepts."Positive - HIV.G.DE71"]
 define "Positive - HIV.G.DE71 Observation":
-  "Positive - HIV.G.DE70 Observation" O
+  [Observation: Concepts."Positive - HIV.G.DE70"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Positive - HIV.G.DE71"
-// End of Positive - HIV.G.DE71
+/* End of Positive - HIV.G.DE71 */
+
 /*
 @dataElement: HIV.G.DE72 - Negative - HIV.G.DE72
 @activity: HIV.D20 Diagnostics
@@ -13259,10 +13664,11 @@ define "Negative - HIV.G.DE72":
 define "Negative - HIV.G.DE72 Condition":
   [Condition: Concepts."Negative - HIV.G.DE72"]
 define "Negative - HIV.G.DE72 Observation":
-  "Negative - HIV.G.DE70 Observation" O
+  [Observation: Concepts."Negative - HIV.G.DE70"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Negative - HIV.G.DE72"
-// End of Negative - HIV.G.DE72
+/* End of Negative - HIV.G.DE72 */
+
 /*
 @dataElement: HIV.G.DE73 - Inconclusive - HIV.G.DE73
 @activity: HIV.D20 Diagnostics
@@ -13275,10 +13681,11 @@ define "Inconclusive - HIV.G.DE73":
 define "Inconclusive - HIV.G.DE73 Condition":
   [Condition: Concepts."Inconclusive - HIV.G.DE73"]
 define "Inconclusive - HIV.G.DE73 Observation":
-  "Inconclusive - HIV.G.DE70 Observation" O
+  [Observation: Concepts."Inconclusive - HIV.G.DE70"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Inconclusive - HIV.G.DE73"
-// End of Inconclusive - HIV.G.DE73
+/* End of Inconclusive - HIV.G.DE73 */
+
 /*
 @dataElement: HIV.H.DE34 - HIV status of partner or contact
 @activity: HIV.B6 Capture or update client history
@@ -13288,7 +13695,8 @@ define "Inconclusive - HIV.G.DE73 Observation":
 define "HIV status of partner or contact Observation":
   [Observation: Concepts."HIV status of partner or contact"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HIV status of partner or contact
+/* End of HIV status of partner or contact */
+
 /*
 @dataElement: HIV.H.DE35 - Already knew positive
 @activity: HIV.B6 Capture or update client history
@@ -13301,10 +13709,11 @@ define "Already knew positive":
 define "Already knew positive Condition":
   [Condition: Concepts."Already knew positive"]
 define "Already knew positive Observation":
-  "Already knew positive Observation" O
+  [Observation: Concepts."Already knew positive"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Already knew positive"
-// End of Already knew positive
+/* End of Already knew positive */
+
 /*
 @dataElement: HIV.H.DE36 - Newly diagnosed
 @activity: HIV.B6 Capture or update client history
@@ -13317,10 +13726,11 @@ define "Newly diagnosed":
 define "Newly diagnosed Condition":
   [Condition: Concepts."Newly diagnosed"]
 define "Newly diagnosed Observation":
-  "Newly diagnosed Observation" O
+  [Observation: Concepts."Newly diagnosed"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Newly diagnosed"
-// End of Newly diagnosed
+/* End of Newly diagnosed */
+
 /*
 @dataElement: HIV.H.DE37 - Negative - HIV.H.DE37
 @activity: HIV.B6 Capture or update client history
@@ -13333,10 +13743,11 @@ define "Negative - HIV.H.DE37":
 define "Negative - HIV.H.DE37 Condition":
   [Condition: Concepts."Negative - HIV.H.DE37"]
 define "Negative - HIV.H.DE37 Observation":
-  "Negative - HIV.H.DE34 Observation" O
+  [Observation: Concepts."Negative - HIV.H.DE34"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Negative - HIV.H.DE37"
-// End of Negative - HIV.H.DE37
+/* End of Negative - HIV.H.DE37 */
+
 /*
 @dataElement: HIV.H.DE41 - HIV treatment outcome
 @activity: HIV.H3 Record outreach and result
@@ -13346,7 +13757,8 @@ define "Negative - HIV.H.DE37 Observation":
 define "HIV treatment outcome Observation":
   [Observation: Concepts."HIV treatment outcome"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HIV treatment outcome
+/* End of HIV treatment outcome */
+
 /*
 @dataElement: HIV.H.DE42 - Lost to follow-up
 @activity: HIV.H3 Record outreach and result
@@ -13359,10 +13771,11 @@ define "Lost to follow-up":
 define "Lost to follow-up Condition":
   [Condition: Concepts."Lost to follow-up"]
 define "Lost to follow-up Observation":
-  "Lost to follow-up Observation" O
+  [Observation: Concepts."Lost to follow-up"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Lost to follow-up"
-// End of Lost to follow-up
+/* End of Lost to follow-up */
+
 /*
 @dataElement: HIV.H.DE43 - Transferred out
 @activity: HIV.H3 Record outreach and result
@@ -13375,10 +13788,11 @@ define "Transferred out":
 define "Transferred out Condition":
   [Condition: Concepts."Transferred out"]
 define "Transferred out Observation":
-  "Transferred out Observation" O
+  [Observation: Concepts."Transferred out"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Transferred out"
-// End of Transferred out
+/* End of Transferred out */
+
 /*
 @dataElement: HIV.H.DE44 - Death documented
 @activity: HIV.H3 Record outreach and result
@@ -13391,10 +13805,11 @@ define "Death documented":
 define "Death documented Condition":
   [Condition: Concepts."Death documented"]
 define "Death documented Observation":
-  "Death documented Observation" O
+  [Observation: Concepts."Death documented"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Death documented"
-// End of Death documented
+/* End of Death documented */
+
 /*
 @dataElement: HIV.H.DE45 - Refused stopped treatment
 @activity: HIV.H3 Record outreach and result
@@ -13407,10 +13822,11 @@ define "Refused stopped treatment":
 define "Refused stopped treatment Condition":
   [Condition: Concepts."Refused stopped treatment"]
 define "Refused stopped treatment Observation":
-  "Refused stopped treatment Observation" O
+  [Observation: Concepts."Refused stopped treatment"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Refused stopped treatment"
-// End of Refused stopped treatment
+/* End of Refused stopped treatment */
+
 /*
 @dataElement: HIV.H.DE47 - On ART - HIV.H.DE47
 @activity: HIV.H3 Record outreach and result
@@ -13418,14 +13834,11 @@ define "Refused stopped treatment Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "On ART - HIV.H.DE47":
-  exists "On ART - HIV.H.DE47 Observation"
-    or exists "On ART - HIV.H.DE47 Condition"
-define "On ART - HIV.H.DE47 Condition":
-  [Condition: Concepts."On ART - HIV.H.DE47"]
-define "On ART - HIV.H.DE47 Observation":
   [Observation: Concepts."On ART - HIV.H.DE47"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of On ART - HIV.H.DE47
+    return O.value
+/* End of On ART - HIV.H.DE47 */
+
 /*
 @dataElement: HIV.H.DE73 - Date ART stopped - HIV.H.DE73
 @activity: HIV.H3 Record outreach and result
@@ -13433,14 +13846,11 @@ define "On ART - HIV.H.DE47 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date ART stopped - HIV.H.DE73":
-  exists "Date ART stopped - HIV.H.DE73 Observation"
-    or exists "Date ART stopped - HIV.H.DE73 Condition"
-define "Date ART stopped - HIV.H.DE73 Condition":
-  [Condition: Concepts."Date ART stopped - HIV.H.DE73"]
-define "Date ART stopped - HIV.H.DE73 Observation":
   [Observation: Concepts."Date ART stopped - HIV.H.DE73"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date ART stopped - HIV.H.DE73
+    return O.value
+/* End of Date ART stopped - HIV.H.DE73 */
+
 /*
 @dataElement: HIV.H.DE74 - Reason ART stopped - HIV.H.DE74
 @activity: HIV.H3 Record outreach and result
@@ -13450,7 +13860,8 @@ define "Date ART stopped - HIV.H.DE73 Observation":
 define "Reason ART stopped - HIV.H.DE74 Observation":
   [Observation: Concepts."Reason ART stopped - HIV.H.DE74"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Reason ART stopped - HIV.H.DE74
+/* End of Reason ART stopped - HIV.H.DE74 */
+
 /*
 @dataElement: HIV.H.DE75 - Toxicity/side effects - HIV.H.DE75
 @activity: HIV.H3 Record outreach and result
@@ -13463,10 +13874,11 @@ define "Toxicity/side effects - HIV.H.DE75":
 define "Toxicity/side effects - HIV.H.DE75 Condition":
   [Condition: Concepts."Toxicity/side effects - HIV.H.DE75"]
 define "Toxicity/side effects - HIV.H.DE75 Observation":
-  "Toxicity/side effects - HIV.H.DE74 Observation" O
+  [Observation: Concepts."Toxicity/side effects - HIV.H.DE74"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Toxicity/side effects - HIV.H.DE75"
-// End of Toxicity/side effects - HIV.H.DE75
+/* End of Toxicity/side effects - HIV.H.DE75 */
+
 /*
 @dataElement: HIV.H.DE76 - Severe illness, hospitalization - HIV.H.DE76
 @activity: HIV.H3 Record outreach and result
@@ -13479,10 +13891,11 @@ define "Severe illness, hospitalization - HIV.H.DE76":
 define "Severe illness, hospitalization - HIV.H.DE76 Condition":
   [Condition: Concepts."Severe illness, hospitalization - HIV.H.DE76"]
 define "Severe illness, hospitalization - HIV.H.DE76 Observation":
-  "Severe illness, hospitalization - HIV.H.DE74 Observation" O
+  [Observation: Concepts."Severe illness, hospitalization - HIV.H.DE74"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Severe illness, hospitalization - HIV.H.DE76"
-// End of Severe illness, hospitalization - HIV.H.DE76
+/* End of Severe illness, hospitalization - HIV.H.DE76 */
+
 /*
 @dataElement: HIV.H.DE77 - Drugs out of stock 
 @activity: HIV.H3 Record outreach and result
@@ -13495,10 +13908,11 @@ define "Drugs out of stock ":
 define "Drugs out of stock  Condition":
   [Condition: Concepts."Drugs out of stock "]
 define "Drugs out of stock  Observation":
-  "Drugs out of stock  Observation" O
+  [Observation: Concepts."Drugs out of stock "] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Drugs out of stock "
-// End of Drugs out of stock 
+/* End of Drugs out of stock  */
+
 /*
 @dataElement: HIV.H.DE78 - Client lacks finances 
 @activity: HIV.H3 Record outreach and result
@@ -13511,10 +13925,11 @@ define "Client lacks finances ":
 define "Client lacks finances  Condition":
   [Condition: Concepts."Client lacks finances "]
 define "Client lacks finances  Observation":
-  "Client lacks finances  Observation" O
+  [Observation: Concepts."Client lacks finances "] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Client lacks finances "
-// End of Client lacks finances 
+/* End of Client lacks finances  */
+
 /*
 @dataElement: HIV.H.DE79 - Excluded HIV infection in infant - HIV.H.DE79
 @activity: HIV.H3 Record outreach and result
@@ -13527,10 +13942,11 @@ define "Excluded HIV infection in infant - HIV.H.DE79":
 define "Excluded HIV infection in infant - HIV.H.DE79 Condition":
   [Condition: Concepts."Excluded HIV infection in infant - HIV.H.DE79"]
 define "Excluded HIV infection in infant - HIV.H.DE79 Observation":
-  "Excluded HIV infection in infant - HIV.H.DE74 Observation" O
+  [Observation: Concepts."Excluded HIV infection in infant - HIV.H.DE74"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Excluded HIV infection in infant - HIV.H.DE79"
-// End of Excluded HIV infection in infant - HIV.H.DE79
+/* End of Excluded HIV infection in infant - HIV.H.DE79 */
+
 /*
 @dataElement: HIV.H.DE80 - Other reason for stopping ART - HIV.H.DE80
 @activity: HIV.H3 Record outreach and result
@@ -13543,10 +13959,11 @@ define "Other reason for stopping ART - HIV.H.DE80":
 define "Other reason for stopping ART - HIV.H.DE80 Condition":
   [Condition: Concepts."Other reason for stopping ART - HIV.H.DE80"]
 define "Other reason for stopping ART - HIV.H.DE80 Observation":
-  "Other reason for stopping ART - HIV.H.DE74 Observation" O
+  [Observation: Concepts."Other reason for stopping ART - HIV.H.DE74"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other reason for stopping ART - HIV.H.DE80"
-// End of Other reason for stopping ART - HIV.H.DE80
+/* End of Other reason for stopping ART - HIV.H.DE80 */
+
 /*
 @dataElement: HIV.PRV.DE1 - At elevated risk for HIV acquisition - HIV.PRV.DE1
 @activity: HIV.B6 Capture or update client history
@@ -13554,14 +13971,11 @@ define "Other reason for stopping ART - HIV.H.DE80 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "At elevated risk for HIV acquisition - HIV.PRV.DE1":
-  exists "At elevated risk for HIV acquisition - HIV.PRV.DE1 Observation"
-    or exists "At elevated risk for HIV acquisition - HIV.PRV.DE1 Condition"
-define "At elevated risk for HIV acquisition - HIV.PRV.DE1 Condition":
-  [Condition: Concepts."At elevated risk for HIV acquisition - HIV.PRV.DE1"]
-define "At elevated risk for HIV acquisition - HIV.PRV.DE1 Observation":
   [Observation: Concepts."At elevated risk for HIV acquisition - HIV.PRV.DE1"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of At elevated risk for HIV acquisition - HIV.PRV.DE1
+    return O.value
+/* End of At elevated risk for HIV acquisition - HIV.PRV.DE1 */
+
 /*
 @dataElement: HIV.PRV.DE2 - HIV prevention intervention
 @activity: HIV.B6 Capture or update client history
@@ -13571,7 +13985,8 @@ define "At elevated risk for HIV acquisition - HIV.PRV.DE1 Observation":
 define "HIV prevention intervention Observation":
   [Observation: Concepts."HIV prevention intervention"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HIV prevention intervention
+/* End of HIV prevention intervention */
+
 /*
 @dataElement: HIV.PRV.DE3 - PrEP service
 @activity: HIV.B6 Capture or update client history
@@ -13584,10 +13999,11 @@ define "PrEP service":
 define "PrEP service Condition":
   [Condition: Concepts."PrEP service"]
 define "PrEP service Observation":
-  "PrEP service Observation" O
+  [Observation: Concepts."PrEP service"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."PrEP service"
-// End of PrEP service
+/* End of PrEP service */
+
 /*
 @dataElement: HIV.PRV.DE4 - OAMT
 @activity: HIV.B6 Capture or update client history
@@ -13600,10 +14016,11 @@ define "OAMT":
 define "OAMT Condition":
   [Condition: Concepts."OAMT"]
 define "OAMT Observation":
-  "OAMT Observation" O
+  [Observation: Concepts."OAMT"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."OAMT"
-// End of OAMT
+/* End of OAMT */
+
 /*
 @dataElement: HIV.PRV.DE5 - NSP
 @activity: HIV.B6 Capture or update client history
@@ -13616,10 +14033,11 @@ define "NSP":
 define "NSP Condition":
   [Condition: Concepts."NSP"]
 define "NSP Observation":
-  "NSP Observation" O
+  [Observation: Concepts."NSP"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."NSP"
-// End of NSP
+/* End of NSP */
+
 /*
 @dataElement: HIV.PRV.DE6 - STI services
 @activity: HIV.B6 Capture or update client history
@@ -13632,10 +14050,11 @@ define "STI services":
 define "STI services Condition":
   [Condition: Concepts."STI services"]
 define "STI services Observation":
-  "STI services Observation" O
+  [Observation: Concepts."STI services"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."STI services"
-// End of STI services
+/* End of STI services */
+
 /*
 @dataElement: HIV.PRV.DE7 - VMMC
 @activity: HIV.B6 Capture or update client history
@@ -13648,10 +14067,11 @@ define "VMMC":
 define "VMMC Condition":
   [Condition: Concepts."VMMC"]
 define "VMMC Observation":
-  "VMMC Observation" O
+  [Observation: Concepts."VMMC"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."VMMC"
-// End of VMMC
+/* End of VMMC */
+
 /*
 @dataElement: HIV.PRV.DE8 - Other - HIV.PRV.DE8
 @activity: HIV.B6 Capture or update client history
@@ -13664,10 +14084,11 @@ define "Other - HIV.PRV.DE8":
 define "Other - HIV.PRV.DE8 Condition":
   [Condition: Concepts."Other - HIV.PRV.DE8"]
 define "Other - HIV.PRV.DE8 Observation":
-  "Other - HIV.PRV.DE2 Observation" O
+  [Observation: Concepts."Other - HIV.PRV.DE2"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Other - HIV.PRV.DE8"
-// End of Other - HIV.PRV.DE8
+/* End of Other - HIV.PRV.DE8 */
+
 /*
 @dataElement: HIV.PRV.DE10 - Date accessed HIV prevention intervention
 @activity: HIV.B6 Capture or update client history
@@ -13675,14 +14096,11 @@ define "Other - HIV.PRV.DE8 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date accessed HIV prevention intervention":
-  exists "Date accessed HIV prevention intervention Observation"
-    or exists "Date accessed HIV prevention intervention Condition"
-define "Date accessed HIV prevention intervention Condition":
-  [Condition: Concepts."Date accessed HIV prevention intervention"]
-define "Date accessed HIV prevention intervention Observation":
   [Observation: Concepts."Date accessed HIV prevention intervention"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date accessed HIV prevention intervention
+    return O.value
+/* End of Date accessed HIV prevention intervention */
+
 /*
 @dataElement: HIV.PRV.DE11 - HIV status of contact
 @activity: HIV.B6 Capture or update client history
@@ -13692,7 +14110,8 @@ define "Date accessed HIV prevention intervention Observation":
 define "HIV status of contact Observation":
   [Observation: Concepts."HIV status of contact"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HIV status of contact
+/* End of HIV status of contact */
+
 /*
 @dataElement: HIV.PRV.DE12 - HIV-positive - HIV.PRV.DE12
 @activity: HIV.B6 Capture or update client history
@@ -13705,10 +14124,11 @@ define "HIV-positive - HIV.PRV.DE12":
 define "HIV-positive - HIV.PRV.DE12 Condition":
   [Condition: Concepts."HIV-positive - HIV.PRV.DE12"]
 define "HIV-positive - HIV.PRV.DE12 Observation":
-  "HIV-positive - HIV.PRV.DE11 Observation" O
+  [Observation: Concepts."HIV-positive - HIV.PRV.DE11"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV-positive - HIV.PRV.DE12"
-// End of HIV-positive - HIV.PRV.DE12
+/* End of HIV-positive - HIV.PRV.DE12 */
+
 /*
 @dataElement: HIV.PRV.DE13 - HIV-negative - HIV.PRV.DE13
 @activity: HIV.B6 Capture or update client history
@@ -13721,10 +14141,11 @@ define "HIV-negative - HIV.PRV.DE13":
 define "HIV-negative - HIV.PRV.DE13 Condition":
   [Condition: Concepts."HIV-negative - HIV.PRV.DE13"]
 define "HIV-negative - HIV.PRV.DE13 Observation":
-  "HIV-negative - HIV.PRV.DE11 Observation" O
+  [Observation: Concepts."HIV-negative - HIV.PRV.DE11"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."HIV-negative - HIV.PRV.DE13"
-// End of HIV-negative - HIV.PRV.DE13
+/* End of HIV-negative - HIV.PRV.DE13 */
+
 /*
 @dataElement: HIV.PRV.DE14 - Unknown - HIV.PRV.DE14
 @activity: HIV.B6 Capture or update client history
@@ -13737,10 +14158,11 @@ define "Unknown - HIV.PRV.DE14":
 define "Unknown - HIV.PRV.DE14 Condition":
   [Condition: Concepts."Unknown - HIV.PRV.DE14"]
 define "Unknown - HIV.PRV.DE14 Observation":
-  "Unknown - HIV.PRV.DE11 Observation" O
+  [Observation: Concepts."Unknown - HIV.PRV.DE11"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Unknown - HIV.PRV.DE14"
-// End of Unknown - HIV.PRV.DE14
+/* End of Unknown - HIV.PRV.DE14 */
+
 /*
 @dataElement: HIV.PRV.DE15 - Date injecting equipment provided
 @activity: HIV.B21 Offer prevention options
@@ -13748,14 +14170,11 @@ define "Unknown - HIV.PRV.DE14 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date injecting equipment provided":
-  exists "Date injecting equipment provided Observation"
-    or exists "Date injecting equipment provided Condition"
-define "Date injecting equipment provided Condition":
-  [Condition: Concepts."Date injecting equipment provided"]
-define "Date injecting equipment provided Observation":
   [Observation: Concepts."Date injecting equipment provided"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date injecting equipment provided
+    return O.value
+/* End of Date injecting equipment provided */
+
 /*
 @dataElement: HIV.PRV.DE17 - Date OAMT initiated
 @activity: HIV.B21 Offer prevention options
@@ -13763,14 +14182,11 @@ define "Date injecting equipment provided Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date OAMT initiated":
-  exists "Date OAMT initiated Observation"
-    or exists "Date OAMT initiated Condition"
-define "Date OAMT initiated Condition":
-  [Condition: Concepts."Date OAMT initiated"]
-define "Date OAMT initiated Observation":
   [Observation: Concepts."Date OAMT initiated"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date OAMT initiated
+    return O.value
+/* End of Date OAMT initiated */
+
 /*
 @dataElement: HIV.PRV.DE20 - Currently on OAMT
 @activity: HIV.B6 Capture or update client history
@@ -13778,14 +14194,11 @@ define "Date OAMT initiated Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Currently on OAMT":
-  exists "Currently on OAMT Observation"
-    or exists "Currently on OAMT Condition"
-define "Currently on OAMT Condition":
-  [Condition: Concepts."Currently on OAMT"]
-define "Currently on OAMT Observation":
   [Observation: Concepts."Currently on OAMT"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Currently on OAMT
+    return O.value
+/* End of Currently on OAMT */
+
 /*
 @dataElement: HIV.PRV.DE21 - Retained on OAMT
 @activity: HIV.B6 Capture or update client history
@@ -13793,14 +14206,11 @@ define "Currently on OAMT Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Retained on OAMT":
-  exists "Retained on OAMT Observation"
-    or exists "Retained on OAMT Condition"
-define "Retained on OAMT Condition":
-  [Condition: Concepts."Retained on OAMT"]
-define "Retained on OAMT Observation":
   [Observation: Concepts."Retained on OAMT"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Retained on OAMT
+    return O.value
+/* End of Retained on OAMT */
+
 /*
 @dataElement: HIV.PRV.DE25 - Date of loss to follow-up or OAMT stopped
 @activity: HIV.B6 Capture or update client history
@@ -13808,14 +14218,11 @@ define "Retained on OAMT Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date of loss to follow-up or OAMT stopped":
-  exists "Date of loss to follow-up or OAMT stopped Observation"
-    or exists "Date of loss to follow-up or OAMT stopped Condition"
-define "Date of loss to follow-up or OAMT stopped Condition":
-  [Condition: Concepts."Date of loss to follow-up or OAMT stopped"]
-define "Date of loss to follow-up or OAMT stopped Observation":
   [Observation: Concepts."Date of loss to follow-up or OAMT stopped"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date of loss to follow-up or OAMT stopped
+    return O.value
+/* End of Date of loss to follow-up or OAMT stopped */
+
 /*
 @dataElement: HIV.PRV.DE27 - Date medications prescribed - HIV.PRV.DE27
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -13823,14 +14230,11 @@ define "Date of loss to follow-up or OAMT stopped Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date medications prescribed - HIV.PRV.DE27":
-  exists "Date medications prescribed - HIV.PRV.DE27 Observation"
-    or exists "Date medications prescribed - HIV.PRV.DE27 Condition"
-define "Date medications prescribed - HIV.PRV.DE27 Condition":
-  [Condition: Concepts."Date medications prescribed - HIV.PRV.DE27"]
-define "Date medications prescribed - HIV.PRV.DE27 Observation":
   [Observation: Concepts."Date medications prescribed - HIV.PRV.DE27"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date medications prescribed - HIV.PRV.DE27
+    return O.value
+/* End of Date medications prescribed - HIV.PRV.DE27 */
+
 /*
 @dataElement: HIV.PRV.DE28 - Number of days prescribed - HIV.PRV.DE28
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
@@ -13838,14 +14242,11 @@ define "Date medications prescribed - HIV.PRV.DE27 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Number of days prescribed - HIV.PRV.DE28":
-  exists "Number of days prescribed - HIV.PRV.DE28 Observation"
-    or exists "Number of days prescribed - HIV.PRV.DE28 Condition"
-define "Number of days prescribed - HIV.PRV.DE28 Condition":
-  [Condition: Concepts."Number of days prescribed - HIV.PRV.DE28"]
-define "Number of days prescribed - HIV.PRV.DE28 Observation":
   [Observation: Concepts."Number of days prescribed - HIV.PRV.DE28"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Number of days prescribed - HIV.PRV.DE28
+    return O.value
+/* End of Number of days prescribed - HIV.PRV.DE28 */
+
 /*
 @dataElement: HIV.SRV.DE1 - HIV test date - HIV.SRV.DE1
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
@@ -13853,14 +14254,11 @@ define "Number of days prescribed - HIV.PRV.DE28 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "HIV test date - HIV.SRV.DE1":
-  exists "HIV test date - HIV.SRV.DE1 Observation"
-    or exists "HIV test date - HIV.SRV.DE1 Condition"
-define "HIV test date - HIV.SRV.DE1 Condition":
-  [Condition: Concepts."HIV test date - HIV.SRV.DE1"]
-define "HIV test date - HIV.SRV.DE1 Observation":
   [Observation: Concepts."HIV test date - HIV.SRV.DE1"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HIV test date - HIV.SRV.DE1
+    return O.value
+/* End of HIV test date - HIV.SRV.DE1 */
+
 /*
 @dataElement: HIV.SRV.DE2 - HIV test result - HIV.SRV.DE2
 @activity: HIV.B7 Test for HIV using testing algorithm
@@ -13870,7 +14268,8 @@ define "HIV test date - HIV.SRV.DE1 Observation":
 define "HIV test result - HIV.SRV.DE2 Observation":
   [Observation: Concepts."HIV test result - HIV.SRV.DE2"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HIV test result - HIV.SRV.DE2
+/* End of HIV test result - HIV.SRV.DE2 */
+
 /*
 @dataElement: HIV.SRV.DE3 - Baseline CD4 count - HIV.SRV.DE3
 @activity: HIV.D20 Diagnostics
@@ -13878,14 +14277,11 @@ define "HIV test result - HIV.SRV.DE2 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Baseline CD4 count - HIV.SRV.DE3":
-  exists "Baseline CD4 count - HIV.SRV.DE3 Observation"
-    or exists "Baseline CD4 count - HIV.SRV.DE3 Condition"
-define "Baseline CD4 count - HIV.SRV.DE3 Condition":
-  [Condition: Concepts."Baseline CD4 count - HIV.SRV.DE3"]
-define "Baseline CD4 count - HIV.SRV.DE3 Observation":
   [Observation: Concepts."Baseline CD4 count - HIV.SRV.DE3"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Baseline CD4 count - HIV.SRV.DE3
+    return O.value
+/* End of Baseline CD4 count - HIV.SRV.DE3 */
+
 /*
 @dataElement: HIV.SRV.DE4 - Date of baseline CD4 count test - HIV.SRV.DE4
 @activity: HIV.D20 Diagnostics
@@ -13893,14 +14289,11 @@ define "Baseline CD4 count - HIV.SRV.DE3 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date of baseline CD4 count test - HIV.SRV.DE4":
-  exists "Date of baseline CD4 count test - HIV.SRV.DE4 Observation"
-    or exists "Date of baseline CD4 count test - HIV.SRV.DE4 Condition"
-define "Date of baseline CD4 count test - HIV.SRV.DE4 Condition":
-  [Condition: Concepts."Date of baseline CD4 count test - HIV.SRV.DE4"]
-define "Date of baseline CD4 count test - HIV.SRV.DE4 Observation":
   [Observation: Concepts."Date of baseline CD4 count test - HIV.SRV.DE4"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date of baseline CD4 count test - HIV.SRV.DE4
+    return O.value
+/* End of Date of baseline CD4 count test - HIV.SRV.DE4 */
+
 /*
 @dataElement: HIV.SRV.DE5 - HIV clinical stage - HIV.SRV.DE5
 @activity: HIV.D8 Capture or update client history
@@ -13910,7 +14303,8 @@ define "Date of baseline CD4 count test - HIV.SRV.DE4 Observation":
 define "HIV clinical stage - HIV.SRV.DE5 Observation":
   [Observation: Concepts."HIV clinical stage - HIV.SRV.DE5"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HIV clinical stage - HIV.SRV.DE5
+/* End of HIV clinical stage - HIV.SRV.DE5 */
+
 /*
 @dataElement: HIV.SRV.DE6 - ART start date - HIV.SRV.DE6
 @activity: HIV.B8 Provide post-test counselling
@@ -13918,14 +14312,11 @@ define "HIV clinical stage - HIV.SRV.DE5 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "ART start date - HIV.SRV.DE6":
-  exists "ART start date - HIV.SRV.DE6 Observation"
-    or exists "ART start date - HIV.SRV.DE6 Condition"
-define "ART start date - HIV.SRV.DE6 Condition":
-  [Condition: Concepts."ART start date - HIV.SRV.DE6"]
-define "ART start date - HIV.SRV.DE6 Observation":
   [Observation: Concepts."ART start date - HIV.SRV.DE6"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of ART start date - HIV.SRV.DE6
+    return O.value
+/* End of ART start date - HIV.SRV.DE6 */
+
 /*
 @dataElement: HIV.SRV.DE7 - Currently pregnant - HIV.SRV.DE7
 @activity: HIV.B6 Capture or update client history
@@ -13933,14 +14324,11 @@ define "ART start date - HIV.SRV.DE6 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Currently pregnant - HIV.SRV.DE7":
-  exists "Currently pregnant - HIV.SRV.DE7 Observation"
-    or exists "Currently pregnant - HIV.SRV.DE7 Condition"
-define "Currently pregnant - HIV.SRV.DE7 Condition":
-  [Condition: Concepts."Currently pregnant - HIV.SRV.DE7"]
-define "Currently pregnant - HIV.SRV.DE7 Observation":
   [Observation: Concepts."Currently pregnant - HIV.SRV.DE7"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Currently pregnant - HIV.SRV.DE7
+    return O.value
+/* End of Currently pregnant - HIV.SRV.DE7 */
+
 /*
 @dataElement: HIV.SRV.DE8 - CD4 count - HIV.SRV.DE8
 @activity: HIV.D20 Diagnostics
@@ -13948,14 +14336,11 @@ define "Currently pregnant - HIV.SRV.DE7 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "CD4 count - HIV.SRV.DE8":
-  exists "CD4 count - HIV.SRV.DE8 Observation"
-    or exists "CD4 count - HIV.SRV.DE8 Condition"
-define "CD4 count - HIV.SRV.DE8 Condition":
-  [Condition: Concepts."CD4 count - HIV.SRV.DE8"]
-define "CD4 count - HIV.SRV.DE8 Observation":
   [Observation: Concepts."CD4 count - HIV.SRV.DE8"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of CD4 count - HIV.SRV.DE8
+    return O.value
+/* End of CD4 count - HIV.SRV.DE8 */
+
 /*
 @dataElement: HIV.SRV.DE12 - Date of viral load sample collection - HIV.SRV.DE12
 @activity: HIV.D10 Counsel returning client
@@ -13963,14 +14348,11 @@ define "CD4 count - HIV.SRV.DE8 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Date of viral load sample collection - HIV.SRV.DE12":
-  exists "Date of viral load sample collection - HIV.SRV.DE12 Observation"
-    or exists "Date of viral load sample collection - HIV.SRV.DE12 Condition"
-define "Date of viral load sample collection - HIV.SRV.DE12 Condition":
-  [Condition: Concepts."Date of viral load sample collection - HIV.SRV.DE12"]
-define "Date of viral load sample collection - HIV.SRV.DE12 Observation":
   [Observation: Concepts."Date of viral load sample collection - HIV.SRV.DE12"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Date of viral load sample collection - HIV.SRV.DE12
+    return O.value
+/* End of Date of viral load sample collection - HIV.SRV.DE12 */
+
 /*
 @dataElement: HIV.SRV.DE13 - Viral load test result - HIV.SRV.DE13
 @activity: HIV.D20 Diagnostics
@@ -13978,14 +14360,11 @@ define "Date of viral load sample collection - HIV.SRV.DE12 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Viral load test result - HIV.SRV.DE13":
-  exists "Viral load test result - HIV.SRV.DE13 Observation"
-    or exists "Viral load test result - HIV.SRV.DE13 Condition"
-define "Viral load test result - HIV.SRV.DE13 Condition":
-  [Condition: Concepts."Viral load test result - HIV.SRV.DE13"]
-define "Viral load test result - HIV.SRV.DE13 Observation":
   [Observation: Concepts."Viral load test result - HIV.SRV.DE13"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Viral load test result - HIV.SRV.DE13
+    return O.value
+/* End of Viral load test result - HIV.SRV.DE13 */
+
 /*
 @dataElement: HIV.SRV.DE15 - Visit date - HIV.SRV.DE15
 @activity: HIV.A2 Gather client details
@@ -13993,14 +14372,11 @@ define "Viral load test result - HIV.SRV.DE13 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Visit date - HIV.SRV.DE15":
-  exists "Visit date - HIV.SRV.DE15 Observation"
-    or exists "Visit date - HIV.SRV.DE15 Condition"
-define "Visit date - HIV.SRV.DE15 Condition":
-  [Condition: Concepts."Visit date - HIV.SRV.DE15"]
-define "Visit date - HIV.SRV.DE15 Observation":
   [Observation: Concepts."Visit date - HIV.SRV.DE15"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Visit date - HIV.SRV.DE15
+    return O.value
+/* End of Visit date - HIV.SRV.DE15 */
+
 /*
 @dataElement: HIV.SRV.DE18 - ANC contact date - HIV.SRV.DE18
 @activity: HIV.E1 Capture or update mother's history
@@ -14008,14 +14384,11 @@ define "Visit date - HIV.SRV.DE15 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "ANC contact date - HIV.SRV.DE18":
-  exists "ANC contact date - HIV.SRV.DE18 Observation"
-    or exists "ANC contact date - HIV.SRV.DE18 Condition"
-define "ANC contact date - HIV.SRV.DE18 Condition":
-  [Condition: Concepts."ANC contact date - HIV.SRV.DE18"]
-define "ANC contact date - HIV.SRV.DE18 Observation":
   [Observation: Concepts."ANC contact date - HIV.SRV.DE18"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of ANC contact date - HIV.SRV.DE18
+    return O.value
+/* End of ANC contact date - HIV.SRV.DE18 */
+
 /*
 @dataElement: HIV.SRV.DE20 - HIV-exposed infant or child - HIV.SRV.DE20
 @activity: HIV.F6 Check whether infant/child had HIV exposure
@@ -14023,14 +14396,11 @@ define "ANC contact date - HIV.SRV.DE18 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "HIV-exposed infant or child - HIV.SRV.DE20":
-  exists "HIV-exposed infant or child - HIV.SRV.DE20 Observation"
-    or exists "HIV-exposed infant or child - HIV.SRV.DE20 Condition"
-define "HIV-exposed infant or child - HIV.SRV.DE20 Condition":
-  [Condition: Concepts."HIV-exposed infant or child - HIV.SRV.DE20"]
-define "HIV-exposed infant or child - HIV.SRV.DE20 Observation":
   [Observation: Concepts."HIV-exposed infant or child - HIV.SRV.DE20"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HIV-exposed infant or child - HIV.SRV.DE20
+    return O.value
+/* End of HIV-exposed infant or child - HIV.SRV.DE20 */
+
 /*
 @dataElement: HIV.SRV.DE21 - Test result of HIV assay 1 - HIV.SRV.DE21
 @activity: HIV.E4 Test mother for HIV using testing algorithm
@@ -14040,7 +14410,8 @@ define "HIV-exposed infant or child - HIV.SRV.DE20 Observation":
 define "Test result of HIV assay 1 - HIV.SRV.DE21 Observation":
   [Observation: Concepts."Test result of HIV assay 1 - HIV.SRV.DE21"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Test result of HIV assay 1 - HIV.SRV.DE21
+/* End of Test result of HIV assay 1 - HIV.SRV.DE21 */
+
 /*
 @dataElement: HIV.SRV.DE22 - Final diagnosis of HIV-exposed infant - HIV.SRV.DE22
 @activity: HIV.F20 Record infant's/child's final HIV diagnosis
@@ -14050,7 +14421,8 @@ define "Test result of HIV assay 1 - HIV.SRV.DE21 Observation":
 define "Final diagnosis of HIV-exposed infant - HIV.SRV.DE22 Observation":
   [Observation: Concepts."Final diagnosis of HIV-exposed infant - HIV.SRV.DE22"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Final diagnosis of HIV-exposed infant - HIV.SRV.DE22
+/* End of Final diagnosis of HIV-exposed infant - HIV.SRV.DE22 */
+
 /*
 @dataElement: HIV.Config.DE6 - Malaria-endemic setting
 @activity: HIV.Configuration
@@ -14058,14 +14430,11 @@ define "Final diagnosis of HIV-exposed infant - HIV.SRV.DE22 Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Malaria-endemic setting":
-  exists "Malaria-endemic setting Observation"
-    or exists "Malaria-endemic setting Condition"
-define "Malaria-endemic setting Condition":
-  [Condition: Concepts."Malaria-endemic setting"]
-define "Malaria-endemic setting Observation":
   [Observation: Concepts."Malaria-endemic setting"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Malaria-endemic setting
+    return O.value
+/* End of Malaria-endemic setting */
+
 /*
 @dataElement: HIV.Config.DE12 - HIV burden of the setting
 @activity: HIV.Configuration
@@ -14075,7 +14444,8 @@ define "Malaria-endemic setting Observation":
 define "HIV burden of the setting Observation":
   [Observation: Concepts."HIV burden of the setting"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HIV burden of the setting
+/* End of HIV burden of the setting */
+
 /*
 @dataElement: HIV.Config.DE13 - High HIV burden setting
 @activity: HIV.Configuration
@@ -14088,10 +14458,11 @@ define "High HIV burden setting":
 define "High HIV burden setting Condition":
   [Condition: Concepts."High HIV burden setting"]
 define "High HIV burden setting Observation":
-  "High HIV burden setting Observation" O
+  [Observation: Concepts."High HIV burden setting"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."High HIV burden setting"
-// End of High HIV burden setting
+/* End of High HIV burden setting */
+
 /*
 @dataElement: HIV.Config.DE14 - Low HIV burden setting
 @activity: HIV.Configuration
@@ -14104,10 +14475,11 @@ define "Low HIV burden setting":
 define "Low HIV burden setting Condition":
   [Condition: Concepts."Low HIV burden setting"]
 define "Low HIV burden setting Observation":
-  "Low HIV burden setting Observation" O
+  [Observation: Concepts."Low HIV burden setting"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."Low HIV burden setting"
-// End of Low HIV burden setting
+/* End of Low HIV burden setting */
+
 /*
 @dataElement: HIV.Config.DE15 - HPV DNA testing operational at the health facility
 @activity: HIV.Configuration
@@ -14115,14 +14487,11 @@ define "Low HIV burden setting Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "HPV DNA testing operational at the health facility":
-  exists "HPV DNA testing operational at the health facility Observation"
-    or exists "HPV DNA testing operational at the health facility Condition"
-define "HPV DNA testing operational at the health facility Condition":
-  [Condition: Concepts."HPV DNA testing operational at the health facility"]
-define "HPV DNA testing operational at the health facility Observation":
   [Observation: Concepts."HPV DNA testing operational at the health facility"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of HPV DNA testing operational at the health facility
+    return O.value
+/* End of HPV DNA testing operational at the health facility */
+
 /*
 @dataElement: HIV.Config.DE19 - Other priority populations
 @activity: HIV.Configuration
@@ -14132,7 +14501,8 @@ define "HPV DNA testing operational at the health facility Observation":
 define "Other priority populations Observation":
   [Observation: Concepts."Other priority populations"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Other priority populations
+/* End of Other priority populations */
+
 /*
 @dataElement: HIV.Config.DE20 - Reporting period end date
 @activity: HIV.Configuration
@@ -14140,14 +14510,11 @@ define "Other priority populations Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Reporting period end date":
-  exists "Reporting period end date Observation"
-    or exists "Reporting period end date Condition"
-define "Reporting period end date Condition":
-  [Condition: Concepts."Reporting period end date"]
-define "Reporting period end date Observation":
   [Observation: Concepts."Reporting period end date"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Reporting period end date
+    return O.value
+/* End of Reporting period end date */
+
 /*
 @dataElement: HIV.Config.DE21 - Reporting period start date
 @activity: HIV.Configuration
@@ -14155,14 +14522,11 @@ define "Reporting period end date Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Reporting period start date":
-  exists "Reporting period start date Observation"
-    or exists "Reporting period start date Condition"
-define "Reporting period start date Condition":
-  [Condition: Concepts."Reporting period start date"]
-define "Reporting period start date Observation":
   [Observation: Concepts."Reporting period start date"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Reporting period start date
+    return O.value
+/* End of Reporting period start date */
+
 /*
 @dataElement: HIV.Config.DE22 - Reporting date
 @activity: HIV.Configuration
@@ -14170,14 +14534,11 @@ define "Reporting period start date Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Reporting date":
-  exists "Reporting date Observation"
-    or exists "Reporting date Condition"
-define "Reporting date Condition":
-  [Condition: Concepts."Reporting date"]
-define "Reporting date Observation":
   [Observation: Concepts."Reporting date"] O
     where O.status in { 'final', 'amended', 'corrected' }
-// End of Reporting date
+    return O.value
+/* End of Reporting date */
+
 
 /*
  * Custom elements and logic for use DT and IND CQL Libraries

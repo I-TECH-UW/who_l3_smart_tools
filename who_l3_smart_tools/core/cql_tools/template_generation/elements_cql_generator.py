@@ -6,6 +6,7 @@ from who_l3_smart_tools.utils.cql_helpers import (
     create_cql_concept_dictionaries,
     get_concept_label,
     get_dak_name,
+    sanitize_description,
 )
 
 # Initialize Jinja2 environment
@@ -51,20 +52,17 @@ define "{{element['label']}}":
 define "{{element['label']}} Condition":
   [Condition: Concepts."{{element['label']}}"]
 define "{{element['label']}} Observation":
-  "{{element['collection_label']}} Observation" O
+  [Observation: Concepts."{{element['collection_label']}}"] O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."{{element['label']}}"
 {% else %}
 define "{{element['label']}}":
-  exists "{{element['label']}} Observation"
-    or exists "{{element['label']}} Condition"
-define "{{element['label']}} Condition":
-  [Condition: Concepts."{{element['label']}}"]
-define "{{element['label']}} Observation":
   [Observation: Concepts."{{element['label']}}"] O
     where O.status in { 'final', 'amended', 'corrected' }
+    return O.value
 {% endif %}
-// End of {{element['label']}}
+/* End of {{element['label']}} */
+
 {% endfor %}
 
 /*
@@ -114,17 +112,12 @@ define "{{element['label']}} Observation":
     where O.effective.ToInterval() during "Measurement Period"
 {% else %}
 define "{{element['label']}}":
-  exists "{{element['label']}} Observation"
-    or exists "{{element['label']}} Condition"
-define "{{element['label']}} Condition":
-  Elements."{{element['label']}} Condition" C
-    where C.toPrevalenceInterval() overlaps before "Measurement Period"
-      or C.toPrevalenceInterval() overlaps after "Measurement Period"
-define "{{element['label']}} Observation":
-  Elements."{{element['label']}} Observation" O
+  Elements."{{element['label']}}" O
     where O.effective.ToInterval() during "Measurement Period"
+    return O.value
 {% endif %}
-// End of {{element['label']}}
+/* End of {{element['label']}} */
+
 {% endfor %}
 
 /*
@@ -176,18 +169,14 @@ define "{{element['label']}} Observation":
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
 {% else %}
-define "{{element['label']}}":
-  exists "{{element['label']}} Observation"
-    or exists "{{element['label']}} Condition"
-define "{{element['label']}} Condition":
-  Elements."{{element['label']}} Condition" C
-    where C.prevalenceInterval() starts on or before Today
 define "{{element['label']}} Observation":
-  Elements."{{element['label']}} Observation" O
+  Elements."{{element['label']}}" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
+    return O.value
 {% endif %}
-// End of {{element['label']}}
+/* End of {{element['label']}} */
+
 {% endfor %}
 
 /*
@@ -309,8 +298,8 @@ class ElementsCqlGenerator:
             element_dict = {
                 "dak_id": concept_id,
                 "label": label_str,
-                "activity": concept_details["activity"],
-                "description": concept_details["description"],
+                "activity": sanitize_description(concept_details["activity"]),
+                "description": sanitize_description(concept_details["description"]),
                 "data_type": concept_details["data_type"],
                 "collection_label": collection_label_str,
             }
