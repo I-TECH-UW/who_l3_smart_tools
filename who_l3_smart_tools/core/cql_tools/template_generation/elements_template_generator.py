@@ -97,27 +97,30 @@ context Patient
 // TODO: Replace placeholder with relevant CQL logic
 {% if element['data_type'] == 'Coding' %}
 define "{{element['label']}} Observation":
-  [Observation: Concepts."{{element['label']}}"] O
-    where O.status in { 'final', 'amended', 'corrected' }
+  Elements."{{element['label']}} Observation" O
+    where O.effective.ToInterval() during "Measurement Period"
 {% elif element['data_type'] == 'Codes' %}
 define "{{element['label']}}":
   exists "{{element['label']}} Condition"
     or exists "{{element['label']}} Observation"
 define "{{element['label']}} Condition":
-  [Condition: Concepts."{{element['label']}}"]
+  Elements."{{element['label']}} Condition" C
+    where C.toPrevalenceInterval() overlaps before "Measurement Period"
+      or C.toPrevalenceInterval() overlaps after "Measurement Period"
 define "{{element['label']}} Observation":
-  "{{element['collection_label']}} Observation" O
-    where O.status in { 'final', 'amended', 'corrected' }
-      and O.value ~ Concepts."{{element['label']}}"
+  Elements."{{element['label']}} Observation" O
+    where O.effective.ToInterval() during "Measurement Period"
 {% else %}
 define "{{element['label']}}":
   exists "{{element['label']}} Observation"
     or exists "{{element['label']}} Condition"
 define "{{element['label']}} Condition":
-  [Condition: Concepts."{{element['label']}}"]
+  Elements."{{element['label']}} Condition" C
+    where C.toPrevalenceInterval() overlaps before "Measurement Period"
+      or C.toPrevalenceInterval() overlaps after "Measurement Period"
 define "{{element['label']}} Observation":
-  [Observation: Concepts."{{element['label']}}"] O
-    where O.status in { 'final', 'amended', 'corrected' }
+  Elements."{{element['label']}} Observation" O
+    where O.effective.ToInterval() during "Measurement Period"
 {% endif %}
 // End of {{element['label']}}
 {% endfor %}
