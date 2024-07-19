@@ -7,7 +7,7 @@ import re
 import stringcase
 import sys
 from typing import Any, Callable, Dict, List, ParamSpec, Tuple, TypeVar, Union, cast
-from who_l3_smart_tools.core.logical_models.parser import (
+from who_l3_smart_tools.core.models.logical_model import (
     Code,
     CodeSystem,
     DataElementRecord,
@@ -30,7 +30,8 @@ P = ParamSpec("P")
 
 
 def ensure_parsed(fn: Callable[P, T]) -> Callable[P, T]:
-    """Decorator for functions of the AbstractLogicalModelParser to ensure that the model is parsed before they are invoked"""
+    """Decorator for functions of the AbstractLogicalModelParser to ensure that the model is
+    parsed before they are invoked"""
 
     def ensure_parsed_handler(*args: Any, **kwargs: Any) -> T:
         self = args[0]
@@ -68,7 +69,8 @@ class LogicalModelParser:
         self.__inflect_engine = inflect.engine()
 
     def parse_logical_model(self):
-        """Parses the data elements from the input file into a series of DataElementRecords. These are used by other methods to turn into useful output."""
+        """Parses the data elements from the input file into a series of DataElementRecords.
+        These are used by other methods to turn into useful output."""
         # Load the Excel file
         dd_xls: Dict[str, DataFrame] = pd.read_excel(self.input_file, sheet_name=None)
 
@@ -198,10 +200,17 @@ class LogicalModelParser:
                     current_valueset = data_element
 
                 self.logical_model.data_element_records[data_element_id] = data_element
-                if data_element.data_element_label in self.logical_model.data_element_records_by_name:
-                    self.logical_model.data_element_records_by_name[data_element.data_element_label].append(data_element)
+                if (
+                    data_element.data_element_label
+                    in self.logical_model.data_element_records_by_name
+                ):
+                    self.logical_model.data_element_records_by_name[
+                        data_element.data_element_label
+                    ].append(data_element)
                 else:
-                    self.logical_model.data_element_records_by_name[data_element.data_element_label] = [data_element]
+                    self.logical_model.data_element_records_by_name[
+                        data_element.data_element_label
+                    ] = [data_element]
 
     @ensure_parsed
     def generate_terminology_resources(self) -> Tuple[CodeSystem, Dict[str, ValueSet]]:
