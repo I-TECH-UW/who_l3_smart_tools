@@ -67,6 +67,8 @@ class CqlFileGenerator:
 
             # Write valuesets for Coding data types, and label as `Grouping`
             for concept_id, concept_details in self.cql_concept_dictionary.items():
+                if concept_details["linkage_type"] is None:
+                    continue
                 if concept_details["data_type"] == "Coding":
                     label_str = get_concept_label(
                         label_frequency,
@@ -82,6 +84,8 @@ class CqlFileGenerator:
 
             # Write codes
             for concept_id, concept_details in self.cql_concept_dictionary.items():
+                if concept_details["linkage_type"] is None:
+                    continue
                 label_str = get_concept_label(
                     label_frequency,
                     label_sheet_frequency,

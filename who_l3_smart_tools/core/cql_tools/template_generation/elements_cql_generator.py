@@ -53,9 +53,16 @@ define "{{element['label']}}":
 define "{{element['label']}} Condition":
   [Condition: Concepts."{{element['concept_label']}}"]
 define "{{element['label']}} Observation":
-  [Observation: Concepts."{{element['collection_concept_label']}}"] O
+  "{{element['collection_label']}} Observation" O
     where O.status in { 'final', 'amended', 'corrected' }
       and O.value ~ Concepts."{{element['concept_label']}}"
+{% elif element['data_type'] == 'Boolean' %}
+define "{{element['label']}}":
+  exists "{{element['label']}} Observation"
+define "{{element['label']}} Observation":
+  [Observation: Concepts."{{element['concept_label']}}"] O
+    where O.status in { 'final', 'amended', 'corrected' }
+      and O.value is true
 {% else %}
 define "{{element['label']}}":
   [Observation: Concepts."{{element['concept_label']}}"] O
@@ -171,7 +178,7 @@ define "{{element['label']}} Observation":
       or O.effective.toInterval() starts on or before Today
 {% else %}
 define "{{element['label']}} Observation":
-  Elements."{{element['label']}}" O
+  Elements."{{element['label']}} Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
     return O.value
@@ -279,6 +286,10 @@ class ElementsCqlGenerator:
         encounter_elements: list[dict] = []
 
         for concept_id, concept_details in self.cql_concept_dictionary.items():
+            # Only export elements that are linked to an indicator or decision table
+            if concept_details["linkage_type"] is None:
+                continue
+
             element_label = get_element_label(
                 label_frequency,
                 label_sheet_frequency,
@@ -288,26 +299,25 @@ class ElementsCqlGenerator:
 
             concept_label = get_concept_label(
                 label_frequency,
-                label_sheet_frequency,
-                concept_details["concept_id"],
+                concept_id,
                 concept_details,
             )
 
             if concept_details["data_type"] == "Codes":
+                parent_id = concept_details["parent_coding_id"]
                 collection_concept_label = get_concept_label(
                     label_frequency,
-                    label_sheet_frequency,
-                    concept_details["parent_coding_id"],
-                    concept_details,
+                    parent_id,
+                    self.cql_concept_dictionary[parent_id],
                 )
             else:
                 collection_concept_label = None
 
             element_dict = {
                 "dak_id": concept_id,
-                "element_label": element_label,
+                "label": element_label,
                 "concept_label": concept_label,
-                "name": concept_details["name"],
+                "name": concept_details["label"],
                 "activity": sanitize_description(concept_details["activity"]),
                 "description": sanitize_description(concept_details["description"]),
                 "data_type": concept_details["data_type"],

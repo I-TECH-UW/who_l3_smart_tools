@@ -121,7 +121,8 @@ def update_concepts_and_linkages(
 
     Returns: None
     """
-    sheet_name_pattern = re.compile(r"(\w+)\.(\w+)\s(\w+)")
+    sheet_name_pattern = re.compile(r"\w+\.[\w-]+\s(\w+)")
+    sheet_name_alt_pattern = re.compile(r"\w+\.(\w+)")
     sheet_readable_name = None
 
     # Parse row data
@@ -129,13 +130,28 @@ def update_concepts_and_linkages(
     cds = row["Linkages to Decision Support Tables"]
     indicators = row["Linkages to Aggregate Indicators"]
 
+    # Determine linkage type
+    linkage_type = None
+    if cds and isinstance(cds, str) and not pd.isna(cds):
+        linkage_type = "dt"
+    if indicators and isinstance(indicators, str) and not pd.isna(indicators):
+        if linkage_type:
+            linkage_type = "both"
+        else:
+            linkage_type = "indicator"
+
     # Get human-readable part of sheet name
     sheet_name_match = sheet_name_pattern.search(sheet_name)
 
-    if sheet_name_match:
-        sheet_readable_name = sheet_name_match.group(3)
-    else:
-        raise ValueError("Sheet name does not match expected pattern")
+    # Handle alternate sheet name pattern
+    if not sheet_name_match:
+        sheet_name_match = sheet_name_alt_pattern.search(sheet_name)
+        if sheet_name_match:
+            sheet_readable_name = sheet_name_match.group(1)
+        else:
+            raise ValueError("Sheet name does not match expected pattern")
+
+    sheet_readable_name = sheet_name_match.group(1)
 
     # Handle label value == "None"
     if row["Data Element Label"] is None or pd.isna(row["Data Element Label"]):
@@ -149,6 +165,7 @@ def update_concepts_and_linkages(
         "data_type": row["Data Type"],
         "activity": row["Activity ID"],
         "description": row["Description and Definition"],
+        "linkage_type": linkage_type,
     }
 
     if row["Data Type"] == "Codes":
@@ -157,28 +174,15 @@ def update_concepts_and_linkages(
         concept_dict_entry["parent_coding_id"] = lastCodingId
 
     # Select row if Linkage to CDS or Indicator is not empty
-    if cds and isinstance(cds, str) and not pd.isna(cds):
-        # Grab: Data Element ID, Data Element Label, Description and Definition
-        # and index by indicator / cds ids
-
-        # Add to concept dictionary if not already present
-        if data_element_id not in cql_concept_dictionary:
-            concept_dict_entry["linkage_type"] = "dt"
-            cql_concept_dictionary[data_element_id] = concept_dict_entry
-
+    if linkage_type == "dt" or linkage_type == "both":
         # Parse linkages
         linkages.extend([item.strip() for item in cds.split(",")])
 
-    if indicators and isinstance(indicators, str) and not pd.isna(indicators):
-        # Add to concept dictionary if not already present
-        if data_element_id not in cql_concept_dictionary:
-            concept_dict_entry["linkage_type"] = "indicator"
-            cql_concept_dictionary[data_element_id] = concept_dict_entry
-        else:
-            # If already added during CDS, update linkage type to both
-            cql_concept_dictionary[data_element_id]["linkage_type"] = "both"
-
+    if linkage_type == "indicator" or linkage_type == "both":
         linkages.extend([item.strip() for item in indicators.split(",")])
+
+    cql_concept_dictionary[data_element_id] = concept_dict_entry
+
     return None
 
 
@@ -411,30 +415,23 @@ def count_label_frequencies(cql_concept_dictionary):
     return label_frequency, label_sheet_frequency
 
 
-def get_concept_label(
-    label_frequency, label_sheet_frequency, concept_id, concept_details
-):
+def get_concept_label(label_frequency, concept_id, concept_details):
     if label_frequency[concept_details["label"]] == 1:
         label_str = concept_details["label"]
     else:
         label_str = f"{concept_details['label']} - {concept_id}"
 
-    # if (
-    #     label_sheet_frequency[concept_details["label"], concept_details["sheet"]]
-    #     > 1
-    # ):
-    #     label_str += f" - {concept_id}"
     return label_str
 
 
 def get_element_label(
     label_frequency, label_sheet_frequency, concept_id, concept_details
 ):
-    if label_frequency[concept_details["label"]] == 1:
-        label_str = concept_details["label"]
-    else:
-        label_str = f"{concept_details['label']} - {concept_id}"
+    split_id = concept_id.split(".")
 
     if label_sheet_frequency[concept_details["label"], concept_details["sheet"]] > 1:
-        label_str += f" - {concept_id}"
+        label_str = f"{concept_details['label']} ({concept_details['sheet_name']}|{split_id[1]}{split_id[2]})"
+    else:
+        label_str = f"{concept_details['label']} ({concept_details['sheet_name']})"
+
     return label_str
