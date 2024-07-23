@@ -1,0 +1,12 @@
+CodeSystem: {{code_system}}
+Title: "{{title}}"
+Description: "{{description}}"
+* ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-shareablecodesystem"
+* ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablecodesystem"
+* ^meta.profile[+] = "http://smart.who.int/base/StructureDefinition/SGCodeSystem"
+* ^experimental = true
+* ^caseSensitive = false
+
+{% for code in codes %}
+* #{{code.code}} "{{code.label}}" "{{code.description}}
+{% endfor %}

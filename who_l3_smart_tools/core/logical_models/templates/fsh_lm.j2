@@ -1,0 +1,28 @@
+{% for invariant in invariants %}
+Invariant:    {{invariant.id}}
+Description:  "{{invariant.description}}"
+Expression:   "<NOT-IMPLEMENTED>"
+Severity:     #error
+
+{% endfor %}
+Logical: {{clean_name}}
+Title: "{{sheet_name}}"
+Description: "{{description}}"
+* ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-shareablestructuredefinition"
+* ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablestructuredefinition"
+* ^meta.profile[+] = "http://smart.who.int/base/StructureDefinition/SGLogicalModel"
+* ^extension[http://hl7.org/fhir/tools/StructureDefinition/logical-target].valueBoolean = true
+* ^experimental = true
+* ^name = "{{clean_name}}"
+* ^status = #active
+
+{% for element in elements%}
+* {{element.element_name}} {{element.cardinality}} {{element.data_type}} "{{element.label}}" "{{element.description}}"
+{% if element.validation_id %}
+  * obeys {{element.validation_id}}
+{% endif %}
+  * ^code[+] = {{element.code}}
+{% if element.valueset %}
+* {{element.valueset.label}} from {{element.valueset.valueset}}
+{% endif %}
+{% endfor %}

@@ -1,0 +1,14 @@
+ValueSet: {{value_set}}
+Title: "{{title}}"
+Description: "{{description}}"
+* ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-shareablevalueset"
+* ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablevalueset"
+* ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-computablevalueset"
+* ^meta.profile[+] = "http://smart.who.int/base/StructureDefinition/SGValueSet"
+* ^status = #active
+* ^experimental = true
+* ^name = "{{name}}"
+
+{% for code in codes %}
+* {code} "{label}"
+{% endfor %}
