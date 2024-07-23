@@ -521,12 +521,10 @@ class LogicalModelAndTerminologyGenerator:
         Returns:
             None
         """
-        title = ("WHO SMART HIV Concepts CodeSystem",)
+        title = "WHO SMART HIV Concepts CodeSystem"
         description = (
-            (
-                "This code system defines the concepts used in the"
-                "World Health Organization SMART HIV DAK"
-            ),
+            "This code system defines the concepts used in the"
+            "World Health Organization SMART HIV DAK"
         )
 
         code_system_output_file = os.path.join(self.codesystem_dir, "HIVConcepts.fsh")

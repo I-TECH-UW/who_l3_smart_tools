@@ -10,5 +10,5 @@ Description: "{{description}}"
 * ^name = "{{name}}"
 
 {% for code in codes %}
-* {code} "{label}"
+* {{code.code}} "{{code.label}}"
 {% endfor %}
