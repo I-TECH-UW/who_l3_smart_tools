@@ -47,8 +47,8 @@ jinja2_env = Environment(
 inflect_engine = inflect.engine()
 
 
-# pylint: disable=too-many-locals,too-few-public-methods
-class LogicalModelAndTerminologyGenerator:
+# pylint: disable=too-many-locals,too-few-public-methods,too-many-instance-attributes
+class LogicalModelGenerator:
     """
     Class for generating FSH logical models and terminologies based on an input Excel file.
 
@@ -71,6 +71,7 @@ class LogicalModelAndTerminologyGenerator:
         self.valuesets_dir = os.path.join(output_dir, "valuesets")
         self.invariants_dict = defaultdict(Counter)
         self.active_valueset = None
+        self.workbook = load_workbook(self.input_file)
 
     # pylint: disable=too-many-branches,too-many-statements
     def generate_fsh_from_excel(self):
@@ -81,11 +82,8 @@ class LogicalModelAndTerminologyGenerator:
             if not os.path.exists(_dir):
                 os.makedirs(_dir)
 
-        # Load the Excel file
-        workbook = load_workbook(self.input_file)
-
         # Process the Cover sheet
-        cover_info = self.process_cover(workbook["COVER"])
+        cover_info = self.process_cover()
 
         # Code system name
         code_system = "HIVConcepts"
@@ -97,9 +95,9 @@ class LogicalModelAndTerminologyGenerator:
         # Iterate over each sheet in the Excel file and generate a FSH logical model for each one
 
         # pylint: disable=too-many-nested-blocks
-        for sheet_name in workbook.sheetnames:
+        for sheet_name in self.workbook.sheetnames:
             if sheet_name.startswith("HIV."):
-                sheet = workbook[sheet_name]
+                sheet = self.workbook[sheet_name]
 
                 # hard-coded, but the page labelled E-F has no F codes
                 if sheet_name == "HIV.E-F PMTCT":
@@ -109,9 +107,6 @@ class LogicalModelAndTerminologyGenerator:
 
                 clean_name = stringcase.alphanumcase(cleaned_sheet_name)
                 short_name = (cleaned_sheet_name.split(" ")[0]).split(".")
-
-                # Initialize any ValueSets
-                valuesets = []
 
                 # Track element names
                 existing_elements = defaultdict(Counter)
@@ -135,7 +130,6 @@ class LogicalModelAndTerminologyGenerator:
                     code_system,
                     invariants,
                     codes,
-                    valuesets,
                     existing_elements,
                     validation_lookup,
                     previous_element_label,
@@ -145,8 +139,7 @@ class LogicalModelAndTerminologyGenerator:
         if codes:
             self.render_codes(codes, code_system)
 
-    ### Helpers
-    def process_cover(self, cover):
+    def process_cover(self):
         """
         Process the cover sheet of the logical model.
 
@@ -159,26 +152,19 @@ class LogicalModelAndTerminologyGenerator:
         cover_data = {}
 
         seen_header = False
+        cover = self.workbook["COVER"]
         for row in cover.iter_rows(values_only=True):
             if not seen_header:
-                if (
-                    row[0]
-                    and isinstance(row[0], str)
-                    and re.match(r"sheet\s*name", row[0], re.IGNORECASE)
-                ):
+                if row[0] and re.match(r"sheet\s*name", row[0], re.IGNORECASE):
                     seen_header = True
                 continue
-
-            if isinstance(row[0], str) and row[0]:
-                key = row[0].upper()
-                first_dot_idx = key.find(".")
-                if len(key) > first_dot_idx >= 0:
-                    if key[first_dot_idx + 1].isspace():
-                        key = (
-                            key[0:first_dot_idx]
-                            + "."
-                            + key[first_dot_idx + 1 :].lstrip()
-                        )
+            if not row or not row[0]:
+                continue
+            key = row[0].upper()
+            first_dot_idx = key.find(".")
+            if len(key) > first_dot_idx >= 0:
+                if key[first_dot_idx + 1].isspace():
+                    key = key[0:first_dot_idx] + "." + key[first_dot_idx + 1 :].lstrip()
 
                 cover_data[key] = row[1]
             else:
@@ -234,7 +220,7 @@ class LogicalModelAndTerminologyGenerator:
             label (str): The label to be cleaned.
 
         Returns:
-            str: The cleaned label.
+            tuple: The cleaned label.
         """
         label = (
             label.strip()
@@ -314,13 +300,13 @@ class LogicalModelAndTerminologyGenerator:
         code_system,
         invariants,
         codes,
-        valuesets,
         existing_elements,
         validation_lookup,
         previous_element_label,
         clean_name,
     ):
         elements = []
+        valuesets = []
         header = None
         for row in sheet.iter_rows(values_only=True):
             if header is None:
