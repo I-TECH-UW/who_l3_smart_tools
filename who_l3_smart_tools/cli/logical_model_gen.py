@@ -1,4 +1,6 @@
+#! /usr/bin/env python
 import argparse
+
 from who_l3_smart_tools.core.logical_models.logical_model_generator import (
     LogicalModelAndTerminologyGenerator,
 )
@@ -11,7 +13,7 @@ def main():
     parser.add_argument(
         "-i",
         "--input",
-        default="./l3-data/test-data.xlsx",
+        required=True,
         help="Input Data Dictionary file location",
     )
     parser.add_argument(
