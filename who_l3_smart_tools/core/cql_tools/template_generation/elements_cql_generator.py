@@ -43,6 +43,8 @@ context Patient
 */
 // TODO: Replace placeholder with relevant CQL logic
 {% if element['data_type'] == 'Coding' %}
+define "{{element['label']}}":
+  exists "{{element['label']}} Observation"
 define "{{element['label']}} Observation":
   [Observation: Concepts."{{element['concept_label']}}"] O
     where O.status in { 'final', 'amended', 'corrected' }
@@ -67,7 +69,9 @@ define "{{element['label']}} Observation":
 define "{{element['label']}}":
   [Observation: Concepts."{{element['concept_label']}}"] O
     where O.status in { 'final', 'amended', 'corrected' }
-    return O.value
+define "{{element['label']}} Value":
+  "{{element['label']}}" O
+  return O.value
 {% endif %}
 /* End of {{element['label']}} */
 
@@ -98,31 +102,41 @@ context Patient
 
 {% for element in elements %}
 /*
-@dataElement: {{element['dak_id']}} - {{element['label']}}
+@dataElement: {{element['dak_id']}} - {{element['name']}}
 @activity: {{element['activity']}}
 @description: {{element['description']}}
 */
 // TODO: Replace placeholder with relevant CQL logic
 {% if element['data_type'] == 'Coding' %}
+define "{{element['label']}}":
+  exists "{{element['label']}} Observation"
 define "{{element['label']}} Observation":
   Elements."{{element['label']}} Observation" O
-    where O.effective.ToInterval() during "Measurement Period"
+    where O.effective.toInterval() during "Measurement Period"
 {% elif element['data_type'] == 'Codes' %}
 define "{{element['label']}}":
   exists "{{element['label']}} Condition"
     or exists "{{element['label']}} Observation"
 define "{{element['label']}} Condition":
   Elements."{{element['label']}} Condition" C
-    where C.toPrevalenceInterval() overlaps before "Measurement Period"
-      or C.toPrevalenceInterval() overlaps after "Measurement Period"
+    where C.prevalenceInterval() overlaps before "Measurement Period"
+      or C.prevalenceInterval() overlaps after "Measurement Period"
 define "{{element['label']}} Observation":
   Elements."{{element['label']}} Observation" O
-    where O.effective.ToInterval() during "Measurement Period"
+    where O.effective.toInterval() during "Measurement Period"
+{% elif element['data_type'] == 'Boolean' %}
+define "{{element['label']}}":
+  exists "{{element['label']}} Observation"
+define "{{element['label']}} Observation":
+  Elements."{{element['label']}} Observation" O
+    where O.effective.toInterval() during "Measurement Period"
 {% else %}
 define "{{element['label']}}":
   Elements."{{element['label']}}" O
-    where O.effective.ToInterval() during "Measurement Period"
-    return O.value
+    where O.effective.toInterval() during "Measurement Period"
+define "{{element['label']}} Value":
+  "{{element['label']}}" O
+  return O.value
 {% endif %}
 /* End of {{element['label']}} */
 
@@ -155,12 +169,14 @@ context Patient
 
 {% for element in elements %}
 /*
-@dataElement: {{element['dak_id']}} - {{element['label']}}
+@dataElement: {{element['dak_id']}} - {{element['name']}}
 @activity: {{element['activity']}}
 @description: {{element['description']}}
 */
 // TODO: Replace placeholder with relevant CQL logic
 {% if element['data_type'] == 'Coding' %}
+define "{{element['label']}}":
+  exists "{{element['label']}} Observation"
 define "{{element['label']}} Observation":
   Elements."{{element['label']}} Observation" O
     where O.encounter.references(EncounterId)
@@ -176,12 +192,21 @@ define "{{element['label']}} Observation":
   Elements."{{element['label']}} Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-{% else %}
+{% elif element['data_type'] == 'Boolean' %}
+define "{{element['label']}}":
+  exists "{{element['label']}} Observation"
 define "{{element['label']}} Observation":
   Elements."{{element['label']}} Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
+{% else %}
+define "{{element['label']}}":
+  Elements."{{element['label']}}" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+define "{{element['label']}} Value":
+  "{{element['label']}}" O
+  return O.value
 {% endif %}
 /* End of {{element['label']}} */
 
@@ -197,8 +222,8 @@ define "{{element['label']}} Observation":
 elements_library_includes_template = env.from_string(
     """using FHIR version '4.0.1'
 
-include fhir.cqf.common.FHIRHelpers called FH
 include fhir.cqf.common.FHIRCommon called FC
+include FHIRHelpers version '4.0.1'
 
 include WHOConcepts
 include WHOCommon called WC
@@ -305,23 +330,24 @@ class ElementsCqlGenerator:
 
             if concept_details["data_type"] == "Codes":
                 parent_id = concept_details["parent_coding_id"]
-                collection_concept_label = get_concept_label(
+                collection_element_label = get_element_label(
                     label_frequency,
+                    label_sheet_frequency,
                     parent_id,
                     self.cql_concept_dictionary[parent_id],
                 )
             else:
-                collection_concept_label = None
+                collection_element_label = None
 
             element_dict = {
                 "dak_id": concept_id,
                 "label": element_label,
                 "concept_label": concept_label,
-                "name": concept_details["label"],
+                "name": sanitize_description(concept_details["label"]),
                 "activity": sanitize_description(concept_details["activity"]),
                 "description": sanitize_description(concept_details["description"]),
                 "data_type": concept_details["data_type"],
-                "collection_label": collection_concept_label,
+                "collection_label": collection_element_label,
             }
 
             elements.append(element_dict)

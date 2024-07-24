@@ -8,7 +8,7 @@ Title: "HIV.IND.32 Viral load testing coverage"
 * url = "http://smart.who.int/HIV/Measure/HIVIND32"
 * status = #draft
 * experimental = true
-* date = "2024-07-18"
+* date = "2024-07-22"
 * name = "HIVIND32"
 * title = "HIV.IND.32 Viral load testing coverage"
 * publisher = "World Health Organization (WHO)"

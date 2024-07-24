@@ -8,7 +8,7 @@ Title: "HIV.IND.66 Syphilis treatment coverage, HIV prevention services"
 * url = "http://smart.who.int/HIV/Measure/HIVIND66"
 * status = #draft
 * experimental = true
-* date = "2024-07-18"
+* date = "2024-07-22"
 * name = "HIVIND66"
 * title = "HIV.IND.66 Syphilis treatment coverage, HIV prevention services"
 * publisher = "World Health Organization (WHO)"

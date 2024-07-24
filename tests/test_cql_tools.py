@@ -33,14 +33,13 @@ class TestCqlTools(unittest.TestCase):
         assert os.path.exists(os.path.join(output_dir, "HIVIND2Logic.cql"))
 
     def test_generate_concepts_cql(self):
-        input_indicators = "tests/data/l2/test_indicators.xlsx"
         input_dd = "tests/data/l2/test_dd.xlsx"
         output_dir = "tests/output/cql/files/"
 
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        generator = CqlFileGenerator(input_indicators, input_dd)
+        generator = CqlFileGenerator(input_dd)
 
         generator.generate_cql_concept_library(output_dir=output_dir)
 

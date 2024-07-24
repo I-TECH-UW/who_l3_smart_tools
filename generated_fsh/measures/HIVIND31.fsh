@@ -8,7 +8,7 @@ Title: "HIV.IND.31 Late ART initiation"
 * url = "http://smart.who.int/HIV/Measure/HIVIND31"
 * status = #draft
 * experimental = true
-* date = "2024-07-18"
+* date = "2024-07-22"
 * name = "HIVIND31"
 * title = "HIV.IND.31 Late ART initiation"
 * publisher = "World Health Organization (WHO)"

@@ -8,7 +8,7 @@ Title: "HIV.IND.50 TB testing among those symptom-screened positive"
 * url = "http://smart.who.int/HIV/Measure/HIVIND50"
 * status = #draft
 * experimental = true
-* date = "2024-07-18"
+* date = "2024-07-22"
 * name = "HIVIND50"
 * title = "HIV.IND.50 TB testing among those symptom-screened positive"
 * publisher = "World Health Organization (WHO)"

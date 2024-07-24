@@ -8,7 +8,7 @@ Title: "HIV.IND.78 Repeat diagnosis of STI syndrome, HIV prevention services"
 * url = "http://smart.who.int/HIV/Measure/HIVIND78"
 * status = #draft
 * experimental = true
-* date = "2024-07-18"
+* date = "2024-07-22"
 * name = "HIVIND78"
 * title = "HIV.IND.78 Repeat diagnosis of STI syndrome, HIV prevention services"
 * publisher = "World Health Organization (WHO)"

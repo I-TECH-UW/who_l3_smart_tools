@@ -8,7 +8,7 @@ Title: "HIV.IND.93 Cervical cancer screening"
 * url = "http://smart.who.int/HIV/Measure/HIVIND93"
 * status = #draft
 * experimental = true
-* date = "2024-07-18"
+* date = "2024-07-22"
 * name = "HIVIND93"
 * title = "HIV.IND.93 Cervical cancer screening"
 * publisher = "World Health Organization (WHO)"

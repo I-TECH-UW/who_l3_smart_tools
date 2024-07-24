@@ -8,7 +8,7 @@ Title: "HIV.IND.27 People living with HIV on ART"
 * url = "http://smart.who.int/HIV/Measure/HIVIND27"
 * status = #draft
 * experimental = true
-* date = "2024-07-18"
+* date = "2024-07-22"
 * name = "HIVIND27"
 * title = "HIV.IND.27 People living with HIV on ART"
 * publisher = "World Health Organization (WHO)"

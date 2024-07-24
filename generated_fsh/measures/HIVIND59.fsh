@@ -8,7 +8,7 @@ Title: "HIV.IND.59 Syphilis testing coverage, HIV-positive clients"
 * url = "http://smart.who.int/HIV/Measure/HIVIND59"
 * status = #draft
 * experimental = true
-* date = "2024-07-18"
+* date = "2024-07-22"
 * name = "HIVIND59"
 * title = "HIV.IND.59 Syphilis testing coverage, HIV-positive clients"
 * publisher = "World Health Organization (WHO)"

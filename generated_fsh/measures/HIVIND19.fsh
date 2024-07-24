@@ -8,7 +8,7 @@ Title: "HIV.IND.19 HTS test volume and positivity"
 * url = "http://smart.who.int/HIV/Measure/HIVIND19"
 * status = #draft
 * experimental = true
-* date = "2024-07-18"
+* date = "2024-07-22"
 * name = "HIVIND19"
 * title = "HIV.IND.19 HTS test volume and positivity"
 * publisher = "World Health Organization (WHO)"

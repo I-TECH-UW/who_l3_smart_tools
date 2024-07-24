@@ -8,7 +8,7 @@ Title: "HIV.IND.77 Presence of STI syndrome, HIV-positive clients"
 * url = "http://smart.who.int/HIV/Measure/HIVIND77"
 * status = #draft
 * experimental = true
-* date = "2024-07-18"
+* date = "2024-07-22"
 * name = "HIVIND77"
 * title = "HIV.IND.77 Presence of STI syndrome, HIV-positive clients"
 * publisher = "World Health Organization (WHO)"

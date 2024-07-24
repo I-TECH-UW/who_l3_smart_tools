@@ -8,7 +8,7 @@ Title: "HIV.IND.51 TB diagnosis among those tested for TB"
 * url = "http://smart.who.int/HIV/Measure/HIVIND51"
 * status = #draft
 * experimental = true
-* date = "2024-07-18"
+* date = "2024-07-22"
 * name = "HIVIND51"
 * title = "HIV.IND.51 TB diagnosis among those tested for TB"
 * publisher = "World Health Organization (WHO)"

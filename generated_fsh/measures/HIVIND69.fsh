@@ -8,7 +8,7 @@ Title: "HIV.IND.69 Syphilis treatment coverage, pregnant women, any ANC visit"
 * url = "http://smart.who.int/HIV/Measure/HIVIND69"
 * status = #draft
 * experimental = true
-* date = "2024-07-18"
+* date = "2024-07-22"
 * name = "HIVIND69"
 * title = "HIV.IND.69 Syphilis treatment coverage, pregnant women, any ANC visit"
 * publisher = "World Health Organization (WHO)"

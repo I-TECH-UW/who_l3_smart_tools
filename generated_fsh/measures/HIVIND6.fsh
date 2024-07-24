@@ -8,7 +8,7 @@ Title: "HIV.IND.6 PEP completion"
 * url = "http://smart.who.int/HIV/Measure/HIVIND6"
 * status = #draft
 * experimental = true
-* date = "2024-07-18"
+* date = "2024-07-22"
 * name = "HIVIND6"
 * title = "HIV.IND.6 PEP completion"
 * publisher = "World Health Organization (WHO)"

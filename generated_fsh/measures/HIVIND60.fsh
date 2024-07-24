@@ -8,7 +8,7 @@ Title: "HIV.IND.60 Syphilis testing coverage, pregnant women, first ANC visit"
 * url = "http://smart.who.int/HIV/Measure/HIVIND60"
 * status = #draft
 * experimental = true
-* date = "2024-07-18"
+* date = "2024-07-22"
 * name = "HIVIND60"
 * title = "HIV.IND.60 Syphilis testing coverage, pregnant women, first ANC visit"
 * publisher = "World Health Organization (WHO)"

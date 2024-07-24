@@ -8,7 +8,7 @@ Title: "HIV.IND.4 Volume of PrEP prescribed"
 * url = "http://smart.who.int/HIV/Measure/HIVIND4"
 * status = #draft
 * experimental = true
-* date = "2024-07-18"
+* date = "2024-07-22"
 * name = "HIVIND4"
 * title = "HIV.IND.4 Volume of PrEP prescribed"
 * publisher = "World Health Organization (WHO)"

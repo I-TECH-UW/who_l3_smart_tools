@@ -42,7 +42,12 @@ DAK_DT_ID_CODE_PATTERN = re.compile(r"(\S+)(DT)(\S*)(Logic)")
 
 def sanitize_description(description: str):
     # Sanitize description to remove special characters
-    return description.replace('"', "'").replace("\n", " | ")
+    return description.replace('"', "'").replace("\n", " | ").replace("*", "")
+
+
+def sanitize_label(label: str):
+    # Sanitize label to remove special characters
+    return label.replace('*', "")
 
 
 def create_cql_concept_dictionaries(dd_xls: dict, dak_name: str):
@@ -172,6 +177,11 @@ def update_concepts_and_linkages(
         if not lastCodingId:
             raise ValueError("Last Coding ID not found for Data Element ID")
         concept_dict_entry["parent_coding_id"] = lastCodingId
+
+        if cql_concept_dictionary[lastCodingId]["linkage_type"] is None:
+            cql_concept_dictionary[lastCodingId]["linkage_type"] = linkage_type
+        elif cql_concept_dictionary[lastCodingId]["linkage_type"] != linkage_type:
+            cql_concept_dictionary[lastCodingId]["linkage_type"] = "both"
 
     # Select row if Linkage to CDS or Indicator is not empty
     if linkage_type == "dt" or linkage_type == "both":
@@ -392,7 +402,11 @@ def count_label_frequencies(cql_concept_dictionary):
 
     # Collapse concept_details["label"] to count frequency
     for concept_id, concept_details in cql_concept_dictionary.items():
-        if pd.isna(concept_details["label"]) or not concept_details["label"]:
+        if (
+            pd.isna(concept_details["label"])
+            or not concept_details["label"]
+            or concept_details["linkage_type"] is None
+        ):
             continue
 
         concept_details["label"] = re.sub(r"[\'\"()]", "", concept_details["label"])
@@ -421,7 +435,7 @@ def get_concept_label(label_frequency, concept_id, concept_details):
     else:
         label_str = f"{concept_details['label']} - {concept_id}"
 
-    return label_str
+    return sanitize_label(label_str)
 
 
 def get_element_label(
@@ -429,9 +443,9 @@ def get_element_label(
 ):
     split_id = concept_id.split(".")
 
-    if label_sheet_frequency[concept_details["label"], concept_details["sheet"]] > 1:
-        label_str = f"{concept_details['label']} ({concept_details['sheet_name']}|{split_id[1]}{split_id[2]})"
+    if label_frequency[concept_details["label"]] == 1:
+        label_str = f"{concept_details["label"]}"
     else:
-        label_str = f"{concept_details['label']} ({concept_details['sheet_name']})"
+        label_str = f"{concept_details['label']} {split_id[1]}.{split_id[2]}"
 
-    return label_str
+    return sanitize_label(label_str)

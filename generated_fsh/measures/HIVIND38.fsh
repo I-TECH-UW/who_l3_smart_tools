@@ -8,7 +8,7 @@ Title: "HIV.IND.38 Early infant diagnosis (EID) coverage"
 * url = "http://smart.who.int/HIV/Measure/HIVIND38"
 * status = #draft
 * experimental = true
-* date = "2024-07-18"
+* date = "2024-07-22"
 * name = "HIVIND38"
 * title = "HIV.IND.38 Early infant diagnosis (EID) coverage"
 * publisher = "World Health Organization (WHO)"

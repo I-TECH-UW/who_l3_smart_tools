@@ -8,7 +8,7 @@ Title: "HIV.IND.30 New ART patients"
 * url = "http://smart.who.int/HIV/Measure/HIVIND30"
 * status = #draft
 * experimental = true
-* date = "2024-07-18"
+* date = "2024-07-22"
 * name = "HIVIND30"
 * title = "HIV.IND.30 New ART patients"
 * publisher = "World Health Organization (WHO)"

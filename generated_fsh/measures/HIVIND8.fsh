@@ -8,7 +8,7 @@ Title: "HIV.IND.8 NSP coverage"
 * url = "http://smart.who.int/HIV/Measure/HIVIND8"
 * status = #draft
 * experimental = true
-* date = "2024-07-18"
+* date = "2024-07-22"
 * name = "HIVIND8"
 * title = "HIV.IND.8 NSP coverage"
 * publisher = "World Health Organization (WHO)"

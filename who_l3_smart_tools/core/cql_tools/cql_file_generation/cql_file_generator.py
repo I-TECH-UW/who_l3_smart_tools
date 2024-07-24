@@ -72,7 +72,6 @@ class CqlFileGenerator:
                 if concept_details["data_type"] == "Coding":
                     label_str = get_concept_label(
                         label_frequency,
-                        label_sheet_frequency,
                         concept_id,
                         concept_details,
                     )
@@ -88,7 +87,6 @@ class CqlFileGenerator:
                     continue
                 label_str = get_concept_label(
                     label_frequency,
-                    label_sheet_frequency,
                     concept_id,
                     concept_details,
                 )
