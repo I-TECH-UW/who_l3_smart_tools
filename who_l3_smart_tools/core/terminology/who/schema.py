@@ -6,7 +6,7 @@ This module defines HIVschema classes for an OCL Concepts,
 from typing import Callable
 
 from who_l3_smart_tools.core.terminology.schema import ConceptSchema
-from who_l3_smart_tools.utils.terminology import dash_preserving_slugify
+from who_l3_smart_tools.utils import dash_preserving_slugify
 
 
 # pylint: disable=too-few-public-methods

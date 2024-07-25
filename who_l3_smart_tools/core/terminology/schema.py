@@ -1,5 +1,5 @@
 """
-This module defines schema classes for an OCL Concepts, 
+This module defines schema classes for an OCL Concepts,
     Repository and Organizations.
 """
 
