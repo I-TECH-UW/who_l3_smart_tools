@@ -1,6 +1,4 @@
-import os
-
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, PackageLoader
 
 DATA_TYPE_MAP = {
     "Boolean": "boolean",
@@ -13,12 +11,9 @@ DATA_TYPE_MAP = {
 }
 
 
-def initalize_jinja_env(file_name):
-    template_dir = os.path.join(
-        os.path.dirname(os.path.abspath(file_name)), "templates"
-    )
+def initalize_jinja_env(module):
     return Environment(
-        loader=FileSystemLoader(template_dir),
+        loader=PackageLoader(module),
         trim_blocks=True,
         lstrip_blocks=True,
     )

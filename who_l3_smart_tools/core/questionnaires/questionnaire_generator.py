@@ -11,7 +11,7 @@ from who_l3_smart_tools.utils.jinja2 import (
     render_to_file,
 )
 
-jinja2_env = initalize_jinja_env(__file__)
+jinja2_env = initalize_jinja_env(__name__)
 
 
 # pylint: disable=too-few-public-methods
@@ -120,7 +120,7 @@ class QuestionnaireGenerator:
         for activity_code, activity in self._activities.items():
             _filename = os.path.join(self.output_dir, f"{activity_code}.fsh")
             render_to_file(
-                jinja2_env.get_template("questionnaire.j2"),
+                jinja2_env.get_template("questionnaire.fsh.j2"),
                 activity,
                 _filename,
             )
