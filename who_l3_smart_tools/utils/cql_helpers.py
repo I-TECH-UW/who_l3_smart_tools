@@ -405,7 +405,7 @@ def count_label_frequencies(cql_concept_dictionary):
         if (
             pd.isna(concept_details["label"])
             or not concept_details["label"]
-            or concept_details["linkage_type"] is None
+            # or concept_details["linkage_type"] is None
         ):
             continue
 

@@ -8,7 +8,7 @@ Title: "HIV.IND.53 Multi-month ARV dispensing"
 * url = "http://smart.who.int/HIV/Measure/HIVIND53"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND53"
 * title = "HIV.IND.53 Multi-month ARV dispensing"
 * publisher = "World Health Organization (WHO)"

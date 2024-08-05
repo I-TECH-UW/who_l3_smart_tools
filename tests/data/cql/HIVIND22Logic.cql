@@ -79,8 +79,8 @@ using FHIR version '4.0.1'
 
 include HIVCommon version '0.0.1' called HIC
 include FHIRHelpers version '4.0.1'
-include FHIRCommon called FC
 include WHOCommon called WCom
+include HIVIndicatorElements called HIE
 
 // Indicator Definition
 parameter "Measurement Period" Interval<Date> default Interval[@2023-01-01, @2023-01-30]
@@ -103,7 +103,22 @@ define "Initial Population":
  */
                                                        
 define "Measure Population":
-  true
+    exists(HIC."Partner or contact of an index case" IC
+    with HIC."Drug-injecting partner" DIP
+      such that IC.hasMember.references(DIP)
+      with HIC."HIV test resulted" HIV
+      such that IC.hasMember.references(HIV)
+      and HIV.issued after start of "Measurement Period"
+      and HIV.issued before end of "Measurement Period")
+    or 
+    exists(HIC."Partner or contact of an index case" IC
+    with HIC."Sexual partner" SP
+      such that IC.hasMember.references(SP)
+      with HIC."HIV test resulted" HIV
+      such that IC.hasMember.references(HIV)
+      and HIV.issued after start of "Measurement Period"
+      and HIV.issued before end of "Measurement Period")
+
 
 
 /**
@@ -116,3 +131,28 @@ define function "Measure Observation"(Patient "Patient"):
   1
 /* end Populations */
 
+/*
+ * Disaggregators
+ */
+
+define "Administrative Gender Stratifier":
+	HIE."By Administrative Gender Stratifier"
+
+define "Age Stratifier":
+	HIE."By Age Stratifier 2"
+
+define "Geographic Region Stratifier":
+	HIE."By Geographic Region Stratifier"
+
+define "patientGroups Stratifier":
+	HIE."patientGroups"
+
+define "HIV status of partner or contact":
+  HIE."HIV status of partner or contact"
+
+define "Stratification":
+ HIE."By Administrative Gender Stratifier".code 
+ + ':' + HIE."HIV status of partner or contact".code
+  + ':' + HIE."By Age Stratifier 2"
++ ':' + HIE."By Geographic Region Stratifier"
++ Combine(HIE.patientGroups, ':')

@@ -8,7 +8,7 @@ Title: "HIV.IND.24 HTS linkage to prevention"
 * url = "http://smart.who.int/HIV/Measure/HIVIND24"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND24"
 * title = "HIV.IND.24 HTS linkage to prevention"
 * publisher = "World Health Organization (WHO)"
@@ -33,3 +33,7 @@ Title: "HIV.IND.24 HTS linkage to prevention"
     * code = $measure-population#numerator "Numerator"
     * criteria.language = #text/cql-identifier
     * criteria.expression = "Numerator"
+  * stratifier[+]
+    * id = "HIV.IND.24.S"
+    * criteria.language = #text/cql-identifier
+    * criteria.expression = "Stratification"

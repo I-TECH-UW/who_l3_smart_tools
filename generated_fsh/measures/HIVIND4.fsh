@@ -8,7 +8,7 @@ Title: "HIV.IND.4 Volume of PrEP prescribed"
 * url = "http://smart.who.int/HIV/Measure/HIVIND4"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND4"
 * title = "HIV.IND.4 Volume of PrEP prescribed"
 * publisher = "World Health Organization (WHO)"
@@ -37,18 +37,6 @@ Title: "HIV.IND.4 Volume of PrEP prescribed"
     * criteria.language = #text/cql-identifier
     * criteria.expression = "Measure Observation"
   * stratifier[+]
-    * id = "HIV.IND.4.S.AG"
+    * id = "HIV.IND.4.S"
     * criteria.language = #text/cql-identifier
-    * criteria.expression = "Administrative Gender Stratifier"
-  * stratifier[+]
-    * id = "HIV.IND.4.S.A"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "Age Stratifier"
-  * stratifier[+]
-    * id = "HIV.IND.4.S.GR"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "Geographic Region Stratifier"
-  * stratifier[+]
-    * id = "HIV.IND.4.S.P"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "patientGroups Stratifier"
+    * criteria.expression = "Stratification"

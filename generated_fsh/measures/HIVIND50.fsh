@@ -8,7 +8,7 @@ Title: "HIV.IND.50 TB testing among those symptom-screened positive"
 * url = "http://smart.who.int/HIV/Measure/HIVIND50"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND50"
 * title = "HIV.IND.50 TB testing among those symptom-screened positive"
 * publisher = "World Health Organization (WHO)"
@@ -29,7 +29,7 @@ Title: "HIV.IND.50 TB testing among those symptom-screened positive"
     * criteria.expression = "Denominator"
   * population[numerator]
     * id = "HIV.IND.50.NUM"
-    * description = "Number of people living with HIV newly initiated on ART who are investigated for active TB disease with appropriate diagnostic testing*"
+    * description = "Number of people living with HIV newly initiated on ART who are investigated for active TB disease with appropriate diagnostic testing"
     * code = $measure-population#numerator "Numerator"
     * criteria.language = #text/cql-identifier
     * criteria.expression = "Numerator"

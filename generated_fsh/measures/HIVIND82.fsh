@@ -8,7 +8,7 @@ Title: "HIV.IND.82 HBV test coverage, pregnant women"
 * url = "http://smart.who.int/HIV/Measure/HIVIND82"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND82"
 * title = "HIV.IND.82 HBV test coverage, pregnant women"
 * publisher = "World Health Organization (WHO)"

@@ -8,7 +8,7 @@ Title: "HIV.IND.46 TB diagnostic testing type"
 * url = "http://smart.who.int/HIV/Measure/HIVIND46"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND46"
 * title = "HIV.IND.46 TB diagnostic testing type"
 * publisher = "World Health Organization (WHO)"

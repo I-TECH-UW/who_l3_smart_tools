@@ -8,7 +8,7 @@ Title: "HIV.IND.48 TB screening coverage among new ART patients"
 * url = "http://smart.who.int/HIV/Measure/HIVIND48"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND48"
 * title = "HIV.IND.48 TB screening coverage among new ART patients"
 * publisher = "World Health Organization (WHO)"

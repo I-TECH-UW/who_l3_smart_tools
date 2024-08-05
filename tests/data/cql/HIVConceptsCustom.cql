@@ -4,10 +4,10 @@ codesystem "ConditionCategoryCodes": 'http://terminology.hl7.org/CodeSystem/cond
 codesystem "ConditionClinicalStatusCodes": 'http://terminology.hl7.org/CodeSystem/condition-clinical'
 codesystem "ObservationCategoryCodes": 'http://terminology.hl7.org/CodeSystem/observation-category'
 codesystem "missing concepts": 'missing concepts'
-codesystem "Devicestatement-status": 'http://hl7.org/fhir/ValueSet/device-statement-status'
+codesystem "Devicestatement-status": 'http://hl7.org/fhir/device-statement-status'
 codesystem "SNOMEDCT:2018-03": 'urn:oid:2.16.840.1.113883.6.96' version 'urn:hl7:version:2018-03'
 codesystem "SNOMEDCT": 'urn:oid:2.16.840.1.113883.6.96'
-codesystem "AdverseEventSeverity": 'http://hl7.org/fhir/ValueSet/adverse-event-severity'
+codesystem "AdverseEventSeverity": 'http://terminology.hl7.org/CodeSystem/adverse-event-severity'
 
 code "encounter-diagnosis": 'encounter-diagnosis' from "ConditionCategoryCodes" display 'Encounter Diagnosis'
 
@@ -58,4 +58,5 @@ code "Two to four times a day (qualifier value)": '396111001' from "SNOMEDCT" di
 code "needle-syringe": 'needle syringe' from "missing concepts"
 code "methadone": 'methadone' from "missing concepts"
 code "buprenorphine": 'buprenorphine' from "missing concepts"
+code "viral load test": 'viral load test' from "missing concepts"
 

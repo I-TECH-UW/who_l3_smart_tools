@@ -8,7 +8,7 @@ Title: "HIV.IND.43 HIV prevalence among women attending ANC"
 * url = "http://smart.who.int/HIV/Measure/HIVIND43"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND43"
 * title = "HIV.IND.43 HIV prevalence among women attending ANC"
 * publisher = "World Health Organization (WHO)"

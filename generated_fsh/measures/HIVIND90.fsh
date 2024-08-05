@@ -8,7 +8,7 @@ Title: "HIV.IND.90 HBV treatment among people living with HIV"
 * url = "http://smart.who.int/HIV/Measure/HIVIND90"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND90"
 * title = "HIV.IND.90 HBV treatment among people living with HIV"
 * publisher = "World Health Organization (WHO)"

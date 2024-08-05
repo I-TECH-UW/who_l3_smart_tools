@@ -352,10 +352,16 @@ class ElementsCqlGenerator:
 
             elements.append(element_dict)
 
-            if concept_details["linkage_type"] == "indicator":
+            if (
+                concept_details["linkage_type"] == "indicator"
+                or concept_details["linkage_type"] == "both"
+            ):
                 indicator_elements.append(element_dict)
 
-            if concept_details["linkage_type"] == "dt":
+            if (
+                concept_details["linkage_type"] == "dt"
+                or concept_details["linkage_type"] == "both"
+            ):
                 encounter_elements.append(element_dict)
 
         # Write Elements Library

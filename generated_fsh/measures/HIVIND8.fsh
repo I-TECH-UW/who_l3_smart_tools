@@ -8,7 +8,7 @@ Title: "HIV.IND.8 NSP coverage"
 * url = "http://smart.who.int/HIV/Measure/HIVIND8"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND8"
 * title = "HIV.IND.8 NSP coverage"
 * publisher = "World Health Organization (WHO)"
@@ -34,18 +34,6 @@ Title: "HIV.IND.8 NSP coverage"
     * criteria.language = #text/cql-identifier
     * criteria.expression = "Numerator"
   * stratifier[+]
-    * id = "HIV.IND.8.S.AG"
+    * id = "HIV.IND.8.S"
     * criteria.language = #text/cql-identifier
-    * criteria.expression = "Administrative Gender Stratifier"
-  * stratifier[+]
-    * id = "HIV.IND.8.S.A"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "Age Stratifier"
-  * stratifier[+]
-    * id = "HIV.IND.8.S.GR"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "Geographic Region Stratifier"
-  * stratifier[+]
-    * id = "HIV.IND.8.S.P"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "patientGroups Stratifier"
+    * criteria.expression = "Stratification"

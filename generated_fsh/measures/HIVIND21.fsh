@@ -8,7 +8,7 @@ Title: "HIV.IND.21 Linkage to ART"
 * url = "http://smart.who.int/HIV/Measure/HIVIND21"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND21"
 * title = "HIV.IND.21 Linkage to ART"
 * publisher = "World Health Organization (WHO)"
@@ -34,22 +34,6 @@ Title: "HIV.IND.21 Linkage to ART"
     * criteria.language = #text/cql-identifier
     * criteria.expression = "Numerator"
   * stratifier[+]
-    * id = "HIV.IND.21.S.AG"
+    * id = "HIV.IND.21.S"
     * criteria.language = #text/cql-identifier
-    * criteria.expression = "Administrative Gender Stratifier"
-  * stratifier[+]
-    * id = "HIV.IND.21.S.A"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "Age Stratifier"
-  * stratifier[+]
-    * id = "HIV.IND.21.S.GR"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "Geographic Region Stratifier"
-  * stratifier[+]
-    * id = "HIV.IND.21.S.P"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "patientGroups Stratifier"
-  * stratifier[+]
-    * id = "HIV.IND.21.S.T"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "TB Stratifier"
+    * criteria.expression = "Stratification"

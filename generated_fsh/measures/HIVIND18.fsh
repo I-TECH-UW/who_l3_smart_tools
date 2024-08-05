@@ -8,7 +8,7 @@ Title: "HIV.IND.18 People living with HIV who know their HIV status (first 95)"
 * url = "http://smart.who.int/HIV/Measure/HIVIND18"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND18"
 * title = "HIV.IND.18 People living with HIV who know their HIV status (first 95)"
 * publisher = "World Health Organization (WHO)"
@@ -37,22 +37,6 @@ Title: "HIV.IND.18 People living with HIV who know their HIV status (first 95)"
     * criteria.language = #text/cql-identifier
     * criteria.expression = "Measure Observation"
   * stratifier[+]
-    * id = "HIV.IND.18.S.AG"
+    * id = "HIV.IND.18.S"
     * criteria.language = #text/cql-identifier
-    * criteria.expression = "Administrative Gender Stratifier"
-  * stratifier[+]
-    * id = "HIV.IND.18.S.A"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "Age Stratifier"
-  * stratifier[+]
-    * id = "HIV.IND.18.S.GR"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "Geographic Region Stratifier"
-  * stratifier[+]
-    * id = "HIV.IND.18.S.P"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "patientGroups Stratifier"
-  * stratifier[+]
-    * id = "HIV.IND.18.S.A"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "ANC Stratifier"
+    * criteria.expression = "Stratification"

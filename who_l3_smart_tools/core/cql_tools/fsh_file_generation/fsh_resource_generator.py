@@ -111,6 +111,13 @@ measure_stratifier_fsh_template = """
     * criteria.expression = "{index}"
 """
 
+measure_combined_stratifier_fsh_template = """
+  * stratifier[+]
+    * id = "{dak_id}.S"
+    * criteria.language = #text/cql-identifier
+    * criteria.expression = "Stratification"
+"""
+
 
 class EmptyItem:
     def __getitem__(self, item) -> Any:
@@ -187,6 +194,15 @@ class FshResourceGenerator:
         stratifier_matches = re.findall(r'define "(.+ Stratifier)":', self.cql_content)
         for stratifier in stratifier_matches:
             parsed_data["stratifiers"][stratifier] = True
+
+        # Extract Combined Stratifier
+        combined_stratifier_match = re.search(
+            r"define \"Stratification\"\:", self.cql_content, re.IGNORECASE
+        )
+        if combined_stratifier_match:
+            parsed_data["combinedStratifier"] = True
+        else:
+            parsed_data["combinedStratifier"] = False
 
         # Extract initial population
         initial_population_match = re.search(
@@ -343,13 +359,18 @@ class FshResourceGenerator:
                     ),
                 )
 
-            for index, stratifier in self.parsed_cql["stratifiers"].items():
-                # Remove last word from stratifier title, and use first letter of each remaining word to create code
-                words = index.split()
-                strat_code = "".join([word[0] for word in words[:-1]]).upper()
-                measure_fsh += measure_stratifier_fsh_template.format(
-                    dak_id=dak_id, strat_code=strat_code, index=index
+            if self.parsed_cql["combinedStratifier"]:
+                measure_fsh += measure_combined_stratifier_fsh_template.format(
+                    dak_id=dak_id
                 )
+            else:
+                for index, stratifier in self.parsed_cql["stratifiers"].items():
+                    # Remove last word from stratifier title, and use first letter of each remaining word to create code
+                    words = index.split()
+                    strat_code = "".join([word[0] for word in words[:-1]]).upper()
+                    measure_fsh += measure_stratifier_fsh_template.format(
+                        dak_id=dak_id, strat_code=strat_code, index=index
+                    )
 
         # remove any empty lines from measure
         measure_fsh = "\n".join(

@@ -8,7 +8,7 @@ Title: "HIV.IND.45 TPT completion"
 * url = "http://smart.who.int/HIV/Measure/HIVIND45"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND45"
 * title = "HIV.IND.45 TPT completion"
 * publisher = "World Health Organization (WHO)"
@@ -33,3 +33,7 @@ Title: "HIV.IND.45 TPT completion"
     * code = $measure-population#numerator "Numerator"
     * criteria.language = #text/cql-identifier
     * criteria.expression = "Numerator"
+  * stratifier[+]
+    * id = "HIV.IND.45.S"
+    * criteria.language = #text/cql-identifier
+    * criteria.expression = "Stratification"

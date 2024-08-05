@@ -8,7 +8,7 @@ Title: "HIV.IND.7 HIV in PEP recipients"
 * url = "http://smart.who.int/HIV/Measure/HIVIND7"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND7"
 * title = "HIV.IND.7 HIV in PEP recipients"
 * publisher = "World Health Organization (WHO)"
@@ -34,18 +34,6 @@ Title: "HIV.IND.7 HIV in PEP recipients"
     * criteria.language = #text/cql-identifier
     * criteria.expression = "Numerator"
   * stratifier[+]
-    * id = "HIV.IND.7.S.AG"
+    * id = "HIV.IND.7.S"
     * criteria.language = #text/cql-identifier
-    * criteria.expression = "Administrative Gender Stratifier"
-  * stratifier[+]
-    * id = "HIV.IND.7.S.A"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "Age Stratifier"
-  * stratifier[+]
-    * id = "HIV.IND.7.S.GR"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "Geographic Region Stratifier"
-  * stratifier[+]
-    * id = "HIV.IND.7.S.P"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "patientGroups Stratifier"
+    * criteria.expression = "Stratification"

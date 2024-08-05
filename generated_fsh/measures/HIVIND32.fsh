@@ -8,7 +8,7 @@ Title: "HIV.IND.32 Viral load testing coverage"
 * url = "http://smart.who.int/HIV/Measure/HIVIND32"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND32"
 * title = "HIV.IND.32 Viral load testing coverage"
 * publisher = "World Health Organization (WHO)"
@@ -33,3 +33,7 @@ Title: "HIV.IND.32 Viral load testing coverage"
     * code = $measure-population#numerator "Numerator"
     * criteria.language = #text/cql-identifier
     * criteria.expression = "Numerator"
+  * stratifier[+]
+    * id = "HIV.IND.32.S"
+    * criteria.language = #text/cql-identifier
+    * criteria.expression = "Stratification"

@@ -8,7 +8,7 @@ Title: "HIV.IND.51 TB diagnosis among those tested for TB"
 * url = "http://smart.who.int/HIV/Measure/HIVIND51"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND51"
 * title = "HIV.IND.51 TB diagnosis among those tested for TB"
 * publisher = "World Health Organization (WHO)"
@@ -23,7 +23,7 @@ Title: "HIV.IND.51 TB diagnosis among those tested for TB"
     * criteria.expression = "Initial Population"
   * population[denominator]
     * id = "HIV.IND.51.DEN"
-    * description = "Number of people living with HIV who newly initiated ART and screened positive for TB symptoms who had appropriate diagnostic testing during the reporting period*"
+    * description = "Number of people living with HIV who newly initiated ART and screened positive for TB symptoms who had appropriate diagnostic testing during the reporting period"
     * code = $measure-population#denominator "Denominator"
     * criteria.language = #text/cql-identifier
     * criteria.expression = "Denominator"

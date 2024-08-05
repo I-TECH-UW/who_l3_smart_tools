@@ -2,8 +2,8 @@ library HIVEncounterElements
 
 using FHIR version '4.0.1'
 
-include fhir.cqf.common.FHIRHelpers called FH
 include fhir.cqf.common.FHIRCommon called FC
+include FHIRHelpers version '4.0.1'
 
 include WHOConcepts
 include WHOCommon called WC
@@ -27,29 +27,176 @@ context Patient
 //   in at least one Decision Support Table or Aggregate Indicator
 
 /*
+@dataElement: HIV.A.DE3 - Visit date
+@activity: HIV.A2 Gather client details
+@description: The date and time of the client's visit
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Visit date A.DE3":
+  Elements."Visit date A.DE3" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+define "Visit date A.DE3 Value":
+  "Visit date A.DE3" O
+  return O.value
+/* End of Visit date A.DE3 */
+
+/*
 @dataElement: HIV.A.DE16 - Estimated age
 @activity: HIV.A6.1 Review sociodemographic data with client | HIV.A5 Create new client record
 @description: If DOB is unknown, enter the client's estimated age. Display client's age in number of years.
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Estimated age Observation":
+define "Estimated age":
   Elements."Estimated age" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
+define "Estimated age Value":
+  "Estimated age" O
+  return O.value
 /* End of Estimated age */
 
 /*
-@dataElement: HIV.B.DE1 - Reason for visit - HIV.B.DE1
+@dataElement: HIV.A.DE17 - Age
+@activity: HIV.A6.1 Review sociodemographic data with client | HIV.A5 Create new client record
+@description: Calculated age (number of years) of the client based on date of birth
+*/
+/** 
+ * @dataElement Patient age in years
+ */
+define "Current Patient Age In Years":
+  AgeInYearsAt(Today())
+
+/** 
+ * @dataElement Patient age in weeks
+ */
+define "Current Patient Age In Weeks":
+  AgeInWeeksAt(Today())
+
+/** 
+ * @dataElement Patient age in months
+ */
+define "Current Patient Age In Months":
+  AgeInMonthsAt(Today())
+/* End of Age */
+
+/*
+@dataElement: HIV.A.DE18 - Gender
+@activity: HIV.A6.1 Review sociodemographic data with client | HIV.A5 Create new client record
+@description: Gender of the client
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Gender":
+  exists "Gender Observation"
+define "Gender Observation":
+  Elements."Gender Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Gender */
+
+/*
+@dataElement: HIV.A.DE19 - Female
+@activity: HIV.A6.1 Review sociodemographic data with client | HIV.A5 Create new client record
+@description: Client identifies as female
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Female":
+  exists "Female Condition"
+    or exists "Female Observation"
+define "Female Condition":
+  Elements."Female Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Female Observation":
+  Elements."Female Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Female */
+
+/*
+@dataElement: HIV.A.DE20 - Male
+@activity: HIV.A6.1 Review sociodemographic data with client | HIV.A5 Create new client record
+@description: Client identifies as male
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Male":
+  exists "Male Condition"
+    or exists "Male Observation"
+define "Male Condition":
+  Elements."Male Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Male Observation":
+  Elements."Male Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Male */
+
+/*
+@dataElement: HIV.A.DE21 - Transgender male
+@activity: HIV.A6.1 Review sociodemographic data with client | HIV.A5 Create new client record
+@description: Client identifies as transgender male
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Transgender male":
+  exists "Transgender male Condition"
+    or exists "Transgender male Observation"
+define "Transgender male Condition":
+  Elements."Transgender male Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Transgender male Observation":
+  Elements."Transgender male Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Transgender male */
+
+/*
+@dataElement: HIV.A.DE22 - Transgender female
+@activity: HIV.A6.1 Review sociodemographic data with client | HIV.A5 Create new client record
+@description: Client identifies as transgender female
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Transgender female":
+  exists "Transgender female Condition"
+    or exists "Transgender female Observation"
+define "Transgender female Condition":
+  Elements."Transgender female Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Transgender female Observation":
+  Elements."Transgender female Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Transgender female */
+
+/*
+@dataElement: HIV.A.DE23 - Other
+@activity: HIV.A6.1 Review sociodemographic data with client | HIV.A5 Create new client record
+@description: Additional category
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Other A.DE23":
+  exists "Other A.DE23 Condition"
+    or exists "Other A.DE23 Observation"
+define "Other A.DE23 Condition":
+  Elements."Other A.DE23 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Other A.DE23 Observation":
+  Elements."Other A.DE23 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Other A.DE23 */
+
+/*
+@dataElement: HIV.B.DE1 - Reason for visit
 @activity: HIV.B1 Determine reason for visit
 @description: Reason for HIV testing services visit
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Reason for visit - HIV.B.DE1 Observation":
-  Elements."Reason for visit - HIV.B.DE1 Observation" O
+define "Reason for visit B.DE1":
+  exists "Reason for visit B.DE1 Observation"
+define "Reason for visit B.DE1 Observation":
+  Elements."Reason for visit B.DE1 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Reason for visit - HIV.B.DE1 */
+/* End of Reason for visit B.DE1 */
 
 /*
 @dataElement: HIV.B.DE2 - First-time HIV test
@@ -70,22 +217,22 @@ define "First-time HIV test Observation":
 /* End of First-time HIV test */
 
 /*
-@dataElement: HIV.B.DE3 - Retesting for HIV - HIV.B.DE3
+@dataElement: HIV.B.DE3 - Retesting for HIV
 @activity: HIV.B1 Determine reason for visit
 @description: Retesting for human immunodeficiency virus
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Retesting for HIV - HIV.B.DE3":
-  exists "Retesting for HIV - HIV.B.DE3 Condition"
-    or exists "Retesting for HIV - HIV.B.DE3 Observation"
-define "Retesting for HIV - HIV.B.DE3 Condition":
-  Elements."Retesting for HIV - HIV.B.DE3 Condition" C
+define "Retesting for HIV B.DE3":
+  exists "Retesting for HIV B.DE3 Condition"
+    or exists "Retesting for HIV B.DE3 Observation"
+define "Retesting for HIV B.DE3 Condition":
+  Elements."Retesting for HIV B.DE3 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Retesting for HIV - HIV.B.DE3 Observation":
-  Elements."Retesting for HIV - HIV.B.DE3 Observation" O
+define "Retesting for HIV B.DE3 Observation":
+  Elements."Retesting for HIV B.DE3 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Retesting for HIV - HIV.B.DE3 */
+/* End of Retesting for HIV B.DE3 */
 
 /*
 @dataElement: HIV.B.DE4 - HIV testing services visit
@@ -106,30 +253,233 @@ define "HIV testing services visit Observation":
 /* End of HIV testing services visit */
 
 /*
-@dataElement: HIV.B.DE14 - Date/time of suspected exposure to HIV - HIV.B.DE14
+@dataElement: HIV.B.DE14 - Date/time of suspected exposure to HIV
 @activity: HIV.B1 Determine reason for visit
 @description: Date and time when the client had suspected exposure to HIV
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Date/time of suspected exposure to HIV - HIV.B.DE14 Observation":
-  Elements."Date/time of suspected exposure to HIV - HIV.B.DE14" O
+define "Date/time of suspected exposure to HIV B.DE14":
+  Elements."Date/time of suspected exposure to HIV B.DE14" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
-/* End of Date/time of suspected exposure to HIV - HIV.B.DE14 */
+define "Date/time of suspected exposure to HIV B.DE14 Value":
+  "Date/time of suspected exposure to HIV B.DE14" O
+  return O.value
+/* End of Date/time of suspected exposure to HIV B.DE14 */
 
 /*
-@dataElement: HIV.B.DE49 - Key population member* - HIV.B.DE49
+@dataElement: HIV.B.DE29 - Currently pregnant
+@activity: HIV.B6 Capture or update client history
+@description: Client is currently pregnant
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Currently pregnant B.DE29":
+  exists "Currently pregnant B.DE29 Observation"
+define "Currently pregnant B.DE29 Observation":
+  Elements."Currently pregnant B.DE29 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Currently pregnant B.DE29 */
+
+/*
+@dataElement: HIV.B.DE33 - Partner HIV status reported
+@activity: HIV.B6 Capture or update client history
+@description: The HIV status of the client's partner.
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Partner HIV status reported":
+  exists "Partner HIV status reported Observation"
+define "Partner HIV status reported Observation":
+  Elements."Partner HIV status reported Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Partner HIV status reported */
+
+/*
+@dataElement: HIV.B.DE34 - HIV-positive
+@activity: HIV.B6 Capture or update client history
+@description: Client's partner is HIV-positive
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "HIV-positive B.DE34":
+  exists "HIV-positive B.DE34 Condition"
+    or exists "HIV-positive B.DE34 Observation"
+define "HIV-positive B.DE34 Condition":
+  Elements."HIV-positive B.DE34 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "HIV-positive B.DE34 Observation":
+  Elements."HIV-positive B.DE34 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of HIV-positive B.DE34 */
+
+/*
+@dataElement: HIV.B.DE35 - HIV-negative
+@activity: HIV.B6 Capture or update client history
+@description: Client's partner is HIV-negative
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "HIV-negative B.DE35":
+  exists "HIV-negative B.DE35 Condition"
+    or exists "HIV-negative B.DE35 Observation"
+define "HIV-negative B.DE35 Condition":
+  Elements."HIV-negative B.DE35 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "HIV-negative B.DE35 Observation":
+  Elements."HIV-negative B.DE35 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of HIV-negative B.DE35 */
+
+/*
+@dataElement: HIV.B.DE36 - Unknown
+@activity: HIV.B6 Capture or update client history
+@description: Don't know HIV status - client does not know partner's HIV status
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Unknown B.DE36":
+  exists "Unknown B.DE36 Condition"
+    or exists "Unknown B.DE36 Observation"
+define "Unknown B.DE36 Condition":
+  Elements."Unknown B.DE36 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Unknown B.DE36 Observation":
+  Elements."Unknown B.DE36 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Unknown B.DE36 */
+
+/*
+@dataElement: HIV.B.DE49 - Key population member
 @activity: HIV.B6 Capture or update client history
 @description: Client is a member of a key population that has an increased risk of HIV
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Key population member* - HIV.B.DE49 Observation":
-  Elements."Key population member* - HIV.B.DE49" O
+define "Key population member B.DE49":
+  exists "Key population member B.DE49 Observation"
+define "Key population member B.DE49 Observation":
+  Elements."Key population member B.DE49 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
-/* End of Key population member* - HIV.B.DE49 */
+/* End of Key population member B.DE49 */
+
+/*
+@dataElement: HIV.B.DE50 - Key population member type
+@activity: HIV.B6 Capture or update client history
+@description: The type of key population that the client is included in
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Key population member type B.DE50":
+  exists "Key population member type B.DE50 Observation"
+define "Key population member type B.DE50 Observation":
+  Elements."Key population member type B.DE50 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Key population member type B.DE50 */
+
+/*
+@dataElement: HIV.B.DE51 - Sex worker
+@activity: HIV.B6 Capture or update client history
+@description: Client is a sex worker
+*/
+// TODO: Replace placeholder with relevant CQL logic
+
+define "Sex worker B.DE51":
+  Elements."Sex worker B.DE51" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Sex worker B.DE51 */
+
+/*
+@dataElement: HIV.B.DE52 - Men who have sex with men
+@activity: HIV.B6 Capture or update client history
+@description: Client is a man who has sex with men
+*/
+define "Men who have sex with men":
+  Elements."Men who have sex with men" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Men who have sex with men */
+
+/*
+@dataElement: HIV.B.DE53 - Trans and gender-diverse people
+@activity: HIV.B6 Capture or update client history
+@description: Client identifies as trans and gender-diverse
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Trans and gender-diverse people B.DE53 Observation":
+  Elements."Trans and gender-diverse people B.DE53" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Trans and gender-diverse people B.DE53 */
+
+/*
+@dataElement: HIV.B.DE54 - People who inject drugs
+@activity: HIV.B6 Capture or update client history
+@description: Client is a person who injects drugs
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "People who inject drugs B.DE54":
+  Elements."People who inject drugs B.DE54" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of People who inject drugs B.DE54 */
+
+/*
+@dataElement: HIV.B.DE55 - People living in prisons and other closed settings
+@activity: HIV.B6 Capture or update client history
+@description: Client lives in a prison or another closed setting
+*/
+define "People living in prisons and other closed settings Observation":
+  Elements."People living in prisons and other closed settings" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of People living in prisons and other closed settings */
+
+/*
+@dataElement: HIV.B.DE65 - Date informed of HIV-positive diagnosis
+@activity: HIV.B6 Capture or update client history
+@description: The date on which the client was diagnosed with HIV
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Date informed of HIV-positive diagnosis":
+  Elements."Date informed of HIV-positive diagnosis" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+define "Date informed of HIV-positive diagnosis Value":
+  "Date informed of HIV-positive diagnosis" O
+  return O.value
+/* End of Date informed of HIV-positive diagnosis */
+
+/*
+@dataElement: HIV.B.DE71 - HIV diagnosis date
+@activity: HIV.B8 Provide post-test counselling
+@description: Date diagnosis was returned to client
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "HIV diagnosis date":
+  Elements."HIV diagnosis date" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+define "HIV diagnosis date Value":
+  "HIV diagnosis date" O
+  return O.value
+/* End of HIV diagnosis date */
+
+/*
+@dataElement: HIV.B.DE72 - ART start date
+@activity: HIV.B8 Provide post-test counselling
+@description: The date on which the client started or restarted antiretroviral therapy (ART)
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "ART start date B.DE72":
+  Elements."ART start date B.DE72" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+define "ART start date B.DE72 Value":
+  "ART start date B.DE72" O
+  return O.value
+/* End of ART start date B.DE72 */
 
 /*
 @dataElement: HIV.B.DE80 - HIV test conducted
@@ -137,378 +487,623 @@ define "Key population member* - HIV.B.DE49 Observation":
 @description: An HIV test was performed on the client during the visit
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "HIV test conducted":
+  exists "HIV test conducted Observation"
 define "HIV test conducted Observation":
-  Elements."HIV test conducted" O
+  Elements."HIV test conducted Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
 /* End of HIV test conducted */
 
 /*
-@dataElement: HIV.B.DE88 - Assay number in testing strategy - HIV.B.DE88
+@dataElement: HIV.B.DE81 - HIV test type
+@activity: HIV.B7 Test for HIV using testing algorithm
+@description: Type of HIV test
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "HIV test type B.DE81":
+  exists "HIV test type B.DE81 Observation"
+define "HIV test type B.DE81 Observation":
+  Elements."HIV test type B.DE81 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of HIV test type B.DE81 */
+
+/*
+@dataElement: HIV.B.DE82 - Rapid diagnostic test for HIV
+@activity: HIV.B7 Test for HIV using testing algorithm
+@description: Antibody test for HIV performed with a rapid diagnostic
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Rapid diagnostic test for HIV B.DE82":
+  exists "Rapid diagnostic test for HIV B.DE82 Condition"
+    or exists "Rapid diagnostic test for HIV B.DE82 Observation"
+define "Rapid diagnostic test for HIV B.DE82 Condition":
+  Elements."Rapid diagnostic test for HIV B.DE82 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Rapid diagnostic test for HIV B.DE82 Observation":
+  Elements."Rapid diagnostic test for HIV B.DE82 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Rapid diagnostic test for HIV B.DE82 */
+
+/*
+@dataElement: HIV.B.DE83 - Enzyme immunoassay for HIV
+@activity: HIV.B7 Test for HIV using testing algorithm
+@description: Antibody test for HIV performed with an enzyme immunoassay
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Enzyme immunoassay for HIV B.DE83":
+  exists "Enzyme immunoassay for HIV B.DE83 Condition"
+    or exists "Enzyme immunoassay for HIV B.DE83 Observation"
+define "Enzyme immunoassay for HIV B.DE83 Condition":
+  Elements."Enzyme immunoassay for HIV B.DE83 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Enzyme immunoassay for HIV B.DE83 Observation":
+  Elements."Enzyme immunoassay for HIV B.DE83 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Enzyme immunoassay for HIV B.DE83 */
+
+/*
+@dataElement: HIV.B.DE84 - Nucleic acid test for HIV
+@activity: HIV.B7 Test for HIV using testing algorithm
+@description: Virological test, which includes testing for early infant diagnosis
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Nucleic acid test for HIV B.DE84":
+  exists "Nucleic acid test for HIV B.DE84 Condition"
+    or exists "Nucleic acid test for HIV B.DE84 Observation"
+define "Nucleic acid test for HIV B.DE84 Condition":
+  Elements."Nucleic acid test for HIV B.DE84 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Nucleic acid test for HIV B.DE84 Observation":
+  Elements."Nucleic acid test for HIV B.DE84 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Nucleic acid test for HIV B.DE84 */
+
+/*
+@dataElement: HIV.B.DE85 - Dual HIV/syphilis rapid diagnostic test
+@activity: HIV.B7 Test for HIV using testing algorithm
+@description: Antibody test for HIV and syphilis performed with a rapid diagnostic
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Dual HIV/syphilis rapid diagnostic test B.DE85":
+  exists "Dual HIV/syphilis rapid diagnostic test B.DE85 Condition"
+    or exists "Dual HIV/syphilis rapid diagnostic test B.DE85 Observation"
+define "Dual HIV/syphilis rapid diagnostic test B.DE85 Condition":
+  Elements."Dual HIV/syphilis rapid diagnostic test B.DE85 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Dual HIV/syphilis rapid diagnostic test B.DE85 Observation":
+  Elements."Dual HIV/syphilis rapid diagnostic test B.DE85 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Dual HIV/syphilis rapid diagnostic test B.DE85 */
+
+/*
+@dataElement: HIV.B.DE86 - HIV self-test
+@activity: HIV.B7 Test for HIV using testing algorithm
+@description: Antibody test for HIV performed by self-tester using a rapid diagnostic
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "HIV self-test":
+  exists "HIV self-test Condition"
+    or exists "HIV self-test Observation"
+define "HIV self-test Condition":
+  Elements."HIV self-test Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "HIV self-test Observation":
+  Elements."HIV self-test Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of HIV self-test */
+
+/*
+@dataElement: HIV.B.DE88 - Assay number in testing strategy
 @activity: HIV.B7 Test for HIV using testing algorithm
 @description: The number of the assay (test kit) in the HIV testing strategy
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Assay number in testing strategy - HIV.B.DE88 Observation":
-  Elements."Assay number in testing strategy - HIV.B.DE88 Observation" O
+define "Assay number in testing strategy B.DE88":
+  exists "Assay number in testing strategy B.DE88 Observation"
+define "Assay number in testing strategy B.DE88 Observation":
+  Elements."Assay number in testing strategy B.DE88 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Assay number in testing strategy - HIV.B.DE88 */
+/* End of Assay number in testing strategy B.DE88 */
 
 /*
-@dataElement: HIV.B.DE89 - Assay 0 - HIV.B.DE89
+@dataElement: HIV.B.DE89 - Assay 0
 @activity: HIV.B7 Test for HIV using testing algorithm
 @description: A community outreach test-for-triage or self-test which is not included in the HIV testing strategy
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Assay 0 - HIV.B.DE89":
-  exists "Assay 0 - HIV.B.DE89 Condition"
-    or exists "Assay 0 - HIV.B.DE89 Observation"
-define "Assay 0 - HIV.B.DE89 Condition":
-  Elements."Assay 0 - HIV.B.DE89 Condition" C
+define "Assay 0 B.DE89":
+  exists "Assay 0 B.DE89 Condition"
+    or exists "Assay 0 B.DE89 Observation"
+define "Assay 0 B.DE89 Condition":
+  Elements."Assay 0 B.DE89 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Assay 0 - HIV.B.DE89 Observation":
-  Elements."Assay 0 - HIV.B.DE89 Observation" O
+define "Assay 0 B.DE89 Observation":
+  Elements."Assay 0 B.DE89 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Assay 0 - HIV.B.DE89 */
+/* End of Assay 0 B.DE89 */
 
 /*
-@dataElement: HIV.B.DE90 - Assay 1 - HIV.B.DE90
+@dataElement: HIV.B.DE90 - Assay 1
 @activity: HIV.B7 Test for HIV using testing algorithm
 @description: The first test in the HIV testing strategy
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Assay 1 - HIV.B.DE90":
-  exists "Assay 1 - HIV.B.DE90 Condition"
-    or exists "Assay 1 - HIV.B.DE90 Observation"
-define "Assay 1 - HIV.B.DE90 Condition":
-  Elements."Assay 1 - HIV.B.DE90 Condition" C
+define "Assay 1 B.DE90":
+  exists "Assay 1 B.DE90 Condition"
+    or exists "Assay 1 B.DE90 Observation"
+define "Assay 1 B.DE90 Condition":
+  Elements."Assay 1 B.DE90 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Assay 1 - HIV.B.DE90 Observation":
-  Elements."Assay 1 - HIV.B.DE90 Observation" O
+define "Assay 1 B.DE90 Observation":
+  Elements."Assay 1 B.DE90 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Assay 1 - HIV.B.DE90 */
+/* End of Assay 1 B.DE90 */
 
 /*
-@dataElement: HIV.B.DE91 - Assay 2 - HIV.B.DE91
+@dataElement: HIV.B.DE91 - Assay 2
 @activity: HIV.B7 Test for HIV using testing algorithm
 @description: The second test in the HIV testing strategy
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Assay 2 - HIV.B.DE91":
-  exists "Assay 2 - HIV.B.DE91 Condition"
-    or exists "Assay 2 - HIV.B.DE91 Observation"
-define "Assay 2 - HIV.B.DE91 Condition":
-  Elements."Assay 2 - HIV.B.DE91 Condition" C
+define "Assay 2 B.DE91":
+  exists "Assay 2 B.DE91 Condition"
+    or exists "Assay 2 B.DE91 Observation"
+define "Assay 2 B.DE91 Condition":
+  Elements."Assay 2 B.DE91 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Assay 2 - HIV.B.DE91 Observation":
-  Elements."Assay 2 - HIV.B.DE91 Observation" O
+define "Assay 2 B.DE91 Observation":
+  Elements."Assay 2 B.DE91 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Assay 2 - HIV.B.DE91 */
+/* End of Assay 2 B.DE91 */
 
 /*
-@dataElement: HIV.B.DE92 - Assay 3 - HIV.B.DE92
+@dataElement: HIV.B.DE92 - Assay 3
 @activity: HIV.B7 Test for HIV using testing algorithm
 @description: The third test in the HIV testing strategy
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Assay 3 - HIV.B.DE92":
-  exists "Assay 3 - HIV.B.DE92 Condition"
-    or exists "Assay 3 - HIV.B.DE92 Observation"
-define "Assay 3 - HIV.B.DE92 Condition":
-  Elements."Assay 3 - HIV.B.DE92 Condition" C
+define "Assay 3 B.DE92":
+  exists "Assay 3 B.DE92 Condition"
+    or exists "Assay 3 B.DE92 Observation"
+define "Assay 3 B.DE92 Condition":
+  Elements."Assay 3 B.DE92 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Assay 3 - HIV.B.DE92 Observation":
-  Elements."Assay 3 - HIV.B.DE92 Observation" O
+define "Assay 3 B.DE92 Observation":
+  Elements."Assay 3 B.DE92 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Assay 3 - HIV.B.DE92 */
+/* End of Assay 3 B.DE92 */
 
 /*
-@dataElement: HIV.B.DE93 - Assay 1 repeated - HIV.B.DE93
+@dataElement: HIV.B.DE93 - Assay 1 repeated
 @activity: HIV.B7 Test for HIV using testing algorithm
 @description: The first test in the HIV testing strategy
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Assay 1 repeated - HIV.B.DE93":
-  exists "Assay 1 repeated - HIV.B.DE93 Condition"
-    or exists "Assay 1 repeated - HIV.B.DE93 Observation"
-define "Assay 1 repeated - HIV.B.DE93 Condition":
-  Elements."Assay 1 repeated - HIV.B.DE93 Condition" C
+define "Assay 1 repeated B.DE93":
+  exists "Assay 1 repeated B.DE93 Condition"
+    or exists "Assay 1 repeated B.DE93 Observation"
+define "Assay 1 repeated B.DE93 Condition":
+  Elements."Assay 1 repeated B.DE93 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Assay 1 repeated - HIV.B.DE93 Observation":
-  Elements."Assay 1 repeated - HIV.B.DE93 Observation" O
+define "Assay 1 repeated B.DE93 Observation":
+  Elements."Assay 1 repeated B.DE93 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Assay 1 repeated - HIV.B.DE93 */
+/* End of Assay 1 repeated B.DE93 */
 
 /*
-@dataElement: HIV.B.DE94 - Test result of HIV assay 1 - HIV.B.DE94
+@dataElement: HIV.B.DE94 - Test result of HIV assay 1
 @activity: HIV.B7 Test for HIV using testing algorithm
 @description: The result of the first HIV assay in the testing strategy
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Test result of HIV assay 1 - HIV.B.DE94 Observation":
-  Elements."Test result of HIV assay 1 - HIV.B.DE94 Observation" O
+define "Test result of HIV assay 1 B.DE94":
+  exists "Test result of HIV assay 1 B.DE94 Observation"
+define "Test result of HIV assay 1 B.DE94 Observation":
+  Elements."Test result of HIV assay 1 B.DE94 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Test result of HIV assay 1 - HIV.B.DE94 */
+/* End of Test result of HIV assay 1 B.DE94 */
 
 /*
-@dataElement: HIV.B.DE95 - Reactive - HIV.B.DE95
+@dataElement: HIV.B.DE95 - Reactive
 @activity: HIV.B7 Test for HIV using testing algorithm
 @description: The result of the HIV assay in the testing strategy was reactive
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Reactive - HIV.B.DE95":
-  exists "Reactive - HIV.B.DE95 Condition"
-    or exists "Reactive - HIV.B.DE95 Observation"
-define "Reactive - HIV.B.DE95 Condition":
-  Elements."Reactive - HIV.B.DE95 Condition" C
+define "Reactive B.DE95":
+  exists "Reactive B.DE95 Condition"
+    or exists "Reactive B.DE95 Observation"
+define "Reactive B.DE95 Condition":
+  Elements."Reactive B.DE95 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Reactive - HIV.B.DE95 Observation":
-  Elements."Reactive - HIV.B.DE95 Observation" O
+define "Reactive B.DE95 Observation":
+  Elements."Reactive B.DE95 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Reactive - HIV.B.DE95 */
+/* End of Reactive B.DE95 */
 
 /*
-@dataElement: HIV.B.DE96 - Non-reactive - HIV.B.DE96
+@dataElement: HIV.B.DE96 - Non-reactive
 @activity: HIV.B7 Test for HIV using testing algorithm
 @description: The result of the HIV assay in the testing strategy was non-reactive
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Non-reactive - HIV.B.DE96":
-  exists "Non-reactive - HIV.B.DE96 Condition"
-    or exists "Non-reactive - HIV.B.DE96 Observation"
-define "Non-reactive - HIV.B.DE96 Condition":
-  Elements."Non-reactive - HIV.B.DE96 Condition" C
+define "Non-reactive B.DE96":
+  exists "Non-reactive B.DE96 Condition"
+    or exists "Non-reactive B.DE96 Observation"
+define "Non-reactive B.DE96 Condition":
+  Elements."Non-reactive B.DE96 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Non-reactive - HIV.B.DE96 Observation":
-  Elements."Non-reactive - HIV.B.DE96 Observation" O
+define "Non-reactive B.DE96 Observation":
+  Elements."Non-reactive B.DE96 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Non-reactive - HIV.B.DE96 */
+/* End of Non-reactive B.DE96 */
 
 /*
-@dataElement: HIV.B.DE97 - Invalid - HIV.B.DE97
+@dataElement: HIV.B.DE97 - Invalid
 @activity: HIV.B7 Test for HIV using testing algorithm
 @description: The result of the HIV assay in the testing strategy was invalid
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Invalid - HIV.B.DE97":
-  exists "Invalid - HIV.B.DE97 Condition"
-    or exists "Invalid - HIV.B.DE97 Observation"
-define "Invalid - HIV.B.DE97 Condition":
-  Elements."Invalid - HIV.B.DE97 Condition" C
+define "Invalid B.DE97":
+  exists "Invalid B.DE97 Condition"
+    or exists "Invalid B.DE97 Observation"
+define "Invalid B.DE97 Condition":
+  Elements."Invalid B.DE97 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Invalid - HIV.B.DE97 Observation":
-  Elements."Invalid - HIV.B.DE97 Observation" O
+define "Invalid B.DE97 Observation":
+  Elements."Invalid B.DE97 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Invalid - HIV.B.DE97 */
+/* End of Invalid B.DE97 */
 
 /*
-@dataElement: HIV.B.DE98 - Test result of HIV assay 2 - HIV.B.DE98
+@dataElement: HIV.B.DE98 - Test result of HIV assay 2
 @activity: HIV.B7 Test for HIV using testing algorithm
 @description: The result of the second HIV assay in the testing strategy
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Test result of HIV assay 2 - HIV.B.DE98 Observation":
-  Elements."Test result of HIV assay 2 - HIV.B.DE98 Observation" O
+define "Test result of HIV assay 2 B.DE98":
+  exists "Test result of HIV assay 2 B.DE98 Observation"
+define "Test result of HIV assay 2 B.DE98 Observation":
+  Elements."Test result of HIV assay 2 B.DE98 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Test result of HIV assay 2 - HIV.B.DE98 */
+/* End of Test result of HIV assay 2 B.DE98 */
 
 /*
-@dataElement: HIV.B.DE99 - Reactive - HIV.B.DE99
+@dataElement: HIV.B.DE99 - Reactive
 @activity: HIV.B7 Test for HIV using testing algorithm
 @description: The result of the HIV assay in the testing strategy was reactive
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Reactive - HIV.B.DE99":
-  exists "Reactive - HIV.B.DE99 Condition"
-    or exists "Reactive - HIV.B.DE99 Observation"
-define "Reactive - HIV.B.DE99 Condition":
-  Elements."Reactive - HIV.B.DE99 Condition" C
+define "Reactive B.DE99":
+  exists "Reactive B.DE99 Condition"
+    or exists "Reactive B.DE99 Observation"
+define "Reactive B.DE99 Condition":
+  Elements."Reactive B.DE99 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Reactive - HIV.B.DE99 Observation":
-  Elements."Reactive - HIV.B.DE99 Observation" O
+define "Reactive B.DE99 Observation":
+  Elements."Reactive B.DE99 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Reactive - HIV.B.DE99 */
+/* End of Reactive B.DE99 */
 
 /*
-@dataElement: HIV.B.DE100 - Non-reactive - HIV.B.DE100
+@dataElement: HIV.B.DE100 - Non-reactive
 @activity: HIV.B7 Test for HIV using testing algorithm
 @description: The result of the HIV assay in the testing strategy was non-reactive
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Non-reactive - HIV.B.DE100":
-  exists "Non-reactive - HIV.B.DE100 Condition"
-    or exists "Non-reactive - HIV.B.DE100 Observation"
-define "Non-reactive - HIV.B.DE100 Condition":
-  Elements."Non-reactive - HIV.B.DE100 Condition" C
+define "Non-reactive B.DE100":
+  exists "Non-reactive B.DE100 Condition"
+    or exists "Non-reactive B.DE100 Observation"
+define "Non-reactive B.DE100 Condition":
+  Elements."Non-reactive B.DE100 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Non-reactive - HIV.B.DE100 Observation":
-  Elements."Non-reactive - HIV.B.DE100 Observation" O
+define "Non-reactive B.DE100 Observation":
+  Elements."Non-reactive B.DE100 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Non-reactive - HIV.B.DE100 */
+/* End of Non-reactive B.DE100 */
 
 /*
-@dataElement: HIV.B.DE101 - Invalid - HIV.B.DE101
+@dataElement: HIV.B.DE101 - Invalid
 @activity: HIV.B7 Test for HIV using testing algorithm
 @description: The result of the HIV assay in the testing strategy was invalid
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Invalid - HIV.B.DE101":
-  exists "Invalid - HIV.B.DE101 Condition"
-    or exists "Invalid - HIV.B.DE101 Observation"
-define "Invalid - HIV.B.DE101 Condition":
-  Elements."Invalid - HIV.B.DE101 Condition" C
+define "Invalid B.DE101":
+  exists "Invalid B.DE101 Condition"
+    or exists "Invalid B.DE101 Observation"
+define "Invalid B.DE101 Condition":
+  Elements."Invalid B.DE101 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Invalid - HIV.B.DE101 Observation":
-  Elements."Invalid - HIV.B.DE101 Observation" O
+define "Invalid B.DE101 Observation":
+  Elements."Invalid B.DE101 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Invalid - HIV.B.DE101 */
+/* End of Invalid B.DE101 */
 
 /*
-@dataElement: HIV.B.DE102 - Test result of HIV assay 3 - HIV.B.DE102
+@dataElement: HIV.B.DE102 - Test result of HIV assay 3
 @activity: HIV.B7 Test for HIV using testing algorithm
 @description: The result of the third HIV assay in the testing strategy
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Test result of HIV assay 3 - HIV.B.DE102 Observation":
-  Elements."Test result of HIV assay 3 - HIV.B.DE102 Observation" O
+define "Test result of HIV assay 3 B.DE102":
+  exists "Test result of HIV assay 3 B.DE102 Observation"
+define "Test result of HIV assay 3 B.DE102 Observation":
+  Elements."Test result of HIV assay 3 B.DE102 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Test result of HIV assay 3 - HIV.B.DE102 */
+/* End of Test result of HIV assay 3 B.DE102 */
 
 /*
-@dataElement: HIV.B.DE103 - Reactive - HIV.B.DE103
+@dataElement: HIV.B.DE103 - Reactive
 @activity: HIV.B7 Test for HIV using testing algorithm
 @description: The result of the HIV assay in the testing strategy was reactive
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Reactive - HIV.B.DE103":
-  exists "Reactive - HIV.B.DE103 Condition"
-    or exists "Reactive - HIV.B.DE103 Observation"
-define "Reactive - HIV.B.DE103 Condition":
-  Elements."Reactive - HIV.B.DE103 Condition" C
+define "Reactive B.DE103":
+  exists "Reactive B.DE103 Condition"
+    or exists "Reactive B.DE103 Observation"
+define "Reactive B.DE103 Condition":
+  Elements."Reactive B.DE103 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Reactive - HIV.B.DE103 Observation":
-  Elements."Reactive - HIV.B.DE103 Observation" O
+define "Reactive B.DE103 Observation":
+  Elements."Reactive B.DE103 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Reactive - HIV.B.DE103 */
+/* End of Reactive B.DE103 */
 
 /*
-@dataElement: HIV.B.DE104 - Non-reactive - HIV.B.DE104
+@dataElement: HIV.B.DE104 - Non-reactive
 @activity: HIV.B7 Test for HIV using testing algorithm
 @description: The result of the HIV assay in the testing strategy was non-reactive
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Non-reactive - HIV.B.DE104":
-  exists "Non-reactive - HIV.B.DE104 Condition"
-    or exists "Non-reactive - HIV.B.DE104 Observation"
-define "Non-reactive - HIV.B.DE104 Condition":
-  Elements."Non-reactive - HIV.B.DE104 Condition" C
+define "Non-reactive B.DE104":
+  exists "Non-reactive B.DE104 Condition"
+    or exists "Non-reactive B.DE104 Observation"
+define "Non-reactive B.DE104 Condition":
+  Elements."Non-reactive B.DE104 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Non-reactive - HIV.B.DE104 Observation":
-  Elements."Non-reactive - HIV.B.DE104 Observation" O
+define "Non-reactive B.DE104 Observation":
+  Elements."Non-reactive B.DE104 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Non-reactive - HIV.B.DE104 */
+/* End of Non-reactive B.DE104 */
 
 /*
-@dataElement: HIV.B.DE105 - Invalid - HIV.B.DE105
+@dataElement: HIV.B.DE105 - Invalid
 @activity: HIV.B7 Test for HIV using testing algorithm
 @description: The result of the HIV assay in the testing strategy was invalid
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Invalid - HIV.B.DE105":
-  exists "Invalid - HIV.B.DE105 Condition"
-    or exists "Invalid - HIV.B.DE105 Observation"
-define "Invalid - HIV.B.DE105 Condition":
-  Elements."Invalid - HIV.B.DE105 Condition" C
+define "Invalid B.DE105":
+  exists "Invalid B.DE105 Condition"
+    or exists "Invalid B.DE105 Observation"
+define "Invalid B.DE105 Condition":
+  Elements."Invalid B.DE105 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Invalid - HIV.B.DE105 Observation":
-  Elements."Invalid - HIV.B.DE105 Observation" O
+define "Invalid B.DE105 Observation":
+  Elements."Invalid B.DE105 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Invalid - HIV.B.DE105 */
+/* End of Invalid B.DE105 */
 
 /*
-@dataElement: HIV.B.DE106 - Test result of HIV assay 1 repeated - HIV.B.DE106
+@dataElement: HIV.B.DE106 - Test result of HIV assay 1 repeated
 @activity: HIV.B7 Test for HIV using testing algorithm
 @description: The result of the repeated first HIV assay in the testing strategy
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Test result of HIV assay 1 repeated - HIV.B.DE106 Observation":
-  Elements."Test result of HIV assay 1 repeated - HIV.B.DE106 Observation" O
+define "Test result of HIV assay 1 repeated B.DE106":
+  exists "Test result of HIV assay 1 repeated B.DE106 Observation"
+define "Test result of HIV assay 1 repeated B.DE106 Observation":
+  Elements."Test result of HIV assay 1 repeated B.DE106 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Test result of HIV assay 1 repeated - HIV.B.DE106 */
+/* End of Test result of HIV assay 1 repeated B.DE106 */
 
 /*
-@dataElement: HIV.B.DE107 - Reactive - HIV.B.DE107
+@dataElement: HIV.B.DE107 - Reactive
 @activity: HIV.B7 Test for HIV using testing algorithm
 @description: The result of the HIV assay in the testing strategy was reactive
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Reactive - HIV.B.DE107":
-  exists "Reactive - HIV.B.DE107 Condition"
-    or exists "Reactive - HIV.B.DE107 Observation"
-define "Reactive - HIV.B.DE107 Condition":
-  Elements."Reactive - HIV.B.DE107 Condition" C
+define "Reactive B.DE107":
+  exists "Reactive B.DE107 Condition"
+    or exists "Reactive B.DE107 Observation"
+define "Reactive B.DE107 Condition":
+  Elements."Reactive B.DE107 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Reactive - HIV.B.DE107 Observation":
-  Elements."Reactive - HIV.B.DE107 Observation" O
+define "Reactive B.DE107 Observation":
+  Elements."Reactive B.DE107 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Reactive - HIV.B.DE107 */
+/* End of Reactive B.DE107 */
 
 /*
-@dataElement: HIV.B.DE108 - Non-reactive - HIV.B.DE108
+@dataElement: HIV.B.DE108 - Non-reactive
 @activity: HIV.B7 Test for HIV using testing algorithm
 @description: The result of the HIV assay in the testing strategy was non-reactive
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Non-reactive - HIV.B.DE108":
-  exists "Non-reactive - HIV.B.DE108 Condition"
-    or exists "Non-reactive - HIV.B.DE108 Observation"
-define "Non-reactive - HIV.B.DE108 Condition":
-  Elements."Non-reactive - HIV.B.DE108 Condition" C
+define "Non-reactive B.DE108":
+  exists "Non-reactive B.DE108 Condition"
+    or exists "Non-reactive B.DE108 Observation"
+define "Non-reactive B.DE108 Condition":
+  Elements."Non-reactive B.DE108 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Non-reactive - HIV.B.DE108 Observation":
-  Elements."Non-reactive - HIV.B.DE108 Observation" O
+define "Non-reactive B.DE108 Observation":
+  Elements."Non-reactive B.DE108 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Non-reactive - HIV.B.DE108 */
+/* End of Non-reactive B.DE108 */
 
 /*
-@dataElement: HIV.B.DE109 - Invalid - HIV.B.DE109
+@dataElement: HIV.B.DE109 - Invalid
 @activity: HIV.B7 Test for HIV using testing algorithm
 @description: The result of the HIV assay in the testing strategy was invalid
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Invalid - HIV.B.DE109":
-  exists "Invalid - HIV.B.DE109 Condition"
-    or exists "Invalid - HIV.B.DE109 Observation"
-define "Invalid - HIV.B.DE109 Condition":
-  Elements."Invalid - HIV.B.DE109 Condition" C
+define "Invalid B.DE109":
+  exists "Invalid B.DE109 Condition"
+    or exists "Invalid B.DE109 Observation"
+define "Invalid B.DE109 Condition":
+  Elements."Invalid B.DE109 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Invalid - HIV.B.DE109 Observation":
-  Elements."Invalid - HIV.B.DE109 Observation" O
+define "Invalid B.DE109 Observation":
+  Elements."Invalid B.DE109 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Invalid - HIV.B.DE109 */
+/* End of Invalid B.DE109 */
+
+/*
+@dataElement: HIV.B.DE111 - HIV test result
+@activity: HIV.B7 Test for HIV using testing algorithm
+@description: The result from HIV testing after applying the testing algorithm
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "HIV test result B.DE111":
+  exists "HIV test result B.DE111 Observation"
+define "HIV test result B.DE111 Observation":
+  Elements."HIV test result B.DE111 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of HIV test result B.DE111 */
+
+/*
+@dataElement: HIV.B.DE112 - HIV-positive
+@activity: HIV.B7 Test for HIV using testing algorithm
+@description: Test result is HIV-positive
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "HIV-positive B.DE112":
+  exists "HIV-positive B.DE112 Condition"
+    or exists "HIV-positive B.DE112 Observation"
+define "HIV-positive B.DE112 Condition":
+  Elements."HIV-positive B.DE112 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "HIV-positive B.DE112 Observation":
+  Elements."HIV-positive B.DE112 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of HIV-positive B.DE112 */
+
+/*
+@dataElement: HIV.B.DE113 - HIV-negative
+@activity: HIV.B7 Test for HIV using testing algorithm
+@description: Test result is HIV-negative
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "HIV-negative B.DE113 Observation":
+  Elements."HIV-negative B.DE113" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of HIV-negative B.DE113 */
+
+/*
+@dataElement: HIV.B.DE114 - HIV-inconclusive
+@activity: HIV.B7 Test for HIV using testing algorithm
+@description: Test result is HIV-inconclusive
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "HIV-inconclusive":
+  exists "HIV-inconclusive Condition"
+    or exists "HIV-inconclusive Observation"
+define "HIV-inconclusive Condition":
+  Elements."HIV-inconclusive Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "HIV-inconclusive Observation":
+  Elements."HIV-inconclusive Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of HIV-inconclusive */
+
+/*
+@dataElement: HIV.B.DE115 - HIV status
+@activity: HIV.B7 Test for HIV using testing algorithm
+@description: HIV status reported after applying the national HIV testing algorithm. No single HIV test can provide an HIV-positive diagnosis.
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "HIV status":
+  exists "HIV status Observation"
+define "HIV status Observation":
+  Elements."HIV status Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of HIV status */
+
+/*
+@dataElement: HIV.B.DE116 - HIV-positive
+@activity: HIV.B7 Test for HIV using testing algorithm
+@description: Client is HIV-positive
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "HIV-positive B.DE116":
+  exists "HIV-positive B.DE116 Condition"
+    or exists "HIV-positive B.DE116 Observation"
+define "HIV-positive B.DE116 Condition":
+  Elements."HIV-positive B.DE116 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "HIV-positive B.DE116 Observation":
+  Elements."HIV-positive B.DE116 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of HIV-positive B.DE116 */
+
+/*
+@dataElement: HIV.B.DE117 - HIV-negative
+@activity: HIV.B7 Test for HIV using testing algorithm
+@description: Client is HIV-negative
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "HIV-negative B.DE117":
+  exists "HIV-negative B.DE117 Condition"
+    or exists "HIV-negative B.DE117 Observation"
+define "HIV-negative B.DE117 Condition":
+  Elements."HIV-negative B.DE117 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "HIV-negative B.DE117 Observation":
+  Elements."HIV-negative B.DE117 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of HIV-negative B.DE117 */
+
+/*
+@dataElement: HIV.B.DE118 - Unknown
+@activity: HIV.B7 Test for HIV using testing algorithm
+@description: Client has unknown HIV status
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Unknown B.DE118":
+  exists "Unknown B.DE118 Condition"
+    or exists "Unknown B.DE118 Observation"
+define "Unknown B.DE118 Condition":
+  Elements."Unknown B.DE118 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Unknown B.DE118 Observation":
+  Elements."Unknown B.DE118 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Unknown B.DE118 */
 
 /*
 @dataElement: HIV.B.DE141 - Partner virally suppressed on ART
@@ -516,11 +1111,12 @@ define "Invalid - HIV.B.DE109 Observation":
 @description: ART and virally suppression status of a partner of the client
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Partner virally suppressed on ART":
+  exists "Partner virally suppressed on ART Observation"
 define "Partner virally suppressed on ART Observation":
-  Elements."Partner virally suppressed on ART" O
+  Elements."Partner virally suppressed on ART Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
 /* End of Partner virally suppressed on ART */
 
 /*
@@ -529,6 +1125,8 @@ define "Partner virally suppressed on ART Observation":
 @description: Whether counselling was provided to a client during the visit
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Counselling provided":
+  exists "Counselling provided Observation"
 define "Counselling provided Observation":
   Elements."Counselling provided Observation" O
     where O.encounter.references(EncounterId)
@@ -644,34 +1242,36 @@ define "VMMC counselling provided Observation":
 /* End of VMMC counselling provided */
 
 /*
-@dataElement: HIV.B.DE149 - Prevention services offered and referrals - HIV.B.DE149
+@dataElement: HIV.B.DE149 - Prevention services offered and referrals
 @activity: HIV.B9 Determine recommended services
 @description: Offer or refer to prevention services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Prevention services offered and referrals - HIV.B.DE149 Observation":
-  Elements."Prevention services offered and referrals - HIV.B.DE149 Observation" O
+define "Prevention services offered and referrals B.DE149":
+  exists "Prevention services offered and referrals B.DE149 Observation"
+define "Prevention services offered and referrals B.DE149 Observation":
+  Elements."Prevention services offered and referrals B.DE149 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Prevention services offered and referrals - HIV.B.DE149 */
+/* End of Prevention services offered and referrals B.DE149 */
 
 /*
-@dataElement: HIV.B.DE150 - Offer male and female condoms and condom-compatible lubricants - HIV.B.DE150
+@dataElement: HIV.B.DE150 - Offer male and female condoms and condom-compatible lubricants
 @activity: HIV.B9 Determine recommended services
 @description: Offer male and female condoms and condom-compatible lubricants
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Offer male and female condoms and condom-compatible lubricants - HIV.B.DE150":
-  exists "Offer male and female condoms and condom-compatible lubricants - HIV.B.DE150 Condition"
-    or exists "Offer male and female condoms and condom-compatible lubricants - HIV.B.DE150 Observation"
-define "Offer male and female condoms and condom-compatible lubricants - HIV.B.DE150 Condition":
-  Elements."Offer male and female condoms and condom-compatible lubricants - HIV.B.DE150 Condition" C
+define "Offer male and female condoms and condom-compatible lubricants B.DE150":
+  exists "Offer male and female condoms and condom-compatible lubricants B.DE150 Condition"
+    or exists "Offer male and female condoms and condom-compatible lubricants B.DE150 Observation"
+define "Offer male and female condoms and condom-compatible lubricants B.DE150 Condition":
+  Elements."Offer male and female condoms and condom-compatible lubricants B.DE150 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Offer male and female condoms and condom-compatible lubricants - HIV.B.DE150 Observation":
-  Elements."Offer male and female condoms and condom-compatible lubricants - HIV.B.DE150 Observation" O
+define "Offer male and female condoms and condom-compatible lubricants B.DE150 Observation":
+  Elements."Offer male and female condoms and condom-compatible lubricants B.DE150 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Offer male and female condoms and condom-compatible lubricants - HIV.B.DE150 */
+/* End of Offer male and female condoms and condom-compatible lubricants B.DE150 */
 
 /*
 @dataElement: HIV.B.DE151 - Offer pre-exposure prophylaxis PrEP for people at elevated risk for HIV acquisition
@@ -728,22 +1328,22 @@ define "Voluntary medical male circumcision VMMC Observation":
 /* End of Voluntary medical male circumcision VMMC */
 
 /*
-@dataElement: HIV.B.DE154 - Harm reduction for people who inject drugs - HIV.B.DE154
+@dataElement: HIV.B.DE154 - Harm reduction for people who inject drugs
 @activity: HIV.B9 Determine recommended services
 @description: Offer or refer to harm reduction services for people who inject drugs (needle and syringe programmes, opioid substitution therapy, other drug-dependence treatment and opioid overdose prevention and management)
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Harm reduction for people who inject drugs - HIV.B.DE154":
-  exists "Harm reduction for people who inject drugs - HIV.B.DE154 Condition"
-    or exists "Harm reduction for people who inject drugs - HIV.B.DE154 Observation"
-define "Harm reduction for people who inject drugs - HIV.B.DE154 Condition":
-  Elements."Harm reduction for people who inject drugs - HIV.B.DE154 Condition" C
+define "Harm reduction for people who inject drugs B.DE154":
+  exists "Harm reduction for people who inject drugs B.DE154 Condition"
+    or exists "Harm reduction for people who inject drugs B.DE154 Observation"
+define "Harm reduction for people who inject drugs B.DE154 Condition":
+  Elements."Harm reduction for people who inject drugs B.DE154 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Harm reduction for people who inject drugs - HIV.B.DE154 Observation":
-  Elements."Harm reduction for people who inject drugs - HIV.B.DE154 Observation" O
+define "Harm reduction for people who inject drugs B.DE154 Observation":
+  Elements."Harm reduction for people who inject drugs B.DE154 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Harm reduction for people who inject drugs - HIV.B.DE154 */
+/* End of Harm reduction for people who inject drugs B.DE154 */
 
 /*
 @dataElement: HIV.B.DE155 - Behavioural interventions to support risk reduction, particularly for people with HIV and members of key populations
@@ -764,22 +1364,22 @@ define "Behavioural interventions to support risk reduction, particularly for pe
 /* End of Behavioural interventions to support risk reduction, particularly for people with HIV and members of key populations */
 
 /*
-@dataElement: HIV.B.DE156 - HIV testing for partners and biological children - HIV.B.DE156
+@dataElement: HIV.B.DE156 - HIV testing for partners and biological children
 @activity: HIV.B9 Determine recommended services
 @description: Offer voluntary testing for all partners and biological children of positive cases (includes partner services and index case testing), as welll as partners and social contacts of people from key populations, where appropriate
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "HIV testing for partners and biological children - HIV.B.DE156":
-  exists "HIV testing for partners and biological children - HIV.B.DE156 Condition"
-    or exists "HIV testing for partners and biological children - HIV.B.DE156 Observation"
-define "HIV testing for partners and biological children - HIV.B.DE156 Condition":
-  Elements."HIV testing for partners and biological children - HIV.B.DE156 Condition" C
+define "HIV testing for partners and biological children B.DE156":
+  exists "HIV testing for partners and biological children B.DE156 Condition"
+    or exists "HIV testing for partners and biological children B.DE156 Observation"
+define "HIV testing for partners and biological children B.DE156 Condition":
+  Elements."HIV testing for partners and biological children B.DE156 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "HIV testing for partners and biological children - HIV.B.DE156 Observation":
-  Elements."HIV testing for partners and biological children - HIV.B.DE156 Observation" O
+define "HIV testing for partners and biological children B.DE156 Observation":
+  Elements."HIV testing for partners and biological children B.DE156 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of HIV testing for partners and biological children - HIV.B.DE156 */
+/* End of HIV testing for partners and biological children B.DE156 */
 
 /*
 @dataElement: HIV.B.DE157 - HIV testing for partners and social contacts of people from key populations, where appropriate
@@ -800,52 +1400,54 @@ define "HIV testing for partners and social contacts of people from key populati
 /* End of HIV testing for partners and social contacts of people from key populations, where appropriate */
 
 /*
-@dataElement: HIV.B.DE158 - Sexual and reproductive health integrated services - HIV.B.DE158
+@dataElement: HIV.B.DE158 - Sexual and reproductive health integrated services
 @activity: HIV.B9 Determine recommended services
 @description: Offer or refer to sexual and reproductive health services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Sexual and reproductive health integrated services - HIV.B.DE158 Observation":
-  Elements."Sexual and reproductive health integrated services - HIV.B.DE158 Observation" O
+define "Sexual and reproductive health integrated services B.DE158":
+  exists "Sexual and reproductive health integrated services B.DE158 Observation"
+define "Sexual and reproductive health integrated services B.DE158 Observation":
+  Elements."Sexual and reproductive health integrated services B.DE158 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Sexual and reproductive health integrated services - HIV.B.DE158 */
+/* End of Sexual and reproductive health integrated services B.DE158 */
 
 /*
-@dataElement: HIV.B.DE159 - Contraception and family planning - HIV.B.DE159
+@dataElement: HIV.B.DE159 - Contraception and family planning
 @activity: HIV.B9 Determine recommended services
 @description: Offer contraception and family planning services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Contraception and family planning - HIV.B.DE159":
-  exists "Contraception and family planning - HIV.B.DE159 Condition"
-    or exists "Contraception and family planning - HIV.B.DE159 Observation"
-define "Contraception and family planning - HIV.B.DE159 Condition":
-  Elements."Contraception and family planning - HIV.B.DE159 Condition" C
+define "Contraception and family planning B.DE159":
+  exists "Contraception and family planning B.DE159 Condition"
+    or exists "Contraception and family planning B.DE159 Observation"
+define "Contraception and family planning B.DE159 Condition":
+  Elements."Contraception and family planning B.DE159 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Contraception and family planning - HIV.B.DE159 Observation":
-  Elements."Contraception and family planning - HIV.B.DE159 Observation" O
+define "Contraception and family planning B.DE159 Observation":
+  Elements."Contraception and family planning B.DE159 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Contraception and family planning - HIV.B.DE159 */
+/* End of Contraception and family planning B.DE159 */
 
 /*
-@dataElement: HIV.B.DE160 - Check pregnancy status - HIV.B.DE160
+@dataElement: HIV.B.DE160 - Check pregnancy status
 @activity: HIV.B9 Determine recommended services
 @description: Check women's pregnancy status
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Check pregnancy status - HIV.B.DE160":
-  exists "Check pregnancy status - HIV.B.DE160 Condition"
-    or exists "Check pregnancy status - HIV.B.DE160 Observation"
-define "Check pregnancy status - HIV.B.DE160 Condition":
-  Elements."Check pregnancy status - HIV.B.DE160 Condition" C
+define "Check pregnancy status B.DE160":
+  exists "Check pregnancy status B.DE160 Condition"
+    or exists "Check pregnancy status B.DE160 Observation"
+define "Check pregnancy status B.DE160 Condition":
+  Elements."Check pregnancy status B.DE160 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Check pregnancy status - HIV.B.DE160 Observation":
-  Elements."Check pregnancy status - HIV.B.DE160 Observation" O
+define "Check pregnancy status B.DE160 Observation":
+  Elements."Check pregnancy status B.DE160 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Check pregnancy status - HIV.B.DE160 */
+/* End of Check pregnancy status B.DE160 */
 
 /*
 @dataElement: HIV.B.DE161 - Prevention of mother-to-child transmission counselling
@@ -884,22 +1486,22 @@ define "Cervical cancer screening and treatment counselling Observation":
 /* End of Cervical cancer screening and treatment counselling */
 
 /*
-@dataElement: HIV.B.DE163 - Anal cancer screening for men who have sex with men - HIV.B.DE163
+@dataElement: HIV.B.DE163 - Anal cancer screening for men who have sex with men
 @activity: HIV.B9 Determine recommended services
 @description: Offer services for anal cancer screening (for men who have sex with men)
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Anal cancer screening for men who have sex with men - HIV.B.DE163":
-  exists "Anal cancer screening for men who have sex with men - HIV.B.DE163 Condition"
-    or exists "Anal cancer screening for men who have sex with men - HIV.B.DE163 Observation"
-define "Anal cancer screening for men who have sex with men - HIV.B.DE163 Condition":
-  Elements."Anal cancer screening for men who have sex with men - HIV.B.DE163 Condition" C
+define "Anal cancer screening for men who have sex with men B.DE163":
+  exists "Anal cancer screening for men who have sex with men B.DE163 Condition"
+    or exists "Anal cancer screening for men who have sex with men B.DE163 Observation"
+define "Anal cancer screening for men who have sex with men B.DE163 Condition":
+  Elements."Anal cancer screening for men who have sex with men B.DE163 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Anal cancer screening for men who have sex with men - HIV.B.DE163 Observation":
-  Elements."Anal cancer screening for men who have sex with men - HIV.B.DE163 Observation" O
+define "Anal cancer screening for men who have sex with men B.DE163 Observation":
+  Elements."Anal cancer screening for men who have sex with men B.DE163 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Anal cancer screening for men who have sex with men - HIV.B.DE163 */
+/* End of Anal cancer screening for men who have sex with men B.DE163 */
 
 /*
 @dataElement: HIV.B.DE164 - STI testing and treatment services
@@ -920,34 +1522,36 @@ define "STI testing and treatment services Observation":
 /* End of STI testing and treatment services */
 
 /*
-@dataElement: HIV.B.DE165 - Offer other clinical services - HIV.B.DE165
+@dataElement: HIV.B.DE165 - Offer other clinical services
 @activity: HIV.B9 Determine recommended services
 @description: Other clinical services offered or referrals given to the client
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Offer other clinical services - HIV.B.DE165 Observation":
-  Elements."Offer other clinical services - HIV.B.DE165 Observation" O
+define "Offer other clinical services B.DE165":
+  exists "Offer other clinical services B.DE165 Observation"
+define "Offer other clinical services B.DE165 Observation":
+  Elements."Offer other clinical services B.DE165 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Offer other clinical services - HIV.B.DE165 */
+/* End of Offer other clinical services B.DE165 */
 
 /*
-@dataElement: HIV.B.DE166 - Assessment and provision of vaccinations - HIV.B.DE166
+@dataElement: HIV.B.DE166 - Assessment and provision of vaccinations
 @activity: HIV.B9 Determine recommended services
 @description: Assessment and provision of vaccinations, such as for people from key populations, pregnant women and infants; and, where appropriate, tetanus vaccination for adolescent boys and men receiving VMMC
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Assessment and provision of vaccinations - HIV.B.DE166":
-  exists "Assessment and provision of vaccinations - HIV.B.DE166 Condition"
-    or exists "Assessment and provision of vaccinations - HIV.B.DE166 Observation"
-define "Assessment and provision of vaccinations - HIV.B.DE166 Condition":
-  Elements."Assessment and provision of vaccinations - HIV.B.DE166 Condition" C
+define "Assessment and provision of vaccinations B.DE166":
+  exists "Assessment and provision of vaccinations B.DE166 Condition"
+    or exists "Assessment and provision of vaccinations B.DE166 Observation"
+define "Assessment and provision of vaccinations B.DE166 Condition":
+  Elements."Assessment and provision of vaccinations B.DE166 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Assessment and provision of vaccinations - HIV.B.DE166 Observation":
-  Elements."Assessment and provision of vaccinations - HIV.B.DE166 Observation" O
+define "Assessment and provision of vaccinations B.DE166 Observation":
+  Elements."Assessment and provision of vaccinations B.DE166 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Assessment and provision of vaccinations - HIV.B.DE166 */
+/* End of Assessment and provision of vaccinations B.DE166 */
 
 /*
 @dataElement: HIV.B.DE167 - Hepatitis B HBV and hepatitis C virus HCV testing and treatment provided
@@ -1004,203 +1608,209 @@ define "Intensified TB case finding and linkage to TB treatment provided Observa
 /* End of Intensified TB case finding and linkage to TB treatment provided */
 
 /*
-@dataElement: HIV.B.DE170 - Provision of isoniazid preventive therapy if person does not have TB - HIV.B.DE170
+@dataElement: HIV.B.DE170 - Provision of isoniazid preventive therapy if person does not have TB
 @activity: HIV.B9 Determine recommended services
 @description: Offer or refer for provision of isoniazid preventive therapy if person does not have TB
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Provision of isoniazid preventive therapy if person does not have TB - HIV.B.DE170":
-  exists "Provision of isoniazid preventive therapy if person does not have TB - HIV.B.DE170 Condition"
-    or exists "Provision of isoniazid preventive therapy if person does not have TB - HIV.B.DE170 Observation"
-define "Provision of isoniazid preventive therapy if person does not have TB - HIV.B.DE170 Condition":
-  Elements."Provision of isoniazid preventive therapy if person does not have TB - HIV.B.DE170 Condition" C
+define "Provision of isoniazid preventive therapy if person does not have TB B.DE170":
+  exists "Provision of isoniazid preventive therapy if person does not have TB B.DE170 Condition"
+    or exists "Provision of isoniazid preventive therapy if person does not have TB B.DE170 Observation"
+define "Provision of isoniazid preventive therapy if person does not have TB B.DE170 Condition":
+  Elements."Provision of isoniazid preventive therapy if person does not have TB B.DE170 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Provision of isoniazid preventive therapy if person does not have TB - HIV.B.DE170 Observation":
-  Elements."Provision of isoniazid preventive therapy if person does not have TB - HIV.B.DE170 Observation" O
+define "Provision of isoniazid preventive therapy if person does not have TB B.DE170 Observation":
+  Elements."Provision of isoniazid preventive therapy if person does not have TB B.DE170 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Provision of isoniazid preventive therapy if person does not have TB - HIV.B.DE170 */
+/* End of Provision of isoniazid preventive therapy if person does not have TB B.DE170 */
 
 /*
-@dataElement: HIV.B.DE171 - Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.B.DE171
+@dataElement: HIV.B.DE171 - Malaria prevention such as bed nets and prophylaxis, depending on epidemiology
 @activity: HIV.B9 Determine recommended services
 @description: Offer or refer for malaria prevention (such as bed nets and prophylaxis), depending on epidemiology
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.B.DE171":
-  exists "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.B.DE171 Condition"
-    or exists "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.B.DE171 Observation"
-define "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.B.DE171 Condition":
-  Elements."Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.B.DE171 Condition" C
+define "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology B.DE171":
+  exists "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology B.DE171 Condition"
+    or exists "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology B.DE171 Observation"
+define "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology B.DE171 Condition":
+  Elements."Malaria prevention such as bed nets and prophylaxis, depending on epidemiology B.DE171 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.B.DE171 Observation":
-  Elements."Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.B.DE171 Observation" O
+define "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology B.DE171 Observation":
+  Elements."Malaria prevention such as bed nets and prophylaxis, depending on epidemiology B.DE171 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.B.DE171 */
+/* End of Malaria prevention such as bed nets and prophylaxis, depending on epidemiology B.DE171 */
 
 /*
-@dataElement: HIV.B.DE172 - Other support services - HIV.B.DE172
+@dataElement: HIV.B.DE172 - Other support services
 @activity: HIV.B9 Determine recommended services
 @description: Offer or refer for other support services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Other support services - HIV.B.DE172 Observation":
-  Elements."Other support services - HIV.B.DE172 Observation" O
+define "Other support services B.DE172":
+  exists "Other support services B.DE172 Observation"
+define "Other support services B.DE172 Observation":
+  Elements."Other support services B.DE172 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Other support services - HIV.B.DE172 */
+/* End of Other support services B.DE172 */
 
 /*
-@dataElement: HIV.B.DE173 - Mental health services - HIV.B.DE173
+@dataElement: HIV.B.DE173 - Mental health services
 @activity: HIV.B9 Determine recommended services
 @description: Offer or refer for mental health services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Mental health services - HIV.B.DE173":
-  exists "Mental health services - HIV.B.DE173 Condition"
-    or exists "Mental health services - HIV.B.DE173 Observation"
-define "Mental health services - HIV.B.DE173 Condition":
-  Elements."Mental health services - HIV.B.DE173 Condition" C
+define "Mental health services B.DE173":
+  exists "Mental health services B.DE173 Condition"
+    or exists "Mental health services B.DE173 Observation"
+define "Mental health services B.DE173 Condition":
+  Elements."Mental health services B.DE173 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Mental health services - HIV.B.DE173 Observation":
-  Elements."Mental health services - HIV.B.DE173 Observation" O
+define "Mental health services B.DE173 Observation":
+  Elements."Mental health services B.DE173 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Mental health services - HIV.B.DE173 */
+/* End of Mental health services B.DE173 */
 
 /*
-@dataElement: HIV.B.DE174 - Psychosocial counselling, support and treatment adherence counselling - HIV.B.DE174
+@dataElement: HIV.B.DE174 - Psychosocial counselling, support and treatment adherence counselling
 @activity: HIV.B9 Determine recommended services
 @description: Offer or refer for psychosocial counselling, support and treatment adherence counselling
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Psychosocial counselling, support and treatment adherence counselling - HIV.B.DE174":
-  exists "Psychosocial counselling, support and treatment adherence counselling - HIV.B.DE174 Condition"
-    or exists "Psychosocial counselling, support and treatment adherence counselling - HIV.B.DE174 Observation"
-define "Psychosocial counselling, support and treatment adherence counselling - HIV.B.DE174 Condition":
-  Elements."Psychosocial counselling, support and treatment adherence counselling - HIV.B.DE174 Condition" C
+define "Psychosocial counselling, support and treatment adherence counselling B.DE174":
+  exists "Psychosocial counselling, support and treatment adherence counselling B.DE174 Condition"
+    or exists "Psychosocial counselling, support and treatment adherence counselling B.DE174 Observation"
+define "Psychosocial counselling, support and treatment adherence counselling B.DE174 Condition":
+  Elements."Psychosocial counselling, support and treatment adherence counselling B.DE174 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Psychosocial counselling, support and treatment adherence counselling - HIV.B.DE174 Observation":
-  Elements."Psychosocial counselling, support and treatment adherence counselling - HIV.B.DE174 Observation" O
+define "Psychosocial counselling, support and treatment adherence counselling B.DE174 Observation":
+  Elements."Psychosocial counselling, support and treatment adherence counselling B.DE174 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Psychosocial counselling, support and treatment adherence counselling - HIV.B.DE174 */
+/* End of Psychosocial counselling, support and treatment adherence counselling B.DE174 */
 
 /*
-@dataElement: HIV.B.DE175 - Support for disclosure and partner services - HIV.B.DE175
+@dataElement: HIV.B.DE175 - Support for disclosure and partner services
 @activity: HIV.B9 Determine recommended services
 @description: Offer or refer for support for disclosure and partner services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Support for disclosure and partner services - HIV.B.DE175":
-  exists "Support for disclosure and partner services - HIV.B.DE175 Condition"
-    or exists "Support for disclosure and partner services - HIV.B.DE175 Observation"
-define "Support for disclosure and partner services - HIV.B.DE175 Condition":
-  Elements."Support for disclosure and partner services - HIV.B.DE175 Condition" C
+define "Support for disclosure and partner services B.DE175":
+  exists "Support for disclosure and partner services B.DE175 Condition"
+    or exists "Support for disclosure and partner services B.DE175 Observation"
+define "Support for disclosure and partner services B.DE175 Condition":
+  Elements."Support for disclosure and partner services B.DE175 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Support for disclosure and partner services - HIV.B.DE175 Observation":
-  Elements."Support for disclosure and partner services - HIV.B.DE175 Observation" O
+define "Support for disclosure and partner services B.DE175 Observation":
+  Elements."Support for disclosure and partner services B.DE175 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Support for disclosure and partner services - HIV.B.DE175 */
+/* End of Support for disclosure and partner services B.DE175 */
 
 /*
-@dataElement: HIV.B.DE176 - Legal and social services - HIV.B.DE176
+@dataElement: HIV.B.DE176 - Legal and social services
 @activity: HIV.B9 Determine recommended services
 @description: Offer or refer for legal and social services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Legal and social services - HIV.B.DE176":
-  exists "Legal and social services - HIV.B.DE176 Condition"
-    or exists "Legal and social services - HIV.B.DE176 Observation"
-define "Legal and social services - HIV.B.DE176 Condition":
-  Elements."Legal and social services - HIV.B.DE176 Condition" C
+define "Legal and social services B.DE176":
+  exists "Legal and social services B.DE176 Condition"
+    or exists "Legal and social services B.DE176 Observation"
+define "Legal and social services B.DE176 Condition":
+  Elements."Legal and social services B.DE176 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Legal and social services - HIV.B.DE176 Observation":
-  Elements."Legal and social services - HIV.B.DE176 Observation" O
+define "Legal and social services B.DE176 Observation":
+  Elements."Legal and social services B.DE176 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Legal and social services - HIV.B.DE176 */
+/* End of Legal and social services B.DE176 */
 
 /*
-@dataElement: HIV.B.DE177 - Services for responding to violence against women - HIV.B.DE177
+@dataElement: HIV.B.DE177 - Services for responding to violence against women
 @activity: HIV.B9 Determine recommended services
 @description: Offer or refer for services for responding to violence against women, including first-line support and psychosocial support, post-rape care and other support services including shelters, legal services and women and child protection services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Services for responding to violence against women - HIV.B.DE177":
-  exists "Services for responding to violence against women - HIV.B.DE177 Condition"
-    or exists "Services for responding to violence against women - HIV.B.DE177 Observation"
-define "Services for responding to violence against women - HIV.B.DE177 Condition":
-  Elements."Services for responding to violence against women - HIV.B.DE177 Condition" C
+define "Services for responding to violence against women B.DE177":
+  exists "Services for responding to violence against women B.DE177 Condition"
+    or exists "Services for responding to violence against women B.DE177 Observation"
+define "Services for responding to violence against women B.DE177 Condition":
+  Elements."Services for responding to violence against women B.DE177 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Services for responding to violence against women - HIV.B.DE177 Observation":
-  Elements."Services for responding to violence against women - HIV.B.DE177 Observation" O
+define "Services for responding to violence against women B.DE177 Observation":
+  Elements."Services for responding to violence against women B.DE177 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Services for responding to violence against women - HIV.B.DE177 */
+/* End of Services for responding to violence against women B.DE177 */
 
 /*
-@dataElement: HIV.B.DE191 - Type of follow-up appointment - HIV.B.DE191
+@dataElement: HIV.B.DE191 - Type of follow-up appointment
 @activity: HIV.B20 Schedule retest
 @description: Type of follow-up appointment for testing services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Type of follow-up appointment - HIV.B.DE191 Observation":
-  Elements."Type of follow-up appointment - HIV.B.DE191 Observation" O
+define "Type of follow-up appointment B.DE191":
+  exists "Type of follow-up appointment B.DE191 Observation"
+define "Type of follow-up appointment B.DE191 Observation":
+  Elements."Type of follow-up appointment B.DE191 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Type of follow-up appointment - HIV.B.DE191 */
+/* End of Type of follow-up appointment B.DE191 */
 
 /*
-@dataElement: HIV.B.DE192 - Retesting for HIV - HIV.B.DE192
+@dataElement: HIV.B.DE192 - Retesting for HIV
 @activity: HIV.B20 Schedule retest
 @description: Retesting follow-up appointment
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Retesting for HIV - HIV.B.DE192":
-  exists "Retesting for HIV - HIV.B.DE192 Condition"
-    or exists "Retesting for HIV - HIV.B.DE192 Observation"
-define "Retesting for HIV - HIV.B.DE192 Condition":
-  Elements."Retesting for HIV - HIV.B.DE192 Condition" C
+define "Retesting for HIV B.DE192":
+  exists "Retesting for HIV B.DE192 Condition"
+    or exists "Retesting for HIV B.DE192 Observation"
+define "Retesting for HIV B.DE192 Condition":
+  Elements."Retesting for HIV B.DE192 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Retesting for HIV - HIV.B.DE192 Observation":
-  Elements."Retesting for HIV - HIV.B.DE192 Observation" O
+define "Retesting for HIV B.DE192 Observation":
+  Elements."Retesting for HIV B.DE192 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Retesting for HIV - HIV.B.DE192 */
+/* End of Retesting for HIV B.DE192 */
 
 /*
-@dataElement: HIV.B.DE193 - Other - HIV.B.DE193
+@dataElement: HIV.B.DE193 - Other
 @activity: HIV.B20 Schedule retest
 @description: Other reason for the follow-up appointment
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Other - HIV.B.DE193":
-  exists "Other - HIV.B.DE193 Condition"
-    or exists "Other - HIV.B.DE193 Observation"
-define "Other - HIV.B.DE193 Condition":
-  Elements."Other - HIV.B.DE193 Condition" C
+define "Other B.DE193":
+  exists "Other B.DE193 Condition"
+    or exists "Other B.DE193 Observation"
+define "Other B.DE193 Condition":
+  Elements."Other B.DE193 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Other - HIV.B.DE193 Observation":
-  Elements."Other - HIV.B.DE193 Observation" O
+define "Other B.DE193 Observation":
+  Elements."Other B.DE193 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Other - HIV.B.DE193 */
+/* End of Other B.DE193 */
 
 /*
-@dataElement: HIV.B.DE195 - Date/time of follow-up appointment - HIV.B.DE195
+@dataElement: HIV.B.DE195 - Date/time of follow-up appointment
 @activity: HIV.B20 Schedule retest
 @description: Date the patient is to return for monitoring, re-supply or any other reason
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Date/time of follow-up appointment - HIV.B.DE195 Observation":
-  Elements."Date/time of follow-up appointment - HIV.B.DE195" O
+define "Date/time of follow-up appointment B.DE195":
+  Elements."Date/time of follow-up appointment B.DE195" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
-/* End of Date/time of follow-up appointment - HIV.B.DE195 */
+define "Date/time of follow-up appointment B.DE195 Value":
+  "Date/time of follow-up appointment B.DE195" O
+  return O.value
+/* End of Date/time of follow-up appointment B.DE195 */
 
 /*
 @dataElement: HIV.B.DE224 - HIV retest prior to starting ART conducted
@@ -1208,25 +1818,107 @@ define "Date/time of follow-up appointment - HIV.B.DE195 Observation":
 @description: HIV retest prior to starting ART conducted
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "HIV retest prior to starting ART conducted":
+  exists "HIV retest prior to starting ART conducted Observation"
 define "HIV retest prior to starting ART conducted Observation":
-  Elements."HIV retest prior to starting ART conducted" O
+  Elements."HIV retest prior to starting ART conducted Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
 /* End of HIV retest prior to starting ART conducted */
 
 /*
-@dataElement: HIV.C.DE9 - Date/time of suspected exposure to HIV - HIV.C.DE9
+@dataElement: HIV.B.DE225 - At elevated risk for HIV acquisition
+@activity: HIV.B6 Capture or update client history
+@description: Client is at elevated risk for HIV acquisition
+*/
+define "At elevated risk for HIV acquisition B.DE225":
+  Elements."At elevated risk for HIV acquisition B.DE225" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of At elevated risk for HIV acquisition B.DE225 */
+
+/*
+@dataElement: HIV.B.DE250 - Syphilis test result
+@activity: HIV.B23 Offer sexual and reproductive health services
+@description: Result from syphilis test
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Syphilis test result B.DE250":
+  exists "Syphilis test result B.DE250 Observation"
+define "Syphilis test result B.DE250 Observation":
+  Elements."Syphilis test result B.DE250 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Syphilis test result B.DE250 */
+
+/*
+@dataElement: HIV.B.DE251 - Positive
+@activity: HIV.B23 Offer sexual and reproductive health services
+@description: Test result is positive for syphilis
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Positive B.DE251":
+  exists "Positive B.DE251 Condition"
+    or exists "Positive B.DE251 Observation"
+define "Positive B.DE251 Condition":
+  Elements."Positive B.DE251 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Positive B.DE251 Observation":
+  Elements."Positive B.DE251 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Positive B.DE251 */
+
+/*
+@dataElement: HIV.B.DE252 - Negative
+@activity: HIV.B23 Offer sexual and reproductive health services
+@description: Test result is negative for syphilis
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Negative B.DE252":
+  exists "Negative B.DE252 Condition"
+    or exists "Negative B.DE252 Observation"
+define "Negative B.DE252 Condition":
+  Elements."Negative B.DE252 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Negative B.DE252 Observation":
+  Elements."Negative B.DE252 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Negative B.DE252 */
+
+/*
+@dataElement: HIV.B.DE253 - Inconclusive
+@activity: HIV.B23 Offer sexual and reproductive health services
+@description: Test result is inconclusive
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Inconclusive B.DE253":
+  exists "Inconclusive B.DE253 Condition"
+    or exists "Inconclusive B.DE253 Observation"
+define "Inconclusive B.DE253 Condition":
+  Elements."Inconclusive B.DE253 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Inconclusive B.DE253 Observation":
+  Elements."Inconclusive B.DE253 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Inconclusive B.DE253 */
+
+/*
+@dataElement: HIV.C.DE9 - Date/time of suspected exposure to HIV
 @activity: HIV.C3 Capture or update client history
 @description: When the suspect exposure to HIV took place
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Date/time of suspected exposure to HIV - HIV.C.DE9 Observation":
-  Elements."Date/time of suspected exposure to HIV - HIV.C.DE9" O
+define "Date/time of suspected exposure to HIV C.DE9":
+  Elements."Date/time of suspected exposure to HIV C.DE9" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
-/* End of Date/time of suspected exposure to HIV - HIV.C.DE9 */
+define "Date/time of suspected exposure to HIV C.DE9 Value":
+  "Date/time of suspected exposure to HIV C.DE9" O
+  return O.value
+/* End of Date/time of suspected exposure to HIV C.DE9 */
 
 /*
 @dataElement: HIV.C.DE10 - Currently on PrEP
@@ -1234,11 +1926,12 @@ define "Date/time of suspected exposure to HIV - HIV.C.DE9 Observation":
 @description: The client is currently taking PrEP. Oral pre-exposure prophylaxis (PrEP) of HIV is the use of ARV drugs by people who are not infected with HIV to block the acquisition of HIV.
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Currently on PrEP":
+  exists "Currently on PrEP Observation"
 define "Currently on PrEP Observation":
-  Elements."Currently on PrEP" O
+  Elements."Currently on PrEP Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
 /* End of Currently on PrEP */
 
 /*
@@ -1247,6 +1940,8 @@ define "Currently on PrEP Observation":
 @description: HIV pre-exposure prophylaxis (PrEP) regimen
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Current PrEP regimen":
+  exists "Current PrEP regimen Observation"
 define "Current PrEP regimen Observation":
   Elements."Current PrEP regimen Observation" O
     where O.encounter.references(EncounterId)
@@ -1254,58 +1949,58 @@ define "Current PrEP regimen Observation":
 /* End of Current PrEP regimen */
 
 /*
-@dataElement: HIV.C.DE18 - TDF + FTC - HIV.C.DE18
+@dataElement: HIV.C.DE18 - TDF + FTC
 @activity: HIV.C3 Capture or update client history
 @description: Treated with tenofovir disoproxil fumarate (TDF) and emtricitabine (FTC) pre-exposure prophylaxis (PrEP) regimen (oral PrEP)
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "TDF + FTC - HIV.C.DE18":
-  exists "TDF + FTC - HIV.C.DE18 Condition"
-    or exists "TDF + FTC - HIV.C.DE18 Observation"
-define "TDF + FTC - HIV.C.DE18 Condition":
-  Elements."TDF + FTC - HIV.C.DE18 Condition" C
+define "TDF + FTC C.DE18":
+  exists "TDF + FTC C.DE18 Condition"
+    or exists "TDF + FTC C.DE18 Observation"
+define "TDF + FTC C.DE18 Condition":
+  Elements."TDF + FTC C.DE18 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "TDF + FTC - HIV.C.DE18 Observation":
-  Elements."TDF + FTC - HIV.C.DE18 Observation" O
+define "TDF + FTC C.DE18 Observation":
+  Elements."TDF + FTC C.DE18 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of TDF + FTC - HIV.C.DE18 */
+/* End of TDF + FTC C.DE18 */
 
 /*
-@dataElement: HIV.C.DE19 - TDF - HIV.C.DE19
+@dataElement: HIV.C.DE19 - TDF
 @activity: HIV.C3 Capture or update client history
 @description: Treated with single-agent tenofovir disoproxil fumarate (TDF) pre-exposure prophylaxis (PrEP) regimen (oral PrEP)
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "TDF - HIV.C.DE19":
-  exists "TDF - HIV.C.DE19 Condition"
-    or exists "TDF - HIV.C.DE19 Observation"
-define "TDF - HIV.C.DE19 Condition":
-  Elements."TDF - HIV.C.DE19 Condition" C
+define "TDF C.DE19":
+  exists "TDF C.DE19 Condition"
+    or exists "TDF C.DE19 Observation"
+define "TDF C.DE19 Condition":
+  Elements."TDF C.DE19 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "TDF - HIV.C.DE19 Observation":
-  Elements."TDF - HIV.C.DE19 Observation" O
+define "TDF C.DE19 Observation":
+  Elements."TDF C.DE19 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of TDF - HIV.C.DE19 */
+/* End of TDF C.DE19 */
 
 /*
-@dataElement: HIV.C.DE20 - TDF + 3TC - HIV.C.DE20
+@dataElement: HIV.C.DE20 - TDF + 3TC
 @activity: HIV.C3 Capture or update client history
 @description: Treated with tenofovir disoproxil fumarate (TDF) and lamivudine (3TC) pre-exposure prophylaxis (PrEP) regimen (oral PrEP)
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "TDF + 3TC - HIV.C.DE20":
-  exists "TDF + 3TC - HIV.C.DE20 Condition"
-    or exists "TDF + 3TC - HIV.C.DE20 Observation"
-define "TDF + 3TC - HIV.C.DE20 Condition":
-  Elements."TDF + 3TC - HIV.C.DE20 Condition" C
+define "TDF + 3TC C.DE20":
+  exists "TDF + 3TC C.DE20 Condition"
+    or exists "TDF + 3TC C.DE20 Observation"
+define "TDF + 3TC C.DE20 Condition":
+  Elements."TDF + 3TC C.DE20 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "TDF + 3TC - HIV.C.DE20 Observation":
-  Elements."TDF + 3TC - HIV.C.DE20 Observation" O
+define "TDF + 3TC C.DE20 Observation":
+  Elements."TDF + 3TC C.DE20 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of TDF + 3TC - HIV.C.DE20 */
+/* End of TDF + 3TC C.DE20 */
 
 /*
 @dataElement: HIV.C.DE21 - Other TDF-based regimen
@@ -1326,40 +2021,40 @@ define "Other TDF-based regimen Observation":
 /* End of Other TDF-based regimen */
 
 /*
-@dataElement: HIV.C.DE22 - Dapivirine vaginal ring DVR - HIV.C.DE22
+@dataElement: HIV.C.DE22 - Dapivirine vaginal ring DVR
 @activity: HIV.C3 Capture or update client history
 @description: Dapivirine vaginal ring (DVR) for HIV prevention
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Dapivirine vaginal ring DVR - HIV.C.DE22":
-  exists "Dapivirine vaginal ring DVR - HIV.C.DE22 Condition"
-    or exists "Dapivirine vaginal ring DVR - HIV.C.DE22 Observation"
-define "Dapivirine vaginal ring DVR - HIV.C.DE22 Condition":
-  Elements."Dapivirine vaginal ring DVR - HIV.C.DE22 Condition" C
+define "Dapivirine vaginal ring DVR C.DE22":
+  exists "Dapivirine vaginal ring DVR C.DE22 Condition"
+    or exists "Dapivirine vaginal ring DVR C.DE22 Observation"
+define "Dapivirine vaginal ring DVR C.DE22 Condition":
+  Elements."Dapivirine vaginal ring DVR C.DE22 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Dapivirine vaginal ring DVR - HIV.C.DE22 Observation":
-  Elements."Dapivirine vaginal ring DVR - HIV.C.DE22 Observation" O
+define "Dapivirine vaginal ring DVR C.DE22 Observation":
+  Elements."Dapivirine vaginal ring DVR C.DE22 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Dapivirine vaginal ring DVR - HIV.C.DE22 */
+/* End of Dapivirine vaginal ring DVR C.DE22 */
 
 /*
-@dataElement: HIV.C.DE23 - CAB-LA - HIV.C.DE23
+@dataElement: HIV.C.DE23 - CAB-LA
 @activity: HIV.C3 Capture or update client history
 @description: Long-acting injectable cabotegravir
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "CAB-LA - HIV.C.DE23":
-  exists "CAB-LA - HIV.C.DE23 Condition"
-    or exists "CAB-LA - HIV.C.DE23 Observation"
-define "CAB-LA - HIV.C.DE23 Condition":
-  Elements."CAB-LA - HIV.C.DE23 Condition" C
+define "CAB-LA C.DE23":
+  exists "CAB-LA C.DE23 Condition"
+    or exists "CAB-LA C.DE23 Observation"
+define "CAB-LA C.DE23 Condition":
+  Elements."CAB-LA C.DE23 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "CAB-LA - HIV.C.DE23 Observation":
-  Elements."CAB-LA - HIV.C.DE23 Observation" O
+define "CAB-LA C.DE23 Observation":
+  Elements."CAB-LA C.DE23 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of CAB-LA - HIV.C.DE23 */
+/* End of CAB-LA C.DE23 */
 
 /*
 @dataElement: HIV.C.DE31 - PEP history
@@ -1367,6 +2062,8 @@ define "CAB-LA - HIV.C.DE23 Observation":
 @description: The client's history in taking post-exposure prophylaxis (PEP) for HIV prevention
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "PEP history":
+  exists "PEP history Observation"
 define "PEP history Observation":
   Elements."PEP history Observation" O
     where O.encounter.references(EncounterId)
@@ -1374,22 +2071,22 @@ define "PEP history Observation":
 /* End of PEP history */
 
 /*
-@dataElement: HIV.C.DE32 - First-time user - HIV.C.DE32
+@dataElement: HIV.C.DE32 - First-time user
 @activity: HIV.C3 Capture or update client history
 @description: The client has never used post-exposure prophylaxis (PEP) before
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "First-time user - HIV.C.DE32":
-  exists "First-time user - HIV.C.DE32 Condition"
-    or exists "First-time user - HIV.C.DE32 Observation"
-define "First-time user - HIV.C.DE32 Condition":
-  Elements."First-time user - HIV.C.DE32 Condition" C
+define "First-time user C.DE32":
+  exists "First-time user C.DE32 Condition"
+    or exists "First-time user C.DE32 Observation"
+define "First-time user C.DE32 Condition":
+  Elements."First-time user C.DE32 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "First-time user - HIV.C.DE32 Observation":
-  Elements."First-time user - HIV.C.DE32 Observation" O
+define "First-time user C.DE32 Observation":
+  Elements."First-time user C.DE32 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of First-time user - HIV.C.DE32 */
+/* End of First-time user C.DE32 */
 
 /*
 @dataElement: HIV.C.DE33 - Repeat user
@@ -1410,100 +2107,104 @@ define "Repeat user Observation":
 /* End of Repeat user */
 
 /*
-@dataElement: HIV.C.DE36 - Signs of substantial risk of HIV infection - HIV.C.DE36
+@dataElement: HIV.C.DE36 - Signs of substantial risk of HIV infection
 @activity: HIV.C3 Capture or update client history
 @description: Signs the client is at a substantial risk of HIV infection
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Signs of substantial risk of HIV infection - HIV.C.DE36 Observation":
-  Elements."Signs of substantial risk of HIV infection - HIV.C.DE36 Observation" O
+define "Signs of substantial risk of HIV infection C.DE36":
+  exists "Signs of substantial risk of HIV infection C.DE36 Observation"
+define "Signs of substantial risk of HIV infection C.DE36 Observation":
+  Elements."Signs of substantial risk of HIV infection C.DE36 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Signs of substantial risk of HIV infection - HIV.C.DE36 */
+/* End of Signs of substantial risk of HIV infection C.DE36 */
 
 /*
-@dataElement: HIV.C.DE37 - No condom use during sex with more than one partner in the past 6 months - HIV.C.DE37
+@dataElement: HIV.C.DE37 - No condom use during sex with more than one partner in the past 6 months
 @activity: HIV.C3 Capture or update client history
 @description: Recent vaginal or anal sexual intercourse without a condom with more than one partner
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "No condom use during sex with more than one partner in the past 6 months - HIV.C.DE37":
-  exists "No condom use during sex with more than one partner in the past 6 months - HIV.C.DE37 Condition"
-    or exists "No condom use during sex with more than one partner in the past 6 months - HIV.C.DE37 Observation"
-define "No condom use during sex with more than one partner in the past 6 months - HIV.C.DE37 Condition":
-  Elements."No condom use during sex with more than one partner in the past 6 months - HIV.C.DE37 Condition" C
+define "No condom use during sex with more than one partner in the past 6 months C.DE37":
+  exists "No condom use during sex with more than one partner in the past 6 months C.DE37 Condition"
+    or exists "No condom use during sex with more than one partner in the past 6 months C.DE37 Observation"
+define "No condom use during sex with more than one partner in the past 6 months C.DE37 Condition":
+  Elements."No condom use during sex with more than one partner in the past 6 months C.DE37 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "No condom use during sex with more than one partner in the past 6 months - HIV.C.DE37 Observation":
-  Elements."No condom use during sex with more than one partner in the past 6 months - HIV.C.DE37 Observation" O
+define "No condom use during sex with more than one partner in the past 6 months C.DE37 Observation":
+  Elements."No condom use during sex with more than one partner in the past 6 months C.DE37 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of No condom use during sex with more than one partner in the past 6 months - HIV.C.DE37 */
+/* End of No condom use during sex with more than one partner in the past 6 months C.DE37 */
 
 /*
-@dataElement: HIV.C.DE38 - STI in the past 6 months - HIV.C.DE38
+@dataElement: HIV.C.DE38 - STI in the past 6 months
 @activity: HIV.C3 Capture or update client history
 @description: A recent history (in the last 6 months) of a sexually transmitted infection (STI ) by laboratory testing, self-report or syndromic STI treatment
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "STI in the past 6 months - HIV.C.DE38":
-  exists "STI in the past 6 months - HIV.C.DE38 Condition"
-    or exists "STI in the past 6 months - HIV.C.DE38 Observation"
-define "STI in the past 6 months - HIV.C.DE38 Condition":
-  Elements."STI in the past 6 months - HIV.C.DE38 Condition" C
+define "STI in the past 6 months C.DE38":
+  exists "STI in the past 6 months C.DE38 Condition"
+    or exists "STI in the past 6 months C.DE38 Observation"
+define "STI in the past 6 months C.DE38 Condition":
+  Elements."STI in the past 6 months C.DE38 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "STI in the past 6 months - HIV.C.DE38 Observation":
-  Elements."STI in the past 6 months - HIV.C.DE38 Observation" O
+define "STI in the past 6 months C.DE38 Observation":
+  Elements."STI in the past 6 months C.DE38 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of STI in the past 6 months - HIV.C.DE38 */
+/* End of STI in the past 6 months C.DE38 */
 
 /*
-@dataElement: HIV.C.DE39 - A sexual partner in the past 6 months had one or more HIV risk factors - HIV.C.DE39
+@dataElement: HIV.C.DE39 - A sexual partner in the past 6 months had one or more HIV risk factors
 @activity: HIV.C3 Capture or update client history
 @description: A recent sex partner of the client had HIV risk factors
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "A sexual partner in the past 6 months had one or more HIV risk factors - HIV.C.DE39":
-  exists "A sexual partner in the past 6 months had one or more HIV risk factors - HIV.C.DE39 Condition"
-    or exists "A sexual partner in the past 6 months had one or more HIV risk factors - HIV.C.DE39 Observation"
-define "A sexual partner in the past 6 months had one or more HIV risk factors - HIV.C.DE39 Condition":
-  Elements."A sexual partner in the past 6 months had one or more HIV risk factors - HIV.C.DE39 Condition" C
+define "A sexual partner in the past 6 months had one or more HIV risk factors C.DE39":
+  exists "A sexual partner in the past 6 months had one or more HIV risk factors C.DE39 Condition"
+    or exists "A sexual partner in the past 6 months had one or more HIV risk factors C.DE39 Observation"
+define "A sexual partner in the past 6 months had one or more HIV risk factors C.DE39 Condition":
+  Elements."A sexual partner in the past 6 months had one or more HIV risk factors C.DE39 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "A sexual partner in the past 6 months had one or more HIV risk factors - HIV.C.DE39 Observation":
-  Elements."A sexual partner in the past 6 months had one or more HIV risk factors - HIV.C.DE39 Observation" O
+define "A sexual partner in the past 6 months had one or more HIV risk factors C.DE39 Observation":
+  Elements."A sexual partner in the past 6 months had one or more HIV risk factors C.DE39 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of A sexual partner in the past 6 months had one or more HIV risk factors - HIV.C.DE39 */
+/* End of A sexual partner in the past 6 months had one or more HIV risk factors C.DE39 */
 
 /*
-@dataElement: HIV.C.DE40 - PrEP requested by client - HIV.C.DE40
+@dataElement: HIV.C.DE40 - PrEP requested by client
 @activity: HIV.C3 Capture or update client history
 @description: Client is requesting PrEP, reflecting a decision-making process has already taken place and suggesting of substantial risk of HIV
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "PrEP requested by client - HIV.C.DE40":
-  exists "PrEP requested by client - HIV.C.DE40 Condition"
-    or exists "PrEP requested by client - HIV.C.DE40 Observation"
-define "PrEP requested by client - HIV.C.DE40 Condition":
-  Elements."PrEP requested by client - HIV.C.DE40 Condition" C
+define "PrEP requested by client C.DE40":
+  exists "PrEP requested by client C.DE40 Condition"
+    or exists "PrEP requested by client C.DE40 Observation"
+define "PrEP requested by client C.DE40 Condition":
+  Elements."PrEP requested by client C.DE40 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "PrEP requested by client - HIV.C.DE40 Observation":
-  Elements."PrEP requested by client - HIV.C.DE40 Observation" O
+define "PrEP requested by client C.DE40 Observation":
+  Elements."PrEP requested by client C.DE40 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of PrEP requested by client - HIV.C.DE40 */
+/* End of PrEP requested by client C.DE40 */
 
 /*
-@dataElement: HIV.C.DE46 - Acute HIV infection symptoms - HIV.C.DE46
+@dataElement: HIV.C.DE46 - Acute HIV infection symptoms
 @activity: HIV.C3 Capture or update client history
 @description: Symptoms that could suggest an acute HIV infection
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Acute HIV infection symptoms - HIV.C.DE46 Observation":
-  Elements."Acute HIV infection symptoms - HIV.C.DE46 Observation" O
+define "Acute HIV infection symptoms C.DE46":
+  exists "Acute HIV infection symptoms C.DE46 Observation"
+define "Acute HIV infection symptoms C.DE46 Observation":
+  Elements."Acute HIV infection symptoms C.DE46 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Acute HIV infection symptoms - HIV.C.DE46 */
+/* End of Acute HIV infection symptoms C.DE46 */
 
 /*
 @dataElement: HIV.C.DE47 - Fever
@@ -1655,6 +2356,8 @@ define "Rash Observation":
 @description: Treatment adherence of client's sex partner for partners that are HIV-positive
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Sex partners HIV treatment status":
+  exists "Sex partners HIV treatment status Observation"
 define "Sex partners HIV treatment status Observation":
   Elements."Sex partners HIV treatment status Observation" O
     where O.encounter.references(EncounterId)
@@ -1757,11 +2460,12 @@ define "Partner is virally suppressed and has been on ART for 6 months or more O
 @description: The client is suitable for PrEP
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Suitable for PrEP":
+  exists "Suitable for PrEP Observation"
 define "Suitable for PrEP Observation":
-  Elements."Suitable for PrEP" O
+  Elements."Suitable for PrEP Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
 /* End of Suitable for PrEP */
 
 /*
@@ -1770,6 +2474,8 @@ define "Suitable for PrEP Observation":
 @description: Preferred backbone regimen for PEP
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Preferred PEP backbone regimen":
+  exists "Preferred PEP backbone regimen Observation"
 define "Preferred PEP backbone regimen Observation":
   Elements."Preferred PEP backbone regimen Observation" O
     where O.encounter.references(EncounterId)
@@ -1777,40 +2483,40 @@ define "Preferred PEP backbone regimen Observation":
 /* End of Preferred PEP backbone regimen */
 
 /*
-@dataElement: HIV.C.DE92 - TDF + 3TC - HIV.C.DE92
+@dataElement: HIV.C.DE92 - TDF + 3TC
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
 @description: Preferred backbone containing tenofovir disoproxil fumarate and lamivudine
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "TDF + 3TC - HIV.C.DE92":
-  exists "TDF + 3TC - HIV.C.DE92 Condition"
-    or exists "TDF + 3TC - HIV.C.DE92 Observation"
-define "TDF + 3TC - HIV.C.DE92 Condition":
-  Elements."TDF + 3TC - HIV.C.DE92 Condition" C
+define "TDF + 3TC C.DE92":
+  exists "TDF + 3TC C.DE92 Condition"
+    or exists "TDF + 3TC C.DE92 Observation"
+define "TDF + 3TC C.DE92 Condition":
+  Elements."TDF + 3TC C.DE92 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "TDF + 3TC - HIV.C.DE92 Observation":
-  Elements."TDF + 3TC - HIV.C.DE92 Observation" O
+define "TDF + 3TC C.DE92 Observation":
+  Elements."TDF + 3TC C.DE92 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of TDF + 3TC - HIV.C.DE92 */
+/* End of TDF + 3TC C.DE92 */
 
 /*
-@dataElement: HIV.C.DE93 - TDF + FTC - HIV.C.DE93
+@dataElement: HIV.C.DE93 - TDF + FTC
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
 @description: Preferred backbone containing tenofovir disoproxil fumarate and emtricitabine
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "TDF + FTC - HIV.C.DE93":
-  exists "TDF + FTC - HIV.C.DE93 Condition"
-    or exists "TDF + FTC - HIV.C.DE93 Observation"
-define "TDF + FTC - HIV.C.DE93 Condition":
-  Elements."TDF + FTC - HIV.C.DE93 Condition" C
+define "TDF + FTC C.DE93":
+  exists "TDF + FTC C.DE93 Condition"
+    or exists "TDF + FTC C.DE93 Observation"
+define "TDF + FTC C.DE93 Condition":
+  Elements."TDF + FTC C.DE93 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "TDF + FTC - HIV.C.DE93 Observation":
-  Elements."TDF + FTC - HIV.C.DE93 Observation" O
+define "TDF + FTC C.DE93 Observation":
+  Elements."TDF + FTC C.DE93 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of TDF + FTC - HIV.C.DE93 */
+/* End of TDF + FTC C.DE93 */
 
 /*
 @dataElement: HIV.C.DE94 - AZT + 3TC
@@ -1836,6 +2542,8 @@ define "AZT + 3TC Observation":
 @description: Alternative backbone regimen for PEP
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Alternative PEP backbone regimen":
+  exists "Alternative PEP backbone regimen Observation"
 define "Alternative PEP backbone regimen Observation":
   Elements."Alternative PEP backbone regimen Observation" O
     where O.encounter.references(EncounterId)
@@ -1861,40 +2569,40 @@ define "ABC + 3TC Observation":
 /* End of ABC + 3TC */
 
 /*
-@dataElement: HIV.C.DE97 - TDF + 3TC - HIV.C.DE97
+@dataElement: HIV.C.DE97 - TDF + 3TC
 @activity: HIV.C3 Capture or update client history
 @description: Alternative backbone containing tenofovir disoproxil fumarate and lamivudine
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "TDF + 3TC - HIV.C.DE97":
-  exists "TDF + 3TC - HIV.C.DE97 Condition"
-    or exists "TDF + 3TC - HIV.C.DE97 Observation"
-define "TDF + 3TC - HIV.C.DE97 Condition":
-  Elements."TDF + 3TC - HIV.C.DE97 Condition" C
+define "TDF + 3TC C.DE97":
+  exists "TDF + 3TC C.DE97 Condition"
+    or exists "TDF + 3TC C.DE97 Observation"
+define "TDF + 3TC C.DE97 Condition":
+  Elements."TDF + 3TC C.DE97 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "TDF + 3TC - HIV.C.DE97 Observation":
-  Elements."TDF + 3TC - HIV.C.DE97 Observation" O
+define "TDF + 3TC C.DE97 Observation":
+  Elements."TDF + 3TC C.DE97 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of TDF + 3TC - HIV.C.DE97 */
+/* End of TDF + 3TC C.DE97 */
 
 /*
-@dataElement: HIV.C.DE98 - TDF + FTC - HIV.C.DE98
+@dataElement: HIV.C.DE98 - TDF + FTC
 @activity: HIV.C3 Capture or update client history
 @description: Alternative backbone containing tenofovir disoproxil fumarate and emtricitabine
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "TDF + FTC - HIV.C.DE98":
-  exists "TDF + FTC - HIV.C.DE98 Condition"
-    or exists "TDF + FTC - HIV.C.DE98 Observation"
-define "TDF + FTC - HIV.C.DE98 Condition":
-  Elements."TDF + FTC - HIV.C.DE98 Condition" C
+define "TDF + FTC C.DE98":
+  exists "TDF + FTC C.DE98 Condition"
+    or exists "TDF + FTC C.DE98 Observation"
+define "TDF + FTC C.DE98 Condition":
+  Elements."TDF + FTC C.DE98 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "TDF + FTC - HIV.C.DE98 Observation":
-  Elements."TDF + FTC - HIV.C.DE98 Observation" O
+define "TDF + FTC C.DE98 Observation":
+  Elements."TDF + FTC C.DE98 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of TDF + FTC - HIV.C.DE98 */
+/* End of TDF + FTC C.DE98 */
 
 /*
 @dataElement: HIV.C.DE99 - Preferred third PEP drug
@@ -1902,6 +2610,8 @@ define "TDF + FTC - HIV.C.DE98 Observation":
 @description: Preferred third drug for PEP
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Preferred third PEP drug":
+  exists "Preferred third PEP drug Observation"
 define "Preferred third PEP drug Observation":
   Elements."Preferred third PEP drug Observation" O
     where O.encounter.references(EncounterId)
@@ -1909,22 +2619,22 @@ define "Preferred third PEP drug Observation":
 /* End of Preferred third PEP drug */
 
 /*
-@dataElement: HIV.C.DE100 - DTG - HIV.C.DE100
+@dataElement: HIV.C.DE100 - DTG
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
 @description: Preferred third drug of dolutegravir
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "DTG - HIV.C.DE100":
-  exists "DTG - HIV.C.DE100 Condition"
-    or exists "DTG - HIV.C.DE100 Observation"
-define "DTG - HIV.C.DE100 Condition":
-  Elements."DTG - HIV.C.DE100 Condition" C
+define "DTG C.DE100":
+  exists "DTG C.DE100 Condition"
+    or exists "DTG C.DE100 Observation"
+define "DTG C.DE100 Condition":
+  Elements."DTG C.DE100 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "DTG - HIV.C.DE100 Observation":
-  Elements."DTG - HIV.C.DE100 Observation" O
+define "DTG C.DE100 Observation":
+  Elements."DTG C.DE100 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of DTG - HIV.C.DE100 */
+/* End of DTG C.DE100 */
 
 /*
 @dataElement: HIV.C.DE101 - Alternative third PEP drug
@@ -1932,6 +2642,8 @@ define "DTG - HIV.C.DE100 Observation":
 @description: Alternative third drug for PEP
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Alternative third PEP drug":
+  exists "Alternative third PEP drug Observation"
 define "Alternative third PEP drug Observation":
   Elements."Alternative third PEP drug Observation" O
     where O.encounter.references(EncounterId)
@@ -1939,76 +2651,76 @@ define "Alternative third PEP drug Observation":
 /* End of Alternative third PEP drug */
 
 /*
-@dataElement: HIV.C.DE102 - ATV/r - HIV.C.DE102
+@dataElement: HIV.C.DE102 - ATV/r
 @activity: HIV.C3 Capture or update client history
 @description: Alternative third drug of atazanavir/ritonavir (ATV/r)
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "ATV/r - HIV.C.DE102":
-  exists "ATV/r - HIV.C.DE102 Condition"
-    or exists "ATV/r - HIV.C.DE102 Observation"
-define "ATV/r - HIV.C.DE102 Condition":
-  Elements."ATV/r - HIV.C.DE102 Condition" C
+define "ATV/r C.DE102":
+  exists "ATV/r C.DE102 Condition"
+    or exists "ATV/r C.DE102 Observation"
+define "ATV/r C.DE102 Condition":
+  Elements."ATV/r C.DE102 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "ATV/r - HIV.C.DE102 Observation":
-  Elements."ATV/r - HIV.C.DE102 Observation" O
+define "ATV/r C.DE102 Observation":
+  Elements."ATV/r C.DE102 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of ATV/r - HIV.C.DE102 */
+/* End of ATV/r C.DE102 */
 
 /*
-@dataElement: HIV.C.DE103 - DRV/r - HIV.C.DE103
+@dataElement: HIV.C.DE103 - DRV/r
 @activity: HIV.C3 Capture or update client history
 @description: Alternative third drug of darunavir/ritonavir (DRV/r)
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "DRV/r - HIV.C.DE103":
-  exists "DRV/r - HIV.C.DE103 Condition"
-    or exists "DRV/r - HIV.C.DE103 Observation"
-define "DRV/r - HIV.C.DE103 Condition":
-  Elements."DRV/r - HIV.C.DE103 Condition" C
+define "DRV/r C.DE103":
+  exists "DRV/r C.DE103 Condition"
+    or exists "DRV/r C.DE103 Observation"
+define "DRV/r C.DE103 Condition":
+  Elements."DRV/r C.DE103 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "DRV/r - HIV.C.DE103 Observation":
-  Elements."DRV/r - HIV.C.DE103 Observation" O
+define "DRV/r C.DE103 Observation":
+  Elements."DRV/r C.DE103 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of DRV/r - HIV.C.DE103 */
+/* End of DRV/r C.DE103 */
 
 /*
-@dataElement: HIV.C.DE104 - LPV/r - HIV.C.DE104
+@dataElement: HIV.C.DE104 - LPV/r
 @activity: HIV.C3 Capture or update client history
 @description: Alternative third drug of lopinavir/ritonavir (LPV/r)
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "LPV/r - HIV.C.DE104":
-  exists "LPV/r - HIV.C.DE104 Condition"
-    or exists "LPV/r - HIV.C.DE104 Observation"
-define "LPV/r - HIV.C.DE104 Condition":
-  Elements."LPV/r - HIV.C.DE104 Condition" C
+define "LPV/r C.DE104":
+  exists "LPV/r C.DE104 Condition"
+    or exists "LPV/r C.DE104 Observation"
+define "LPV/r C.DE104 Condition":
+  Elements."LPV/r C.DE104 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "LPV/r - HIV.C.DE104 Observation":
-  Elements."LPV/r - HIV.C.DE104 Observation" O
+define "LPV/r C.DE104 Observation":
+  Elements."LPV/r C.DE104 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of LPV/r - HIV.C.DE104 */
+/* End of LPV/r C.DE104 */
 
 /*
-@dataElement: HIV.C.DE105 - RAL - HIV.C.DE105
+@dataElement: HIV.C.DE105 - RAL
 @activity: HIV.C3 Capture or update client history
 @description: Alternative third drug of raltegravir (RAL)
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "RAL - HIV.C.DE105":
-  exists "RAL - HIV.C.DE105 Condition"
-    or exists "RAL - HIV.C.DE105 Observation"
-define "RAL - HIV.C.DE105 Condition":
-  Elements."RAL - HIV.C.DE105 Condition" C
+define "RAL C.DE105":
+  exists "RAL C.DE105 Condition"
+    or exists "RAL C.DE105 Observation"
+define "RAL C.DE105 Condition":
+  Elements."RAL C.DE105 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "RAL - HIV.C.DE105 Observation":
-  Elements."RAL - HIV.C.DE105 Observation" O
+define "RAL C.DE105 Observation":
+  Elements."RAL C.DE105 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of RAL - HIV.C.DE105 */
+/* End of RAL C.DE105 */
 
 /*
 @dataElement: HIV.C.DE106 - Estimated creatinine clearance
@@ -2016,11 +2728,13 @@ define "RAL - HIV.C.DE105 Observation":
 @description: Estimated creatinine clearance of the client returned from lab in mL/min
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Estimated creatinine clearance Observation":
+define "Estimated creatinine clearance":
   Elements."Estimated creatinine clearance" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
+define "Estimated creatinine clearance Value":
+  "Estimated creatinine clearance" O
+  return O.value
 /* End of Estimated creatinine clearance */
 
 /*
@@ -2029,6 +2743,8 @@ define "Estimated creatinine clearance Observation":
 @description: Listing of contraindications to pre-exposure prophylaxis (PrEP)
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Contraindications to PrEP usage":
+  exists "Contraindications to PrEP usage Observation"
 define "Contraindications to PrEP usage Observation":
   Elements."Contraindications to PrEP usage Observation" O
     where O.encounter.references(EncounterId)
@@ -2054,22 +2770,22 @@ define "Tenofovir disoproxil fumarate TDF allergy or contraindication Observatio
 /* End of Tenofovir disoproxil fumarate TDF allergy or contraindication */
 
 /*
-@dataElement: HIV.C.DE114 - HIV-positive - HIV.C.DE114
+@dataElement: HIV.C.DE114 - HIV-positive
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
 @description: Client is HIV-positive
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "HIV-positive - HIV.C.DE114":
-  exists "HIV-positive - HIV.C.DE114 Condition"
-    or exists "HIV-positive - HIV.C.DE114 Observation"
-define "HIV-positive - HIV.C.DE114 Condition":
-  Elements."HIV-positive - HIV.C.DE114 Condition" C
+define "HIV-positive C.DE114":
+  exists "HIV-positive C.DE114 Condition"
+    or exists "HIV-positive C.DE114 Observation"
+define "HIV-positive C.DE114 Condition":
+  Elements."HIV-positive C.DE114 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "HIV-positive - HIV.C.DE114 Observation":
-  Elements."HIV-positive - HIV.C.DE114 Observation" O
+define "HIV-positive C.DE114 Observation":
+  Elements."HIV-positive C.DE114 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of HIV-positive - HIV.C.DE114 */
+/* End of HIV-positive C.DE114 */
 
 /*
 @dataElement: HIV.C.DE115 - Low estimated creatinine clearance
@@ -2090,22 +2806,22 @@ define "Low estimated creatinine clearance Observation":
 /* End of Low estimated creatinine clearance */
 
 /*
-@dataElement: HIV.C.DE116 - Acute HIV infection symptoms - HIV.C.DE116
+@dataElement: HIV.C.DE116 - Acute HIV infection symptoms
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
 @description: Symptoms that could suggest an acute HIV infection
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Acute HIV infection symptoms - HIV.C.DE116":
-  exists "Acute HIV infection symptoms - HIV.C.DE116 Condition"
-    or exists "Acute HIV infection symptoms - HIV.C.DE116 Observation"
-define "Acute HIV infection symptoms - HIV.C.DE116 Condition":
-  Elements."Acute HIV infection symptoms - HIV.C.DE116 Condition" C
+define "Acute HIV infection symptoms C.DE116":
+  exists "Acute HIV infection symptoms C.DE116 Condition"
+    or exists "Acute HIV infection symptoms C.DE116 Observation"
+define "Acute HIV infection symptoms C.DE116 Condition":
+  Elements."Acute HIV infection symptoms C.DE116 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Acute HIV infection symptoms - HIV.C.DE116 Observation":
-  Elements."Acute HIV infection symptoms - HIV.C.DE116 Observation" O
+define "Acute HIV infection symptoms C.DE116 Observation":
+  Elements."Acute HIV infection symptoms C.DE116 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Acute HIV infection symptoms - HIV.C.DE116 */
+/* End of Acute HIV infection symptoms C.DE116 */
 
 /*
 @dataElement: HIV.C.DE117 - Probable recent exposure to HIV
@@ -2144,60 +2860,65 @@ define "Other allergy or contraindication to a medicine in the PrEP regimen Obse
 /* End of Other allergy or contraindication to a medicine in the PrEP regimen */
 
 /*
-@dataElement: HIV.C.DE123 - Adherence counselling provided - HIV.C.DE123
+@dataElement: HIV.C.DE123 - Adherence counselling provided
 @activity: HIV.C23 Prescribe or administer PrEP or PEP
 @description: Whether adherence counselling was provided
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Adherence counselling provided - HIV.C.DE123 Observation":
-  Elements."Adherence counselling provided - HIV.C.DE123" O
+define "Adherence counselling provided C.DE123":
+  exists "Adherence counselling provided C.DE123 Observation"
+define "Adherence counselling provided C.DE123 Observation":
+  Elements."Adherence counselling provided C.DE123 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
-/* End of Adherence counselling provided - HIV.C.DE123 */
+/* End of Adherence counselling provided C.DE123 */
 
 /*
-@dataElement: HIV.C.DE124 - Date/time of follow-up appointment - HIV.C.DE124
+@dataElement: HIV.C.DE124 - Date/time of follow-up appointment
 @activity: HIV.C24 Schedule follow-up
 @description: Date the client is to return for monitoring, re-supply, or any other reason
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Date/time of follow-up appointment - HIV.C.DE124 Observation":
-  Elements."Date/time of follow-up appointment - HIV.C.DE124" O
+define "Date/time of follow-up appointment C.DE124":
+  Elements."Date/time of follow-up appointment C.DE124" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
-/* End of Date/time of follow-up appointment - HIV.C.DE124 */
+define "Date/time of follow-up appointment C.DE124 Value":
+  "Date/time of follow-up appointment C.DE124" O
+  return O.value
+/* End of Date/time of follow-up appointment C.DE124 */
 
 /*
-@dataElement: HIV.C.DE125 - Type of follow-up appointment - HIV.C.DE125
+@dataElement: HIV.C.DE125 - Type of follow-up appointment
 @activity: HIV.C24 Schedule follow-up
 @description: Type of follow-up appointment for testing services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Type of follow-up appointment - HIV.C.DE125 Observation":
-  Elements."Type of follow-up appointment - HIV.C.DE125 Observation" O
+define "Type of follow-up appointment C.DE125":
+  exists "Type of follow-up appointment C.DE125 Observation"
+define "Type of follow-up appointment C.DE125 Observation":
+  Elements."Type of follow-up appointment C.DE125 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Type of follow-up appointment - HIV.C.DE125 */
+/* End of Type of follow-up appointment C.DE125 */
 
 /*
-@dataElement: HIV.C.DE126 - Retesting for HIV - HIV.C.DE126
+@dataElement: HIV.C.DE126 - Retesting for HIV
 @activity: HIV.C24 Schedule follow-up
 @description: Retesting follow-up appointment
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Retesting for HIV - HIV.C.DE126":
-  exists "Retesting for HIV - HIV.C.DE126 Condition"
-    or exists "Retesting for HIV - HIV.C.DE126 Observation"
-define "Retesting for HIV - HIV.C.DE126 Condition":
-  Elements."Retesting for HIV - HIV.C.DE126 Condition" C
+define "Retesting for HIV C.DE126":
+  exists "Retesting for HIV C.DE126 Condition"
+    or exists "Retesting for HIV C.DE126 Observation"
+define "Retesting for HIV C.DE126 Condition":
+  Elements."Retesting for HIV C.DE126 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Retesting for HIV - HIV.C.DE126 Observation":
-  Elements."Retesting for HIV - HIV.C.DE126 Observation" O
+define "Retesting for HIV C.DE126 Observation":
+  Elements."Retesting for HIV C.DE126 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Retesting for HIV - HIV.C.DE126 */
+/* End of Retesting for HIV C.DE126 */
 
 /*
 @dataElement: HIV.C.DE127 - Follow-up appointment for PrEP
@@ -2218,34 +2939,36 @@ define "Follow-up appointment for PrEP Observation":
 /* End of Follow-up appointment for PrEP */
 
 /*
-@dataElement: HIV.C.DE128 - Other - HIV.C.DE128
+@dataElement: HIV.C.DE128 - Other
 @activity: HIV.C24 Schedule follow-up
 @description: Other reason for the follow-up appointment
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Other - HIV.C.DE128":
-  exists "Other - HIV.C.DE128 Condition"
-    or exists "Other - HIV.C.DE128 Observation"
-define "Other - HIV.C.DE128 Condition":
-  Elements."Other - HIV.C.DE128 Condition" C
+define "Other C.DE128":
+  exists "Other C.DE128 Condition"
+    or exists "Other C.DE128 Observation"
+define "Other C.DE128 Condition":
+  Elements."Other C.DE128 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Other - HIV.C.DE128 Observation":
-  Elements."Other - HIV.C.DE128 Observation" O
+define "Other C.DE128 Observation":
+  Elements."Other C.DE128 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Other - HIV.C.DE128 */
+/* End of Other C.DE128 */
 
 /*
-@dataElement: HIV.C.DE131 - Prevention services offered and referrals - HIV.C.DE131
+@dataElement: HIV.C.DE131 - Prevention services offered and referrals
 @activity: HIV.C10 Counsel on risk and prevention
 @description: Offer or refer to prevention services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Prevention services offered and referrals - HIV.C.DE131 Observation":
-  Elements."Prevention services offered and referrals - HIV.C.DE131 Observation" O
+define "Prevention services offered and referrals C.DE131":
+  exists "Prevention services offered and referrals C.DE131 Observation"
+define "Prevention services offered and referrals C.DE131 Observation":
+  Elements."Prevention services offered and referrals C.DE131 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Prevention services offered and referrals - HIV.C.DE131 */
+/* End of Prevention services offered and referrals C.DE131 */
 
 /*
 @dataElement: HIV.C.DE132 - Male and female condoms and condom-compatible lubricants offered
@@ -2284,88 +3007,90 @@ define "Voluntary medical male circumcision VMMC referral Observation":
 /* End of Voluntary medical male circumcision VMMC referral */
 
 /*
-@dataElement: HIV.C.DE134 - Harm reduction for people who inject drugs - HIV.C.DE134
+@dataElement: HIV.C.DE134 - Harm reduction for people who inject drugs
 @activity: HIV.C10 Counsel on risk and prevention
 @description: Offer or refer to harm reduction for people who inject drugs (needle and syringe programmes, opioid substitution therapy, other drug-dependence treatment and opioid overdose prevention and management) services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Harm reduction for people who inject drugs - HIV.C.DE134":
-  exists "Harm reduction for people who inject drugs - HIV.C.DE134 Condition"
-    or exists "Harm reduction for people who inject drugs - HIV.C.DE134 Observation"
-define "Harm reduction for people who inject drugs - HIV.C.DE134 Condition":
-  Elements."Harm reduction for people who inject drugs - HIV.C.DE134 Condition" C
+define "Harm reduction for people who inject drugs C.DE134":
+  exists "Harm reduction for people who inject drugs C.DE134 Condition"
+    or exists "Harm reduction for people who inject drugs C.DE134 Observation"
+define "Harm reduction for people who inject drugs C.DE134 Condition":
+  Elements."Harm reduction for people who inject drugs C.DE134 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Harm reduction for people who inject drugs - HIV.C.DE134 Observation":
-  Elements."Harm reduction for people who inject drugs - HIV.C.DE134 Observation" O
+define "Harm reduction for people who inject drugs C.DE134 Observation":
+  Elements."Harm reduction for people who inject drugs C.DE134 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Harm reduction for people who inject drugs - HIV.C.DE134 */
+/* End of Harm reduction for people who inject drugs C.DE134 */
 
 /*
-@dataElement: HIV.C.DE135 - Behavioural interventions to support risk reduction - HIV.C.DE135
+@dataElement: HIV.C.DE135 - Behavioural interventions to support risk reduction
 @activity: HIV.C10 Counsel on risk and prevention
 @description: Offer or refer to services for behavioural interventions to support risk reduction, particularly for people with HIV and members of key populations
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Behavioural interventions to support risk reduction - HIV.C.DE135":
-  exists "Behavioural interventions to support risk reduction - HIV.C.DE135 Condition"
-    or exists "Behavioural interventions to support risk reduction - HIV.C.DE135 Observation"
-define "Behavioural interventions to support risk reduction - HIV.C.DE135 Condition":
-  Elements."Behavioural interventions to support risk reduction - HIV.C.DE135 Condition" C
+define "Behavioural interventions to support risk reduction C.DE135":
+  exists "Behavioural interventions to support risk reduction C.DE135 Condition"
+    or exists "Behavioural interventions to support risk reduction C.DE135 Observation"
+define "Behavioural interventions to support risk reduction C.DE135 Condition":
+  Elements."Behavioural interventions to support risk reduction C.DE135 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Behavioural interventions to support risk reduction - HIV.C.DE135 Observation":
-  Elements."Behavioural interventions to support risk reduction - HIV.C.DE135 Observation" O
+define "Behavioural interventions to support risk reduction C.DE135 Observation":
+  Elements."Behavioural interventions to support risk reduction C.DE135 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Behavioural interventions to support risk reduction - HIV.C.DE135 */
+/* End of Behavioural interventions to support risk reduction C.DE135 */
 
 /*
-@dataElement: HIV.C.DE149 - Sexual and reproductive health integrated services - HIV.C.DE149
+@dataElement: HIV.C.DE149 - Sexual and reproductive health integrated services
 @activity: HIV.C10 Counsel on risk and prevention
 @description: Offer or refer to sexual and reproductive health services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Sexual and reproductive health integrated services - HIV.C.DE149 Observation":
-  Elements."Sexual and reproductive health integrated services - HIV.C.DE149 Observation" O
+define "Sexual and reproductive health integrated services C.DE149":
+  exists "Sexual and reproductive health integrated services C.DE149 Observation"
+define "Sexual and reproductive health integrated services C.DE149 Observation":
+  Elements."Sexual and reproductive health integrated services C.DE149 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Sexual and reproductive health integrated services - HIV.C.DE149 */
+/* End of Sexual and reproductive health integrated services C.DE149 */
 
 /*
-@dataElement: HIV.C.DE150 - Contraception and family planning - HIV.C.DE150
+@dataElement: HIV.C.DE150 - Contraception and family planning
 @activity: HIV.C10 Counsel on risk and prevention
 @description: Offer contraception and family planning services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Contraception and family planning - HIV.C.DE150":
-  exists "Contraception and family planning - HIV.C.DE150 Condition"
-    or exists "Contraception and family planning - HIV.C.DE150 Observation"
-define "Contraception and family planning - HIV.C.DE150 Condition":
-  Elements."Contraception and family planning - HIV.C.DE150 Condition" C
+define "Contraception and family planning C.DE150":
+  exists "Contraception and family planning C.DE150 Condition"
+    or exists "Contraception and family planning C.DE150 Observation"
+define "Contraception and family planning C.DE150 Condition":
+  Elements."Contraception and family planning C.DE150 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Contraception and family planning - HIV.C.DE150 Observation":
-  Elements."Contraception and family planning - HIV.C.DE150 Observation" O
+define "Contraception and family planning C.DE150 Observation":
+  Elements."Contraception and family planning C.DE150 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Contraception and family planning - HIV.C.DE150 */
+/* End of Contraception and family planning C.DE150 */
 
 /*
-@dataElement: HIV.C.DE151 - Check pregnancy status - HIV.C.DE151
+@dataElement: HIV.C.DE151 - Check pregnancy status
 @activity: HIV.C10 Counsel on risk and prevention
 @description: Check woman's pregnancy status
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Check pregnancy status - HIV.C.DE151":
-  exists "Check pregnancy status - HIV.C.DE151 Condition"
-    or exists "Check pregnancy status - HIV.C.DE151 Observation"
-define "Check pregnancy status - HIV.C.DE151 Condition":
-  Elements."Check pregnancy status - HIV.C.DE151 Condition" C
+define "Check pregnancy status C.DE151":
+  exists "Check pregnancy status C.DE151 Condition"
+    or exists "Check pregnancy status C.DE151 Observation"
+define "Check pregnancy status C.DE151 Condition":
+  Elements."Check pregnancy status C.DE151 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Check pregnancy status - HIV.C.DE151 Observation":
-  Elements."Check pregnancy status - HIV.C.DE151 Observation" O
+define "Check pregnancy status C.DE151 Observation":
+  Elements."Check pregnancy status C.DE151 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Check pregnancy status - HIV.C.DE151 */
+/* End of Check pregnancy status C.DE151 */
 
 /*
 @dataElement: HIV.C.DE152 - Prevent mother-to-child transmission
@@ -2404,88 +3129,90 @@ define "Cervical cancer screening and treatment Observation":
 /* End of Cervical cancer screening and treatment */
 
 /*
-@dataElement: HIV.C.DE154 - Anal cancer screening for men who have sex with men - HIV.C.DE154
+@dataElement: HIV.C.DE154 - Anal cancer screening for men who have sex with men
 @activity: HIV.C10 Counsel on risk and prevention
 @description: Offer anal cancer screening (for men who have sex with men) services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Anal cancer screening for men who have sex with men - HIV.C.DE154":
-  exists "Anal cancer screening for men who have sex with men - HIV.C.DE154 Condition"
-    or exists "Anal cancer screening for men who have sex with men - HIV.C.DE154 Observation"
-define "Anal cancer screening for men who have sex with men - HIV.C.DE154 Condition":
-  Elements."Anal cancer screening for men who have sex with men - HIV.C.DE154 Condition" C
+define "Anal cancer screening for men who have sex with men C.DE154":
+  exists "Anal cancer screening for men who have sex with men C.DE154 Condition"
+    or exists "Anal cancer screening for men who have sex with men C.DE154 Observation"
+define "Anal cancer screening for men who have sex with men C.DE154 Condition":
+  Elements."Anal cancer screening for men who have sex with men C.DE154 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Anal cancer screening for men who have sex with men - HIV.C.DE154 Observation":
-  Elements."Anal cancer screening for men who have sex with men - HIV.C.DE154 Observation" O
+define "Anal cancer screening for men who have sex with men C.DE154 Observation":
+  Elements."Anal cancer screening for men who have sex with men C.DE154 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Anal cancer screening for men who have sex with men - HIV.C.DE154 */
+/* End of Anal cancer screening for men who have sex with men C.DE154 */
 
 /*
-@dataElement: HIV.C.DE155 - STI testing and treatment - HIV.C.DE155
+@dataElement: HIV.C.DE155 - STI testing and treatment
 @activity: HIV.C10 Counsel on risk and prevention
 @description: Offer STI testing and treatment services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "STI testing and treatment - HIV.C.DE155":
-  exists "STI testing and treatment - HIV.C.DE155 Condition"
-    or exists "STI testing and treatment - HIV.C.DE155 Observation"
-define "STI testing and treatment - HIV.C.DE155 Condition":
-  Elements."STI testing and treatment - HIV.C.DE155 Condition" C
+define "STI testing and treatment C.DE155":
+  exists "STI testing and treatment C.DE155 Condition"
+    or exists "STI testing and treatment C.DE155 Observation"
+define "STI testing and treatment C.DE155 Condition":
+  Elements."STI testing and treatment C.DE155 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "STI testing and treatment - HIV.C.DE155 Observation":
-  Elements."STI testing and treatment - HIV.C.DE155 Observation" O
+define "STI testing and treatment C.DE155 Observation":
+  Elements."STI testing and treatment C.DE155 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of STI testing and treatment - HIV.C.DE155 */
+/* End of STI testing and treatment C.DE155 */
 
 /*
-@dataElement: HIV.C.DE156 - HIV testing for partners and biological children - HIV.C.DE156
+@dataElement: HIV.C.DE156 - HIV testing for partners and biological children
 @activity: HIV.C10 Counsel on risk and prevention
 @description: Offer testing for all partners and biological children of positive cases (includes partner services and index case testing), as well as partners and social contacts of people from key populations, where appropriate
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "HIV testing for partners and biological children - HIV.C.DE156":
-  exists "HIV testing for partners and biological children - HIV.C.DE156 Condition"
-    or exists "HIV testing for partners and biological children - HIV.C.DE156 Observation"
-define "HIV testing for partners and biological children - HIV.C.DE156 Condition":
-  Elements."HIV testing for partners and biological children - HIV.C.DE156 Condition" C
+define "HIV testing for partners and biological children C.DE156":
+  exists "HIV testing for partners and biological children C.DE156 Condition"
+    or exists "HIV testing for partners and biological children C.DE156 Observation"
+define "HIV testing for partners and biological children C.DE156 Condition":
+  Elements."HIV testing for partners and biological children C.DE156 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "HIV testing for partners and biological children - HIV.C.DE156 Observation":
-  Elements."HIV testing for partners and biological children - HIV.C.DE156 Observation" O
+define "HIV testing for partners and biological children C.DE156 Observation":
+  Elements."HIV testing for partners and biological children C.DE156 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of HIV testing for partners and biological children - HIV.C.DE156 */
+/* End of HIV testing for partners and biological children C.DE156 */
 
 /*
-@dataElement: HIV.C.DE157 - Offer other clinical services - HIV.C.DE157
+@dataElement: HIV.C.DE157 - Offer other clinical services
 @activity: HIV.C10 Counsel on risk and prevention
 @description: Other clinical services offered or referrals given to the client
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Offer other clinical services - HIV.C.DE157 Observation":
-  Elements."Offer other clinical services - HIV.C.DE157 Observation" O
+define "Offer other clinical services C.DE157":
+  exists "Offer other clinical services C.DE157 Observation"
+define "Offer other clinical services C.DE157 Observation":
+  Elements."Offer other clinical services C.DE157 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Offer other clinical services - HIV.C.DE157 */
+/* End of Offer other clinical services C.DE157 */
 
 /*
-@dataElement: HIV.C.DE158 - Assessment and provision of vaccinations - HIV.C.DE158
+@dataElement: HIV.C.DE158 - Assessment and provision of vaccinations
 @activity: HIV.C10 Counsel on risk and prevention
 @description: Assessment and provision of vaccinations, such as for people from key populations, pregnant women and infants; and, where appropriate, tetanus vaccination for adolescent boys and men receiving VMMC
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Assessment and provision of vaccinations - HIV.C.DE158":
-  exists "Assessment and provision of vaccinations - HIV.C.DE158 Condition"
-    or exists "Assessment and provision of vaccinations - HIV.C.DE158 Observation"
-define "Assessment and provision of vaccinations - HIV.C.DE158 Condition":
-  Elements."Assessment and provision of vaccinations - HIV.C.DE158 Condition" C
+define "Assessment and provision of vaccinations C.DE158":
+  exists "Assessment and provision of vaccinations C.DE158 Condition"
+    or exists "Assessment and provision of vaccinations C.DE158 Observation"
+define "Assessment and provision of vaccinations C.DE158 Condition":
+  Elements."Assessment and provision of vaccinations C.DE158 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Assessment and provision of vaccinations - HIV.C.DE158 Observation":
-  Elements."Assessment and provision of vaccinations - HIV.C.DE158 Observation" O
+define "Assessment and provision of vaccinations C.DE158 Observation":
+  Elements."Assessment and provision of vaccinations C.DE158 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Assessment and provision of vaccinations - HIV.C.DE158 */
+/* End of Assessment and provision of vaccinations C.DE158 */
 
 /*
 @dataElement: HIV.C.DE159 - Hepatitis B virus HBV and hepatitis C virus HCV testing and treatment
@@ -2506,190 +3233,194 @@ define "Hepatitis B virus HBV and hepatitis C virus HCV testing and treatment Ob
 /* End of Hepatitis B virus HBV and hepatitis C virus HCV testing and treatment */
 
 /*
-@dataElement: HIV.C.DE160 - Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.C.DE160
+@dataElement: HIV.C.DE160 - Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia
 @activity: HIV.C10 Counsel on risk and prevention
 @description: Offer or refer for co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.C.DE160":
-  exists "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.C.DE160 Condition"
-    or exists "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.C.DE160 Observation"
-define "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.C.DE160 Condition":
-  Elements."Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.C.DE160 Condition" C
+define "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia C.DE160":
+  exists "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia C.DE160 Condition"
+    or exists "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia C.DE160 Observation"
+define "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia C.DE160 Condition":
+  Elements."Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia C.DE160 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.C.DE160 Observation":
-  Elements."Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.C.DE160 Observation" O
+define "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia C.DE160 Observation":
+  Elements."Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia C.DE160 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.C.DE160 */
+/* End of Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia C.DE160 */
 
 /*
-@dataElement: HIV.C.DE161 - Intensified TB case finding and linkage to TB treatment - HIV.C.DE161
+@dataElement: HIV.C.DE161 - Intensified TB case finding and linkage to TB treatment
 @activity: HIV.C10 Counsel on risk and prevention
 @description: Offer or refer for TB case finding and linkage to TB treatment
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Intensified TB case finding and linkage to TB treatment - HIV.C.DE161":
-  exists "Intensified TB case finding and linkage to TB treatment - HIV.C.DE161 Condition"
-    or exists "Intensified TB case finding and linkage to TB treatment - HIV.C.DE161 Observation"
-define "Intensified TB case finding and linkage to TB treatment - HIV.C.DE161 Condition":
-  Elements."Intensified TB case finding and linkage to TB treatment - HIV.C.DE161 Condition" C
+define "Intensified TB case finding and linkage to TB treatment C.DE161":
+  exists "Intensified TB case finding and linkage to TB treatment C.DE161 Condition"
+    or exists "Intensified TB case finding and linkage to TB treatment C.DE161 Observation"
+define "Intensified TB case finding and linkage to TB treatment C.DE161 Condition":
+  Elements."Intensified TB case finding and linkage to TB treatment C.DE161 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Intensified TB case finding and linkage to TB treatment - HIV.C.DE161 Observation":
-  Elements."Intensified TB case finding and linkage to TB treatment - HIV.C.DE161 Observation" O
+define "Intensified TB case finding and linkage to TB treatment C.DE161 Observation":
+  Elements."Intensified TB case finding and linkage to TB treatment C.DE161 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Intensified TB case finding and linkage to TB treatment - HIV.C.DE161 */
+/* End of Intensified TB case finding and linkage to TB treatment C.DE161 */
 
 /*
-@dataElement: HIV.C.DE162 - Provision of isoniazid preventive therapy if person does not have TB - HIV.C.DE162
+@dataElement: HIV.C.DE162 - Provision of isoniazid preventive therapy if person does not have TB
 @activity: HIV.C10 Counsel on risk and prevention
 @description: Offer or refer for provision of isoniazid preventive therapy if person does not have TB
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Provision of isoniazid preventive therapy if person does not have TB - HIV.C.DE162":
-  exists "Provision of isoniazid preventive therapy if person does not have TB - HIV.C.DE162 Condition"
-    or exists "Provision of isoniazid preventive therapy if person does not have TB - HIV.C.DE162 Observation"
-define "Provision of isoniazid preventive therapy if person does not have TB - HIV.C.DE162 Condition":
-  Elements."Provision of isoniazid preventive therapy if person does not have TB - HIV.C.DE162 Condition" C
+define "Provision of isoniazid preventive therapy if person does not have TB C.DE162":
+  exists "Provision of isoniazid preventive therapy if person does not have TB C.DE162 Condition"
+    or exists "Provision of isoniazid preventive therapy if person does not have TB C.DE162 Observation"
+define "Provision of isoniazid preventive therapy if person does not have TB C.DE162 Condition":
+  Elements."Provision of isoniazid preventive therapy if person does not have TB C.DE162 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Provision of isoniazid preventive therapy if person does not have TB - HIV.C.DE162 Observation":
-  Elements."Provision of isoniazid preventive therapy if person does not have TB - HIV.C.DE162 Observation" O
+define "Provision of isoniazid preventive therapy if person does not have TB C.DE162 Observation":
+  Elements."Provision of isoniazid preventive therapy if person does not have TB C.DE162 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Provision of isoniazid preventive therapy if person does not have TB - HIV.C.DE162 */
+/* End of Provision of isoniazid preventive therapy if person does not have TB C.DE162 */
 
 /*
-@dataElement: HIV.C.DE163 - Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.C.DE163
+@dataElement: HIV.C.DE163 - Malaria prevention such as bed nets and prophylaxis, depending on epidemiology
 @activity: HIV.C10 Counsel on risk and prevention
 @description: Offer or refer for malaria prevention (such as bed nets and prophylaxis), depending on epidemiology
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.C.DE163":
-  exists "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.C.DE163 Condition"
-    or exists "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.C.DE163 Observation"
-define "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.C.DE163 Condition":
-  Elements."Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.C.DE163 Condition" C
+define "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology C.DE163":
+  exists "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology C.DE163 Condition"
+    or exists "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology C.DE163 Observation"
+define "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology C.DE163 Condition":
+  Elements."Malaria prevention such as bed nets and prophylaxis, depending on epidemiology C.DE163 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.C.DE163 Observation":
-  Elements."Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.C.DE163 Observation" O
+define "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology C.DE163 Observation":
+  Elements."Malaria prevention such as bed nets and prophylaxis, depending on epidemiology C.DE163 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.C.DE163 */
+/* End of Malaria prevention such as bed nets and prophylaxis, depending on epidemiology C.DE163 */
 
 /*
-@dataElement: HIV.C.DE164 - Other support services - HIV.C.DE164
+@dataElement: HIV.C.DE164 - Other support services
 @activity: HIV.C10 Counsel on risk and prevention
 @description: Offer or refer for other support services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Other support services - HIV.C.DE164 Observation":
-  Elements."Other support services - HIV.C.DE164 Observation" O
+define "Other support services C.DE164":
+  exists "Other support services C.DE164 Observation"
+define "Other support services C.DE164 Observation":
+  Elements."Other support services C.DE164 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Other support services - HIV.C.DE164 */
+/* End of Other support services C.DE164 */
 
 /*
-@dataElement: HIV.C.DE165 - Mental health services - HIV.C.DE165
+@dataElement: HIV.C.DE165 - Mental health services
 @activity: HIV.C10 Counsel on risk and prevention
 @description: Offer or refer for mental health services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Mental health services - HIV.C.DE165":
-  exists "Mental health services - HIV.C.DE165 Condition"
-    or exists "Mental health services - HIV.C.DE165 Observation"
-define "Mental health services - HIV.C.DE165 Condition":
-  Elements."Mental health services - HIV.C.DE165 Condition" C
+define "Mental health services C.DE165":
+  exists "Mental health services C.DE165 Condition"
+    or exists "Mental health services C.DE165 Observation"
+define "Mental health services C.DE165 Condition":
+  Elements."Mental health services C.DE165 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Mental health services - HIV.C.DE165 Observation":
-  Elements."Mental health services - HIV.C.DE165 Observation" O
+define "Mental health services C.DE165 Observation":
+  Elements."Mental health services C.DE165 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Mental health services - HIV.C.DE165 */
+/* End of Mental health services C.DE165 */
 
 /*
-@dataElement: HIV.C.DE166 - Psychosocial counselling, support and treatment adherence counselling - HIV.C.DE166
+@dataElement: HIV.C.DE166 - Psychosocial counselling, support and treatment adherence counselling
 @activity: HIV.C10 Counsel on risk and prevention
 @description: Offer or refer for psychosocial counselling, support and treatment adherence counselling
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Psychosocial counselling, support and treatment adherence counselling - HIV.C.DE166":
-  exists "Psychosocial counselling, support and treatment adherence counselling - HIV.C.DE166 Condition"
-    or exists "Psychosocial counselling, support and treatment adherence counselling - HIV.C.DE166 Observation"
-define "Psychosocial counselling, support and treatment adherence counselling - HIV.C.DE166 Condition":
-  Elements."Psychosocial counselling, support and treatment adherence counselling - HIV.C.DE166 Condition" C
+define "Psychosocial counselling, support and treatment adherence counselling C.DE166":
+  exists "Psychosocial counselling, support and treatment adherence counselling C.DE166 Condition"
+    or exists "Psychosocial counselling, support and treatment adherence counselling C.DE166 Observation"
+define "Psychosocial counselling, support and treatment adherence counselling C.DE166 Condition":
+  Elements."Psychosocial counselling, support and treatment adherence counselling C.DE166 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Psychosocial counselling, support and treatment adherence counselling - HIV.C.DE166 Observation":
-  Elements."Psychosocial counselling, support and treatment adherence counselling - HIV.C.DE166 Observation" O
+define "Psychosocial counselling, support and treatment adherence counselling C.DE166 Observation":
+  Elements."Psychosocial counselling, support and treatment adherence counselling C.DE166 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Psychosocial counselling, support and treatment adherence counselling - HIV.C.DE166 */
+/* End of Psychosocial counselling, support and treatment adherence counselling C.DE166 */
 
 /*
-@dataElement: HIV.C.DE167 - Support for disclosure and partner services - HIV.C.DE167
+@dataElement: HIV.C.DE167 - Support for disclosure and partner services
 @activity: HIV.C10 Counsel on risk and prevention
 @description: Offer or refer for support for disclosure and partner services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Support for disclosure and partner services - HIV.C.DE167":
-  exists "Support for disclosure and partner services - HIV.C.DE167 Condition"
-    or exists "Support for disclosure and partner services - HIV.C.DE167 Observation"
-define "Support for disclosure and partner services - HIV.C.DE167 Condition":
-  Elements."Support for disclosure and partner services - HIV.C.DE167 Condition" C
+define "Support for disclosure and partner services C.DE167":
+  exists "Support for disclosure and partner services C.DE167 Condition"
+    or exists "Support for disclosure and partner services C.DE167 Observation"
+define "Support for disclosure and partner services C.DE167 Condition":
+  Elements."Support for disclosure and partner services C.DE167 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Support for disclosure and partner services - HIV.C.DE167 Observation":
-  Elements."Support for disclosure and partner services - HIV.C.DE167 Observation" O
+define "Support for disclosure and partner services C.DE167 Observation":
+  Elements."Support for disclosure and partner services C.DE167 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Support for disclosure and partner services - HIV.C.DE167 */
+/* End of Support for disclosure and partner services C.DE167 */
 
 /*
-@dataElement: HIV.C.DE168 - Legal and social services - HIV.C.DE168
+@dataElement: HIV.C.DE168 - Legal and social services
 @activity: HIV.C10 Counsel on risk and prevention
 @description: Offer or refer for legal and social services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Legal and social services - HIV.C.DE168":
-  exists "Legal and social services - HIV.C.DE168 Condition"
-    or exists "Legal and social services - HIV.C.DE168 Observation"
-define "Legal and social services - HIV.C.DE168 Condition":
-  Elements."Legal and social services - HIV.C.DE168 Condition" C
+define "Legal and social services C.DE168":
+  exists "Legal and social services C.DE168 Condition"
+    or exists "Legal and social services C.DE168 Observation"
+define "Legal and social services C.DE168 Condition":
+  Elements."Legal and social services C.DE168 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Legal and social services - HIV.C.DE168 Observation":
-  Elements."Legal and social services - HIV.C.DE168 Observation" O
+define "Legal and social services C.DE168 Observation":
+  Elements."Legal and social services C.DE168 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Legal and social services - HIV.C.DE168 */
+/* End of Legal and social services C.DE168 */
 
 /*
-@dataElement: HIV.C.DE169 - Services for responding to violence against women - HIV.C.DE169
+@dataElement: HIV.C.DE169 - Services for responding to violence against women
 @activity: HIV.C10 Counsel on risk and prevention
 @description: Offer or refer for services for responding to violence against women, including first-line support and psychosocial support, post-rape care and other support services including shelters, legal services and women and child protection services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Services for responding to violence against women - HIV.C.DE169":
-  exists "Services for responding to violence against women - HIV.C.DE169 Condition"
-    or exists "Services for responding to violence against women - HIV.C.DE169 Observation"
-define "Services for responding to violence against women - HIV.C.DE169 Condition":
-  Elements."Services for responding to violence against women - HIV.C.DE169 Condition" C
+define "Services for responding to violence against women C.DE169":
+  exists "Services for responding to violence against women C.DE169 Condition"
+    or exists "Services for responding to violence against women C.DE169 Observation"
+define "Services for responding to violence against women C.DE169 Condition":
+  Elements."Services for responding to violence against women C.DE169 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Services for responding to violence against women - HIV.C.DE169 Observation":
-  Elements."Services for responding to violence against women - HIV.C.DE169 Observation" O
+define "Services for responding to violence against women C.DE169 Observation":
+  Elements."Services for responding to violence against women C.DE169 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Services for responding to violence against women - HIV.C.DE169 */
+/* End of Services for responding to violence against women C.DE169 */
 
 /*
-@dataElement: HIV.D.DE1 - Reason for visit - HIV.D.DE1
+@dataElement: HIV.D.DE1 - Reason for visit
 @activity: HIV.D1 Determine reason for visit
 @description: Whether visit was scheduled or unscheduled, clinical only, or for ARV drug pick-up
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Reason for visit - HIV.D.DE1 Observation":
-  Elements."Reason for visit - HIV.D.DE1 Observation" O
+define "Reason for visit D.DE1":
+  exists "Reason for visit D.DE1 Observation"
+define "Reason for visit D.DE1 Observation":
+  Elements."Reason for visit D.DE1 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Reason for visit - HIV.D.DE1 */
+/* End of Reason for visit D.DE1 */
 
 /*
 @dataElement: HIV.D.DE2 - First clinical visit
@@ -2710,22 +3441,22 @@ define "First clinical visit Observation":
 /* End of First clinical visit */
 
 /*
-@dataElement: HIV.D.DE3 - Clinical visit - HIV.D.DE3
+@dataElement: HIV.D.DE3 - Clinical visit
 @activity: HIV.D1 Determine reason for visit
 @description: Appointment for clinical care by a provider
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Clinical visit - HIV.D.DE3":
-  exists "Clinical visit - HIV.D.DE3 Condition"
-    or exists "Clinical visit - HIV.D.DE3 Observation"
-define "Clinical visit - HIV.D.DE3 Condition":
-  Elements."Clinical visit - HIV.D.DE3 Condition" C
+define "Clinical visit D.DE3":
+  exists "Clinical visit D.DE3 Condition"
+    or exists "Clinical visit D.DE3 Observation"
+define "Clinical visit D.DE3 Condition":
+  Elements."Clinical visit D.DE3 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Clinical visit - HIV.D.DE3 Observation":
-  Elements."Clinical visit - HIV.D.DE3 Observation" O
+define "Clinical visit D.DE3 Observation":
+  Elements."Clinical visit D.DE3 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Clinical visit - HIV.D.DE3 */
+/* End of Clinical visit D.DE3 */
 
 /*
 @dataElement: HIV.D.DE4 - ART initiation
@@ -2782,22 +3513,22 @@ define "Issues and concerns Observation":
 /* End of Issues and concerns */
 
 /*
-@dataElement: HIV.D.DE7 - Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE7
+@dataElement: HIV.D.DE7 - Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer
 @activity: HIV.D1 Determine reason for visit
 @description: Appointment for a post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE7":
-  exists "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE7 Condition"
-    or exists "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE7 Observation"
-define "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE7 Condition":
-  Elements."Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE7 Condition" C
+define "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer D.DE7":
+  exists "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer D.DE7 Condition"
+    or exists "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer D.DE7 Observation"
+define "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer D.DE7 Condition":
+  Elements."Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer D.DE7 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE7 Observation":
-  Elements."Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE7 Observation" O
+define "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer D.DE7 Observation":
+  Elements."Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer D.DE7 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE7 */
+/* End of Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer D.DE7 */
 
 /*
 @dataElement: HIV.D.DE9 - Body temperature
@@ -2805,11 +3536,13 @@ define "Post-treatment follow-up visit for cervical precancer lesions or invasiv
 @description: Temperature of the client in Celsius
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Body temperature Observation":
+define "Body temperature":
   Elements."Body temperature" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
+define "Body temperature Value":
+  "Body temperature" O
+  return O.value
 /* End of Body temperature */
 
 /*
@@ -2818,11 +3551,13 @@ define "Body temperature Observation":
 @description: The client's current weight in kilograms
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Body weight Observation":
+define "Body weight":
   Elements."Body weight" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
+define "Body weight Value":
+  "Body weight" O
+  return O.value
 /* End of Body weight */
 
 /*
@@ -2830,7 +3565,8 @@ define "Body weight Observation":
 @activity: HIV.D3 Check for signs of serious illness
 @description: Signs that may indicate the client has a serious illness and needs triage or an emergency referral
 */
-// TODO: Replace placeholder with relevant CQL logic
+define "Signs of serious illness":
+  exists "Signs of serious illness Observation"
 define "Signs of serious illness Observation":
   Elements."Signs of serious illness Observation" O
     where O.encounter.references(EncounterId)
@@ -2910,22 +3646,22 @@ define "Unable to walk unaided Observation":
 /* End of Unable to walk unaided */
 
 /*
-@dataElement: HIV.D.DE22 - Lethargy - HIV.D.DE22
+@dataElement: HIV.D.DE22 - Lethargy
 @activity: HIV.D3 Check for signs of serious illness
 @description: Client is exhibiting lethargy as a sign of serious illness
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Lethargy - HIV.D.DE22":
-  exists "Lethargy - HIV.D.DE22 Condition"
-    or exists "Lethargy - HIV.D.DE22 Observation"
-define "Lethargy - HIV.D.DE22 Condition":
-  Elements."Lethargy - HIV.D.DE22 Condition" C
+define "Lethargy D.DE22":
+  exists "Lethargy D.DE22 Condition"
+    or exists "Lethargy D.DE22 Observation"
+define "Lethargy D.DE22 Condition":
+  Elements."Lethargy D.DE22 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Lethargy - HIV.D.DE22 Observation":
-  Elements."Lethargy - HIV.D.DE22 Observation" O
+define "Lethargy D.DE22 Observation":
+  Elements."Lethargy D.DE22 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Lethargy - HIV.D.DE22 */
+/* End of Lethargy D.DE22 */
 
 /*
 @dataElement: HIV.D.DE23 - Unconsciousness
@@ -3018,22 +3754,22 @@ define "Repeated vomiting Observation":
 /* End of Repeated vomiting */
 
 /*
-@dataElement: HIV.D.DE28 - Headache - HIV.D.DE28
+@dataElement: HIV.D.DE28 - Headache
 @activity: HIV.D3 Check for signs of serious illness
 @description: Client is exhibiting a headache
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Headache - HIV.D.DE28":
-  exists "Headache - HIV.D.DE28 Condition"
-    or exists "Headache - HIV.D.DE28 Observation"
-define "Headache - HIV.D.DE28 Condition":
-  Elements."Headache - HIV.D.DE28 Condition" C
+define "Headache D.DE28":
+  exists "Headache D.DE28 Condition"
+    or exists "Headache D.DE28 Observation"
+define "Headache D.DE28 Condition":
+  Elements."Headache D.DE28 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Headache - HIV.D.DE28 Observation":
-  Elements."Headache - HIV.D.DE28 Observation" O
+define "Headache D.DE28 Observation":
+  Elements."Headache D.DE28 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Headache - HIV.D.DE28 */
+/* End of Headache D.DE28 */
 
 /*
 @dataElement: HIV.D.DE29 - Other sign of serious illness
@@ -3054,17 +3790,53 @@ define "Other sign of serious illness Observation":
 /* End of Other sign of serious illness */
 
 /*
-@dataElement: HIV.D.DE37 - Serodiscordant partner - HIV.D.DE37
+@dataElement: HIV.D.DE31 - Currently pregnant
+@activity: HIV.D8 Capture or update client history
+@description: Client is currently pregnant
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Currently pregnant D.DE31":
+  exists "Currently pregnant D.DE31 Observation"
+define "Currently pregnant D.DE31 Observation":
+  Elements."Currently pregnant D.DE31 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Currently pregnant D.DE31 */
+
+/*
+@dataElement: HIV.D.DE37 - Serodiscordant partner
 @activity: HIV.D8 Capture or update client history
 @description: Client's HIV status is different from a current partner's HIV status
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Serodiscordant partner - HIV.D.DE37 Observation":
-  Elements."Serodiscordant partner - HIV.D.DE37" O
+define "Serodiscordant partner D.DE37":
+  exists "Serodiscordant partner D.DE37 Observation"
+define "Serodiscordant partner D.DE37 Observation":
+  Elements."Serodiscordant partner D.DE37 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
-/* End of Serodiscordant partner - HIV.D.DE37 */
+/* End of Serodiscordant partner D.DE37 */
+
+/*
+@dataElement: HIV.D.DE38 - On ART
+@activity: HIV.D8 Capture or update client history
+@description: Client is currently taking ART
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "On ART D.DE38":
+  Elements."On ART D.DE38" MS
+      where MS.effective.toInterval() starts on or before Today
+/* End of On ART D.DE38 */
+
+/*
+@dataElement: HIV.D.DE39 - ART start date
+@activity: HIV.D8 Capture or update client history
+@description: The date on which the client started or restarted ART
+*/
+define "ART start date D.DE39":
+  "On ART D.DE38" MS
+  return start of MS.effective.toInterval()
+/* End of ART start date D.DE39 */
 
 /*
 @dataElement: HIV.D.DE42 - Established on ART
@@ -3072,12 +3844,77 @@ define "Serodiscordant partner - HIV.D.DE37 Observation":
 @description: Is the client successfully established on ART?
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Established on ART":
+  exists "Established on ART Observation"
 define "Established on ART Observation":
-  Elements."Established on ART" O
+  Elements."Established on ART Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
 /* End of Established on ART */
+
+/*
+@dataElement: HIV.D.DE43 - ART start type
+@activity: HIV.D8 Capture or update client history
+@description: Whether the client is ART naive or is restarting ART
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "ART start type":
+  exists "ART start type Observation"
+define "ART start type Observation":
+  Elements."ART start type Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of ART start type */
+
+/*
+@dataElement: HIV.D.DE44 - First-time user of ART
+@activity: HIV.D8 Capture or update client history
+@description: Client is ART naive, having never taken ART to treat HIV before
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "First-time user of ART":
+  exists "First-time user of ART Condition"
+    or exists "First-time user of ART Observation"
+define "First-time user of ART Condition":
+  Elements."First-time user of ART Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "First-time user of ART Observation":
+  Elements."First-time user of ART Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of First-time user of ART */
+
+/*
+@dataElement: HIV.D.DE45 - Restarting ART
+@activity: HIV.D8 Capture or update client history
+@description: Client is restarting ART after stopping treatment for any reason
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Restarting ART":
+  exists "Restarting ART Condition"
+    or exists "Restarting ART Observation"
+define "Restarting ART Condition":
+  Elements."Restarting ART Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Restarting ART Observation":
+  Elements."Restarting ART Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Restarting ART */
+
+/*
+@dataElement: HIV.D.DE75 - Current ART regimen
+@activity: HIV.D8 Capture or update client history
+@description: The current ART regimen the client is taking
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Current ART regimen":
+  exists "Current ART regimen Observation"
+define "Current ART regimen Observation":
+  Elements."Current ART regimen Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Current ART regimen */
 
 /*
 @dataElement: HIV.D.DE77 - Preferred first-line ART regimen
@@ -3085,6 +3922,8 @@ define "Established on ART Observation":
 @description: The preferred first-line ART regimen for the client according to WHO (or national) guidelines
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Preferred first-line ART regimen":
+  exists "Preferred first-line ART regimen Observation"
 define "Preferred first-line ART regimen Observation":
   Elements."Preferred first-line ART regimen Observation" O
     where O.encounter.references(EncounterId)
@@ -3097,6 +3936,8 @@ define "Preferred first-line ART regimen Observation":
 @description: The alternative first-line ART regimen for the client according to WHO (or national) guidelines
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Alternative first-line ART regimen":
+  exists "Alternative first-line ART regimen Observation"
 define "Alternative first-line ART regimen Observation":
   Elements."Alternative first-line ART regimen Observation" O
     where O.encounter.references(EncounterId)
@@ -3109,6 +3950,8 @@ define "Alternative first-line ART regimen Observation":
 @description: The first-line ART regimen for the client under special circumstances according to WHO (or national) guidelines
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "First-line ART regimen under special circumstances":
+  exists "First-line ART regimen under special circumstances Observation"
 define "First-line ART regimen under special circumstances Observation":
   Elements."First-line ART regimen under special circumstances Observation" O
     where O.encounter.references(EncounterId)
@@ -3121,6 +3964,8 @@ define "First-line ART regimen under special circumstances Observation":
 @description: The preferred second-line ART regimen for the client according to WHO (or national) guidelines
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Preferred second-line ART regimen":
+  exists "Preferred second-line ART regimen Observation"
 define "Preferred second-line ART regimen Observation":
   Elements."Preferred second-line ART regimen Observation" O
     where O.encounter.references(EncounterId)
@@ -3133,6 +3978,8 @@ define "Preferred second-line ART regimen Observation":
 @description: The alternative second-line ART regimen for the client according to WHO (or national) guidelines
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Alternative second-line ART regimen":
+  exists "Alternative second-line ART regimen Observation"
 define "Alternative second-line ART regimen Observation":
   Elements."Alternative second-line ART regimen Observation" O
     where O.encounter.references(EncounterId)
@@ -3145,6 +3992,8 @@ define "Alternative second-line ART regimen Observation":
 @description: The optimal regimen for transition to DTG-based regimens for children established on ART
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Optimal regimen for transition":
+  exists "Optimal regimen for transition Observation"
 define "Optimal regimen for transition Observation":
   Elements."Optimal regimen for transition Observation" O
     where O.encounter.references(EncounterId)
@@ -3157,6 +4006,8 @@ define "Optimal regimen for transition Observation":
 @description: ART regimen for treating clients living with HIV, based on national guidance
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Current ART regimen first-, second-, or third-line":
+  exists "Current ART regimen first-, second-, or third-line Observation"
 define "Current ART regimen first-, second-, or third-line Observation":
   Elements."Current ART regimen first-, second-, or third-line Observation" O
     where O.encounter.references(EncounterId)
@@ -3277,6 +4128,8 @@ define "Third-line ART regimen Observation":
 @description: Drug composition of client's current ART regimen
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "ART regimen composition":
+  exists "ART regimen composition Observation"
 define "ART regimen composition Observation":
   Elements."ART regimen composition Observation" O
     where O.encounter.references(EncounterId)
@@ -3392,22 +4245,22 @@ define "D4T Observation":
 /* End of D4T */
 
 /*
-@dataElement: HIV.D.DE135 - TDF - HIV.D.DE135
+@dataElement: HIV.D.DE135 - TDF
 @activity: HIV.D8 Capture or update client history
 @description: Treated with tenofovir (TDF)
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "TDF - HIV.D.DE135":
-  exists "TDF - HIV.D.DE135 Condition"
-    or exists "TDF - HIV.D.DE135 Observation"
-define "TDF - HIV.D.DE135 Condition":
-  Elements."TDF - HIV.D.DE135 Condition" C
+define "TDF D.DE135":
+  exists "TDF D.DE135 Condition"
+    or exists "TDF D.DE135 Observation"
+define "TDF D.DE135 Condition":
+  Elements."TDF D.DE135 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "TDF - HIV.D.DE135 Observation":
-  Elements."TDF - HIV.D.DE135 Observation" O
+define "TDF D.DE135 Observation":
+  Elements."TDF D.DE135 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of TDF - HIV.D.DE135 */
+/* End of TDF D.DE135 */
 
 /*
 @dataElement: HIV.D.DE136 - EFV
@@ -3482,58 +4335,58 @@ define "RIL Observation":
 /* End of RIL */
 
 /*
-@dataElement: HIV.D.DE140 - ATV/r - HIV.D.DE140
+@dataElement: HIV.D.DE140 - ATV/r
 @activity: HIV.D8 Capture or update client history
 @description: Treated with atazanavir/ritonavir (ATV/r)
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "ATV/r - HIV.D.DE140":
-  exists "ATV/r - HIV.D.DE140 Condition"
-    or exists "ATV/r - HIV.D.DE140 Observation"
-define "ATV/r - HIV.D.DE140 Condition":
-  Elements."ATV/r - HIV.D.DE140 Condition" C
+define "ATV/r D.DE140":
+  exists "ATV/r D.DE140 Condition"
+    or exists "ATV/r D.DE140 Observation"
+define "ATV/r D.DE140 Condition":
+  Elements."ATV/r D.DE140 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "ATV/r - HIV.D.DE140 Observation":
-  Elements."ATV/r - HIV.D.DE140 Observation" O
+define "ATV/r D.DE140 Observation":
+  Elements."ATV/r D.DE140 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of ATV/r - HIV.D.DE140 */
+/* End of ATV/r D.DE140 */
 
 /*
-@dataElement: HIV.D.DE141 - LPV/r - HIV.D.DE141
+@dataElement: HIV.D.DE141 - LPV/r
 @activity: HIV.D8 Capture or update client history
 @description: Treated with lopinavir/ritonavir (LPV/r)
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "LPV/r - HIV.D.DE141":
-  exists "LPV/r - HIV.D.DE141 Condition"
-    or exists "LPV/r - HIV.D.DE141 Observation"
-define "LPV/r - HIV.D.DE141 Condition":
-  Elements."LPV/r - HIV.D.DE141 Condition" C
+define "LPV/r D.DE141":
+  exists "LPV/r D.DE141 Condition"
+    or exists "LPV/r D.DE141 Observation"
+define "LPV/r D.DE141 Condition":
+  Elements."LPV/r D.DE141 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "LPV/r - HIV.D.DE141 Observation":
-  Elements."LPV/r - HIV.D.DE141 Observation" O
+define "LPV/r D.DE141 Observation":
+  Elements."LPV/r D.DE141 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of LPV/r - HIV.D.DE141 */
+/* End of LPV/r D.DE141 */
 
 /*
-@dataElement: HIV.D.DE142 - DRV/r - HIV.D.DE142
+@dataElement: HIV.D.DE142 - DRV/r
 @activity: HIV.D8 Capture or update client history
 @description: Treated with darunavir/ritonavir (DRV/r)
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "DRV/r - HIV.D.DE142":
-  exists "DRV/r - HIV.D.DE142 Condition"
-    or exists "DRV/r - HIV.D.DE142 Observation"
-define "DRV/r - HIV.D.DE142 Condition":
-  Elements."DRV/r - HIV.D.DE142 Condition" C
+define "DRV/r D.DE142":
+  exists "DRV/r D.DE142 Condition"
+    or exists "DRV/r D.DE142 Observation"
+define "DRV/r D.DE142 Condition":
+  Elements."DRV/r D.DE142 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "DRV/r - HIV.D.DE142 Observation":
-  Elements."DRV/r - HIV.D.DE142 Observation" O
+define "DRV/r D.DE142 Observation":
+  Elements."DRV/r D.DE142 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of DRV/r - HIV.D.DE142 */
+/* End of DRV/r D.DE142 */
 
 /*
 @dataElement: HIV.D.DE143 - RTV
@@ -3554,154 +4407,158 @@ define "RTV Observation":
 /* End of RTV */
 
 /*
-@dataElement: HIV.D.DE144 - DTG - HIV.D.DE144
+@dataElement: HIV.D.DE144 - DTG
 @activity: HIV.D8 Capture or update client history
 @description: Treated with dolutegravir (DTG)
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "DTG - HIV.D.DE144":
-  exists "DTG - HIV.D.DE144 Condition"
-    or exists "DTG - HIV.D.DE144 Observation"
-define "DTG - HIV.D.DE144 Condition":
-  Elements."DTG - HIV.D.DE144 Condition" C
+define "DTG D.DE144":
+  exists "DTG D.DE144 Condition"
+    or exists "DTG D.DE144 Observation"
+define "DTG D.DE144 Condition":
+  Elements."DTG D.DE144 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "DTG - HIV.D.DE144 Observation":
-  Elements."DTG - HIV.D.DE144 Observation" O
+define "DTG D.DE144 Observation":
+  Elements."DTG D.DE144 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of DTG - HIV.D.DE144 */
+/* End of DTG D.DE144 */
 
 /*
-@dataElement: HIV.D.DE145 - RAL - HIV.D.DE145
+@dataElement: HIV.D.DE145 - RAL
 @activity: HIV.D8 Capture or update client history
 @description: Treated with raltegravir (RAL)
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "RAL - HIV.D.DE145":
-  exists "RAL - HIV.D.DE145 Condition"
-    or exists "RAL - HIV.D.DE145 Observation"
-define "RAL - HIV.D.DE145 Condition":
-  Elements."RAL - HIV.D.DE145 Condition" C
+define "RAL D.DE145":
+  exists "RAL D.DE145 Condition"
+    or exists "RAL D.DE145 Observation"
+define "RAL D.DE145 Condition":
+  Elements."RAL D.DE145 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "RAL - HIV.D.DE145 Observation":
-  Elements."RAL - HIV.D.DE145 Observation" O
+define "RAL D.DE145 Observation":
+  Elements."RAL D.DE145 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of RAL - HIV.D.DE145 */
+/* End of RAL D.DE145 */
 
 /*
-@dataElement: HIV.D.DE152 - Prevention services offered and referrals - HIV.D.DE152
+@dataElement: HIV.D.DE152 - Prevention services offered and referrals
 @activity: HIV.D12 Determine recommended screenings and tests
 @description: Offer or refer for prevention services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Prevention services offered and referrals - HIV.D.DE152 Observation":
-  Elements."Prevention services offered and referrals - HIV.D.DE152 Observation" O
+define "Prevention services offered and referrals D.DE152":
+  exists "Prevention services offered and referrals D.DE152 Observation"
+define "Prevention services offered and referrals D.DE152 Observation":
+  Elements."Prevention services offered and referrals D.DE152 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Prevention services offered and referrals - HIV.D.DE152 */
+/* End of Prevention services offered and referrals D.DE152 */
 
 /*
-@dataElement: HIV.D.DE153 - Offer male and female condoms and condom-compatible lubricants - HIV.D.DE153
+@dataElement: HIV.D.DE153 - Offer male and female condoms and condom-compatible lubricants
 @activity: HIV.D26 Offer sexual and reproductive health services
 @description: Offer male and female condoms and condom-compatible lubricants
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Offer male and female condoms and condom-compatible lubricants - HIV.D.DE153":
-  exists "Offer male and female condoms and condom-compatible lubricants - HIV.D.DE153 Condition"
-    or exists "Offer male and female condoms and condom-compatible lubricants - HIV.D.DE153 Observation"
-define "Offer male and female condoms and condom-compatible lubricants - HIV.D.DE153 Condition":
-  Elements."Offer male and female condoms and condom-compatible lubricants - HIV.D.DE153 Condition" C
+define "Offer male and female condoms and condom-compatible lubricants D.DE153":
+  exists "Offer male and female condoms and condom-compatible lubricants D.DE153 Condition"
+    or exists "Offer male and female condoms and condom-compatible lubricants D.DE153 Observation"
+define "Offer male and female condoms and condom-compatible lubricants D.DE153 Condition":
+  Elements."Offer male and female condoms and condom-compatible lubricants D.DE153 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Offer male and female condoms and condom-compatible lubricants - HIV.D.DE153 Observation":
-  Elements."Offer male and female condoms and condom-compatible lubricants - HIV.D.DE153 Observation" O
+define "Offer male and female condoms and condom-compatible lubricants D.DE153 Observation":
+  Elements."Offer male and female condoms and condom-compatible lubricants D.DE153 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Offer male and female condoms and condom-compatible lubricants - HIV.D.DE153 */
+/* End of Offer male and female condoms and condom-compatible lubricants D.DE153 */
 
 /*
-@dataElement: HIV.D.DE154 - Harm reduction for people who inject drugs - HIV.D.DE154
+@dataElement: HIV.D.DE154 - Harm reduction for people who inject drugs
 @activity: HIV.D12 Determine recommended screenings and tests
 @description: Offer or refer people who inject drugs to harm reduction services (needle and syringe programmes, opioid substitution therapy, other drug-dependence treatment and opioid overdose prevention and management)
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Harm reduction for people who inject drugs - HIV.D.DE154":
-  exists "Harm reduction for people who inject drugs - HIV.D.DE154 Condition"
-    or exists "Harm reduction for people who inject drugs - HIV.D.DE154 Observation"
-define "Harm reduction for people who inject drugs - HIV.D.DE154 Condition":
-  Elements."Harm reduction for people who inject drugs - HIV.D.DE154 Condition" C
+define "Harm reduction for people who inject drugs D.DE154":
+  exists "Harm reduction for people who inject drugs D.DE154 Condition"
+    or exists "Harm reduction for people who inject drugs D.DE154 Observation"
+define "Harm reduction for people who inject drugs D.DE154 Condition":
+  Elements."Harm reduction for people who inject drugs D.DE154 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Harm reduction for people who inject drugs - HIV.D.DE154 Observation":
-  Elements."Harm reduction for people who inject drugs - HIV.D.DE154 Observation" O
+define "Harm reduction for people who inject drugs D.DE154 Observation":
+  Elements."Harm reduction for people who inject drugs D.DE154 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Harm reduction for people who inject drugs - HIV.D.DE154 */
+/* End of Harm reduction for people who inject drugs D.DE154 */
 
 /*
-@dataElement: HIV.D.DE155 - Behavioural interventions to support risk reduction - HIV.D.DE155
+@dataElement: HIV.D.DE155 - Behavioural interventions to support risk reduction
 @activity: HIV.D12 Determine recommended screenings and tests
 @description: Offer or refer to services for behavioural interventions to support risk reduction, particularly for people with HIV and members of key populations
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Behavioural interventions to support risk reduction - HIV.D.DE155":
-  exists "Behavioural interventions to support risk reduction - HIV.D.DE155 Condition"
-    or exists "Behavioural interventions to support risk reduction - HIV.D.DE155 Observation"
-define "Behavioural interventions to support risk reduction - HIV.D.DE155 Condition":
-  Elements."Behavioural interventions to support risk reduction - HIV.D.DE155 Condition" C
+define "Behavioural interventions to support risk reduction D.DE155":
+  exists "Behavioural interventions to support risk reduction D.DE155 Condition"
+    or exists "Behavioural interventions to support risk reduction D.DE155 Observation"
+define "Behavioural interventions to support risk reduction D.DE155 Condition":
+  Elements."Behavioural interventions to support risk reduction D.DE155 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Behavioural interventions to support risk reduction - HIV.D.DE155 Observation":
-  Elements."Behavioural interventions to support risk reduction - HIV.D.DE155 Observation" O
+define "Behavioural interventions to support risk reduction D.DE155 Observation":
+  Elements."Behavioural interventions to support risk reduction D.DE155 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Behavioural interventions to support risk reduction - HIV.D.DE155 */
+/* End of Behavioural interventions to support risk reduction D.DE155 */
 
 /*
-@dataElement: HIV.D.DE156 - Sexual and reproductive health integrated services - HIV.D.DE156
+@dataElement: HIV.D.DE156 - Sexual and reproductive health integrated services
 @activity: HIV.D12 Determine recommended screenings and tests
 @description: Offer or refer to sexual and reproductive health services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Sexual and reproductive health integrated services - HIV.D.DE156 Observation":
-  Elements."Sexual and reproductive health integrated services - HIV.D.DE156 Observation" O
+define "Sexual and reproductive health integrated services D.DE156":
+  exists "Sexual and reproductive health integrated services D.DE156 Observation"
+define "Sexual and reproductive health integrated services D.DE156 Observation":
+  Elements."Sexual and reproductive health integrated services D.DE156 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Sexual and reproductive health integrated services - HIV.D.DE156 */
+/* End of Sexual and reproductive health integrated services D.DE156 */
 
 /*
-@dataElement: HIV.D.DE157 - Contraception and family planning - HIV.D.DE157
+@dataElement: HIV.D.DE157 - Contraception and family planning
 @activity: HIV.D12 Determine recommended screenings and tests
 @description: Offer contraception and family planning services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Contraception and family planning - HIV.D.DE157":
-  exists "Contraception and family planning - HIV.D.DE157 Condition"
-    or exists "Contraception and family planning - HIV.D.DE157 Observation"
-define "Contraception and family planning - HIV.D.DE157 Condition":
-  Elements."Contraception and family planning - HIV.D.DE157 Condition" C
+define "Contraception and family planning D.DE157":
+  exists "Contraception and family planning D.DE157 Condition"
+    or exists "Contraception and family planning D.DE157 Observation"
+define "Contraception and family planning D.DE157 Condition":
+  Elements."Contraception and family planning D.DE157 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Contraception and family planning - HIV.D.DE157 Observation":
-  Elements."Contraception and family planning - HIV.D.DE157 Observation" O
+define "Contraception and family planning D.DE157 Observation":
+  Elements."Contraception and family planning D.DE157 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Contraception and family planning - HIV.D.DE157 */
+/* End of Contraception and family planning D.DE157 */
 
 /*
-@dataElement: HIV.D.DE158 - Check pregnancy status - HIV.D.DE158
+@dataElement: HIV.D.DE158 - Check pregnancy status
 @activity: HIV.D12 Determine recommended screenings and tests
 @description: Check woman's pregnancy status
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Check pregnancy status - HIV.D.DE158":
-  exists "Check pregnancy status - HIV.D.DE158 Condition"
-    or exists "Check pregnancy status - HIV.D.DE158 Observation"
-define "Check pregnancy status - HIV.D.DE158 Condition":
-  Elements."Check pregnancy status - HIV.D.DE158 Condition" C
+define "Check pregnancy status D.DE158":
+  exists "Check pregnancy status D.DE158 Condition"
+    or exists "Check pregnancy status D.DE158 Observation"
+define "Check pregnancy status D.DE158 Condition":
+  Elements."Check pregnancy status D.DE158 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Check pregnancy status - HIV.D.DE158 Observation":
-  Elements."Check pregnancy status - HIV.D.DE158 Observation" O
+define "Check pregnancy status D.DE158 Observation":
+  Elements."Check pregnancy status D.DE158 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Check pregnancy status - HIV.D.DE158 */
+/* End of Check pregnancy status D.DE158 */
 
 /*
 @dataElement: HIV.D.DE159 - Prevention of mother-to-child transmission
@@ -3722,34 +4579,172 @@ define "Prevention of mother-to-child transmission Observation":
 /* End of Prevention of mother-to-child transmission */
 
 /*
-@dataElement: HIV.D.DE160 - STI testing and treatment - HIV.D.DE160
+@dataElement: HIV.D.DE160 - STI testing and treatment
 @activity: HIV.D12 Determine recommended screenings and tests
 @description: Offer STI testing and treatment services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "STI testing and treatment - HIV.D.DE160":
-  exists "STI testing and treatment - HIV.D.DE160 Condition"
-    or exists "STI testing and treatment - HIV.D.DE160 Observation"
-define "STI testing and treatment - HIV.D.DE160 Condition":
-  Elements."STI testing and treatment - HIV.D.DE160 Condition" C
+define "STI testing and treatment D.DE160":
+  exists "STI testing and treatment D.DE160 Condition"
+    or exists "STI testing and treatment D.DE160 Observation"
+define "STI testing and treatment D.DE160 Condition":
+  Elements."STI testing and treatment D.DE160 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "STI testing and treatment - HIV.D.DE160 Observation":
-  Elements."STI testing and treatment - HIV.D.DE160 Observation" O
+define "STI testing and treatment D.DE160 Observation":
+  Elements."STI testing and treatment D.DE160 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of STI testing and treatment - HIV.D.DE160 */
+/* End of STI testing and treatment D.DE160 */
 
 /*
-@dataElement: HIV.D.DE186 - HIV clinical stage - HIV.D.DE186
+@dataElement: HIV.D.DE162 - HBsAg test result
+@activity: HIV.D12 Determine recommended screenings and tests
+@description: Hepatitis B virus test result (HBsAg)
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "HBsAg test result D.DE162":
+  exists "HBsAg test result D.DE162 Observation"
+define "HBsAg test result D.DE162 Observation":
+  Elements."HBsAg test result D.DE162 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of HBsAg test result D.DE162 */
+
+/*
+@dataElement: HIV.D.DE163 - Positive
+@activity: HIV.D12 Determine recommended screenings and tests
+@description: HBsAg test result was positive
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Positive D.DE163":
+  exists "Positive D.DE163 Condition"
+    or exists "Positive D.DE163 Observation"
+define "Positive D.DE163 Condition":
+  Elements."Positive D.DE163 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Positive D.DE163 Observation":
+  Elements."Positive D.DE163 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Positive D.DE163 */
+
+/*
+@dataElement: HIV.D.DE164 - Negative
+@activity: HIV.D12 Determine recommended screenings and tests
+@description: HBsAg test result was negative
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Negative D.DE164":
+  exists "Negative D.DE164 Condition"
+    or exists "Negative D.DE164 Observation"
+define "Negative D.DE164 Condition":
+  Elements."Negative D.DE164 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Negative D.DE164 Observation":
+  Elements."Negative D.DE164 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Negative D.DE164 */
+
+/*
+@dataElement: HIV.D.DE165 - Indeterminate
+@activity: HIV.D12 Determine recommended screenings and tests
+@description: HBsAg test result was indeterminate
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Indeterminate D.DE165":
+  exists "Indeterminate D.DE165 Condition"
+    or exists "Indeterminate D.DE165 Observation"
+define "Indeterminate D.DE165 Condition":
+  Elements."Indeterminate D.DE165 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Indeterminate D.DE165 Observation":
+  Elements."Indeterminate D.DE165 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Indeterminate D.DE165 */
+
+/*
+@dataElement: HIV.D.DE170 - HCV test result
+@activity: HIV.D12 Determine recommended screenings and tests
+@description: Hepatitis C virus test result (HCV antibody, HCV RNA or HCV core antigen)
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "HCV test result D.DE170":
+  exists "HCV test result D.DE170 Observation"
+define "HCV test result D.DE170 Observation":
+  Elements."HCV test result D.DE170 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of HCV test result D.DE170 */
+
+/*
+@dataElement: HIV.D.DE171 - Positive
+@activity: HIV.D12 Determine recommended screenings and tests
+@description: HCV test result was positive
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Positive D.DE171":
+  exists "Positive D.DE171 Condition"
+    or exists "Positive D.DE171 Observation"
+define "Positive D.DE171 Condition":
+  Elements."Positive D.DE171 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Positive D.DE171 Observation":
+  Elements."Positive D.DE171 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Positive D.DE171 */
+
+/*
+@dataElement: HIV.D.DE172 - Negative
+@activity: HIV.D12 Determine recommended screenings and tests
+@description: HCV test result was negative
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Negative D.DE172":
+  exists "Negative D.DE172 Condition"
+    or exists "Negative D.DE172 Observation"
+define "Negative D.DE172 Condition":
+  Elements."Negative D.DE172 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Negative D.DE172 Observation":
+  Elements."Negative D.DE172 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Negative D.DE172 */
+
+/*
+@dataElement: HIV.D.DE173 - Indeterminate
+@activity: HIV.D12 Determine recommended screenings and tests
+@description: HCV test result was indeterminate
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Indeterminate D.DE173":
+  exists "Indeterminate D.DE173 Condition"
+    or exists "Indeterminate D.DE173 Observation"
+define "Indeterminate D.DE173 Condition":
+  Elements."Indeterminate D.DE173 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Indeterminate D.DE173 Observation":
+  Elements."Indeterminate D.DE173 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Indeterminate D.DE173 */
+
+/*
+@dataElement: HIV.D.DE186 - HIV clinical stage
 @activity: HIV.D8 Capture or update client history
 @description: WHO clinical stage of client based on signs and symptoms. WHO clinical staging is a way to categorize HIV disease severity based on new or recurrent clinical events. There are 4 WHO clinical stages that range from mild symptoms (WHO clinical stage 1) to severe symptoms (WHO clinical stage 4).
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "HIV clinical stage - HIV.D.DE186 Observation":
-  Elements."HIV clinical stage - HIV.D.DE186 Observation" O
+define "HIV clinical stage D.DE186":
+  exists "HIV clinical stage D.DE186 Observation"
+define "HIV clinical stage D.DE186 Observation":
+  Elements."HIV clinical stage D.DE186 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of HIV clinical stage - HIV.D.DE186 */
+/* End of HIV clinical stage D.DE186 */
 
 /*
 @dataElement: HIV.D.DE187 - WHO HIV clinical stage 1
@@ -3824,16 +4819,30 @@ define "WHO HIV clinical stage 4 Observation":
 /* End of WHO HIV clinical stage 4 */
 
 /*
+@dataElement: HIV.D.DE194 - Date of viral load sample collection
+@activity: HIV.D10 Counsel returning client
+@description: Date and time when the sample was collected to test the client's HIV viral load
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Date of viral load sample collection D.DE194":
+  Elements."Date of viral load sample collection D.DE194" P
+    where P.encounter.references(EncounterId)
+      or P.performed.toInterval() starts on or before Today
+/* End of Date of viral load sample collection D.DE194 */
+
+/*
 @dataElement: HIV.D.DE195 - Date of scheduled review of viral load test results
 @activity: HIV.D10 Counsel returning client
 @description: Expected date when client's viral load test results will be returned and reviewed
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Date of scheduled review of viral load test results Observation":
+define "Date of scheduled review of viral load test results":
   Elements."Date of scheduled review of viral load test results" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
+define "Date of scheduled review of viral load test results Value":
+  "Date of scheduled review of viral load test results" O
+  return O.value
 /* End of Date of scheduled review of viral load test results */
 
 /*
@@ -3842,6 +4851,8 @@ define "Date of scheduled review of viral load test results Observation":
 @description: ART treatment failure
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Treatment failure":
+  exists "Treatment failure Observation"
 define "Treatment failure Observation":
   Elements."Treatment failure Observation" O
     where O.encounter.references(EncounterId)
@@ -3903,16 +4914,50 @@ define "Virological failure Observation":
 /* End of Virological failure */
 
 /*
-@dataElement: HIV.D.DE289 - WHO HIV clinical stage condition or symptom - HIV.D.DE289
+@dataElement: HIV.D.DE259 - Risk factors, comorbidities and coinfections signs and symptoms
+@activity: HIV.D14 Prevent, screen, and manage comorbidities and coinfections
+@description: Signs and symptoms of opportunistic infections or other comorbidities experienced by client
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Risk factors, comorbidities and coinfections signs and symptoms":
+  exists "Risk factors, comorbidities and coinfections signs and symptoms Observation"
+define "Risk factors, comorbidities and coinfections signs and symptoms Observation":
+  Elements."Risk factors, comorbidities and coinfections signs and symptoms Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Risk factors, comorbidities and coinfections signs and symptoms */
+
+/*
+@dataElement: HIV.D.DE282 - Presumptive TB
+@activity: HIV.D14 Prevent, screen, and manage comorbidities and coinfections
+@description: Client's comorbidities or coinfections or symptoms of these include presumptive TB
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Presumptive TB D.DE282":
+  exists "Presumptive TB D.DE282 Condition"
+    or exists "Presumptive TB D.DE282 Observation"
+define "Presumptive TB D.DE282 Condition":
+  Elements."Presumptive TB D.DE282 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Presumptive TB D.DE282 Observation":
+  Elements."Presumptive TB D.DE282 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Presumptive TB D.DE282 */
+
+/*
+@dataElement: HIV.D.DE289 - WHO HIV clinical stage condition or symptom
 @activity: HIV.D15 Determine clinical stage of HIV
 @description: New or recurrent clinical events used to categorize HIV disease severity based at baseline and follow up
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "WHO HIV clinical stage condition or symptom - HIV.D.DE289 Observation":
-  Elements."WHO HIV clinical stage condition or symptom - HIV.D.DE289 Observation" O
+define "WHO HIV clinical stage condition or symptom D.DE289":
+  exists "WHO HIV clinical stage condition or symptom D.DE289 Observation"
+define "WHO HIV clinical stage condition or symptom D.DE289 Observation":
+  Elements."WHO HIV clinical stage condition or symptom D.DE289 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of WHO HIV clinical stage condition or symptom - HIV.D.DE289 */
+/* End of WHO HIV clinical stage condition or symptom D.DE289 */
 
 /*
 @dataElement: HIV.D.DE290 - Asymptomatic
@@ -4311,40 +5356,40 @@ define "Oral hairy leukoplakia Observation":
 /* End of Oral hairy leukoplakia */
 
 /*
-@dataElement: HIV.D.DE312 - Pulmonary TB - HIV.D.DE312
+@dataElement: HIV.D.DE312 - Pulmonary TB
 @activity: HIV.D15 Determine clinical stage of HIV
 @description: Client's symptoms include pulmonary TB
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Pulmonary TB - HIV.D.DE312":
-  exists "Pulmonary TB - HIV.D.DE312 Condition"
-    or exists "Pulmonary TB - HIV.D.DE312 Observation"
-define "Pulmonary TB - HIV.D.DE312 Condition":
-  Elements."Pulmonary TB - HIV.D.DE312 Condition" C
+define "Pulmonary TB D.DE312":
+  exists "Pulmonary TB D.DE312 Condition"
+    or exists "Pulmonary TB D.DE312 Observation"
+define "Pulmonary TB D.DE312 Condition":
+  Elements."Pulmonary TB D.DE312 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Pulmonary TB - HIV.D.DE312 Observation":
-  Elements."Pulmonary TB - HIV.D.DE312 Observation" O
+define "Pulmonary TB D.DE312 Observation":
+  Elements."Pulmonary TB D.DE312 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Pulmonary TB - HIV.D.DE312 */
+/* End of Pulmonary TB D.DE312 */
 
 /*
-@dataElement: HIV.D.DE313 - Lymph node TB - HIV.D.DE313
+@dataElement: HIV.D.DE313 - Lymph node TB
 @activity: HIV.D15 Determine clinical stage of HIV
 @description: Client's symptoms include lymph node TB
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Lymph node TB - HIV.D.DE313":
-  exists "Lymph node TB - HIV.D.DE313 Condition"
-    or exists "Lymph node TB - HIV.D.DE313 Observation"
-define "Lymph node TB - HIV.D.DE313 Condition":
-  Elements."Lymph node TB - HIV.D.DE313 Condition" C
+define "Lymph node TB D.DE313":
+  exists "Lymph node TB D.DE313 Condition"
+    or exists "Lymph node TB D.DE313 Observation"
+define "Lymph node TB D.DE313 Condition":
+  Elements."Lymph node TB D.DE313 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Lymph node TB - HIV.D.DE313 Observation":
-  Elements."Lymph node TB - HIV.D.DE313 Observation" O
+define "Lymph node TB D.DE313 Observation":
+  Elements."Lymph node TB D.DE313 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Lymph node TB - HIV.D.DE313 */
+/* End of Lymph node TB D.DE313 */
 
 /*
 @dataElement: HIV.D.DE314 - Severe bacterial infections such as pneumonia, empyema, pyomyositis, bone or joint infection, meningitis, bacteraemia
@@ -4779,22 +5824,22 @@ define "Oesophageal candidiasis or candidiasis of trachea, bronchi or lungs Obse
 /* End of Oesophageal candidiasis or candidiasis of trachea, bronchi or lungs */
 
 /*
-@dataElement: HIV.D.DE338 - Extrapulmonary TB - HIV.D.DE338
+@dataElement: HIV.D.DE338 - Extrapulmonary TB
 @activity: HIV.D15 Determine clinical stage of HIV
 @description: Client's symptoms include extrapulmonary tuberculosis
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Extrapulmonary TB - HIV.D.DE338":
-  exists "Extrapulmonary TB - HIV.D.DE338 Condition"
-    or exists "Extrapulmonary TB - HIV.D.DE338 Observation"
-define "Extrapulmonary TB - HIV.D.DE338 Condition":
-  Elements."Extrapulmonary TB - HIV.D.DE338 Condition" C
+define "Extrapulmonary TB D.DE338":
+  exists "Extrapulmonary TB D.DE338 Condition"
+    or exists "Extrapulmonary TB D.DE338 Observation"
+define "Extrapulmonary TB D.DE338 Condition":
+  Elements."Extrapulmonary TB D.DE338 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Extrapulmonary TB - HIV.D.DE338 Observation":
-  Elements."Extrapulmonary TB - HIV.D.DE338 Observation" O
+define "Extrapulmonary TB D.DE338 Observation":
+  Elements."Extrapulmonary TB D.DE338 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Extrapulmonary TB - HIV.D.DE338 */
+/* End of Extrapulmonary TB D.DE338 */
 
 /*
 @dataElement: HIV.D.DE339 - Kaposi sarcoma
@@ -5139,17 +6184,120 @@ define "Neutropenia Observation":
 /* End of Neutropenia */
 
 /*
-@dataElement: HIV.D.DE364 - CD4 count - HIV.D.DE364
+@dataElement: HIV.D.DE364 - CD4 count
 @activity: HIV.D20 Diagnostics
 @description: CD4 cell count in cells/mm^3
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "CD4 count - HIV.D.DE364 Observation":
-  Elements."CD4 count - HIV.D.DE364" O
+define "CD4 count D.DE364":
+  Elements."CD4 count D.DE364" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
-/* End of CD4 count - HIV.D.DE364 */
+define "CD4 count D.DE364 Value":
+  "CD4 count D.DE364" O
+  return O.value
+/* End of CD4 count D.DE364 */
+
+/*
+@dataElement: HIV.D.DE387 - Viral load test result
+@activity: HIV.D20 Diagnostics
+@description: Result from the viral load test in number of copies/mL
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Viral load test result D.DE387":
+  Elements."Viral load test result D.DE387" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+define "Viral load test result D.DE387 Value":
+  "Viral load test result D.DE387" O
+  return O.value
+/* End of Viral load test result D.DE387 */
+
+/*
+@dataElement: HIV.D.DE391 - Reason for HIV viral load test
+@activity: HIV.D20 Diagnostics
+@description: Whether the viral load is being tested for routine monitoring on a set schedule or for targeted monitoring for suspected treatment failure
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Reason for HIV viral load test":
+  exists "Reason for HIV viral load test Observation"
+define "Reason for HIV viral load test Observation":
+  Elements."Reason for HIV viral load test Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Reason for HIV viral load test */
+
+/*
+@dataElement: HIV.D.DE392 - Routine viral load test
+@activity: HIV.D20 Diagnostics
+@description: Routine refers to viral load tests obtained at standard intervals following ART initiation to monitor viral load response to ART
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Routine viral load test":
+  exists "Routine viral load test Condition"
+    or exists "Routine viral load test Observation"
+define "Routine viral load test Condition":
+  Elements."Routine viral load test Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Routine viral load test Observation":
+  Elements."Routine viral load test Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Routine viral load test */
+
+/*
+@dataElement: HIV.D.DE393 - Targeted viral load monitoring
+@activity: HIV.D20 Diagnostics
+@description: Targeted refers to viral load tests obtained based on a specific clinical indication (such as concern about disease progression or failure to respond to ART)
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Targeted viral load monitoring":
+  exists "Targeted viral load monitoring Condition"
+    or exists "Targeted viral load monitoring Observation"
+define "Targeted viral load monitoring Condition":
+  Elements."Targeted viral load monitoring Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Targeted viral load monitoring Observation":
+  Elements."Targeted viral load monitoring Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Targeted viral load monitoring */
+
+/*
+@dataElement: HIV.D.DE394 - Initial viral load test
+@activity: HIV.D20 Diagnostics
+@description: The first viral load test of the client
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Initial viral load test":
+  exists "Initial viral load test Condition"
+    or exists "Initial viral load test Observation"
+define "Initial viral load test Condition":
+  Elements."Initial viral load test Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Initial viral load test Observation":
+  Elements."Initial viral load test Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Initial viral load test */
+
+/*
+@dataElement: HIV.D.DE395 - Follow-up viral load test after receiving enhanced adherence counselling
+@activity: HIV.D20 Diagnostics
+@description: A follow-up viral load test within 3-6 months after enhanced adherence counselling after client received a high viral load test result
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Follow-up viral load test after receiving enhanced adherence counselling":
+  exists "Follow-up viral load test after receiving enhanced adherence counselling Condition"
+    or exists "Follow-up viral load test after receiving enhanced adherence counselling Observation"
+define "Follow-up viral load test after receiving enhanced adherence counselling Condition":
+  Elements."Follow-up viral load test after receiving enhanced adherence counselling Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Follow-up viral load test after receiving enhanced adherence counselling Observation":
+  Elements."Follow-up viral load test after receiving enhanced adherence counselling Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Follow-up viral load test after receiving enhanced adherence counselling */
 
 /*
 @dataElement: HIV.D.DE399 - Monitoring examinations
@@ -5157,6 +6305,8 @@ define "CD4 count - HIV.D.DE364 Observation":
 @description: Name of examinations, test and results for any relevant investigations carried out for client
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Monitoring examinations":
+  exists "Monitoring examinations Observation"
 define "Monitoring examinations Observation":
   Elements."Monitoring examinations Observation" O
     where O.encounter.references(EncounterId)
@@ -5403,11 +6553,13 @@ define "Cervical cancer screening scheduled Observation":
 @description: Date of scheduled monitoring examination
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Date of scheduled monitoring examination Observation":
+define "Date of scheduled monitoring examination":
   Elements."Date of scheduled monitoring examination" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
+define "Date of scheduled monitoring examination Value":
+  "Date of scheduled monitoring examination" O
+  return O.value
 /* End of Date of scheduled monitoring examination */
 
 /*
@@ -5416,11 +6568,12 @@ define "Date of scheduled monitoring examination Observation":
 @description: A switch to second-line ART regimen is recommended
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Switch to second-line ART regimen recommended":
+  exists "Switch to second-line ART regimen recommended Observation"
 define "Switch to second-line ART regimen recommended Observation":
-  Elements."Switch to second-line ART regimen recommended" O
+  Elements."Switch to second-line ART regimen recommended Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
 /* End of Switch to second-line ART regimen recommended */
 
 /*
@@ -5429,11 +6582,12 @@ define "Switch to second-line ART regimen recommended Observation":
 @description: A drug substitution is recommended
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Regimen substitution recommended":
+  exists "Regimen substitution recommended Observation"
 define "Regimen substitution recommended Observation":
-  Elements."Regimen substitution recommended" O
+  Elements."Regimen substitution recommended Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
 /* End of Regimen substitution recommended */
 
 /*
@@ -5442,11 +6596,12 @@ define "Regimen substitution recommended Observation":
 @description: A dosage change is recommended
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Dose adjustment recommended":
+  exists "Dose adjustment recommended Observation"
 define "Dose adjustment recommended Observation":
-  Elements."Dose adjustment recommended" O
+  Elements."Dose adjustment recommended Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
 /* End of Dose adjustment recommended */
 
 /*
@@ -5455,25 +6610,41 @@ define "Dose adjustment recommended Observation":
 @description: Client has been on ART, but has stopped taking it or a treatment failure is suspected
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Suspicion of treatment failure or interruption":
+  exists "Suspicion of treatment failure or interruption Observation"
 define "Suspicion of treatment failure or interruption Observation":
-  Elements."Suspicion of treatment failure or interruption" O
+  Elements."Suspicion of treatment failure or interruption Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
 /* End of Suspicion of treatment failure or interruption */
 
 /*
-@dataElement: HIV.D.DE465 - Adherence counselling provided - HIV.D.DE465
+@dataElement: HIV.D.DE465 - Adherence counselling provided
 @activity: HIV.D24 Counsel
 @description: Counselling was carried out during visit
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Adherence counselling provided - HIV.D.DE465 Observation":
-  Elements."Adherence counselling provided - HIV.D.DE465" O
+define "Adherence counselling provided D.DE465":
+  exists "Adherence counselling provided D.DE465 Observation"
+define "Adherence counselling provided D.DE465 Observation":
+  Elements."Adherence counselling provided D.DE465 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
-/* End of Adherence counselling provided - HIV.D.DE465 */
+/* End of Adherence counselling provided D.DE465 */
+
+/*
+@dataElement: HIV.D.DE496 - Enhanced adherence counselling provided
+@activity: HIV.D24 Counsel
+@description: Enhanced adherence counselling was provided to the client during the visit
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Enhanced adherence counselling provided":
+  exists "Enhanced adherence counselling provided Observation"
+define "Enhanced adherence counselling provided Observation":
+  Elements."Enhanced adherence counselling provided Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Enhanced adherence counselling provided */
 
 /*
 @dataElement: HIV.D.DE507 - Counselling provided on diagnoses
@@ -5481,11 +6652,12 @@ define "Adherence counselling provided - HIV.D.DE465 Observation":
 @description: Counselling provided on diagnoses
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Counselling provided on diagnoses":
+  exists "Counselling provided on diagnoses Observation"
 define "Counselling provided on diagnoses Observation":
-  Elements."Counselling provided on diagnoses" O
+  Elements."Counselling provided on diagnoses Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
 /* End of Counselling provided on diagnoses */
 
 /*
@@ -5494,139 +6666,146 @@ define "Counselling provided on diagnoses Observation":
 @description: Whether counselling and treatment was provided to a client who has been diagnosed with syphilis
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Syphilis counselling and treatment":
+  exists "Syphilis counselling and treatment Observation"
 define "Syphilis counselling and treatment Observation":
-  Elements."Syphilis counselling and treatment" O
+  Elements."Syphilis counselling and treatment Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
 /* End of Syphilis counselling and treatment */
 
 /*
-@dataElement: HIV.D.DE519 - Other support services - HIV.D.DE519
+@dataElement: HIV.D.DE519 - Other support services
 @activity: HIV.D28 Offer other services
 @description: Offer or refer for other support services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Other support services - HIV.D.DE519 Observation":
-  Elements."Other support services - HIV.D.DE519 Observation" O
+define "Other support services D.DE519":
+  exists "Other support services D.DE519 Observation"
+define "Other support services D.DE519 Observation":
+  Elements."Other support services D.DE519 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Other support services - HIV.D.DE519 */
+/* End of Other support services D.DE519 */
 
 /*
-@dataElement: HIV.D.DE520 - Mental health services - HIV.D.DE520
+@dataElement: HIV.D.DE520 - Mental health services
 @activity: HIV.D28 Offer other services
 @description: Offer or refer for mental health services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Mental health services - HIV.D.DE520":
-  exists "Mental health services - HIV.D.DE520 Condition"
-    or exists "Mental health services - HIV.D.DE520 Observation"
-define "Mental health services - HIV.D.DE520 Condition":
-  Elements."Mental health services - HIV.D.DE520 Condition" C
+define "Mental health services D.DE520":
+  exists "Mental health services D.DE520 Condition"
+    or exists "Mental health services D.DE520 Observation"
+define "Mental health services D.DE520 Condition":
+  Elements."Mental health services D.DE520 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Mental health services - HIV.D.DE520 Observation":
-  Elements."Mental health services - HIV.D.DE520 Observation" O
+define "Mental health services D.DE520 Observation":
+  Elements."Mental health services D.DE520 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Mental health services - HIV.D.DE520 */
+/* End of Mental health services D.DE520 */
 
 /*
-@dataElement: HIV.D.DE521 - Psychosocial counselling, support and treatment adherence counselling - HIV.D.DE521
+@dataElement: HIV.D.DE521 - Psychosocial counselling, support and treatment adherence counselling
 @activity: HIV.D28 Offer other services
 @description: Offer or refer for psychosocial counselling, support and treatment adherence counselling
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Psychosocial counselling, support and treatment adherence counselling - HIV.D.DE521":
-  exists "Psychosocial counselling, support and treatment adherence counselling - HIV.D.DE521 Condition"
-    or exists "Psychosocial counselling, support and treatment adherence counselling - HIV.D.DE521 Observation"
-define "Psychosocial counselling, support and treatment adherence counselling - HIV.D.DE521 Condition":
-  Elements."Psychosocial counselling, support and treatment adherence counselling - HIV.D.DE521 Condition" C
+define "Psychosocial counselling, support and treatment adherence counselling D.DE521":
+  exists "Psychosocial counselling, support and treatment adherence counselling D.DE521 Condition"
+    or exists "Psychosocial counselling, support and treatment adherence counselling D.DE521 Observation"
+define "Psychosocial counselling, support and treatment adherence counselling D.DE521 Condition":
+  Elements."Psychosocial counselling, support and treatment adherence counselling D.DE521 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Psychosocial counselling, support and treatment adherence counselling - HIV.D.DE521 Observation":
-  Elements."Psychosocial counselling, support and treatment adherence counselling - HIV.D.DE521 Observation" O
+define "Psychosocial counselling, support and treatment adherence counselling D.DE521 Observation":
+  Elements."Psychosocial counselling, support and treatment adherence counselling D.DE521 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Psychosocial counselling, support and treatment adherence counselling - HIV.D.DE521 */
+/* End of Psychosocial counselling, support and treatment adherence counselling D.DE521 */
 
 /*
-@dataElement: HIV.D.DE522 - Legal and social services - HIV.D.DE522
+@dataElement: HIV.D.DE522 - Legal and social services
 @activity: HIV.D28 Offer other services
 @description: Offer or refer for legal and social services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Legal and social services - HIV.D.DE522":
-  exists "Legal and social services - HIV.D.DE522 Condition"
-    or exists "Legal and social services - HIV.D.DE522 Observation"
-define "Legal and social services - HIV.D.DE522 Condition":
-  Elements."Legal and social services - HIV.D.DE522 Condition" C
+define "Legal and social services D.DE522":
+  exists "Legal and social services D.DE522 Condition"
+    or exists "Legal and social services D.DE522 Observation"
+define "Legal and social services D.DE522 Condition":
+  Elements."Legal and social services D.DE522 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Legal and social services - HIV.D.DE522 Observation":
-  Elements."Legal and social services - HIV.D.DE522 Observation" O
+define "Legal and social services D.DE522 Observation":
+  Elements."Legal and social services D.DE522 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Legal and social services - HIV.D.DE522 */
+/* End of Legal and social services D.DE522 */
 
 /*
-@dataElement: HIV.D.DE523 - Services for responding to violence against women - HIV.D.DE523
+@dataElement: HIV.D.DE523 - Services for responding to violence against women
 @activity: HIV.D28 Offer other services
 @description: Offer or refer for services for responding to violence against women, including first-line support and psychosocial support, post-rape care and other support services including shelters, legal services and women and child protection services
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Services for responding to violence against women - HIV.D.DE523":
-  exists "Services for responding to violence against women - HIV.D.DE523 Condition"
-    or exists "Services for responding to violence against women - HIV.D.DE523 Observation"
-define "Services for responding to violence against women - HIV.D.DE523 Condition":
-  Elements."Services for responding to violence against women - HIV.D.DE523 Condition" C
+define "Services for responding to violence against women D.DE523":
+  exists "Services for responding to violence against women D.DE523 Condition"
+    or exists "Services for responding to violence against women D.DE523 Observation"
+define "Services for responding to violence against women D.DE523 Condition":
+  Elements."Services for responding to violence against women D.DE523 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Services for responding to violence against women - HIV.D.DE523 Observation":
-  Elements."Services for responding to violence against women - HIV.D.DE523 Observation" O
+define "Services for responding to violence against women D.DE523 Observation":
+  Elements."Services for responding to violence against women D.DE523 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Services for responding to violence against women - HIV.D.DE523 */
+/* End of Services for responding to violence against women D.DE523 */
 
 /*
-@dataElement: HIV.D.DE524 - Date/time of follow-up appointment - HIV.D.DE524
+@dataElement: HIV.D.DE524 - Date/time of follow-up appointment
 @activity: HIV.D29 Schedule follow-up
 @description: Date the client is to return for monitoring, re-supply or any other reason
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Date/time of follow-up appointment - HIV.D.DE524 Observation":
-  Elements."Date/time of follow-up appointment - HIV.D.DE524" O
+define "Date/time of follow-up appointment D.DE524":
+  Elements."Date/time of follow-up appointment D.DE524" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
-/* End of Date/time of follow-up appointment - HIV.D.DE524 */
+define "Date/time of follow-up appointment D.DE524 Value":
+  "Date/time of follow-up appointment D.DE524" O
+  return O.value
+/* End of Date/time of follow-up appointment D.DE524 */
 
 /*
-@dataElement: HIV.D.DE525 - Type of follow-up appointment - HIV.D.DE525
+@dataElement: HIV.D.DE525 - Type of follow-up appointment
 @activity: HIV.D29 Schedule follow-up
 @description: Whether the visit will be clinical only, ARV drug pick-up or other. Client may have multiple follow-ups scheduled.
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Type of follow-up appointment - HIV.D.DE525 Observation":
-  Elements."Type of follow-up appointment - HIV.D.DE525 Observation" O
+define "Type of follow-up appointment D.DE525":
+  exists "Type of follow-up appointment D.DE525 Observation"
+define "Type of follow-up appointment D.DE525 Observation":
+  Elements."Type of follow-up appointment D.DE525 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Type of follow-up appointment - HIV.D.DE525 */
+/* End of Type of follow-up appointment D.DE525 */
 
 /*
-@dataElement: HIV.D.DE526 - Clinical visit - HIV.D.DE526
+@dataElement: HIV.D.DE526 - Clinical visit
 @activity: HIV.D29 Schedule follow-up
 @description: Appointment for clinical care by a provider
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Clinical visit - HIV.D.DE526":
-  exists "Clinical visit - HIV.D.DE526 Condition"
-    or exists "Clinical visit - HIV.D.DE526 Observation"
-define "Clinical visit - HIV.D.DE526 Condition":
-  Elements."Clinical visit - HIV.D.DE526 Condition" C
+define "Clinical visit D.DE526":
+  exists "Clinical visit D.DE526 Condition"
+    or exists "Clinical visit D.DE526 Observation"
+define "Clinical visit D.DE526 Condition":
+  Elements."Clinical visit D.DE526 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Clinical visit - HIV.D.DE526 Observation":
-  Elements."Clinical visit - HIV.D.DE526 Observation" O
+define "Clinical visit D.DE526 Observation":
+  Elements."Clinical visit D.DE526 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Clinical visit - HIV.D.DE526 */
+/* End of Clinical visit D.DE526 */
 
 /*
 @dataElement: HIV.D.DE527 - Antiretroviral drug pick up
@@ -5647,40 +6826,40 @@ define "Antiretroviral drug pick up Observation":
 /* End of Antiretroviral drug pick up */
 
 /*
-@dataElement: HIV.D.DE528 - Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE528
+@dataElement: HIV.D.DE528 - Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer
 @activity: HIV.D29 Schedule follow-up
 @description: Appointment for a post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE528":
-  exists "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE528 Condition"
-    or exists "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE528 Observation"
-define "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE528 Condition":
-  Elements."Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE528 Condition" C
+define "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer D.DE528":
+  exists "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer D.DE528 Condition"
+    or exists "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer D.DE528 Observation"
+define "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer D.DE528 Condition":
+  Elements."Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer D.DE528 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE528 Observation":
-  Elements."Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE528 Observation" O
+define "Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer D.DE528 Observation":
+  Elements."Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer D.DE528 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer - HIV.D.DE528 */
+/* End of Post-treatment follow-up visit for cervical precancer lesions or invasive cervical cancer D.DE528 */
 
 /*
-@dataElement: HIV.D.DE529 - Other - HIV.D.DE529
+@dataElement: HIV.D.DE529 - Other
 @activity: HIV.D29 Schedule follow-up
 @description: Other reason for the follow-up appointment
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Other - HIV.D.DE529":
-  exists "Other - HIV.D.DE529 Condition"
-    or exists "Other - HIV.D.DE529 Observation"
-define "Other - HIV.D.DE529 Condition":
-  Elements."Other - HIV.D.DE529 Condition" C
+define "Other D.DE529":
+  exists "Other D.DE529 Condition"
+    or exists "Other D.DE529 Observation"
+define "Other D.DE529 Condition":
+  Elements."Other D.DE529 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Other - HIV.D.DE529 Observation":
-  Elements."Other - HIV.D.DE529 Observation" O
+define "Other D.DE529 Observation":
+  Elements."Other D.DE529 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Other - HIV.D.DE529 */
+/* End of Other D.DE529 */
 
 /*
 @dataElement: HIV.D.DE531 - Follow-up test recommended date
@@ -5688,11 +6867,13 @@ define "Other - HIV.D.DE529 Observation":
 @description: A test or screening recommended for the client's care plan at a future date
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Follow-up test recommended date Observation":
+define "Follow-up test recommended date":
   Elements."Follow-up test recommended date" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
+define "Follow-up test recommended date Value":
+  "Follow-up test recommended date" O
+  return O.value
 /* End of Follow-up test recommended date */
 
 /*
@@ -5701,6 +6882,8 @@ define "Follow-up test recommended date Observation":
 @description: List of all of the medications the client is currently taking
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Current medications":
+  exists "Current medications Observation"
 define "Current medications Observation":
   Elements."Current medications Observation" O
     where O.encounter.references(EncounterId)
@@ -5960,22 +7143,22 @@ define "Antivirals Observation":
 /* End of Antivirals */
 
 /*
-@dataElement: HIV.D.DE552 - Buprenorphine - HIV.D.DE552
+@dataElement: HIV.D.DE552 - Buprenorphine
 @activity: HIV.D8 Capture or update client history
 @description: Opioid substitution to treat opioid dependence
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Buprenorphine - HIV.D.DE552":
-  exists "Buprenorphine - HIV.D.DE552 Condition"
-    or exists "Buprenorphine - HIV.D.DE552 Observation"
-define "Buprenorphine - HIV.D.DE552 Condition":
-  Elements."Buprenorphine - HIV.D.DE552 Condition" C
+define "Buprenorphine D.DE552":
+  exists "Buprenorphine D.DE552 Condition"
+    or exists "Buprenorphine D.DE552 Observation"
+define "Buprenorphine D.DE552 Condition":
+  Elements."Buprenorphine D.DE552 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Buprenorphine - HIV.D.DE552 Observation":
-  Elements."Buprenorphine - HIV.D.DE552 Observation" O
+define "Buprenorphine D.DE552 Observation":
+  Elements."Buprenorphine D.DE552 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Buprenorphine - HIV.D.DE552 */
+/* End of Buprenorphine D.DE552 */
 
 /*
 @dataElement: HIV.D.DE553 - Co-trimoxazole preventive therapy CPT
@@ -6014,22 +7197,22 @@ define "Hormonal family planning method Observation":
 /* End of Hormonal family planning method */
 
 /*
-@dataElement: HIV.D.DE555 - Methadone - HIV.D.DE555
+@dataElement: HIV.D.DE555 - Methadone
 @activity: HIV.D8 Capture or update client history
 @description: Opioid substitution to treat opioid dependence
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Methadone - HIV.D.DE555":
-  exists "Methadone - HIV.D.DE555 Condition"
-    or exists "Methadone - HIV.D.DE555 Observation"
-define "Methadone - HIV.D.DE555 Condition":
-  Elements."Methadone - HIV.D.DE555 Condition" C
+define "Methadone D.DE555":
+  exists "Methadone D.DE555 Condition"
+    or exists "Methadone D.DE555 Observation"
+define "Methadone D.DE555 Condition":
+  Elements."Methadone D.DE555 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Methadone - HIV.D.DE555 Observation":
-  Elements."Methadone - HIV.D.DE555 Observation" O
+define "Methadone D.DE555 Observation":
+  Elements."Methadone D.DE555 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Methadone - HIV.D.DE555 */
+/* End of Methadone D.DE555 */
 
 /*
 @dataElement: HIV.D.DE556 - PrEP to prevent HIV
@@ -6086,11 +7269,43 @@ define "Other medications Observation":
 /* End of Other medications */
 
 /*
+@dataElement: HIV.D.DE656 - Date of cervical cancer screening test
+@activity: HIV.D28 Offer other services
+@description: Date of cervical cancer screening test
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Date of cervical cancer screening test":
+  Elements."Date of cervical cancer screening test" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+define "Date of cervical cancer screening test Value":
+  "Date of cervical cancer screening test" O
+  return O.value
+/* End of Date of cervical cancer screening test */
+
+/*
+@dataElement: HIV.D.DE657 - Lifetime screening test number
+@activity: HIV.D28 Offer other services
+@description: Client's lifetime number of screenings for cervical cancer
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Lifetime screening test number":
+  Elements."Lifetime screening test number" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+define "Lifetime screening test number Value":
+  "Lifetime screening test number" O
+  return O.value
+/* End of Lifetime screening test number */
+
+/*
 @dataElement: HIV.D.DE658 - Cervical cancer primary screening test type
 @activity: HIV.D28 Offer other services
 @description: Type of cervical cancer screening test used in primary screening
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Cervical cancer primary screening test type":
+  exists "Cervical cancer primary screening test type Observation"
 define "Cervical cancer primary screening test type Observation":
   Elements."Cervical cancer primary screening test type Observation" O
     where O.encounter.references(EncounterId)
@@ -6152,22 +7367,22 @@ define "Cervical cytology Observation":
 /* End of Cervical cytology */
 
 /*
-@dataElement: HIV.D.DE662 - Other - HIV.D.DE662
+@dataElement: HIV.D.DE662 - Other
 @activity: HIV.D28 Offer other services
 @description: Screened for cervical cancer using other method
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Other - HIV.D.DE662":
-  exists "Other - HIV.D.DE662 Condition"
-    or exists "Other - HIV.D.DE662 Observation"
-define "Other - HIV.D.DE662 Condition":
-  Elements."Other - HIV.D.DE662 Condition" C
+define "Other D.DE662":
+  exists "Other D.DE662 Condition"
+    or exists "Other D.DE662 Observation"
+define "Other D.DE662 Condition":
+  Elements."Other D.DE662 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Other - HIV.D.DE662 Observation":
-  Elements."Other - HIV.D.DE662 Observation" O
+define "Other D.DE662 Observation":
+  Elements."Other D.DE662 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Other - HIV.D.DE662 */
+/* End of Other D.DE662 */
 
 /*
 @dataElement: HIV.D.DE745 - Cervical cancer screening interval amongst WLHIV
@@ -6175,42 +7390,46 @@ define "Other - HIV.D.DE662 Observation":
 @description: Country-specific interval between cancer screenings amongst women living with HIV (typically 3 or 5 years)
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Cervical cancer screening interval amongst WLHIV Observation":
+define "Cervical cancer screening interval amongst WLHIV":
   Elements."Cervical cancer screening interval amongst WLHIV" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
+define "Cervical cancer screening interval amongst WLHIV Value":
+  "Cervical cancer screening interval amongst WLHIV" O
+  return O.value
 /* End of Cervical cancer screening interval amongst WLHIV */
 
 /*
-@dataElement: HIV.D.DE753 - Offer other clinical services - HIV.D.DE753
+@dataElement: HIV.D.DE753 - Offer other clinical services
 @activity: HIV.D28 Offer other services
 @description: Other clinical services offered or referrals given to the client
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Offer other clinical services - HIV.D.DE753 Observation":
-  Elements."Offer other clinical services - HIV.D.DE753 Observation" O
+define "Offer other clinical services D.DE753":
+  exists "Offer other clinical services D.DE753 Observation"
+define "Offer other clinical services D.DE753 Observation":
+  Elements."Offer other clinical services D.DE753 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Offer other clinical services - HIV.D.DE753 */
+/* End of Offer other clinical services D.DE753 */
 
 /*
-@dataElement: HIV.D.DE754 - Assessment and provision of vaccinations - HIV.D.DE754
+@dataElement: HIV.D.DE754 - Assessment and provision of vaccinations
 @activity: HIV.D28 Offer other services
 @description: Assessment and provision of vaccinations, such as for people from Key population member type, pregnant women and infants; and, where appropriate, tetanus vaccination for adolescent boys and men receiving VMMC
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Assessment and provision of vaccinations - HIV.D.DE754":
-  exists "Assessment and provision of vaccinations - HIV.D.DE754 Condition"
-    or exists "Assessment and provision of vaccinations - HIV.D.DE754 Observation"
-define "Assessment and provision of vaccinations - HIV.D.DE754 Condition":
-  Elements."Assessment and provision of vaccinations - HIV.D.DE754 Condition" C
+define "Assessment and provision of vaccinations D.DE754":
+  exists "Assessment and provision of vaccinations D.DE754 Condition"
+    or exists "Assessment and provision of vaccinations D.DE754 Observation"
+define "Assessment and provision of vaccinations D.DE754 Condition":
+  Elements."Assessment and provision of vaccinations D.DE754 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Assessment and provision of vaccinations - HIV.D.DE754 Observation":
-  Elements."Assessment and provision of vaccinations - HIV.D.DE754 Observation" O
+define "Assessment and provision of vaccinations D.DE754 Observation":
+  Elements."Assessment and provision of vaccinations D.DE754 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Assessment and provision of vaccinations - HIV.D.DE754 */
+/* End of Assessment and provision of vaccinations D.DE754 */
 
 /*
 @dataElement: HIV.D.DE755 - Hepatitis B HBV and hepatitis C virus HCV testing and treatment
@@ -6231,76 +7450,144 @@ define "Hepatitis B HBV and hepatitis C virus HCV testing and treatment Observat
 /* End of Hepatitis B HBV and hepatitis C virus HCV testing and treatment */
 
 /*
-@dataElement: HIV.D.DE756 - Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.D.DE756
+@dataElement: HIV.D.DE756 - Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia
 @activity: HIV.D28 Offer other services
 @description: Offer or refer for co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.D.DE756":
-  exists "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.D.DE756 Condition"
-    or exists "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.D.DE756 Observation"
-define "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.D.DE756 Condition":
-  Elements."Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.D.DE756 Condition" C
+define "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia D.DE756":
+  exists "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia D.DE756 Condition"
+    or exists "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia D.DE756 Observation"
+define "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia D.DE756 Condition":
+  Elements."Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia D.DE756 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.D.DE756 Observation":
-  Elements."Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.D.DE756 Observation" O
+define "Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia D.DE756 Observation":
+  Elements."Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia D.DE756 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia - HIV.D.DE756 */
+/* End of Co-trimoxazole chemoprophylaxis to prevent pneumocystis carinii pneumonia D.DE756 */
 
 /*
-@dataElement: HIV.D.DE757 - Intensified TB case finding and linkage to TB treatment - HIV.D.DE757
+@dataElement: HIV.D.DE757 - Intensified TB case finding and linkage to TB treatment
 @activity: HIV.D28 Offer other services
 @description: Offer or refer for intensified TB case finding and linkage to TB treatment
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Intensified TB case finding and linkage to TB treatment - HIV.D.DE757":
-  exists "Intensified TB case finding and linkage to TB treatment - HIV.D.DE757 Condition"
-    or exists "Intensified TB case finding and linkage to TB treatment - HIV.D.DE757 Observation"
-define "Intensified TB case finding and linkage to TB treatment - HIV.D.DE757 Condition":
-  Elements."Intensified TB case finding and linkage to TB treatment - HIV.D.DE757 Condition" C
+define "Intensified TB case finding and linkage to TB treatment D.DE757":
+  exists "Intensified TB case finding and linkage to TB treatment D.DE757 Condition"
+    or exists "Intensified TB case finding and linkage to TB treatment D.DE757 Observation"
+define "Intensified TB case finding and linkage to TB treatment D.DE757 Condition":
+  Elements."Intensified TB case finding and linkage to TB treatment D.DE757 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Intensified TB case finding and linkage to TB treatment - HIV.D.DE757 Observation":
-  Elements."Intensified TB case finding and linkage to TB treatment - HIV.D.DE757 Observation" O
+define "Intensified TB case finding and linkage to TB treatment D.DE757 Observation":
+  Elements."Intensified TB case finding and linkage to TB treatment D.DE757 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Intensified TB case finding and linkage to TB treatment - HIV.D.DE757 */
+/* End of Intensified TB case finding and linkage to TB treatment D.DE757 */
 
 /*
-@dataElement: HIV.D.DE758 - Provision of isoniazid preventive therapy if person does not have TB - HIV.D.DE758
+@dataElement: HIV.D.DE758 - Provision of isoniazid preventive therapy if person does not have TB
 @activity: HIV.D28 Offer other services
 @description: Offer or refer for provision of isoniazid preventive therapy if person does not have TB
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Provision of isoniazid preventive therapy if person does not have TB - HIV.D.DE758":
-  exists "Provision of isoniazid preventive therapy if person does not have TB - HIV.D.DE758 Condition"
-    or exists "Provision of isoniazid preventive therapy if person does not have TB - HIV.D.DE758 Observation"
-define "Provision of isoniazid preventive therapy if person does not have TB - HIV.D.DE758 Condition":
-  Elements."Provision of isoniazid preventive therapy if person does not have TB - HIV.D.DE758 Condition" C
+define "Provision of isoniazid preventive therapy if person does not have TB D.DE758":
+  exists "Provision of isoniazid preventive therapy if person does not have TB D.DE758 Condition"
+    or exists "Provision of isoniazid preventive therapy if person does not have TB D.DE758 Observation"
+define "Provision of isoniazid preventive therapy if person does not have TB D.DE758 Condition":
+  Elements."Provision of isoniazid preventive therapy if person does not have TB D.DE758 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Provision of isoniazid preventive therapy if person does not have TB - HIV.D.DE758 Observation":
-  Elements."Provision of isoniazid preventive therapy if person does not have TB - HIV.D.DE758 Observation" O
+define "Provision of isoniazid preventive therapy if person does not have TB D.DE758 Observation":
+  Elements."Provision of isoniazid preventive therapy if person does not have TB D.DE758 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Provision of isoniazid preventive therapy if person does not have TB - HIV.D.DE758 */
+/* End of Provision of isoniazid preventive therapy if person does not have TB D.DE758 */
 
 /*
-@dataElement: HIV.D.DE759 - Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.D.DE759
+@dataElement: HIV.D.DE759 - Malaria prevention such as bed nets and prophylaxis, depending on epidemiology
 @activity: HIV.D28 Offer other services
 @description: Offer or refer for malaria prevention (such as bed nets and prophylaxis), depending on epidemiology
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.D.DE759":
-  exists "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.D.DE759 Condition"
-    or exists "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.D.DE759 Observation"
-define "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.D.DE759 Condition":
-  Elements."Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.D.DE759 Condition" C
+define "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology D.DE759":
+  exists "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology D.DE759 Condition"
+    or exists "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology D.DE759 Observation"
+define "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology D.DE759 Condition":
+  Elements."Malaria prevention such as bed nets and prophylaxis, depending on epidemiology D.DE759 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.D.DE759 Observation":
-  Elements."Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.D.DE759 Observation" O
+define "Malaria prevention such as bed nets and prophylaxis, depending on epidemiology D.DE759 Observation":
+  Elements."Malaria prevention such as bed nets and prophylaxis, depending on epidemiology D.DE759 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Malaria prevention such as bed nets and prophylaxis, depending on epidemiology - HIV.D.DE759 */
+/* End of Malaria prevention such as bed nets and prophylaxis, depending on epidemiology D.DE759 */
+
+/*
+@dataElement: HIV.D.DE802 - Syphilis test result
+@activity: HIV.D26 Offer sexual and reproductive health services
+@description: Result from syphilis test
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Syphilis test result D.DE802":
+  exists "Syphilis test result D.DE802 Observation"
+define "Syphilis test result D.DE802 Observation":
+  Elements."Syphilis test result D.DE802 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Syphilis test result D.DE802 */
+
+/*
+@dataElement: HIV.D.DE803 - Positive
+@activity: HIV.D26 Offer sexual and reproductive health services
+@description: Test result is positive for syphilis
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Positive D.DE803":
+  exists "Positive D.DE803 Condition"
+    or exists "Positive D.DE803 Observation"
+define "Positive D.DE803 Condition":
+  Elements."Positive D.DE803 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Positive D.DE803 Observation":
+  Elements."Positive D.DE803 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Positive D.DE803 */
+
+/*
+@dataElement: HIV.D.DE804 - Negative
+@activity: HIV.D26 Offer sexual and reproductive health services
+@description: Test result is negative for syphilis
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Negative D.DE804":
+  exists "Negative D.DE804 Condition"
+    or exists "Negative D.DE804 Observation"
+define "Negative D.DE804 Condition":
+  Elements."Negative D.DE804 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Negative D.DE804 Observation":
+  Elements."Negative D.DE804 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Negative D.DE804 */
+
+/*
+@dataElement: HIV.D.DE805 - Inconclusive
+@activity: HIV.D26 Offer sexual and reproductive health services
+@description: Test result is inconclusive
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Inconclusive D.DE805":
+  exists "Inconclusive D.DE805 Condition"
+    or exists "Inconclusive D.DE805 Observation"
+define "Inconclusive D.DE805 Condition":
+  Elements."Inconclusive D.DE805 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Inconclusive D.DE805 Observation":
+  Elements."Inconclusive D.DE805 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Inconclusive D.DE805 */
 
 /*
 @dataElement: HIV.D.DE903 - Medication/drug
@@ -6308,6 +7595,8 @@ define "Malaria prevention such as bed nets and prophylaxis, depending on epidem
 @description: Current or considered medication/drug, for the purpose of determining drug interactions
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Medication/drug":
+  exists "Medication/drug Observation"
 define "Medication/drug Observation":
   Elements."Medication/drug Observation" O
     where O.encounter.references(EncounterId)
@@ -6459,22 +7748,22 @@ define "Terfenadine Observation":
 /* End of Terfenadine */
 
 /*
-@dataElement: HIV.D.DE912 - TDF - HIV.D.DE912
+@dataElement: HIV.D.DE912 - TDF
 @activity: HIV.D21 Determine regimen and treatment options
 @description: TDF currently being taken by, or considered for, client
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "TDF - HIV.D.DE912":
-  exists "TDF - HIV.D.DE912 Condition"
-    or exists "TDF - HIV.D.DE912 Observation"
-define "TDF - HIV.D.DE912 Condition":
-  Elements."TDF - HIV.D.DE912 Condition" C
+define "TDF D.DE912":
+  exists "TDF D.DE912 Condition"
+    or exists "TDF D.DE912 Observation"
+define "TDF D.DE912 Condition":
+  Elements."TDF D.DE912 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "TDF - HIV.D.DE912 Observation":
-  Elements."TDF - HIV.D.DE912 Observation" O
+define "TDF D.DE912 Observation":
+  Elements."TDF D.DE912 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of TDF - HIV.D.DE912 */
+/* End of TDF D.DE912 */
 
 /*
 @dataElement: HIV.D.DE913 - Simeprevir
@@ -6513,40 +7802,40 @@ define "Ombitasvir + paritaprevir/ritonavir + dasabuvir Observation":
 /* End of Ombitasvir + paritaprevir/ritonavir + dasabuvir */
 
 /*
-@dataElement: HIV.D.DE915 - Methadone - HIV.D.DE915
+@dataElement: HIV.D.DE915 - Methadone
 @activity: HIV.D21 Determine regimen and treatment options
 @description: Methadone currently being taken by, or considered for, client
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Methadone - HIV.D.DE915":
-  exists "Methadone - HIV.D.DE915 Condition"
-    or exists "Methadone - HIV.D.DE915 Observation"
-define "Methadone - HIV.D.DE915 Condition":
-  Elements."Methadone - HIV.D.DE915 Condition" C
+define "Methadone D.DE915":
+  exists "Methadone D.DE915 Condition"
+    or exists "Methadone D.DE915 Observation"
+define "Methadone D.DE915 Condition":
+  Elements."Methadone D.DE915 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Methadone - HIV.D.DE915 Observation":
-  Elements."Methadone - HIV.D.DE915 Observation" O
+define "Methadone D.DE915 Observation":
+  Elements."Methadone D.DE915 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Methadone - HIV.D.DE915 */
+/* End of Methadone D.DE915 */
 
 /*
-@dataElement: HIV.D.DE916 - Buprenorphine - HIV.D.DE916
+@dataElement: HIV.D.DE916 - Buprenorphine
 @activity: HIV.D21 Determine regimen and treatment options
 @description: Buprenorphine currently being taken by, or considered for, client
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Buprenorphine - HIV.D.DE916":
-  exists "Buprenorphine - HIV.D.DE916 Condition"
-    or exists "Buprenorphine - HIV.D.DE916 Observation"
-define "Buprenorphine - HIV.D.DE916 Condition":
-  Elements."Buprenorphine - HIV.D.DE916 Condition" C
+define "Buprenorphine D.DE916":
+  exists "Buprenorphine D.DE916 Condition"
+    or exists "Buprenorphine D.DE916 Observation"
+define "Buprenorphine D.DE916 Condition":
+  Elements."Buprenorphine D.DE916 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Buprenorphine - HIV.D.DE916 Observation":
-  Elements."Buprenorphine - HIV.D.DE916 Observation" O
+define "Buprenorphine D.DE916 Observation":
+  Elements."Buprenorphine D.DE916 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Buprenorphine - HIV.D.DE916 */
+/* End of Buprenorphine D.DE916 */
 
 /*
 @dataElement: HIV.D.DE917 - Dofetilide
@@ -6801,22 +8090,22 @@ define "Peginterferon alfa-2a Observation":
 /* End of Peginterferon alfa-2a */
 
 /*
-@dataElement: HIV.D.DE931 - Other - HIV.D.DE931
+@dataElement: HIV.D.DE931 - Other
 @activity: HIV.D21 Determine regimen and treatment options
 @description: Other medication currently being taken by, or considered for, client
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Other - HIV.D.DE931":
-  exists "Other - HIV.D.DE931 Condition"
-    or exists "Other - HIV.D.DE931 Observation"
-define "Other - HIV.D.DE931 Condition":
-  Elements."Other - HIV.D.DE931 Condition" C
+define "Other D.DE931":
+  exists "Other D.DE931 Condition"
+    or exists "Other D.DE931 Observation"
+define "Other D.DE931 Condition":
+  Elements."Other D.DE931 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Other - HIV.D.DE931 Observation":
-  Elements."Other - HIV.D.DE931 Observation" O
+define "Other D.DE931 Observation":
+  Elements."Other D.DE931 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Other - HIV.D.DE931 */
+/* End of Other D.DE931 */
 
 /*
 @dataElement: HIV.D.DE933 - Medication change recommended
@@ -6824,78 +8113,145 @@ define "Other - HIV.D.DE931 Observation":
 @description: A medication change is recommended for the client based upon current or considered medications
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Medication change recommended":
+  exists "Medication change recommended Observation"
 define "Medication change recommended Observation":
-  Elements."Medication change recommended" O
+  Elements."Medication change recommended Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
 /* End of Medication change recommended */
 
 /*
-@dataElement: HIV.D.DE934 - WHO HIV clinical stage condition or symptom - HIV.D.DE934
+@dataElement: HIV.D.DE934 - WHO HIV clinical stage condition or symptom
 @activity: HIV.D15 Determine clinical stage of HIV
 @description: New or recurrent clinical events used to categorize HIV disease severity based at baseline and follow up
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "WHO HIV clinical stage condition or symptom - HIV.D.DE934 Observation":
-  Elements."WHO HIV clinical stage condition or symptom - HIV.D.DE934 Observation" O
+define "WHO HIV clinical stage condition or symptom D.DE934":
+  exists "WHO HIV clinical stage condition or symptom D.DE934 Observation"
+define "WHO HIV clinical stage condition or symptom D.DE934 Observation":
+  Elements."WHO HIV clinical stage condition or symptom D.DE934 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of WHO HIV clinical stage condition or symptom - HIV.D.DE934 */
+/* End of WHO HIV clinical stage condition or symptom D.DE934 */
 
 /*
-@dataElement: HIV.D.DE935 - Pulmonary TB - HIV.D.DE935
+@dataElement: HIV.D.DE935 - Pulmonary TB
 @activity: HIV.D15 Determine clinical stage of HIV
 @description: Client's symptoms include pulmonary TB
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Pulmonary TB - HIV.D.DE935":
-  exists "Pulmonary TB - HIV.D.DE935 Condition"
-    or exists "Pulmonary TB - HIV.D.DE935 Observation"
-define "Pulmonary TB - HIV.D.DE935 Condition":
-  Elements."Pulmonary TB - HIV.D.DE935 Condition" C
+define "Pulmonary TB D.DE935":
+  exists "Pulmonary TB D.DE935 Condition"
+    or exists "Pulmonary TB D.DE935 Observation"
+define "Pulmonary TB D.DE935 Condition":
+  Elements."Pulmonary TB D.DE935 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Pulmonary TB - HIV.D.DE935 Observation":
-  Elements."Pulmonary TB - HIV.D.DE935 Observation" O
+define "Pulmonary TB D.DE935 Observation":
+  Elements."Pulmonary TB D.DE935 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Pulmonary TB - HIV.D.DE935 */
+/* End of Pulmonary TB D.DE935 */
 
 /*
-@dataElement: HIV.D.DE936 - Lymph node TB - HIV.D.DE936
+@dataElement: HIV.D.DE936 - Lymph node TB
 @activity: HIV.D15 Determine clinical stage of HIV
 @description: Client's symptoms include lymph node TB
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Lymph node TB - HIV.D.DE936":
-  exists "Lymph node TB - HIV.D.DE936 Condition"
-    or exists "Lymph node TB - HIV.D.DE936 Observation"
-define "Lymph node TB - HIV.D.DE936 Condition":
-  Elements."Lymph node TB - HIV.D.DE936 Condition" C
+define "Lymph node TB D.DE936":
+  exists "Lymph node TB D.DE936 Condition"
+    or exists "Lymph node TB D.DE936 Observation"
+define "Lymph node TB D.DE936 Condition":
+  Elements."Lymph node TB D.DE936 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Lymph node TB - HIV.D.DE936 Observation":
-  Elements."Lymph node TB - HIV.D.DE936 Observation" O
+define "Lymph node TB D.DE936 Observation":
+  Elements."Lymph node TB D.DE936 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Lymph node TB - HIV.D.DE936 */
+/* End of Lymph node TB D.DE936 */
 
 /*
-@dataElement: HIV.D.DE937 - Extrapulmonary TB - HIV.D.DE937
+@dataElement: HIV.D.DE937 - Extrapulmonary TB
 @activity: HIV.D15 Determine clinical stage of HIV
 @description: Client's symptoms include extrapulmonary tuberculosis (TB)
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Extrapulmonary TB - HIV.D.DE937":
-  exists "Extrapulmonary TB - HIV.D.DE937 Condition"
-    or exists "Extrapulmonary TB - HIV.D.DE937 Observation"
-define "Extrapulmonary TB - HIV.D.DE937 Condition":
-  Elements."Extrapulmonary TB - HIV.D.DE937 Condition" C
+define "Extrapulmonary TB D.DE937":
+  exists "Extrapulmonary TB D.DE937 Condition"
+    or exists "Extrapulmonary TB D.DE937 Observation"
+define "Extrapulmonary TB D.DE937 Condition":
+  Elements."Extrapulmonary TB D.DE937 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Extrapulmonary TB - HIV.D.DE937 Observation":
-  Elements."Extrapulmonary TB - HIV.D.DE937 Observation" O
+define "Extrapulmonary TB D.DE937 Observation":
+  Elements."Extrapulmonary TB D.DE937 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Extrapulmonary TB - HIV.D.DE937 */
+/* End of Extrapulmonary TB D.DE937 */
+
+/*
+@dataElement: HIV.D.DE939 - TB diagnosis result
+@activity: HIV.D8 Capture or update client history
+@description: Final result of the TB investigation (bacteriological and/or clinical)
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "TB diagnosis result":
+  exists "TB diagnosis result Observation"
+define "TB diagnosis result Observation":
+  Elements."TB diagnosis result Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of TB diagnosis result */
+
+/*
+@dataElement: HIV.D.DE940 - Diagnosed TB
+@activity: HIV.D8 Capture or update client history
+@description: Client is diagnosed with TB disease
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Diagnosed TB":
+  exists "Diagnosed TB Condition"
+    or exists "Diagnosed TB Observation"
+define "Diagnosed TB Condition":
+  Elements."Diagnosed TB Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Diagnosed TB Observation":
+  Elements."Diagnosed TB Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Diagnosed TB */
+
+/*
+@dataElement: HIV.D.DE941 - TB excluded
+@activity: HIV.D8 Capture or update client history
+@description: Client is not diagnosed with TB
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "TB excluded":
+  exists "TB excluded Condition"
+    or exists "TB excluded Observation"
+define "TB excluded Condition":
+  Elements."TB excluded Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "TB excluded Observation":
+  Elements."TB excluded Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of TB excluded */
+
+/*
+@dataElement: HIV.D.DE945 - Presumptive TB
+@activity: HIV.D8 Capture or update client history
+@description: Client has signs or symptoms of tuberculosis (TB) without laboratory confirmation
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Presumptive TB D.DE945":
+  exists "Presumptive TB D.DE945 Observation"
+define "Presumptive TB D.DE945 Observation":
+  Elements."Presumptive TB D.DE945 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Presumptive TB D.DE945 */
 
 /*
 @dataElement: HIV.D.DE956 - TB screening algorithm
@@ -6903,6 +8259,8 @@ define "Extrapulmonary TB - HIV.D.DE937 Observation":
 @description: Screening algorithm selected for screening activities
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "TB screening algorithm":
+  exists "TB screening algorithm Observation"
 define "TB screening algorithm Observation":
   Elements."TB screening algorithm Observation" O
     where O.encounter.references(EncounterId)
@@ -7167,6 +8525,8 @@ define "Other TB screening algorithm Observation":
 @description: Symptoms that may indicate TB disease in clients living with HIV, based on a clinical algorithm
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Symptoms of TB":
+  exists "Symptoms of TB Observation"
 define "Symptoms of TB Observation":
   Elements."Symptoms of TB Observation" O
     where O.encounter.references(EncounterId)
@@ -7336,22 +8696,22 @@ define "Haemoptysis Observation":
 /* End of Haemoptysis */
 
 /*
-@dataElement: HIV.D.DE983 - Lethargy - HIV.D.DE983
+@dataElement: HIV.D.DE983 - Lethargy
 @activity: HIV.D4 Screen for TB
 @description: Client reports lethargy
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Lethargy - HIV.D.DE983":
-  exists "Lethargy - HIV.D.DE983 Condition"
-    or exists "Lethargy - HIV.D.DE983 Observation"
-define "Lethargy - HIV.D.DE983 Condition":
-  Elements."Lethargy - HIV.D.DE983 Condition" C
+define "Lethargy D.DE983":
+  exists "Lethargy D.DE983 Condition"
+    or exists "Lethargy D.DE983 Observation"
+define "Lethargy D.DE983 Condition":
+  Elements."Lethargy D.DE983 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Lethargy - HIV.D.DE983 Observation":
-  Elements."Lethargy - HIV.D.DE983 Observation" O
+define "Lethargy D.DE983 Observation":
+  Elements."Lethargy D.DE983 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Lethargy - HIV.D.DE983 */
+/* End of Lethargy D.DE983 */
 
 /*
 @dataElement: HIV.D.DE984 - None
@@ -7377,12 +8737,81 @@ define "None Observation":
 @description: Client had a history of a contact with a person with TB
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "History of contact with a person with TB":
+  exists "History of contact with a person with TB Observation"
 define "History of contact with a person with TB Observation":
-  Elements."History of contact with a person with TB" O
+  Elements."History of contact with a person with TB Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
 /* End of History of contact with a person with TB */
+
+/*
+@dataElement: HIV.D.DE986 - TB screening result
+@activity: HIV.D4 Screen for TB
+@description: Record the result of the tuberculosis (TB) screening
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "TB screening result":
+  exists "TB screening result Observation"
+define "TB screening result Observation":
+  Elements."TB screening result Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of TB screening result */
+
+/*
+@dataElement: HIV.D.DE987 - Screen positive for TB
+@activity: HIV.D4 Screen for TB
+@description: Screening result was positive for tuberculosis (TB)
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Screen positive for TB":
+  exists "Screen positive for TB Condition"
+    or exists "Screen positive for TB Observation"
+define "Screen positive for TB Condition":
+  Elements."Screen positive for TB Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Screen positive for TB Observation":
+  Elements."Screen positive for TB Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Screen positive for TB */
+
+/*
+@dataElement: HIV.D.DE988 - Screen negative for TB
+@activity: HIV.D4 Screen for TB
+@description: Screening result was negative for tuberculosis (TB)
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Screen negative for TB":
+  exists "Screen negative for TB Condition"
+    or exists "Screen negative for TB Observation"
+define "Screen negative for TB Condition":
+  Elements."Screen negative for TB Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Screen negative for TB Observation":
+  Elements."Screen negative for TB Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Screen negative for TB */
+
+/*
+@dataElement: HIV.D.DE989 - Inconclusive
+@activity: HIV.D4 Screen for TB
+@description: Screening result was inconclusive for tuberculosis (TB)
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Inconclusive D.DE989":
+  exists "Inconclusive D.DE989 Condition"
+    or exists "Inconclusive D.DE989 Observation"
+define "Inconclusive D.DE989 Condition":
+  Elements."Inconclusive D.DE989 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Inconclusive D.DE989 Observation":
+  Elements."Inconclusive D.DE989 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Inconclusive D.DE989 */
 
 /*
 @dataElement: HIV.D.DE1023 - TB prevention services accepted
@@ -7390,11 +8819,12 @@ define "History of contact with a person with TB Observation":
 @description: Indicates if the client accepts to be evaluated for TB infection and to take the treatment in case he/she is eligible
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "TB prevention services accepted":
+  exists "TB prevention services accepted Observation"
 define "TB prevention services accepted Observation":
-  Elements."TB prevention services accepted" O
+  Elements."TB prevention services accepted Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
 /* End of TB prevention services accepted */
 
 /*
@@ -7403,122 +8833,289 @@ define "TB prevention services accepted Observation":
 @description: Test result of the client's C reactive protein test result in mg/L
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "C reactive protein test result Observation":
+define "C reactive protein test result":
   Elements."C reactive protein test result" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
+define "C reactive protein test result Value":
+  "C reactive protein test result" O
+  return O.value
 /* End of C reactive protein test result */
 
 /*
-@dataElement: HIV.E.DE113 - Key population member* - HIV.E.DE113
+@dataElement: HIV.E.DE85 - ANC contact date
+@activity: HIV.E1 Capture or update mother's history
+@description: The date and time of the client's ANC contact (in the ANC DAK this is called 'Contact date')
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "ANC contact date E.DE85":
+  Elements."ANC contact date E.DE85" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+define "ANC contact date E.DE85 Value":
+  "ANC contact date E.DE85" O
+  return O.value
+/* End of ANC contact date E.DE85 */
+
+/*
+@dataElement: HIV.E.DE113 - Key population member
 @activity: HIV.E1 Capture or update mother's history
 @description: Mother is a member of a key population which has an increased risk of HIV
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Key population member* - HIV.E.DE113 Observation":
-  Elements."Key population member* - HIV.E.DE113" O
+define "Key population member E.DE113":
+  exists "Key population member E.DE113 Observation"
+define "Key population member E.DE113 Observation":
+  Elements."Key population member E.DE113 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
-/* End of Key population member* - HIV.E.DE113 */
+/* End of Key population member E.DE113 */
 
 /*
-@dataElement: HIV.E.DE155 - Signs of substantial risk of HIV infection - HIV.E.DE155
+@dataElement: HIV.E.DE114 - Key population member type
+@activity: HIV.E1 Capture or update mother's history
+@description: The type of key population that the infant's mother is included in
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Key population member type E.DE114":
+  exists "Key population member type E.DE114 Observation"
+define "Key population member type E.DE114 Observation":
+  Elements."Key population member type E.DE114 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Key population member type E.DE114 */
+
+/*
+@dataElement: HIV.E.DE115 - Sex worker
+@activity: HIV.E1 Capture or update mother's history
+@description: Infant's mother is a sex worker
+*/
+define "Sex worker E.DE115":
+  Elements."Sex worker E.DE115" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Sex worker E.DE115 */
+
+/*
+@dataElement: HIV.E.DE116 - People who inject drugs
+@activity: HIV.E1 Capture or update mother's history
+@description: Infant's mother is a person who injects drugs
+*/
+define "People who inject drugs E.DE116":
+  Elements."People who inject drugs E.DE116" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of People who inject drugs E.DE116 */
+
+/*
+@dataElement: HIV.E.DE117 - Trans and gender-diverse people
+@activity: HIV.E1 Capture or update mother's history
+@description: Infant's mother identifies as trans and gender-diverse
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Trans and gender-diverse people E.DE117":
+  Elements."Trans and gender-diverse people E.DE117" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Trans and gender-diverse people E.DE117 */
+
+/*
+@dataElement: HIV.E.DE118 - People living in prisons and other closed setting
+@activity: HIV.E1 Capture or update mother's history
+@description: Infant's mother is in a prison or closed setting
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "People living in prisons and other closed setting":
+  Elements."People living in prisons and other closed setting" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of People living in prisons and other closed setting */
+
+/*
+@dataElement: HIV.E.DE155 - Signs of substantial risk of HIV infection
 @activity: HIV.E1 Capture or update mother's history
 @description: Signs the client is at a substantial risk of HIV infection
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Signs of substantial risk of HIV infection - HIV.E.DE155 Observation":
-  Elements."Signs of substantial risk of HIV infection - HIV.E.DE155 Observation" O
+define "Signs of substantial risk of HIV infection E.DE155":
+  exists "Signs of substantial risk of HIV infection E.DE155 Observation"
+define "Signs of substantial risk of HIV infection E.DE155 Observation":
+  Elements."Signs of substantial risk of HIV infection E.DE155 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Signs of substantial risk of HIV infection - HIV.E.DE155 */
+/* End of Signs of substantial risk of HIV infection E.DE155 */
 
 /*
-@dataElement: HIV.E.DE156 - No condom use during sex with more than one partner in the past 6 months - HIV.E.DE156
+@dataElement: HIV.E.DE156 - No condom use during sex with more than one partner in the past 6 months
 @activity: HIV.E1 Capture or update mother's history
 @description: Recent vaginal or anal sexual intercourse without a condom with more than one partner
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "No condom use during sex with more than one partner in the past 6 months - HIV.E.DE156":
-  exists "No condom use during sex with more than one partner in the past 6 months - HIV.E.DE156 Condition"
-    or exists "No condom use during sex with more than one partner in the past 6 months - HIV.E.DE156 Observation"
-define "No condom use during sex with more than one partner in the past 6 months - HIV.E.DE156 Condition":
-  Elements."No condom use during sex with more than one partner in the past 6 months - HIV.E.DE156 Condition" C
+define "No condom use during sex with more than one partner in the past 6 months E.DE156":
+  exists "No condom use during sex with more than one partner in the past 6 months E.DE156 Condition"
+    or exists "No condom use during sex with more than one partner in the past 6 months E.DE156 Observation"
+define "No condom use during sex with more than one partner in the past 6 months E.DE156 Condition":
+  Elements."No condom use during sex with more than one partner in the past 6 months E.DE156 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "No condom use during sex with more than one partner in the past 6 months - HIV.E.DE156 Observation":
-  Elements."No condom use during sex with more than one partner in the past 6 months - HIV.E.DE156 Observation" O
+define "No condom use during sex with more than one partner in the past 6 months E.DE156 Observation":
+  Elements."No condom use during sex with more than one partner in the past 6 months E.DE156 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of No condom use during sex with more than one partner in the past 6 months - HIV.E.DE156 */
+/* End of No condom use during sex with more than one partner in the past 6 months E.DE156 */
 
 /*
-@dataElement: HIV.E.DE157 - STI in the past 6 months - HIV.E.DE157
+@dataElement: HIV.E.DE157 - STI in the past 6 months
 @activity: HIV.E1 Capture or update mother's history
 @description: A recent history (in the last 6 months) of a sexually transmitted infection (STI) by laboratory testing or self-report of syndromic STI treatment
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "STI in the past 6 months - HIV.E.DE157":
-  exists "STI in the past 6 months - HIV.E.DE157 Condition"
-    or exists "STI in the past 6 months - HIV.E.DE157 Observation"
-define "STI in the past 6 months - HIV.E.DE157 Condition":
-  Elements."STI in the past 6 months - HIV.E.DE157 Condition" C
+define "STI in the past 6 months E.DE157":
+  exists "STI in the past 6 months E.DE157 Condition"
+    or exists "STI in the past 6 months E.DE157 Observation"
+define "STI in the past 6 months E.DE157 Condition":
+  Elements."STI in the past 6 months E.DE157 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "STI in the past 6 months - HIV.E.DE157 Observation":
-  Elements."STI in the past 6 months - HIV.E.DE157 Observation" O
+define "STI in the past 6 months E.DE157 Observation":
+  Elements."STI in the past 6 months E.DE157 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of STI in the past 6 months - HIV.E.DE157 */
+/* End of STI in the past 6 months E.DE157 */
 
 /*
-@dataElement: HIV.E.DE158 - A sexual partner in the past 6 months had one or more HIV risk factors - HIV.E.DE158
+@dataElement: HIV.E.DE158 - A sexual partner in the past 6 months had one or more HIV risk factors
 @activity: HIV.E1 Capture or update mother's history
 @description: A recent sex partner of the client had HIV risk factors
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "A sexual partner in the past 6 months had one or more HIV risk factors - HIV.E.DE158":
-  exists "A sexual partner in the past 6 months had one or more HIV risk factors - HIV.E.DE158 Condition"
-    or exists "A sexual partner in the past 6 months had one or more HIV risk factors - HIV.E.DE158 Observation"
-define "A sexual partner in the past 6 months had one or more HIV risk factors - HIV.E.DE158 Condition":
-  Elements."A sexual partner in the past 6 months had one or more HIV risk factors - HIV.E.DE158 Condition" C
+define "A sexual partner in the past 6 months had one or more HIV risk factors E.DE158":
+  exists "A sexual partner in the past 6 months had one or more HIV risk factors E.DE158 Condition"
+    or exists "A sexual partner in the past 6 months had one or more HIV risk factors E.DE158 Observation"
+define "A sexual partner in the past 6 months had one or more HIV risk factors E.DE158 Condition":
+  Elements."A sexual partner in the past 6 months had one or more HIV risk factors E.DE158 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "A sexual partner in the past 6 months had one or more HIV risk factors - HIV.E.DE158 Observation":
-  Elements."A sexual partner in the past 6 months had one or more HIV risk factors - HIV.E.DE158 Observation" O
+define "A sexual partner in the past 6 months had one or more HIV risk factors E.DE158 Observation":
+  Elements."A sexual partner in the past 6 months had one or more HIV risk factors E.DE158 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of A sexual partner in the past 6 months had one or more HIV risk factors - HIV.E.DE158 */
+/* End of A sexual partner in the past 6 months had one or more HIV risk factors E.DE158 */
 
 /*
-@dataElement: HIV.E.DE159 - PrEP requested by client - HIV.E.DE159
+@dataElement: HIV.E.DE159 - PrEP requested by client
 @activity: HIV.E1 Capture or update mother's history
 @description: Client is requesting PrEP, reflecting a decision-making process has already taken place and suggesting of substantial risk of HIV
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "PrEP requested by client - HIV.E.DE159":
-  exists "PrEP requested by client - HIV.E.DE159 Condition"
-    or exists "PrEP requested by client - HIV.E.DE159 Observation"
-define "PrEP requested by client - HIV.E.DE159 Condition":
-  Elements."PrEP requested by client - HIV.E.DE159 Condition" C
+define "PrEP requested by client E.DE159":
+  exists "PrEP requested by client E.DE159 Condition"
+    or exists "PrEP requested by client E.DE159 Observation"
+define "PrEP requested by client E.DE159 Condition":
+  Elements."PrEP requested by client E.DE159 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "PrEP requested by client - HIV.E.DE159 Observation":
-  Elements."PrEP requested by client - HIV.E.DE159 Observation" O
+define "PrEP requested by client E.DE159 Observation":
+  Elements."PrEP requested by client E.DE159 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of PrEP requested by client - HIV.E.DE159 */
+/* End of PrEP requested by client E.DE159 */
 
 /*
-@dataElement: HIV.E.DE160 - Serodiscordant partner - HIV.E.DE160
+@dataElement: HIV.E.DE160 - Serodiscordant partner
 @activity: HIV.E1 Capture or update mother's history
 @description: Mother's HIV status is different from a current partner's HIV status
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Serodiscordant partner - HIV.E.DE160 Observation":
-  Elements."Serodiscordant partner - HIV.E.DE160" O
+define "Serodiscordant partner E.DE160":
+  exists "Serodiscordant partner E.DE160 Observation"
+define "Serodiscordant partner E.DE160 Observation":
+  Elements."Serodiscordant partner E.DE160 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
-/* End of Serodiscordant partner - HIV.E.DE160 */
+/* End of Serodiscordant partner E.DE160 */
+
+/*
+@dataElement: HIV.E.DE168 - HIV test type
+@activity: HIV.E4 Test mother for HIV using testing algorithm
+@description: Type of HIV test
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "HIV test type E.DE168":
+  exists "HIV test type E.DE168 Observation"
+define "HIV test type E.DE168 Observation":
+  Elements."HIV test type E.DE168 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of HIV test type E.DE168 */
+
+/*
+@dataElement: HIV.E.DE169 - Rapid diagnostic test for HIV
+@activity: HIV.E4 Test mother for HIV using testing algorithm
+@description: Antibody test for HIV performed with a rapid diagnostic (RDT)
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Rapid diagnostic test for HIV E.DE169":
+  exists "Rapid diagnostic test for HIV E.DE169 Condition"
+    or exists "Rapid diagnostic test for HIV E.DE169 Observation"
+define "Rapid diagnostic test for HIV E.DE169 Condition":
+  Elements."Rapid diagnostic test for HIV E.DE169 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Rapid diagnostic test for HIV E.DE169 Observation":
+  Elements."Rapid diagnostic test for HIV E.DE169 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Rapid diagnostic test for HIV E.DE169 */
+
+/*
+@dataElement: HIV.E.DE170 - Enzyme immunoassay for HIV
+@activity: HIV.E4 Test mother for HIV using testing algorithm
+@description: Antibody test for HIV performed with an enzyme immunoassay (EIA)
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Enzyme immunoassay for HIV E.DE170":
+  exists "Enzyme immunoassay for HIV E.DE170 Condition"
+    or exists "Enzyme immunoassay for HIV E.DE170 Observation"
+define "Enzyme immunoassay for HIV E.DE170 Condition":
+  Elements."Enzyme immunoassay for HIV E.DE170 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Enzyme immunoassay for HIV E.DE170 Observation":
+  Elements."Enzyme immunoassay for HIV E.DE170 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Enzyme immunoassay for HIV E.DE170 */
+
+/*
+@dataElement: HIV.E.DE171 - Nucleic acid test for HIV
+@activity: HIV.E4 Test mother for HIV using testing algorithm
+@description: Virological test, which includes testing for early infant diagnosis
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Nucleic acid test for HIV E.DE171":
+  exists "Nucleic acid test for HIV E.DE171 Condition"
+    or exists "Nucleic acid test for HIV E.DE171 Observation"
+define "Nucleic acid test for HIV E.DE171 Condition":
+  Elements."Nucleic acid test for HIV E.DE171 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Nucleic acid test for HIV E.DE171 Observation":
+  Elements."Nucleic acid test for HIV E.DE171 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Nucleic acid test for HIV E.DE171 */
+
+/*
+@dataElement: HIV.E.DE172 - Dual HIV/syphilis rapid diagnostic test
+@activity: HIV.E4 Test mother for HIV using testing algorithm
+@description: Antibody test for HIV and syphilis performed with a rapid diagnostic
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Dual HIV/syphilis rapid diagnostic test E.DE172":
+  exists "Dual HIV/syphilis rapid diagnostic test E.DE172 Condition"
+    or exists "Dual HIV/syphilis rapid diagnostic test E.DE172 Observation"
+define "Dual HIV/syphilis rapid diagnostic test E.DE172 Condition":
+  Elements."Dual HIV/syphilis rapid diagnostic test E.DE172 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Dual HIV/syphilis rapid diagnostic test E.DE172 Observation":
+  Elements."Dual HIV/syphilis rapid diagnostic test E.DE172 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Dual HIV/syphilis rapid diagnostic test E.DE172 */
 
 /*
 @dataElement: HIV.E.DE180 - EID sample number
@@ -7526,6 +9123,8 @@ define "Serodiscordant partner - HIV.E.DE160 Observation":
 @description: Early infant diagnosis (EID) sample number
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "EID sample number":
+  exists "EID sample number Observation"
 define "EID sample number Observation":
   Elements."EID sample number Observation" O
     where O.encounter.references(EncounterId)
@@ -7574,6 +9173,8 @@ define "EID sample 2 Observation":
 @description: Early infant diagnosis (EID) HIV test number using the same sample
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "EID test number":
+  exists "EID test number Observation"
 define "EID test number Observation":
   Elements."EID test number Observation" O
     where O.encounter.references(EncounterId)
@@ -7622,6 +9223,8 @@ define "EID test number 2 Observation":
 @description: Early infant diagnosis test number 1 test result
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "EID test number 1 test result":
+  exists "EID test number 1 test result Observation"
 define "EID test number 1 test result Observation":
   Elements."EID test number 1 test result Observation" O
     where O.encounter.references(EncounterId)
@@ -7629,58 +9232,58 @@ define "EID test number 1 test result Observation":
 /* End of EID test number 1 test result */
 
 /*
-@dataElement: HIV.E.DE187 - Positive - HIV.E.DE187
+@dataElement: HIV.E.DE187 - Positive
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
 @description: Positive HIV test result from the nucleic acid test
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Positive - HIV.E.DE187":
-  exists "Positive - HIV.E.DE187 Condition"
-    or exists "Positive - HIV.E.DE187 Observation"
-define "Positive - HIV.E.DE187 Condition":
-  Elements."Positive - HIV.E.DE187 Condition" C
+define "Positive E.DE187":
+  exists "Positive E.DE187 Condition"
+    or exists "Positive E.DE187 Observation"
+define "Positive E.DE187 Condition":
+  Elements."Positive E.DE187 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Positive - HIV.E.DE187 Observation":
-  Elements."Positive - HIV.E.DE187 Observation" O
+define "Positive E.DE187 Observation":
+  Elements."Positive E.DE187 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Positive - HIV.E.DE187 */
+/* End of Positive E.DE187 */
 
 /*
-@dataElement: HIV.E.DE188 - Negative - HIV.E.DE188
+@dataElement: HIV.E.DE188 - Negative
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
 @description: Negative HIV test result from the nucleic acid test
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Negative - HIV.E.DE188":
-  exists "Negative - HIV.E.DE188 Condition"
-    or exists "Negative - HIV.E.DE188 Observation"
-define "Negative - HIV.E.DE188 Condition":
-  Elements."Negative - HIV.E.DE188 Condition" C
+define "Negative E.DE188":
+  exists "Negative E.DE188 Condition"
+    or exists "Negative E.DE188 Observation"
+define "Negative E.DE188 Condition":
+  Elements."Negative E.DE188 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Negative - HIV.E.DE188 Observation":
-  Elements."Negative - HIV.E.DE188 Observation" O
+define "Negative E.DE188 Observation":
+  Elements."Negative E.DE188 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Negative - HIV.E.DE188 */
+/* End of Negative E.DE188 */
 
 /*
-@dataElement: HIV.E.DE189 - Indeterminate - HIV.E.DE189
+@dataElement: HIV.E.DE189 - Indeterminate
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
 @description: Indeterminate HIV test result from the nucleic acid test
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Indeterminate - HIV.E.DE189":
-  exists "Indeterminate - HIV.E.DE189 Condition"
-    or exists "Indeterminate - HIV.E.DE189 Observation"
-define "Indeterminate - HIV.E.DE189 Condition":
-  Elements."Indeterminate - HIV.E.DE189 Condition" C
+define "Indeterminate E.DE189":
+  exists "Indeterminate E.DE189 Condition"
+    or exists "Indeterminate E.DE189 Observation"
+define "Indeterminate E.DE189 Condition":
+  Elements."Indeterminate E.DE189 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Indeterminate - HIV.E.DE189 Observation":
-  Elements."Indeterminate - HIV.E.DE189 Observation" O
+define "Indeterminate E.DE189 Observation":
+  Elements."Indeterminate E.DE189 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Indeterminate - HIV.E.DE189 */
+/* End of Indeterminate E.DE189 */
 
 /*
 @dataElement: HIV.E.DE190 - EID test number 2 test result
@@ -7688,6 +9291,8 @@ define "Indeterminate - HIV.E.DE189 Observation":
 @description: Early infant diagnosis test number 2 test result
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "EID test number 2 test result":
+  exists "EID test number 2 test result Observation"
 define "EID test number 2 test result Observation":
   Elements."EID test number 2 test result Observation" O
     where O.encounter.references(EncounterId)
@@ -7695,424 +9300,434 @@ define "EID test number 2 test result Observation":
 /* End of EID test number 2 test result */
 
 /*
-@dataElement: HIV.E.DE191 - Positive - HIV.E.DE191
+@dataElement: HIV.E.DE191 - Positive
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
 @description: Positive HIV test result from the nucleic acid test
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Positive - HIV.E.DE191":
-  exists "Positive - HIV.E.DE191 Condition"
-    or exists "Positive - HIV.E.DE191 Observation"
-define "Positive - HIV.E.DE191 Condition":
-  Elements."Positive - HIV.E.DE191 Condition" C
+define "Positive E.DE191":
+  exists "Positive E.DE191 Condition"
+    or exists "Positive E.DE191 Observation"
+define "Positive E.DE191 Condition":
+  Elements."Positive E.DE191 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Positive - HIV.E.DE191 Observation":
-  Elements."Positive - HIV.E.DE191 Observation" O
+define "Positive E.DE191 Observation":
+  Elements."Positive E.DE191 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Positive - HIV.E.DE191 */
+/* End of Positive E.DE191 */
 
 /*
-@dataElement: HIV.E.DE192 - Negative - HIV.E.DE192
+@dataElement: HIV.E.DE192 - Negative
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
 @description: Negative HIV test result from the nucleic acid test
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Negative - HIV.E.DE192":
-  exists "Negative - HIV.E.DE192 Condition"
-    or exists "Negative - HIV.E.DE192 Observation"
-define "Negative - HIV.E.DE192 Condition":
-  Elements."Negative - HIV.E.DE192 Condition" C
+define "Negative E.DE192":
+  exists "Negative E.DE192 Condition"
+    or exists "Negative E.DE192 Observation"
+define "Negative E.DE192 Condition":
+  Elements."Negative E.DE192 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Negative - HIV.E.DE192 Observation":
-  Elements."Negative - HIV.E.DE192 Observation" O
+define "Negative E.DE192 Observation":
+  Elements."Negative E.DE192 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Negative - HIV.E.DE192 */
+/* End of Negative E.DE192 */
 
 /*
-@dataElement: HIV.E.DE193 - Indeterminate - HIV.E.DE193
+@dataElement: HIV.E.DE193 - Indeterminate
 @activity: HIV.F8 Test infant/child for HIV using testing algorithm
 @description: Indeterminate HIV test result from the nucleic acid test
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Indeterminate - HIV.E.DE193":
-  exists "Indeterminate - HIV.E.DE193 Condition"
-    or exists "Indeterminate - HIV.E.DE193 Observation"
-define "Indeterminate - HIV.E.DE193 Condition":
-  Elements."Indeterminate - HIV.E.DE193 Condition" C
+define "Indeterminate E.DE193":
+  exists "Indeterminate E.DE193 Condition"
+    or exists "Indeterminate E.DE193 Observation"
+define "Indeterminate E.DE193 Condition":
+  Elements."Indeterminate E.DE193 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Indeterminate - HIV.E.DE193 Observation":
-  Elements."Indeterminate - HIV.E.DE193 Observation" O
+define "Indeterminate E.DE193 Observation":
+  Elements."Indeterminate E.DE193 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Indeterminate - HIV.E.DE193 */
+/* End of Indeterminate E.DE193 */
 
 /*
-@dataElement: HIV.E.DE194 - Assay number in testing strategy - HIV.E.DE194
+@dataElement: HIV.E.DE194 - Assay number in testing strategy
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The number of the assay (test kit) in the HIV testing strategy
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Assay number in testing strategy - HIV.E.DE194 Observation":
-  Elements."Assay number in testing strategy - HIV.E.DE194 Observation" O
+define "Assay number in testing strategy E.DE194":
+  exists "Assay number in testing strategy E.DE194 Observation"
+define "Assay number in testing strategy E.DE194 Observation":
+  Elements."Assay number in testing strategy E.DE194 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Assay number in testing strategy - HIV.E.DE194 */
+/* End of Assay number in testing strategy E.DE194 */
 
 /*
-@dataElement: HIV.E.DE195 - Assay 0 - HIV.E.DE195
+@dataElement: HIV.E.DE195 - Assay 0
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: A community outreach test-for-triage or self-test which is not included in the HIV testing strategy
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Assay 0 - HIV.E.DE195":
-  exists "Assay 0 - HIV.E.DE195 Condition"
-    or exists "Assay 0 - HIV.E.DE195 Observation"
-define "Assay 0 - HIV.E.DE195 Condition":
-  Elements."Assay 0 - HIV.E.DE195 Condition" C
+define "Assay 0 E.DE195":
+  exists "Assay 0 E.DE195 Condition"
+    or exists "Assay 0 E.DE195 Observation"
+define "Assay 0 E.DE195 Condition":
+  Elements."Assay 0 E.DE195 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Assay 0 - HIV.E.DE195 Observation":
-  Elements."Assay 0 - HIV.E.DE195 Observation" O
+define "Assay 0 E.DE195 Observation":
+  Elements."Assay 0 E.DE195 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Assay 0 - HIV.E.DE195 */
+/* End of Assay 0 E.DE195 */
 
 /*
-@dataElement: HIV.E.DE196 - Assay 1 - HIV.E.DE196
+@dataElement: HIV.E.DE196 - Assay 1
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The first test in the HIV testing strategy
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Assay 1 - HIV.E.DE196":
-  exists "Assay 1 - HIV.E.DE196 Condition"
-    or exists "Assay 1 - HIV.E.DE196 Observation"
-define "Assay 1 - HIV.E.DE196 Condition":
-  Elements."Assay 1 - HIV.E.DE196 Condition" C
+define "Assay 1 E.DE196":
+  exists "Assay 1 E.DE196 Condition"
+    or exists "Assay 1 E.DE196 Observation"
+define "Assay 1 E.DE196 Condition":
+  Elements."Assay 1 E.DE196 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Assay 1 - HIV.E.DE196 Observation":
-  Elements."Assay 1 - HIV.E.DE196 Observation" O
+define "Assay 1 E.DE196 Observation":
+  Elements."Assay 1 E.DE196 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Assay 1 - HIV.E.DE196 */
+/* End of Assay 1 E.DE196 */
 
 /*
-@dataElement: HIV.E.DE197 - Assay 2 - HIV.E.DE197
+@dataElement: HIV.E.DE197 - Assay 2
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The second test in the HIV testing strategy
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Assay 2 - HIV.E.DE197":
-  exists "Assay 2 - HIV.E.DE197 Condition"
-    or exists "Assay 2 - HIV.E.DE197 Observation"
-define "Assay 2 - HIV.E.DE197 Condition":
-  Elements."Assay 2 - HIV.E.DE197 Condition" C
+define "Assay 2 E.DE197":
+  exists "Assay 2 E.DE197 Condition"
+    or exists "Assay 2 E.DE197 Observation"
+define "Assay 2 E.DE197 Condition":
+  Elements."Assay 2 E.DE197 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Assay 2 - HIV.E.DE197 Observation":
-  Elements."Assay 2 - HIV.E.DE197 Observation" O
+define "Assay 2 E.DE197 Observation":
+  Elements."Assay 2 E.DE197 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Assay 2 - HIV.E.DE197 */
+/* End of Assay 2 E.DE197 */
 
 /*
-@dataElement: HIV.E.DE198 - Assay 3 - HIV.E.DE198
+@dataElement: HIV.E.DE198 - Assay 3
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The third test in the HIV testing strategy
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Assay 3 - HIV.E.DE198":
-  exists "Assay 3 - HIV.E.DE198 Condition"
-    or exists "Assay 3 - HIV.E.DE198 Observation"
-define "Assay 3 - HIV.E.DE198 Condition":
-  Elements."Assay 3 - HIV.E.DE198 Condition" C
+define "Assay 3 E.DE198":
+  exists "Assay 3 E.DE198 Condition"
+    or exists "Assay 3 E.DE198 Observation"
+define "Assay 3 E.DE198 Condition":
+  Elements."Assay 3 E.DE198 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Assay 3 - HIV.E.DE198 Observation":
-  Elements."Assay 3 - HIV.E.DE198 Observation" O
+define "Assay 3 E.DE198 Observation":
+  Elements."Assay 3 E.DE198 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Assay 3 - HIV.E.DE198 */
+/* End of Assay 3 E.DE198 */
 
 /*
-@dataElement: HIV.E.DE199 - Assay 1 repeated - HIV.E.DE199
+@dataElement: HIV.E.DE199 - Assay 1 repeated
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The first test in the HIV testing strategy
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Assay 1 repeated - HIV.E.DE199":
-  exists "Assay 1 repeated - HIV.E.DE199 Condition"
-    or exists "Assay 1 repeated - HIV.E.DE199 Observation"
-define "Assay 1 repeated - HIV.E.DE199 Condition":
-  Elements."Assay 1 repeated - HIV.E.DE199 Condition" C
+define "Assay 1 repeated E.DE199":
+  exists "Assay 1 repeated E.DE199 Condition"
+    or exists "Assay 1 repeated E.DE199 Observation"
+define "Assay 1 repeated E.DE199 Condition":
+  Elements."Assay 1 repeated E.DE199 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Assay 1 repeated - HIV.E.DE199 Observation":
-  Elements."Assay 1 repeated - HIV.E.DE199 Observation" O
+define "Assay 1 repeated E.DE199 Observation":
+  Elements."Assay 1 repeated E.DE199 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Assay 1 repeated - HIV.E.DE199 */
+/* End of Assay 1 repeated E.DE199 */
 
 /*
-@dataElement: HIV.E.DE200 - Test result of HIV assay 1 - HIV.E.DE200
+@dataElement: HIV.E.DE200 - Test result of HIV assay 1
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The result of the first HIV assay in the testing strategy
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Test result of HIV assay 1 - HIV.E.DE200 Observation":
-  Elements."Test result of HIV assay 1 - HIV.E.DE200 Observation" O
+define "Test result of HIV assay 1 E.DE200":
+  exists "Test result of HIV assay 1 E.DE200 Observation"
+define "Test result of HIV assay 1 E.DE200 Observation":
+  Elements."Test result of HIV assay 1 E.DE200 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Test result of HIV assay 1 - HIV.E.DE200 */
+/* End of Test result of HIV assay 1 E.DE200 */
 
 /*
-@dataElement: HIV.E.DE201 - Reactive - HIV.E.DE201
+@dataElement: HIV.E.DE201 - Reactive
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The result of the HIV assay in the testing strategy was reactive
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Reactive - HIV.E.DE201":
-  exists "Reactive - HIV.E.DE201 Condition"
-    or exists "Reactive - HIV.E.DE201 Observation"
-define "Reactive - HIV.E.DE201 Condition":
-  Elements."Reactive - HIV.E.DE201 Condition" C
+define "Reactive E.DE201":
+  exists "Reactive E.DE201 Condition"
+    or exists "Reactive E.DE201 Observation"
+define "Reactive E.DE201 Condition":
+  Elements."Reactive E.DE201 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Reactive - HIV.E.DE201 Observation":
-  Elements."Reactive - HIV.E.DE201 Observation" O
+define "Reactive E.DE201 Observation":
+  Elements."Reactive E.DE201 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Reactive - HIV.E.DE201 */
+/* End of Reactive E.DE201 */
 
 /*
-@dataElement: HIV.E.DE202 - Non-reactive - HIV.E.DE202
+@dataElement: HIV.E.DE202 - Non-reactive
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The result of the HIV assay in the testing strategy was non-reactive
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Non-reactive - HIV.E.DE202":
-  exists "Non-reactive - HIV.E.DE202 Condition"
-    or exists "Non-reactive - HIV.E.DE202 Observation"
-define "Non-reactive - HIV.E.DE202 Condition":
-  Elements."Non-reactive - HIV.E.DE202 Condition" C
+define "Non-reactive E.DE202":
+  exists "Non-reactive E.DE202 Condition"
+    or exists "Non-reactive E.DE202 Observation"
+define "Non-reactive E.DE202 Condition":
+  Elements."Non-reactive E.DE202 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Non-reactive - HIV.E.DE202 Observation":
-  Elements."Non-reactive - HIV.E.DE202 Observation" O
+define "Non-reactive E.DE202 Observation":
+  Elements."Non-reactive E.DE202 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Non-reactive - HIV.E.DE202 */
+/* End of Non-reactive E.DE202 */
 
 /*
-@dataElement: HIV.E.DE203 - Invalid - HIV.E.DE203
+@dataElement: HIV.E.DE203 - Invalid
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The result of the HIV assay in the testing strategy was invalid
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Invalid - HIV.E.DE203":
-  exists "Invalid - HIV.E.DE203 Condition"
-    or exists "Invalid - HIV.E.DE203 Observation"
-define "Invalid - HIV.E.DE203 Condition":
-  Elements."Invalid - HIV.E.DE203 Condition" C
+define "Invalid E.DE203":
+  exists "Invalid E.DE203 Condition"
+    or exists "Invalid E.DE203 Observation"
+define "Invalid E.DE203 Condition":
+  Elements."Invalid E.DE203 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Invalid - HIV.E.DE203 Observation":
-  Elements."Invalid - HIV.E.DE203 Observation" O
+define "Invalid E.DE203 Observation":
+  Elements."Invalid E.DE203 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Invalid - HIV.E.DE203 */
+/* End of Invalid E.DE203 */
 
 /*
-@dataElement: HIV.E.DE204 - Test result of HIV assay 2 - HIV.E.DE204
+@dataElement: HIV.E.DE204 - Test result of HIV assay 2
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The result of the second HIV assay in the testing strategy
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Test result of HIV assay 2 - HIV.E.DE204 Observation":
-  Elements."Test result of HIV assay 2 - HIV.E.DE204 Observation" O
+define "Test result of HIV assay 2 E.DE204":
+  exists "Test result of HIV assay 2 E.DE204 Observation"
+define "Test result of HIV assay 2 E.DE204 Observation":
+  Elements."Test result of HIV assay 2 E.DE204 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Test result of HIV assay 2 - HIV.E.DE204 */
+/* End of Test result of HIV assay 2 E.DE204 */
 
 /*
-@dataElement: HIV.E.DE205 - Reactive - HIV.E.DE205
+@dataElement: HIV.E.DE205 - Reactive
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The result of the HIV assay in the testing strategy was reactive
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Reactive - HIV.E.DE205":
-  exists "Reactive - HIV.E.DE205 Condition"
-    or exists "Reactive - HIV.E.DE205 Observation"
-define "Reactive - HIV.E.DE205 Condition":
-  Elements."Reactive - HIV.E.DE205 Condition" C
+define "Reactive E.DE205":
+  exists "Reactive E.DE205 Condition"
+    or exists "Reactive E.DE205 Observation"
+define "Reactive E.DE205 Condition":
+  Elements."Reactive E.DE205 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Reactive - HIV.E.DE205 Observation":
-  Elements."Reactive - HIV.E.DE205 Observation" O
+define "Reactive E.DE205 Observation":
+  Elements."Reactive E.DE205 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Reactive - HIV.E.DE205 */
+/* End of Reactive E.DE205 */
 
 /*
-@dataElement: HIV.E.DE206 - Non-reactive - HIV.E.DE206
+@dataElement: HIV.E.DE206 - Non-reactive
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The result of the HIV assay in the testing strategy was non-reactive
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Non-reactive - HIV.E.DE206":
-  exists "Non-reactive - HIV.E.DE206 Condition"
-    or exists "Non-reactive - HIV.E.DE206 Observation"
-define "Non-reactive - HIV.E.DE206 Condition":
-  Elements."Non-reactive - HIV.E.DE206 Condition" C
+define "Non-reactive E.DE206":
+  exists "Non-reactive E.DE206 Condition"
+    or exists "Non-reactive E.DE206 Observation"
+define "Non-reactive E.DE206 Condition":
+  Elements."Non-reactive E.DE206 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Non-reactive - HIV.E.DE206 Observation":
-  Elements."Non-reactive - HIV.E.DE206 Observation" O
+define "Non-reactive E.DE206 Observation":
+  Elements."Non-reactive E.DE206 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Non-reactive - HIV.E.DE206 */
+/* End of Non-reactive E.DE206 */
 
 /*
-@dataElement: HIV.E.DE207 - Invalid - HIV.E.DE207
+@dataElement: HIV.E.DE207 - Invalid
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The result of the HIV assay in the testing strategy was invalid
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Invalid - HIV.E.DE207":
-  exists "Invalid - HIV.E.DE207 Condition"
-    or exists "Invalid - HIV.E.DE207 Observation"
-define "Invalid - HIV.E.DE207 Condition":
-  Elements."Invalid - HIV.E.DE207 Condition" C
+define "Invalid E.DE207":
+  exists "Invalid E.DE207 Condition"
+    or exists "Invalid E.DE207 Observation"
+define "Invalid E.DE207 Condition":
+  Elements."Invalid E.DE207 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Invalid - HIV.E.DE207 Observation":
-  Elements."Invalid - HIV.E.DE207 Observation" O
+define "Invalid E.DE207 Observation":
+  Elements."Invalid E.DE207 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Invalid - HIV.E.DE207 */
+/* End of Invalid E.DE207 */
 
 /*
-@dataElement: HIV.E.DE208 - Test result of HIV assay 3 - HIV.E.DE208
+@dataElement: HIV.E.DE208 - Test result of HIV assay 3
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The result of the third HIV assay in the testing strategy
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Test result of HIV assay 3 - HIV.E.DE208 Observation":
-  Elements."Test result of HIV assay 3 - HIV.E.DE208 Observation" O
+define "Test result of HIV assay 3 E.DE208":
+  exists "Test result of HIV assay 3 E.DE208 Observation"
+define "Test result of HIV assay 3 E.DE208 Observation":
+  Elements."Test result of HIV assay 3 E.DE208 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Test result of HIV assay 3 - HIV.E.DE208 */
+/* End of Test result of HIV assay 3 E.DE208 */
 
 /*
-@dataElement: HIV.E.DE209 - Reactive - HIV.E.DE209
+@dataElement: HIV.E.DE209 - Reactive
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The result of the HIV assay in the testing strategy was reactive
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Reactive - HIV.E.DE209":
-  exists "Reactive - HIV.E.DE209 Condition"
-    or exists "Reactive - HIV.E.DE209 Observation"
-define "Reactive - HIV.E.DE209 Condition":
-  Elements."Reactive - HIV.E.DE209 Condition" C
+define "Reactive E.DE209":
+  exists "Reactive E.DE209 Condition"
+    or exists "Reactive E.DE209 Observation"
+define "Reactive E.DE209 Condition":
+  Elements."Reactive E.DE209 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Reactive - HIV.E.DE209 Observation":
-  Elements."Reactive - HIV.E.DE209 Observation" O
+define "Reactive E.DE209 Observation":
+  Elements."Reactive E.DE209 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Reactive - HIV.E.DE209 */
+/* End of Reactive E.DE209 */
 
 /*
-@dataElement: HIV.E.DE210 - Non-reactive - HIV.E.DE210
+@dataElement: HIV.E.DE210 - Non-reactive
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The result of the HIV assay in the testing strategy was non-reactive
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Non-reactive - HIV.E.DE210":
-  exists "Non-reactive - HIV.E.DE210 Condition"
-    or exists "Non-reactive - HIV.E.DE210 Observation"
-define "Non-reactive - HIV.E.DE210 Condition":
-  Elements."Non-reactive - HIV.E.DE210 Condition" C
+define "Non-reactive E.DE210":
+  exists "Non-reactive E.DE210 Condition"
+    or exists "Non-reactive E.DE210 Observation"
+define "Non-reactive E.DE210 Condition":
+  Elements."Non-reactive E.DE210 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Non-reactive - HIV.E.DE210 Observation":
-  Elements."Non-reactive - HIV.E.DE210 Observation" O
+define "Non-reactive E.DE210 Observation":
+  Elements."Non-reactive E.DE210 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Non-reactive - HIV.E.DE210 */
+/* End of Non-reactive E.DE210 */
 
 /*
-@dataElement: HIV.E.DE211 - Invalid - HIV.E.DE211
+@dataElement: HIV.E.DE211 - Invalid
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The result of the HIV assay in the testing strategy was invalid
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Invalid - HIV.E.DE211":
-  exists "Invalid - HIV.E.DE211 Condition"
-    or exists "Invalid - HIV.E.DE211 Observation"
-define "Invalid - HIV.E.DE211 Condition":
-  Elements."Invalid - HIV.E.DE211 Condition" C
+define "Invalid E.DE211":
+  exists "Invalid E.DE211 Condition"
+    or exists "Invalid E.DE211 Observation"
+define "Invalid E.DE211 Condition":
+  Elements."Invalid E.DE211 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Invalid - HIV.E.DE211 Observation":
-  Elements."Invalid - HIV.E.DE211 Observation" O
+define "Invalid E.DE211 Observation":
+  Elements."Invalid E.DE211 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Invalid - HIV.E.DE211 */
+/* End of Invalid E.DE211 */
 
 /*
-@dataElement: HIV.E.DE212 - Test result of HIV assay 1 repeated - HIV.E.DE212
+@dataElement: HIV.E.DE212 - Test result of HIV assay 1 repeated
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The result of the repeated first HIV assay in the testing strategy
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Test result of HIV assay 1 repeated - HIV.E.DE212 Observation":
-  Elements."Test result of HIV assay 1 repeated - HIV.E.DE212 Observation" O
+define "Test result of HIV assay 1 repeated E.DE212":
+  exists "Test result of HIV assay 1 repeated E.DE212 Observation"
+define "Test result of HIV assay 1 repeated E.DE212 Observation":
+  Elements."Test result of HIV assay 1 repeated E.DE212 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Test result of HIV assay 1 repeated - HIV.E.DE212 */
+/* End of Test result of HIV assay 1 repeated E.DE212 */
 
 /*
-@dataElement: HIV.E.DE213 - Reactive - HIV.E.DE213
+@dataElement: HIV.E.DE213 - Reactive
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The result of the HIV assay in the testing strategy was reactive
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Reactive - HIV.E.DE213":
-  exists "Reactive - HIV.E.DE213 Condition"
-    or exists "Reactive - HIV.E.DE213 Observation"
-define "Reactive - HIV.E.DE213 Condition":
-  Elements."Reactive - HIV.E.DE213 Condition" C
+define "Reactive E.DE213":
+  exists "Reactive E.DE213 Condition"
+    or exists "Reactive E.DE213 Observation"
+define "Reactive E.DE213 Condition":
+  Elements."Reactive E.DE213 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Reactive - HIV.E.DE213 Observation":
-  Elements."Reactive - HIV.E.DE213 Observation" O
+define "Reactive E.DE213 Observation":
+  Elements."Reactive E.DE213 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Reactive - HIV.E.DE213 */
+/* End of Reactive E.DE213 */
 
 /*
-@dataElement: HIV.E.DE214 - Non-reactive - HIV.E.DE214
+@dataElement: HIV.E.DE214 - Non-reactive
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The result of the HIV assay in the testing strategy was non-reactive
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Non-reactive - HIV.E.DE214":
-  exists "Non-reactive - HIV.E.DE214 Condition"
-    or exists "Non-reactive - HIV.E.DE214 Observation"
-define "Non-reactive - HIV.E.DE214 Condition":
-  Elements."Non-reactive - HIV.E.DE214 Condition" C
+define "Non-reactive E.DE214":
+  exists "Non-reactive E.DE214 Condition"
+    or exists "Non-reactive E.DE214 Observation"
+define "Non-reactive E.DE214 Condition":
+  Elements."Non-reactive E.DE214 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Non-reactive - HIV.E.DE214 Observation":
-  Elements."Non-reactive - HIV.E.DE214 Observation" O
+define "Non-reactive E.DE214 Observation":
+  Elements."Non-reactive E.DE214 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Non-reactive - HIV.E.DE214 */
+/* End of Non-reactive E.DE214 */
 
 /*
-@dataElement: HIV.E.DE215 - Invalid - HIV.E.DE215
+@dataElement: HIV.E.DE215 - Invalid
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The result of the HIV assay in the testing strategy was invalid
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Invalid - HIV.E.DE215":
-  exists "Invalid - HIV.E.DE215 Condition"
-    or exists "Invalid - HIV.E.DE215 Observation"
-define "Invalid - HIV.E.DE215 Condition":
-  Elements."Invalid - HIV.E.DE215 Condition" C
+define "Invalid E.DE215":
+  exists "Invalid E.DE215 Condition"
+    or exists "Invalid E.DE215 Observation"
+define "Invalid E.DE215 Condition":
+  Elements."Invalid E.DE215 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Invalid - HIV.E.DE215 Observation":
-  Elements."Invalid - HIV.E.DE215 Observation" O
+define "Invalid E.DE215 Observation":
+  Elements."Invalid E.DE215 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Invalid - HIV.E.DE215 */
+/* End of Invalid E.DE215 */
 
 /*
 @dataElement: HIV.E.DE216 - Test result of syphilis assay 1
@@ -8120,6 +9735,8 @@ define "Invalid - HIV.E.DE215 Observation":
 @description: The result of the first syphilis assay in the testing strategy
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Test result of syphilis assay 1":
+  exists "Test result of syphilis assay 1 Observation"
 define "Test result of syphilis assay 1 Observation":
   Elements."Test result of syphilis assay 1 Observation" O
     where O.encounter.references(EncounterId)
@@ -8127,58 +9744,58 @@ define "Test result of syphilis assay 1 Observation":
 /* End of Test result of syphilis assay 1 */
 
 /*
-@dataElement: HIV.E.DE217 - Reactive - HIV.E.DE217
+@dataElement: HIV.E.DE217 - Reactive
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The result of the first syphilis assay in the testing strategy was reactive
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Reactive - HIV.E.DE217":
-  exists "Reactive - HIV.E.DE217 Condition"
-    or exists "Reactive - HIV.E.DE217 Observation"
-define "Reactive - HIV.E.DE217 Condition":
-  Elements."Reactive - HIV.E.DE217 Condition" C
+define "Reactive E.DE217":
+  exists "Reactive E.DE217 Condition"
+    or exists "Reactive E.DE217 Observation"
+define "Reactive E.DE217 Condition":
+  Elements."Reactive E.DE217 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Reactive - HIV.E.DE217 Observation":
-  Elements."Reactive - HIV.E.DE217 Observation" O
+define "Reactive E.DE217 Observation":
+  Elements."Reactive E.DE217 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Reactive - HIV.E.DE217 */
+/* End of Reactive E.DE217 */
 
 /*
-@dataElement: HIV.E.DE218 - Non-reactive - HIV.E.DE218
+@dataElement: HIV.E.DE218 - Non-reactive
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The result of the first syphilis assay in the testing strategy was non-reactive
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Non-reactive - HIV.E.DE218":
-  exists "Non-reactive - HIV.E.DE218 Condition"
-    or exists "Non-reactive - HIV.E.DE218 Observation"
-define "Non-reactive - HIV.E.DE218 Condition":
-  Elements."Non-reactive - HIV.E.DE218 Condition" C
+define "Non-reactive E.DE218":
+  exists "Non-reactive E.DE218 Condition"
+    or exists "Non-reactive E.DE218 Observation"
+define "Non-reactive E.DE218 Condition":
+  Elements."Non-reactive E.DE218 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Non-reactive - HIV.E.DE218 Observation":
-  Elements."Non-reactive - HIV.E.DE218 Observation" O
+define "Non-reactive E.DE218 Observation":
+  Elements."Non-reactive E.DE218 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Non-reactive - HIV.E.DE218 */
+/* End of Non-reactive E.DE218 */
 
 /*
-@dataElement: HIV.E.DE219 - Invalid - HIV.E.DE219
+@dataElement: HIV.E.DE219 - Invalid
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The result of the HIV assay in the testing strategy was invalid
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Invalid - HIV.E.DE219":
-  exists "Invalid - HIV.E.DE219 Condition"
-    or exists "Invalid - HIV.E.DE219 Observation"
-define "Invalid - HIV.E.DE219 Condition":
-  Elements."Invalid - HIV.E.DE219 Condition" C
+define "Invalid E.DE219":
+  exists "Invalid E.DE219 Condition"
+    or exists "Invalid E.DE219 Observation"
+define "Invalid E.DE219 Condition":
+  Elements."Invalid E.DE219 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Invalid - HIV.E.DE219 Observation":
-  Elements."Invalid - HIV.E.DE219 Observation" O
+define "Invalid E.DE219 Observation":
+  Elements."Invalid E.DE219 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Invalid - HIV.E.DE219 */
+/* End of Invalid E.DE219 */
 
 /*
 @dataElement: HIV.E.DE220 - Test result of syphilis assay 1 repeated
@@ -8186,6 +9803,8 @@ define "Invalid - HIV.E.DE219 Observation":
 @description: The result of the first syphilis assay repeated in the testing strategy
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Test result of syphilis assay 1 repeated":
+  exists "Test result of syphilis assay 1 repeated Observation"
 define "Test result of syphilis assay 1 repeated Observation":
   Elements."Test result of syphilis assay 1 repeated Observation" O
     where O.encounter.references(EncounterId)
@@ -8193,71 +9812,307 @@ define "Test result of syphilis assay 1 repeated Observation":
 /* End of Test result of syphilis assay 1 repeated */
 
 /*
-@dataElement: HIV.E.DE221 - Reactive - HIV.E.DE221
+@dataElement: HIV.E.DE221 - Reactive
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The result of the first syphilis assay repeated in the testing strategy was reactive
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Reactive - HIV.E.DE221":
-  exists "Reactive - HIV.E.DE221 Condition"
-    or exists "Reactive - HIV.E.DE221 Observation"
-define "Reactive - HIV.E.DE221 Condition":
-  Elements."Reactive - HIV.E.DE221 Condition" C
+define "Reactive E.DE221":
+  exists "Reactive E.DE221 Condition"
+    or exists "Reactive E.DE221 Observation"
+define "Reactive E.DE221 Condition":
+  Elements."Reactive E.DE221 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Reactive - HIV.E.DE221 Observation":
-  Elements."Reactive - HIV.E.DE221 Observation" O
+define "Reactive E.DE221 Observation":
+  Elements."Reactive E.DE221 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Reactive - HIV.E.DE221 */
+/* End of Reactive E.DE221 */
 
 /*
-@dataElement: HIV.E.DE222 - Non-reactive - HIV.E.DE222
+@dataElement: HIV.E.DE222 - Non-reactive
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The result of the first syphilis assay repeated in the testing strategy was non-reactive
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Non-reactive - HIV.E.DE222":
-  exists "Non-reactive - HIV.E.DE222 Condition"
-    or exists "Non-reactive - HIV.E.DE222 Observation"
-define "Non-reactive - HIV.E.DE222 Condition":
-  Elements."Non-reactive - HIV.E.DE222 Condition" C
+define "Non-reactive E.DE222":
+  exists "Non-reactive E.DE222 Condition"
+    or exists "Non-reactive E.DE222 Observation"
+define "Non-reactive E.DE222 Condition":
+  Elements."Non-reactive E.DE222 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Non-reactive - HIV.E.DE222 Observation":
-  Elements."Non-reactive - HIV.E.DE222 Observation" O
+define "Non-reactive E.DE222 Observation":
+  Elements."Non-reactive E.DE222 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Non-reactive - HIV.E.DE222 */
+/* End of Non-reactive E.DE222 */
 
 /*
-@dataElement: HIV.E.DE223 - Invalid - HIV.E.DE223
+@dataElement: HIV.E.DE223 - Invalid
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The result of the first syphilis assay repeated in the testing strategy was invalid
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Invalid - HIV.E.DE223":
-  exists "Invalid - HIV.E.DE223 Condition"
-    or exists "Invalid - HIV.E.DE223 Observation"
-define "Invalid - HIV.E.DE223 Condition":
-  Elements."Invalid - HIV.E.DE223 Condition" C
+define "Invalid E.DE223":
+  exists "Invalid E.DE223 Condition"
+    or exists "Invalid E.DE223 Observation"
+define "Invalid E.DE223 Condition":
+  Elements."Invalid E.DE223 Condition" C
     where C.prevalenceInterval() starts on or before Today
-define "Invalid - HIV.E.DE223 Observation":
-  Elements."Invalid - HIV.E.DE223 Observation" O
+define "Invalid E.DE223 Observation":
+  Elements."Invalid E.DE223 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Invalid - HIV.E.DE223 */
+/* End of Invalid E.DE223 */
 
 /*
-@dataElement: HIV.G.DE1 - CD4 count - HIV.G.DE1
+@dataElement: HIV.G.DE1 - CD4 count
 @activity: HIV.D20 Diagnostics
 @description: CD4 cell count in cells/mm^3
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "CD4 count - HIV.G.DE1 Observation":
-  Elements."CD4 count - HIV.G.DE1" O
+define "CD4 count G.DE1":
+  Elements."CD4 count G.DE1" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
-/* End of CD4 count - HIV.G.DE1 */
+define "CD4 count G.DE1 Value":
+  "CD4 count G.DE1" O
+  return O.value
+/* End of CD4 count G.DE1 */
+
+/*
+@dataElement: HIV.G.DE8 - Date of viral load sample collection
+@activity: HIV.D20 Diagnostics
+@description: Date and time when the sample was collected to test the client's HIV viral load
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Date of viral load sample collection G.DE8":
+  Elements."Date of viral load sample collection G.DE8" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+define "Date of viral load sample collection G.DE8 Value":
+  "Date of viral load sample collection G.DE8" O
+  return O.value
+/* End of Date of viral load sample collection G.DE8 */
+
+/*
+@dataElement: HIV.G.DE12 - Viral load test result
+@activity: HIV.D20 Diagnostics
+@description: Result from the viral load test in number of copies/mL
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Viral load test result G.DE12":
+  Elements."Viral load test result G.DE12" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+define "Viral load test result G.DE12 Value":
+  "Viral load test result G.DE12" O
+  return O.value
+/* End of Viral load test result G.DE12 */
+
+/*
+@dataElement: HIV.G.DE18 - HBsAg test result
+@activity: HIV.D20 Diagnostics
+@description: Hepatitis B virus test result (HBsAg)
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "HBsAg test result G.DE18":
+  exists "HBsAg test result G.DE18 Observation"
+define "HBsAg test result G.DE18 Observation":
+  Elements."HBsAg test result G.DE18 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of HBsAg test result G.DE18 */
+
+/*
+@dataElement: HIV.G.DE19 - Positive
+@activity: HIV.D20 Diagnostics
+@description: HBsAg test result was positive
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Positive G.DE19":
+  exists "Positive G.DE19 Condition"
+    or exists "Positive G.DE19 Observation"
+define "Positive G.DE19 Condition":
+  Elements."Positive G.DE19 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Positive G.DE19 Observation":
+  Elements."Positive G.DE19 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Positive G.DE19 */
+
+/*
+@dataElement: HIV.G.DE20 - Negative
+@activity: HIV.D20 Diagnostics
+@description: HBsAg test result was negative
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Negative G.DE20":
+  exists "Negative G.DE20 Condition"
+    or exists "Negative G.DE20 Observation"
+define "Negative G.DE20 Condition":
+  Elements."Negative G.DE20 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Negative G.DE20 Observation":
+  Elements."Negative G.DE20 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Negative G.DE20 */
+
+/*
+@dataElement: HIV.G.DE21 - Indeterminate
+@activity: HIV.D20 Diagnostics
+@description: HBsAg test result was indeterminate
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Indeterminate G.DE21":
+  exists "Indeterminate G.DE21 Condition"
+    or exists "Indeterminate G.DE21 Observation"
+define "Indeterminate G.DE21 Condition":
+  Elements."Indeterminate G.DE21 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Indeterminate G.DE21 Observation":
+  Elements."Indeterminate G.DE21 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Indeterminate G.DE21 */
+
+/*
+@dataElement: HIV.G.DE43 - HCV test result
+@activity: HIV.D20 Diagnostics
+@description: Hepatitis C virus test result (HCV antibody, HCV RNA or HCV core antigen)
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "HCV test result G.DE43":
+  exists "HCV test result G.DE43 Observation"
+define "HCV test result G.DE43 Observation":
+  Elements."HCV test result G.DE43 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of HCV test result G.DE43 */
+
+/*
+@dataElement: HIV.G.DE44 - Positive
+@activity: HIV.D20 Diagnostics
+@description: HCV test result was positive
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Positive G.DE44":
+  exists "Positive G.DE44 Condition"
+    or exists "Positive G.DE44 Observation"
+define "Positive G.DE44 Condition":
+  Elements."Positive G.DE44 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Positive G.DE44 Observation":
+  Elements."Positive G.DE44 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Positive G.DE44 */
+
+/*
+@dataElement: HIV.G.DE45 - Negative
+@activity: HIV.D20 Diagnostics
+@description: HCV test result was negative
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Negative G.DE45":
+  exists "Negative G.DE45 Condition"
+    or exists "Negative G.DE45 Observation"
+define "Negative G.DE45 Condition":
+  Elements."Negative G.DE45 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Negative G.DE45 Observation":
+  Elements."Negative G.DE45 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Negative G.DE45 */
+
+/*
+@dataElement: HIV.G.DE46 - Indeterminate
+@activity: HIV.D20 Diagnostics
+@description: HCV test result was indeterminate
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Indeterminate G.DE46":
+  exists "Indeterminate G.DE46 Condition"
+    or exists "Indeterminate G.DE46 Observation"
+define "Indeterminate G.DE46 Condition":
+  Elements."Indeterminate G.DE46 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Indeterminate G.DE46 Observation":
+  Elements."Indeterminate G.DE46 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Indeterminate G.DE46 */
+
+/*
+@dataElement: HIV.G.DE70 - Syphilis test result
+@activity: HIV.D20 Diagnostics
+@description: Result from syphilis test
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Syphilis test result G.DE70":
+  exists "Syphilis test result G.DE70 Observation"
+define "Syphilis test result G.DE70 Observation":
+  Elements."Syphilis test result G.DE70 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Syphilis test result G.DE70 */
+
+/*
+@dataElement: HIV.G.DE71 - Positive
+@activity: HIV.D20 Diagnostics
+@description: Test result is positive for syphilis
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Positive G.DE71":
+  exists "Positive G.DE71 Condition"
+    or exists "Positive G.DE71 Observation"
+define "Positive G.DE71 Condition":
+  Elements."Positive G.DE71 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Positive G.DE71 Observation":
+  Elements."Positive G.DE71 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Positive G.DE71 */
+
+/*
+@dataElement: HIV.G.DE72 - Negative
+@activity: HIV.D20 Diagnostics
+@description: Test result is negative for syphilis
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Negative G.DE72":
+  exists "Negative G.DE72 Condition"
+    or exists "Negative G.DE72 Observation"
+define "Negative G.DE72 Condition":
+  Elements."Negative G.DE72 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Negative G.DE72 Observation":
+  Elements."Negative G.DE72 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Negative G.DE72 */
+
+/*
+@dataElement: HIV.G.DE73 - Inconclusive
+@activity: HIV.D20 Diagnostics
+@description: Test result is inconclusive
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Inconclusive G.DE73":
+  exists "Inconclusive G.DE73 Condition"
+    or exists "Inconclusive G.DE73 Observation"
+define "Inconclusive G.DE73 Condition":
+  Elements."Inconclusive G.DE73 Condition" C
+    where C.prevalenceInterval() starts on or before Today
+define "Inconclusive G.DE73 Observation":
+  Elements."Inconclusive G.DE73 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Inconclusive G.DE73 */
 
 /*
 @dataElement: HIV.H.DE34 - HIV status of partner or contact
@@ -8265,6 +10120,8 @@ define "CD4 count - HIV.G.DE1 Observation":
 @description: HIV status of the partner or contact given by the index case
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "HIV status of partner or contact":
+  exists "HIV status of partner or contact Observation"
 define "HIV status of partner or contact Observation":
   Elements."HIV status of partner or contact Observation" O
     where O.encounter.references(EncounterId)
@@ -8278,13 +10135,7 @@ define "HIV status of partner or contact Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Already knew positive":
-  exists "Already knew positive Condition"
-    or exists "Already knew positive Observation"
-define "Already knew positive Condition":
-  Elements."Already knew positive Condition" C
-    where C.prevalenceInterval() starts on or before Today
-define "Already knew positive Observation":
-  Elements."Already knew positive Observation" O
+  Elements."Already knew positive" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
 /* End of Already knew positive */
@@ -8296,71 +10147,191 @@ define "Already knew positive Observation":
 */
 // TODO: Replace placeholder with relevant CQL logic
 define "Newly diagnosed":
-  exists "Newly diagnosed Condition"
-    or exists "Newly diagnosed Observation"
-define "Newly diagnosed Condition":
-  Elements."Newly diagnosed Condition" C
-    where C.prevalenceInterval() starts on or before Today
-define "Newly diagnosed Observation":
-  Elements."Newly diagnosed Observation" O
+  Elements."Newly diagnosed" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
 /* End of Newly diagnosed */
 
 /*
-@dataElement: HIV.H.DE37 - Negative - HIV.H.DE37
+@dataElement: HIV.H.DE37 - Negative
 @activity: HIV.B6 Capture or update client history
 @description: The partner or contact of the index case is newly diagnosed is HIV-negative
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Negative - HIV.H.DE37":
-  exists "Negative - HIV.H.DE37 Condition"
-    or exists "Negative - HIV.H.DE37 Observation"
-define "Negative - HIV.H.DE37 Condition":
-  Elements."Negative - HIV.H.DE37 Condition" C
-    where C.prevalenceInterval() starts on or before Today
-define "Negative - HIV.H.DE37 Observation":
-  Elements."Negative - HIV.H.DE37 Observation" O
+define "Negative H.DE37 Observation":
+  Elements."Negative H.DE37" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Negative - HIV.H.DE37 */
+/* End of Negative H.DE37 */
 
 /*
-@dataElement: HIV.SRV.DE5 - HIV clinical stage - HIV.SRV.DE5
+@dataElement: HIV.H.DE47 - On ART
+@activity: HIV.H3 Record outreach and result
+@description: Client is currently taking ART 
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "On ART H.DE47 Observation":
+  Elements."On ART H.DE47" MS
+    where MS.context.references(EncounterId)
+      or MS.effective.toInterval() starts on or before Today
+/* End of On ART H.DE47 */
+
+/*
+@dataElement: HIV.PRV.DE1 - At elevated risk for HIV acquisition
+@activity: HIV.B6 Capture or update client history
+@description: Client is at elevated risk for HIV acquisition, defined according to country/programme context
+*/
+define "At elevated risk for HIV acquisition PRV.DE1 Observation":
+  Elements."At elevated risk for HIV acquisition PRV.DE1" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of At elevated risk for HIV acquisition PRV.DE1 */
+
+/*
+@dataElement: HIV.SRV.DE2 - HIV test result
+@activity: HIV.B7 Test for HIV using testing algorithm
+@description: The result from HIV testing after applying the testing algorithm
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "HIV test result SRV.DE2":
+  exists "HIV test result SRV.DE2 Observation"
+define "HIV test result SRV.DE2 Observation":
+  Elements."HIV test result SRV.DE2 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of HIV test result SRV.DE2 */
+
+/*
+@dataElement: HIV.SRV.DE5 - HIV clinical stage
 @activity: HIV.D8 Capture or update client history
 @description: WHO clinical stage of client based on signs and symptoms. WHO clinical staging is a way to categorize HIV disease severity based on new or recurrent clinical events. There are 4 WHO clinical stages that range from mild symptoms (WHO clinical stage 1) to severe symptoms (WHO clinical stage 4).
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "HIV clinical stage - HIV.SRV.DE5 Observation":
-  Elements."HIV clinical stage - HIV.SRV.DE5 Observation" O
+define "HIV clinical stage SRV.DE5":
+  exists "HIV clinical stage SRV.DE5 Observation"
+define "HIV clinical stage SRV.DE5 Observation":
+  Elements."HIV clinical stage SRV.DE5 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of HIV clinical stage - HIV.SRV.DE5 */
+/* End of HIV clinical stage SRV.DE5 */
 
 /*
-@dataElement: HIV.SRV.DE8 - CD4 count - HIV.SRV.DE8
+@dataElement: HIV.SRV.DE6 - ART start date
+@activity: HIV.B8 Provide post-test counselling
+@description: The date on which the client started or restarted antiretroviral therapy (ART)
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "ART start date SRV.DE6":
+  Elements."ART start date SRV.DE6" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+define "ART start date SRV.DE6 Value":
+  "ART start date SRV.DE6" O
+  return O.value
+/* End of ART start date SRV.DE6 */
+
+/*
+@dataElement: HIV.SRV.DE7 - Currently pregnant
+@activity: HIV.B6 Capture or update client history
+@description: Client is currently pregnant
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Currently pregnant SRV.DE7":
+  exists "Currently pregnant SRV.DE7 Observation"
+define "Currently pregnant SRV.DE7 Observation":
+  Elements."Currently pregnant SRV.DE7 Observation" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+/* End of Currently pregnant SRV.DE7 */
+
+/*
+@dataElement: HIV.SRV.DE8 - CD4 count
 @activity: HIV.D20 Diagnostics
 @description: CD4 cell count in cells/mm^3
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "CD4 count - HIV.SRV.DE8 Observation":
-  Elements."CD4 count - HIV.SRV.DE8" O
+define "CD4 count SRV.DE8":
+  Elements."CD4 count SRV.DE8" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
-/* End of CD4 count - HIV.SRV.DE8 */
+define "CD4 count SRV.DE8 Value":
+  "CD4 count SRV.DE8" O
+  return O.value
+/* End of CD4 count SRV.DE8 */
 
 /*
-@dataElement: HIV.SRV.DE21 - Test result of HIV assay 1 - HIV.SRV.DE21
+@dataElement: HIV.SRV.DE12 - Date of viral load sample collection
+@activity: HIV.D10 Counsel returning client
+@description: Date and time when the sample was collected to test the client's HIV viral load
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Date of viral load sample collection SRV.DE12":
+  Elements."Date of viral load sample collection SRV.DE12" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+define "Date of viral load sample collection SRV.DE12 Value":
+  "Date of viral load sample collection SRV.DE12" O
+  return O.value
+/* End of Date of viral load sample collection SRV.DE12 */
+
+/*
+@dataElement: HIV.SRV.DE13 - Viral load test result
+@activity: HIV.D20 Diagnostics
+@description: Result from the viral load test in number of copies/mL
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Viral load test result SRV.DE13":
+  Elements."Viral load test result SRV.DE13" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+define "Viral load test result SRV.DE13 Value":
+  "Viral load test result SRV.DE13" O
+  return O.value
+/* End of Viral load test result SRV.DE13 */
+
+/*
+@dataElement: HIV.SRV.DE15 - Visit date
+@activity: HIV.A2 Gather client details
+@description: The date and time of the client's visit
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "Visit date SRV.DE15":
+  Elements."Visit date SRV.DE15" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+define "Visit date SRV.DE15 Value":
+  "Visit date SRV.DE15" O
+  return O.value
+/* End of Visit date SRV.DE15 */
+
+/*
+@dataElement: HIV.SRV.DE18 - ANC contact date
+@activity: HIV.E1 Capture or update mother's history
+@description: The date and time of the client's ANC contact (in the ANC DAK this is called 'Contact date')
+*/
+// TODO: Replace placeholder with relevant CQL logic
+define "ANC contact date SRV.DE18":
+  Elements."ANC contact date SRV.DE18" O
+    where O.encounter.references(EncounterId)
+      or O.effective.toInterval() starts on or before Today
+define "ANC contact date SRV.DE18 Value":
+  "ANC contact date SRV.DE18" O
+  return O.value
+/* End of ANC contact date SRV.DE18 */
+
+/*
+@dataElement: HIV.SRV.DE21 - Test result of HIV assay 1
 @activity: HIV.E4 Test mother for HIV using testing algorithm
 @description: The result of the first HIV assay in the testing strategy
 */
 // TODO: Replace placeholder with relevant CQL logic
-define "Test result of HIV assay 1 - HIV.SRV.DE21 Observation":
-  Elements."Test result of HIV assay 1 - HIV.SRV.DE21 Observation" O
+define "Test result of HIV assay 1 SRV.DE21":
+  exists "Test result of HIV assay 1 SRV.DE21 Observation"
+define "Test result of HIV assay 1 SRV.DE21 Observation":
+  Elements."Test result of HIV assay 1 SRV.DE21 Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-/* End of Test result of HIV assay 1 - HIV.SRV.DE21 */
+/* End of Test result of HIV assay 1 SRV.DE21 */
 
 /*
 @dataElement: HIV.Config.DE6 - Malaria-endemic setting
@@ -8368,11 +10339,12 @@ define "Test result of HIV assay 1 - HIV.SRV.DE21 Observation":
 @description: Whether the setting is a malaria-endemic setting
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "Malaria-endemic setting":
+  exists "Malaria-endemic setting Observation"
 define "Malaria-endemic setting Observation":
-  Elements."Malaria-endemic setting" O
+  Elements."Malaria-endemic setting Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
 /* End of Malaria-endemic setting */
 
 /*
@@ -8381,6 +10353,8 @@ define "Malaria-endemic setting Observation":
 @description: HIV burden of the setting (high or low) based on the national HIV prevalence or where the HIV prevalence and/or incidence in a geographical setting is higher than national prevalence and, therefore, needs priority in the HIV response
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "HIV burden of the setting":
+  exists "HIV burden of the setting Observation"
 define "HIV burden of the setting Observation":
   Elements."HIV burden of the setting Observation" O
     where O.encounter.references(EncounterId)
@@ -8429,11 +10403,12 @@ define "Low HIV burden setting Observation":
 @description: Is HPV DNA testing operational at the health facility for cervical cancer screening?
 */
 // TODO: Replace placeholder with relevant CQL logic
+define "HPV DNA testing operational at the health facility":
+  exists "HPV DNA testing operational at the health facility Observation"
 define "HPV DNA testing operational at the health facility Observation":
-  Elements."HPV DNA testing operational at the health facility" O
+  Elements."HPV DNA testing operational at the health facility Observation" O
     where O.encounter.references(EncounterId)
       or O.effective.toInterval() starts on or before Today
-    return O.value
 /* End of HPV DNA testing operational at the health facility */
 
 

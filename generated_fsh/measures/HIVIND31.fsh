@@ -8,7 +8,7 @@ Title: "HIV.IND.31 Late ART initiation"
 * url = "http://smart.who.int/HIV/Measure/HIVIND31"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND31"
 * title = "HIV.IND.31 Late ART initiation"
 * publisher = "World Health Organization (WHO)"
@@ -33,3 +33,7 @@ Title: "HIV.IND.31 Late ART initiation"
     * code = $measure-population#numerator "Numerator"
     * criteria.language = #text/cql-identifier
     * criteria.expression = "Numerator"
+  * stratifier[+]
+    * id = "HIV.IND.31.S"
+    * criteria.language = #text/cql-identifier
+    * criteria.expression = "Stratification"

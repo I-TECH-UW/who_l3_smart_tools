@@ -8,7 +8,7 @@ Title: "HIV.IND.29 People living with HIV on ART who have suppressed viral load"
 * url = "http://smart.who.int/HIV/Measure/HIVIND29"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND29"
 * title = "HIV.IND.29 People living with HIV on ART who have suppressed viral load"
 * publisher = "World Health Organization (WHO)"
@@ -29,7 +29,11 @@ Title: "HIV.IND.29 People living with HIV on ART who have suppressed viral load"
     * criteria.expression = "Denominator"
   * population[numerator]
     * id = "HIV.IND.29.NUM"
-    * description = "Number of people living with HIV on ART for at least six months and with at least one routine VL test result who have virological suppression (<1000 copies/mL*) during the reporting period."
+    * description = "Number of people living with HIV on ART for at least six months and with at least one routine VL test result who have virological suppression (<1000 copies/mL) during the reporting period."
     * code = $measure-population#numerator "Numerator"
     * criteria.language = #text/cql-identifier
     * criteria.expression = "Numerator"
+  * stratifier[+]
+    * id = "HIV.IND.29.S"
+    * criteria.language = #text/cql-identifier
+    * criteria.expression = "Stratification"

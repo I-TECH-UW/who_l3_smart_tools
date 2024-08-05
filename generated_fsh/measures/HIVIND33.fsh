@@ -8,7 +8,7 @@ Title: "HIV.IND.33 Early viral load testing (at six months)"
 * url = "http://smart.who.int/HIV/Measure/HIVIND33"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND33"
 * title = "HIV.IND.33 Early viral load testing (at six months)"
 * publisher = "World Health Organization (WHO)"
@@ -33,3 +33,7 @@ Title: "HIV.IND.33 Early viral load testing (at six months)"
     * code = $measure-population#numerator "Numerator"
     * criteria.language = #text/cql-identifier
     * criteria.expression = "Numerator"
+  * stratifier[+]
+    * id = "HIV.IND.33.S"
+    * criteria.language = #text/cql-identifier
+    * criteria.expression = "Stratification"

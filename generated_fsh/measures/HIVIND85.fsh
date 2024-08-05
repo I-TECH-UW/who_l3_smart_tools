@@ -8,7 +8,7 @@ Title: "HIV.IND.85 HBsAg positivity, HIV prevention services"
 * url = "http://smart.who.int/HIV/Measure/HIVIND85"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND85"
 * title = "HIV.IND.85 HBsAg positivity, HIV prevention services"
 * publisher = "World Health Organization (WHO)"

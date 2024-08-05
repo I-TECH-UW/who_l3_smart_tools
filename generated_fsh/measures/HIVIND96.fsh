@@ -8,7 +8,7 @@ Title: "HIV.IND.96 Cervical cancer survival"
 * url = "http://smart.who.int/HIV/Measure/HIVIND96"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND96"
 * title = "HIV.IND.96 Cervical cancer survival"
 * publisher = "World Health Organization (WHO)"

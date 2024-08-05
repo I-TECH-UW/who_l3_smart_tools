@@ -8,7 +8,7 @@ Title: "HIV.IND.22 HTS partner services"
 * url = "http://smart.who.int/HIV/Measure/HIVIND22"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND22"
 * title = "HIV.IND.22 HTS partner services"
 * publisher = "World Health Organization (WHO)"
@@ -36,3 +36,7 @@ Title: "HIV.IND.22 HTS partner services"
     * code = $measure-population#measure-observation "Measure Observation"
     * criteria.language = #text/cql-identifier
     * criteria.expression = "Measure Observation"
+  * stratifier[+]
+    * id = "HIV.IND.22.S"
+    * criteria.language = #text/cql-identifier
+    * criteria.expression = "Stratification"

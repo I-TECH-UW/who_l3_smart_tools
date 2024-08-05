@@ -8,7 +8,7 @@ Title: "HIV.IND.79 Repeat diagnosis of STI syndrome, HIV-positive clients"
 * url = "http://smart.who.int/HIV/Measure/HIVIND79"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND79"
 * title = "HIV.IND.79 Repeat diagnosis of STI syndrome, HIV-positive clients"
 * publisher = "World Health Organization (WHO)"

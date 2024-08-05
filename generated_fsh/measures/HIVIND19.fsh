@@ -8,7 +8,7 @@ Title: "HIV.IND.19 HTS test volume and positivity"
 * url = "http://smart.who.int/HIV/Measure/HIVIND19"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND19"
 * title = "HIV.IND.19 HTS test volume and positivity"
 * publisher = "World Health Organization (WHO)"
@@ -34,22 +34,6 @@ Title: "HIV.IND.19 HTS test volume and positivity"
     * criteria.language = #text/cql-identifier
     * criteria.expression = "Numerator"
   * stratifier[+]
-    * id = "HIV.IND.19.S.AG"
+    * id = "HIV.IND.19.S"
     * criteria.language = #text/cql-identifier
-    * criteria.expression = "Administrative Gender Stratifier"
-  * stratifier[+]
-    * id = "HIV.IND.19.S.A"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "Age Stratifier"
-  * stratifier[+]
-    * id = "HIV.IND.19.S.GR"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "Geographic Region Stratifier"
-  * stratifier[+]
-    * id = "HIV.IND.19.S.P"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "patientGroups Stratifier"
-  * stratifier[+]
-    * id = "HIV.IND.19.S.T"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "TB Stratifier"
+    * criteria.expression = "Stratification"

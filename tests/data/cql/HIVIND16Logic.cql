@@ -76,6 +76,8 @@ include FHIRHelpers version '4.0.1'
 include WHOCommon called WCom
 include HIVConceptsCustom called HCC
 
+include HIVIndicatorElements called HIE
+
 // Indicator Definition
 parameter "Measurement Period" Interval<Date> default Interval[@2023-01-01, @2023-01-30]
 
@@ -125,13 +127,13 @@ define "Denominator":
  */
 
 define "Administrative Gender Stratifier":
-	HIC."By Administrative Gender Stratifier"
+	HIE."By Administrative Gender Stratifier"
 
 define "Age Stratifier":
-	HIC."By Age Stratifier 3"
+	HIE."By Age Stratifier 3"
 
 define "Geographic Region Stratifier":
-	HIC."By Geographic Region Stratifier"
+	HIE."By Geographic Region Stratifier"
 
 define "Setting":
     HIC."setting"
@@ -147,9 +149,9 @@ define "VMMC_adverse_event_timing":
 //service site not provided?
 
 define "Stratification":
- HIC."By Administrative Gender Stratifier".code 
-  + ':' + HIC."By Age Stratifier"
-+ ':' + HIC."By Geographic Region Stratifier"
+ HIE."By Administrative Gender Stratifier".code 
+  + ':' + HIE."By Age Stratifier"
++ ':' + HIE."By Geographic Region Stratifier"
 + Combine(HIC.setting, ':')
 + ':' + HIC."VMMC_adverse_event_type".code 
 + ':' + HIC."VMMC_adverse_event_timing".code 

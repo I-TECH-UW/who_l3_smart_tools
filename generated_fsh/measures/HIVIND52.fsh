@@ -8,7 +8,7 @@ Title: "HIV.IND.52 TB treatment initiation among diagnosed"
 * url = "http://smart.who.int/HIV/Measure/HIVIND52"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND52"
 * title = "HIV.IND.52 TB treatment initiation among diagnosed"
 * publisher = "World Health Organization (WHO)"

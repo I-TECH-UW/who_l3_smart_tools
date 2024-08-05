@@ -8,7 +8,7 @@ Title: "HIV.IND.37 Viral suppression at labour and delivery"
 * url = "http://smart.who.int/HIV/Measure/HIVIND37"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND37"
 * title = "HIV.IND.37 Viral suppression at labour and delivery"
 * publisher = "World Health Organization (WHO)"

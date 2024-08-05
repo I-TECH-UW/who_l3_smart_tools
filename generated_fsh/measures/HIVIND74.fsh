@@ -8,7 +8,7 @@ Title: "HIV.IND.74 Gonorrhoea treatment coverage, HIV prevention services"
 * url = "http://smart.who.int/HIV/Measure/HIVIND74"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND74"
 * title = "HIV.IND.74 Gonorrhoea treatment coverage, HIV prevention services"
 * publisher = "World Health Organization (WHO)"

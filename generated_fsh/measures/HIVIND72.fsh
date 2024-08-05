@@ -8,7 +8,7 @@ Title: "HIV.IND.72 Gonorrhoea test positivity, HIV prevention services"
 * url = "http://smart.who.int/HIV/Measure/HIVIND72"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND72"
 * title = "HIV.IND.72 Gonorrhoea test positivity, HIV prevention services"
 * publisher = "World Health Organization (WHO)"

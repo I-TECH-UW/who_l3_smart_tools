@@ -8,7 +8,7 @@ Title: "HIV.IND.63 Syphilis test positivity, HIV-positive clients"
 * url = "http://smart.who.int/HIV/Measure/HIVIND63"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND63"
 * title = "HIV.IND.63 Syphilis test positivity, HIV-positive clients"
 * publisher = "World Health Organization (WHO)"

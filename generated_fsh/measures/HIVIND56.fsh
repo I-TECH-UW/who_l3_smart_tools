@@ -8,7 +8,7 @@ Title: "HIV.IND.56 Retention in DSD ART models"
 * url = "http://smart.who.int/HIV/Measure/HIVIND56"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND56"
 * title = "HIV.IND.56 Retention in DSD ART models"
 * publisher = "World Health Organization (WHO)"
@@ -29,7 +29,7 @@ Title: "HIV.IND.56 Retention in DSD ART models"
     * criteria.expression = "Denominator"
   * population[numerator]
     * id = "HIV.IND.56.NUM"
-    * description = "Number of people on ART known to be on treatment 12 months after enrolling in a DSD ART model* (also at 24, 36, 48, 60 months, etc. after enrolment in the model)"
+    * description = "Number of people on ART known to be on treatment 12 months after enrolling in a DSD ART model (also at 24, 36, 48, 60 months, etc. after enrolment in the model)"
     * code = $measure-population#numerator "Numerator"
     * criteria.language = #text/cql-identifier
     * criteria.expression = "Numerator"

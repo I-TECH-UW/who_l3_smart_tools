@@ -8,7 +8,7 @@ Title: "HIV.IND.28 Total attrition from ART"
 * url = "http://smart.who.int/HIV/Measure/HIVIND28"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND28"
 * title = "HIV.IND.28 Total attrition from ART"
 * publisher = "World Health Organization (WHO)"
@@ -29,23 +29,11 @@ Title: "HIV.IND.28 Total attrition from ART"
     * criteria.expression = "Denominator"
   * population[numerator]
     * id = "HIV.IND.28.NUM"
-    * description = "*Number of people living with HIV reported on ART at the end of the last reporting period | plus | Number of people living with HIV newly initiated on ART during the current reporting period | minus | Total number of people living with HIV on ART at the end of the current reporting period"
+    * description = "Number of people living with HIV reported on ART at the end of the last reporting period | plus | Number of people living with HIV newly initiated on ART during the current reporting period | minus | Total number of people living with HIV on ART at the end of the current reporting period"
     * code = $measure-population#numerator "Numerator"
     * criteria.language = #text/cql-identifier
     * criteria.expression = "Numerator"
   * stratifier[+]
-    * id = "HIV.IND.28.S.AG"
+    * id = "HIV.IND.28.S"
     * criteria.language = #text/cql-identifier
-    * criteria.expression = "Administrative Gender Stratifier"
-  * stratifier[+]
-    * id = "HIV.IND.28.S.A"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "Age Stratifier"
-  * stratifier[+]
-    * id = "HIV.IND.28.S.GR"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "Geographic Region Stratifier"
-  * stratifier[+]
-    * id = "HIV.IND.28.S.P"
-    * criteria.language = #text/cql-identifier
-    * criteria.expression = "patientGroups Stratifier"
+    * criteria.expression = "Stratification"

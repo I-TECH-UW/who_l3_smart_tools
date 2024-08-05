@@ -8,7 +8,7 @@ Title: "HIV.IND.34 Appropriate second viral load test after adherence counsellin
 * url = "http://smart.who.int/HIV/Measure/HIVIND34"
 * status = #draft
 * experimental = true
-* date = "2024-07-22"
+* date = "2024-08-05"
 * name = "HIVIND34"
 * title = "HIV.IND.34 Appropriate second viral load test after adherence counselling"
 * publisher = "World Health Organization (WHO)"
@@ -29,7 +29,11 @@ Title: "HIV.IND.34 Appropriate second viral load test after adherence counsellin
     * criteria.expression = "Denominator"
   * population[numerator]
     * id = "HIV.IND.34.NUM"
-    * description = "Number of people living with HIV on ART who received a follow-up VL test three months after a VL test result of ≥1000 copies/mL during the reporting period*"
+    * description = "Number of people living with HIV on ART who received a follow-up VL test three months after a VL test result of ≥1000 copies/mL during the reporting period"
     * code = $measure-population#numerator "Numerator"
     * criteria.language = #text/cql-identifier
     * criteria.expression = "Numerator"
+  * stratifier[+]
+    * id = "HIV.IND.34.S"
+    * criteria.language = #text/cql-identifier
+    * criteria.expression = "Stratification"
