@@ -68,7 +68,7 @@ class L2Row:
         self.coding_data_element = coding_data_element
 
     def validate_coding_data_element(self) -> bool:
-        if self.data_type == "Code" and not self.coding_data_element:
+        if self.data_type == "Codes" and not self.coding_data_element:
             raise ValueError(
                 f"Coding Data Element is required for data element {self.data_element_id}"
                 f"of type Code"
@@ -127,7 +127,7 @@ class L2Row:
         }
 
     def to_valueset_item(self) -> Optional[dict[str, str]]:
-        if self.data_type == "Code":
+        if self.data_type == "Codes":
             return {"id": self.data_element_id, "label": self.data_element_label}
         return None
 
@@ -181,13 +181,13 @@ class L2Dictionary:
         self.valuesets = {}
 
     def set_active_coding(self, row: L2Row) -> None:
-        if self.active_coding_data_element and row.data_type != "Code":
+        if self.active_coding_data_element and row.data_type != "Codes":
             self.active_coding_data_element = None
         if row.data_type == "Coding":
             self.active_coding_data_element = row.data_element_id
 
     def add_to_model(self, sheet_name: str, row: L2Row) -> None:
-        if row.data_type == "Code":
+        if row.data_type == "Codes":
             return
         _id = remove_special_characters(sheet_name)
         if _id in self.models:
@@ -212,7 +212,7 @@ class L2Dictionary:
                 self.models[_id]["invariants"].append(row_invariant)
 
     def add_to_questionnaire(self, row: L2Row) -> None:
-        if row.data_type == "Code":
+        if row.data_type == "Codes":
             return
         title = row.questionare_title
         if title in self.questionnaires:
@@ -225,7 +225,7 @@ class L2Dictionary:
             }
 
     def add_to_valueset(self, row: L2Row) -> None:
-        if row.data_type == "Code":
+        if row.data_type == "Codes":
             if self.active_coding_data_element in self.valuesets:
                 self.valuesets[self.active_coding_data_element]["v_items"].append(
                     row.to_valueset_item()
