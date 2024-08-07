@@ -67,6 +67,19 @@ class L2Row:
         self.required = raw_row["Required"]
         self.coding_data_element = coding_data_element
 
+    @property
+    def map_cardinality(self):
+        minimum = "0"
+        maximum = "1"
+
+        if self.required == "R":
+            minimum = "1"
+
+        if self.choice_type == "Select all that apply":
+            maximum = "*"
+
+        return f"{minimum}..{maximum}"
+
     def validate_coding_data_element(self) -> bool:
         if self.data_type == "Codes" and not self.coding_data_element:
             raise ValueError(
@@ -109,7 +122,7 @@ class L2Row:
         return {
             "id": self.data_element_id,
             "slug": to_camel_case(self.data_element_label),
-            "condition": "1..1",
+            "condition": self.map_cardinality,
             "type": DATA_TYPE_MAP[self.data_type],
             "label": self.data_element_label,
             "description": self.description,
