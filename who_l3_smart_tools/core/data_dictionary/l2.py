@@ -269,8 +269,8 @@ class L2Dictionary:
                 self.output_path, concepts_dir, f"HIVConcepts.{_type}"
             )
             os.makedirs(os.path.join(self.output_path, concepts_dir), exist_ok=True)
-            fhs_template = jinja_env.get_template(f"concepts.{_type}.j2")
-            render_to_file(fhs_template, {"concepts": self.concepts}, output_path)
+            template = jinja_env.get_template(f"concepts.{_type}.j2")
+            render_to_file(template, {"concepts": self.concepts}, output_path)
 
     def write_models(self):
         models_dir = "models"
