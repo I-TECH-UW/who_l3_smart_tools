@@ -116,6 +116,7 @@ class L2Row:
             "id": self.data_element_id,
             "label": self.data_element_label,
             "description": self.description,
+            "data_type": self.data_type,
         }
 
     def to_model_item(self) -> dict[str, str]:
@@ -143,13 +144,6 @@ class L2Row:
         if self.data_type == "Codes":
             return {"id": self.data_element_id, "label": self.data_element_label}
         return None
-
-    def to_concept(self) -> dict[str, str]:
-        return {
-            "id": self.data_element_id,
-            "label": self.data_element_label,
-            "description": self.description,
-        }
 
 
 # pylint: disable=too-many-instance-attributes
@@ -263,17 +257,20 @@ class L2Dictionary:
                 raw_row = dict(zip(header, row))
                 l2_row = L2Row(raw_row, self.active_coding_data_element)
                 self.set_active_coding(l2_row)
-                self.concepts.append(l2_row.to_concept())
+                self.concepts.append(l2_row.to_concept_item())
                 self.add_to_model(sheet_name, l2_row)
                 self.add_to_questionnaire(l2_row)
                 self.add_to_valueset(l2_row)
 
     def write_concepts(self):
-        concepts_dir = "codesystems"
-        output_path = os.path.join(self.output_path, concepts_dir, "HIVConcepts.fsh")
-        os.makedirs(os.path.join(self.output_path, concepts_dir), exist_ok=True)
-        template = jinja_env.get_template("concepts.fsh.j2")
-        render_to_file(template, {"concepts": self.concepts}, output_path)
+        for _type in ["cql", "fsh"]:
+            concepts_dir = "codesystems"
+            output_path = os.path.join(
+                self.output_path, concepts_dir, f"HIVConcepts.{_type}"
+            )
+            os.makedirs(os.path.join(self.output_path, concepts_dir), exist_ok=True)
+            fhs_template = jinja_env.get_template(f"concepts.{_type}.j2")
+            render_to_file(fhs_template, {"concepts": self.concepts}, output_path)
 
     def write_models(self):
         models_dir = "models"
