@@ -1,4 +1,5 @@
 import os
+from collections import defaultdict
 from typing import Optional
 
 from openpyxl import load_workbook
@@ -244,6 +245,20 @@ class L2Dictionary:
                     "id": self.active_coding_data_element,
                 }
 
+    def format_concepts_for_cql(self) -> list[dict[str, str]]:
+        reformatted_concepts = []
+        concept_by_label = defaultdict(list)
+        for concept in self.concepts:
+            concept_by_label[concept["label"]].append(concept)
+        for label, concepts in concept_by_label.items():
+            if len(concepts) > 1:
+                for concept in concepts:
+                    concept["label"] = f"{label} - {concept["id"]}"
+                    reformatted_concepts.append(concept)
+            else:
+                reformatted_concepts.extend(concepts)
+        return reformatted_concepts
+
     def process(self):
         for sheet_name in self.workbook.sheetnames:
             if not sheet_name.startswith(self.sheet_name_prefix):
@@ -264,13 +279,17 @@ class L2Dictionary:
 
     def write_concepts(self):
         for _type in ["cql", "fsh"]:
+            if _type == "cql":
+                concepts = self.format_concepts_for_cql()
+            else:
+                concepts = self.concepts
             concepts_dir = "codesystems"
             output_path = os.path.join(
                 self.output_path, concepts_dir, f"HIVConcepts.{_type}"
             )
             os.makedirs(os.path.join(self.output_path, concepts_dir), exist_ok=True)
             template = jinja_env.get_template(f"concepts.{_type}.j2")
-            render_to_file(template, {"concepts": self.concepts}, output_path)
+            render_to_file(template, {"concepts": concepts}, output_path)
 
     def write_models(self):
         models_dir = "models"
