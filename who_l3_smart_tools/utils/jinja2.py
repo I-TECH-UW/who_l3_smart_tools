@@ -8,6 +8,7 @@ DATA_TYPE_MAP = {
     "Coding": "choice",
     "ID": "string",
     "Quantity": "integer",
+    "Codes": "codes",
 }
 
 

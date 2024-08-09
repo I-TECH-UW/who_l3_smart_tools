@@ -1,0 +1,21 @@
+// **Automatically generated from DAK Data Dictionary**
+
+// This file contains all concepts from the Data Dictionary that are labeled
+// as linked to Aggregate Indicators in the indicator CQL files and CDS CQL files.
+
+// Valuesets reference the IG ValueSet definitions and are labeled with `Choices`
+// Codes are provided for each Data Dictionary concept
+// Specific Data Element IDs are appended to the label if the label is not unique within the DAK
+
+library HIVConcepts
+codesystem "HIVConcepts": 'http://smart.who.int/hiv/CodeSystem/HIVConcepts'
+
+{% for concept in concepts %}
+{% if concept.data_type == 'Coding' %}
+valueset "{{ concept.label }} Choices": 'http://smart.who.int/hiv/ValueSet/{{ concept.id}}'
+{% endif %}
+{% endfor %}
+
+{% for concept in concepts %}
+code "{{ concept.label }}": '{{ concept.id }}' from "HIVConcepts" display '{{ concept.label}}'
+{% endfor %}

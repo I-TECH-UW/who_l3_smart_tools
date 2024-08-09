@@ -1,0 +1,14 @@
+ValueSet: {{ valueset.id }}
+Title: "{{ valueset.title }} ValueSet"
+Description: "Value set of {{ valueset.description }}"
+* ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-shareablevalueset"
+* ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablevalueset"
+* ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-computablevalueset"
+* ^meta.profile[+] = "http://smart.who.int/base/StructureDefinition/SGValueSet"
+* ^status = #active
+* ^experimental = true
+* ^name = "{{ valueset.name }}"
+
+{% for item in valueset.v_items %}
+* HIVConcepts#{{ item.id }} "{{ item.label }}"
+{% endfor %}

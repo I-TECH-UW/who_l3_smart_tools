@@ -1,0 +1,26 @@
+{% for invariant in model.invariants %}
+Invariant:    {{ invariant.id }}
+Description:  "{{ invariant.description }}"
+Expression:   "{{ invariant.expression }}"
+Severity:     #{{ invariant.severity }}
+
+{% endfor %}
+
+Logical: {{ model.id }}
+Title: "{{ model.title }}"
+Description: ""
+* ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-shareablestructuredefinition"
+* ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablestructuredefinition"
+* ^meta.profile[+] = "http://smart.who.int/base/StructureDefinition/SGLogicalModel"
+* ^extension[http://hl7.org/fhir/tools/StructureDefinition/logical-target].valueBoolean = true
+* ^experimental = true
+* ^name = "{{ model.id }}"
+* ^status = #active
+
+{% for item in model.m_items %}
+* {{ item.slug }} {{ item.condition }} {{ item.type }} "{{ item.label }}" "{{ item.description }}"
+  * ^code[+] = HIVConcepts#{{ item.id }}
+{% if item.type == "Coding" %}
+* referredBy from {{ item.id }}
+{% endif %}
+{% endfor %}
