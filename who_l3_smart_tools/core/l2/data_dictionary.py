@@ -4,7 +4,7 @@ from typing import Optional
 
 from openpyxl import load_workbook
 
-from who_l3_smart_tools.core.data_dictionary.utils import (
+from who_l3_smart_tools.core.l2.utils import (
     remove_special_characters,
     to_camel_case,
 )

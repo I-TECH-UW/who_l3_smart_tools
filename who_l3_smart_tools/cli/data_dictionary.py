@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 import argparse
 
-from who_l3_smart_tools.core.data_dictionary.l2 import L2Dictionary
+from who_l3_smart_tools.core.l2.data_dictionary import L2Dictionary
 
 
 def main():
