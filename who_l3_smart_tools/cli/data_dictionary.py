@@ -12,7 +12,7 @@ def main():
         "-i",
         "--input",
         required=True,
-        help="Path to the input Excel file.",
+        help="Path to the L2 Data Dictionary",
     )
     parser.add_argument(
         "-o",
