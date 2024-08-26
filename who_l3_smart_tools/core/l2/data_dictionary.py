@@ -69,7 +69,7 @@ class L2Row:
         self.coding_data_element = coding_data_element
 
     @property
-    def map_cardinality(self):
+    def cardinality(self):
         minimum = "0"
         maximum = "1"
 
@@ -124,7 +124,7 @@ class L2Row:
         return {
             "id": self.data_element_id,
             "slug": to_camel_case(self.data_element_label),
-            "condition": self.map_cardinality,
+            "condition": self.cardinality,
             "type": DATA_TYPE_MAP[self.data_type],
             "label": self.data_element_label,
             "description": self.description,
