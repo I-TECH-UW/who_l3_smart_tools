@@ -66,6 +66,8 @@ class L2Row:
         self.input_options = raw_row["Input Options"]
         self.validation_condition = raw_row["Validation Condition"]
         self.required = raw_row["Required"]
+        self.linkages_dst = raw_row["Linkages to Decision Support Tables"]
+        self.linkages_ind = raw_row["Linkages to Aggregate Indicators"]
         self.coding_data_element = coding_data_element
 
     @property
@@ -101,6 +103,15 @@ class L2Row:
             if len(parts) > 1
             else remove_special_characters(parts[0])
         )
+
+    @property
+    def linkages(self) -> list[str]:
+        _linkages = []
+        if self.linkages_dst:
+            _linkages.extend(item.strip() for item in self.linkages_dst.split(","))
+        if self.linkages_ind:
+            _linkages.extend(item.strip() for item in self.linkages_ind.split(","))
+        return _linkages
 
     def to_invariant(self) -> Optional[dict[str, str]]:
         if self.validation_condition and self.validation_condition.lower() != "none":
@@ -288,13 +299,13 @@ class L2Dictionary:
                 self.output_path, concepts_dir, f"HIVConcepts.{_type}"
             )
             os.makedirs(os.path.join(self.output_path, concepts_dir), exist_ok=True)
-            template = jinja_env.get_template(f"concepts.{_type}.j2")
+            template = jinja_env.get_template(f"data_dictionary/concepts.{_type}.j2")
             render_to_file(template, {"concepts": concepts}, output_path)
 
     def write_models(self):
         models_dir = "models"
         os.makedirs(os.path.join(self.output_path, models_dir), exist_ok=True)
-        template = jinja_env.get_template("model.fsh.j2")
+        template = jinja_env.get_template("data_dictionary/model.fsh.j2")
         for model in self.models.values():
             output_path = os.path.join(
                 self.output_path, models_dir, f"{model['id']}.fsh"
@@ -304,7 +315,7 @@ class L2Dictionary:
     def write_questionnaires(self):
         questionnaires_dir = "questionnaires"
         os.makedirs(os.path.join(self.output_path, questionnaires_dir), exist_ok=True)
-        template = jinja_env.get_template("questionnaire.fsh.j2")
+        template = jinja_env.get_template("data_dictionary/questionnaire.fsh.j2")
         for questionnaire in self.questionnaires.values():
             output_path = os.path.join(
                 self.output_path,
@@ -316,7 +327,7 @@ class L2Dictionary:
     def write_valuesets(self):
         valuesets_dir = "valuesets"
         os.makedirs(os.path.join(self.output_path, valuesets_dir), exist_ok=True)
-        template = jinja_env.get_template("valueset.fsh.j2")
+        template = jinja_env.get_template("data_dictionary/valueset.fsh.j2")
         for valueset in self.valuesets.values():
             output_path = os.path.join(
                 self.output_path, valuesets_dir, f"{valueset['name']}.fsh"
