@@ -113,6 +113,9 @@ class L2Row:
             _linkages.extend(item.strip() for item in self.linkages_ind.split(","))
         return _linkages
 
+    def concept_by_linkage(self) -> dict[str, str]:
+        return {linkage: self.to_concept_item() for linkage in self.linkages}
+
     def to_invariant(self) -> Optional[dict[str, str]]:
         if self.validation_condition and self.validation_condition.lower() != "none":
             return {
@@ -198,6 +201,7 @@ class L2Dictionary:
         self.models = {}
         self.questionnaires = {}
         self.valuesets = {}
+        self.linkage_concepts = defaultdict(list)
 
     def set_active_coding(self, row: L2Row) -> None:
         if self.active_coding_data_element and row.data_type != "Codes":
@@ -270,6 +274,10 @@ class L2Dictionary:
                 reformatted_concepts.extend(concepts)
         return reformatted_concepts
 
+    def merge_linkage_concepts(self, row: L2Row) -> None:
+        for linkage, concept in row.concept_by_linkage().items():
+            self.linkage_concepts[linkage].append(concept)
+
     def process(self):
         for sheet_name in self.workbook.sheetnames:
             if not sheet_name.startswith(self.sheet_name_prefix):
@@ -287,6 +295,7 @@ class L2Dictionary:
                 self.add_to_model(sheet_name, l2_row)
                 self.add_to_questionnaire(l2_row)
                 self.add_to_valueset(l2_row)
+                self.merge_linkage_concepts(l2_row)
 
     def write_concepts(self):
         for _type in ["cql", "fsh"]:

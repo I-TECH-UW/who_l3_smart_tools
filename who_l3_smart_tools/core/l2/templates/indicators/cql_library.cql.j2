@@ -7,11 +7,11 @@
  *
  * Numerator: {{ indicator.numerator_definition }}
  * Numerator Calculation: {{ indicator.numerator_calculation }}
- * Numerator Exclusions: {{ indicator.numerator_exclusions }}
+ * Numerator Exclusions: {% if indicator.numerator_exclusions %} {{ indicator.numerator_exclusions }} {% endif %} 
  *
  * Denominator: {{ indicator.denominator_definition }}
  * Denominator Calculation: {{ indicator.denominator_calculation }}
- * Denominator Exclusions: {{ indicator.denominator_exclusions }}
+ * Denominator Exclusions: {% if indicator.denominator_exclusions %}{{ indicator.denominator_exclusions }} {% endif %} 
  *
  * Disaggregations:
 {% for disaggregation in indicator.disaggregations %}
@@ -22,7 +22,7 @@
  *
  * Numerator and Denominator Elements:
 {% for element in indicator.all_data_elements %}
- * {{ element }}
+ *  {{ element }}
 {% endfor %}
  *
  * Reference: {{ indicator.reference }}
@@ -144,14 +144,15 @@ define function "Measure Observation"(Patient "Patient"):
 {% endif %}
 /* end Populations */
 
-{% if dissagrations %}
+{% if indicator.disaggregations %}
 /**
  * Disaggregators
  * 
  */
 {% for disaggregation in indicator.disaggregations %}
-define "{{ disaggregation.name }}":
-  HIC."{{ disaggregation.name }} Stratifier"
+define "{{ disaggregation }}":
+  HIC."{{ disaggregation }} Stratifier"
+
 {% endfor %}
 /* end Disaggregators */
 {% endif %}

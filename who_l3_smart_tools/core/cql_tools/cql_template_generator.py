@@ -349,15 +349,15 @@ class CqlTemplateGenerator:
                         # File is empty after the last generated line
                         output_file_contents += scaffold["default_content"]
 
-            with open(f"{output_dir}/{file_name}Logic.cql", "w") as file:
+            with open(f"{output_dir}/{file_name}Logic.new1.cql", "w") as file:
                 file.write(output_file_contents)
-            if create_template_file:
-                # Create or Overwrite the .template file
-                with open(
-                    f"{output_dir}/suggested_templates/{file_name}Logic-template.cql",
-                    "w",
-                ) as file:
-                    file.write(additional_template_file_contents)
+            # if create_template_file:
+            #     # Create or Overwrite the .template file
+            #     with open(
+            #         f"{output_dir}/suggested_templates/{file_name}Logic-template.cql",
+            #         "w",
+            #     ) as file:
+            # file.write(additional_template_file_contents)
 
     def generate_cql_scaffolds(self):
         """
