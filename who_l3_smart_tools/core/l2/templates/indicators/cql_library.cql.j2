@@ -1,0 +1,158 @@
+/**
+ * Library: {{ indicator.dak_id }} Logic
+ * Ref No: {{ indicator.ref_no }}
+ * Short Name: {{ indicator.short_name }}
+ *
+ * Definition: {{ indicator.indicator_definition }}
+ *
+ * Numerator: {{ indicator.numerator_definition }}
+ * Numerator Calculation: {{ indicator.numerator_calculation }}
+ * Numerator Exclusions: {% if indicator.numerator_exclusions %} {{ indicator.numerator_exclusions }} {% endif %} 
+ *
+ * Denominator: {{ indicator.denominator_definition }}
+ * Denominator Calculation: {{ indicator.denominator_calculation }}
+ * Denominator Exclusions: {% if indicator.denominator_exclusions %}{{ indicator.denominator_exclusions }} {% endif %} 
+ *
+ * Disaggregations:
+{% for disaggregation in indicator.disaggregations %}
+ * {{ disaggregation }}
+{% endfor %}
+ *
+ * Disaggregation Elements: {{ indicator.disaggregation_data_elements }}
+ *
+ * Numerator and Denominator Elements:
+{% for element in indicator.all_data_elements %}
+ *  {{ element }}
+{% endfor %}
+ *
+ * Reference: {{ indicator.reference }}
+ * 
+ * Data Concepts:
+{% for concept in indicator.data_concepts %}
+ * {{ concept.id }}: {{ concept.label }} | {{ concept.description }}
+{% endfor %}
+ *
+ * Additional Context
+ * - what it measures: {{ indicator.what_it_measures }}
+ * - rationale: {{ indicator.rationale }}
+ * - method: {{ indicator.method_of_measurement }}
+ * 
+ * Suggested Scoring Method: {{ indicator.scoring_method }} | {{ indicator.scoring_instance }}
+ */
+
+library {{ indicator.library_name }}
+
+// Included Libraries
+using FHIR version '4.0.1'
+
+include HIVCommon version '0.0.1' called HIC
+include FHIRHelpers version '4.0.1'
+include FHIRCommon called FC
+include WHOCommon called WCom
+
+// Indicator Definition
+parameter "Measurement Period" Interval<Date> default Interval[@2023-01-01, @2023-01-30]
+
+context Patient
+
+/* Populations */
+{% if indicator.proportion %}
+/*
+ *Initial Population
+ */
+
+define "Initial Population":
+  true
+
+/**
+ * Numerator
+ * 
+ * Definition: {{ indicator.numerator_definition }}
+ * Calculation: {{ indicator.numerator_calculation }}
+ */
+
+define "Numerator":
+  true
+
+{% if indicator.numerator_exclusions %}
+/**
+ * Numerator Exclusions
+ *
+ * Calculation: {{ indicator.numerator_exclusions }}
+ */
+    
+define "Numerator Exclusions":
+  false
+{% endif %}
+
+/**
+ * Denominator
+ *
+ * Definition: {{ indicator.denominator_definition }}
+ * Calculation: {{ indicator.denominator_calculation }}
+ */
+
+define "Denominator":
+  true
+    
+{% if indicator.denominator_exclusions %}
+/**
+* Denominator Exclusions
+*
+* Calculation: {{ indicator.denominator_exclusions }}
+*/
+
+define "Denominator Exclusions":
+  false
+{% endif %}
+{% elif indicator.continuous_variable %}
+/*
+ *Initial Population
+ */
+
+define "Initial Population":
+  true
+
+/**
+ * Measure Population
+ *
+ * Definition: {{ indicator.numerator_definition }}
+ * Calculation: {{ indicator.numerator_definition }}
+ */
+                                                       
+define "Measure Population":
+  true
+
+{% if indicator.measure_population_exclusions %}
+/**
+ * Measure Population Exclusions
+ *
+ * Calculation: {{ indicator.measure_population_exclusions }}
+ */
+ define "Measure Population Exclusions":
+    false
+{% endif %}
+
+/**
+ * Measure Observation
+ * Definition: {{ indicator.measure_observation_definition }}
+ * Calculation: {{ indicator.measure_observation_calculation }}                                                      
+ */     
+
+define function "Measure Observation"(Patient "Patient"):
+  1
+{% endif %}
+/* end Populations */
+
+{% if indicator.disaggregation_data_elements %}
+/**
+ * Disaggregators
+ * 
+ */
+{% for disaggregation in indicator.disaggregation_data_elements.split("|") %}
+define "{{ disaggregation }} Stratifier":
+  HIC."{{ disaggregation }} Stratifier"
+
+{% endfor %}
+/* end Disaggregators */
+{% endif %}
