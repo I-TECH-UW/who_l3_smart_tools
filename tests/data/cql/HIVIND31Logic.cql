@@ -103,7 +103,7 @@ define "Initial Population":
  */
 
 define "Numerator":
-     HIE."HIV-positive B.DE116" 
+    HIE."Has HIV-positive Status" 
    and (date from start of HE."First On ART".effective.toInterval() during "Measurement Period")
    and exists(HE."Baseline CD4 count SRV.DE3" O
    where O.effective.toInterval() during "Measurement Period"
@@ -118,7 +118,7 @@ define "Numerator":
  */
 
 define "Denominator":
-  HIE."HIV-positive B.DE116" 
+ HIE."Has HIV-positive Status" 
    and (date from start of HE."First On ART".effective.toInterval() during "Measurement Period")
    and exists(HE."Baseline CD4 count SRV.DE3" O
    where O.effective.toInterval() during "Measurement Period")

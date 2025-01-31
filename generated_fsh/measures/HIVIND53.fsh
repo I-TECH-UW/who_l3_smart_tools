@@ -5,14 +5,14 @@ Title: "HIV.IND.53 Multi-month ARV dispensing"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "% of people living with HIV and On ART who are receiving multi-month dispensing of ARV medicine during the reporting period"
-* url = "http://smart.who.int/HIV/Measure/HIVIND53"
+* url = "http://smart.who.int/hiv/Measure/HIVIND53"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND53"
 * title = "HIV.IND.53 Multi-month ARV dispensing"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND53Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND53Logic"
 * scoring = $measure-scoring#proportion "Proportion"
 * group[+]
   * population[initialPopulation]
@@ -33,3 +33,7 @@ Title: "HIV.IND.53 Multi-month ARV dispensing"
     * code = $measure-population#numerator "Numerator"
     * criteria.language = #text/cql-identifier
     * criteria.expression = "Numerator"
+  * stratifier[+]
+    * id = "HIV.IND.53.S"
+    * criteria.language = #text/cql-identifier
+    * criteria.expression = "Stratification"

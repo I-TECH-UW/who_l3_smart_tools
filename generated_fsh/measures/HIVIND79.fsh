@@ -5,14 +5,14 @@ Title: "HIV.IND.79 Repeat diagnosis of STI syndrome, HIV-positive clients"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "% of people living with HIV diagnosed with a particular STI syndrome who were diagnosed with the same STI syndrome two or more times during the reporting period"
-* url = "http://smart.who.int/HIV/Measure/HIVIND79"
+* url = "http://smart.who.int/hiv/Measure/HIVIND79"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND79"
 * title = "HIV.IND.79 Repeat diagnosis of STI syndrome, HIV-positive clients"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND79Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND79Logic"
 * scoring = $measure-scoring#proportion "Proportion"
 * group[+]
   * population[initialPopulation]

@@ -148,10 +148,10 @@ define "Initial Population":
  */
 
 define "Numerator":
-  (HIE."HIV-positive B.DE116"
+  (HIE."Has HIV-positive Status"
   and HIE."Toxicity/side effects H.DE75")
   and ((
-    HIE."HIV-positive B.DE116"
+    HIE."Has HIV-positive Status" 
     and HIE."On ART H.DE47"
     and 
     (exists(HE."New regimen after switch to second-line regimen" R
@@ -171,7 +171,7 @@ define "Numerator":
   )
   or
   (
-    HIE."HIV-positive B.DE116"
+    HIE."Has HIV-positive Status"
     and HIE."On ART H.DE47"
     and 
     (exists(HE."New regimen after substitution within second-line regimen" R
@@ -200,7 +200,7 @@ define "Numerator":
  */
 
 define "Denominator":
-  HIE."HIV-positive B.DE116"
+  HIE."Has HIV-positive Status"
     and HIE."On ART H.DE47"
     
 

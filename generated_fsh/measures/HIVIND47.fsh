@@ -5,14 +5,14 @@ Title: "HIV.IND.47 People living with HIV with active TB disease"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "% of people living with HIV newly initiated on ART who have active TB disease"
-* url = "http://smart.who.int/HIV/Measure/HIVIND47"
+* url = "http://smart.who.int/hiv/Measure/HIVIND47"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND47"
 * title = "HIV.IND.47 People living with HIV with active TB disease"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND47Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND47Logic"
 * scoring = $measure-scoring#proportion "Proportion"
 * group[+]
   * population[initialPopulation]
@@ -33,3 +33,7 @@ Title: "HIV.IND.47 People living with HIV with active TB disease"
     * code = $measure-population#numerator "Numerator"
     * criteria.language = #text/cql-identifier
     * criteria.expression = "Numerator"
+  * stratifier[+]
+    * id = "HIV.IND.47.S"
+    * criteria.language = #text/cql-identifier
+    * criteria.expression = "Stratification"

@@ -5,14 +5,14 @@ Title: "HIV.IND.68 Syphilis treatment coverage, pregnant women, first ANC visit"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "% of pregnant women tested positive for syphilis on first ANC services visit who were treated based on national guidelines during the reporting period"
-* url = "http://smart.who.int/HIV/Measure/HIVIND68"
+* url = "http://smart.who.int/hiv/Measure/HIVIND68"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND68"
 * title = "HIV.IND.68 Syphilis treatment coverage, pregnant women, first ANC visit"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND68Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND68Logic"
 * scoring = $measure-scoring#proportion "Proportion"
 * group[+]
   * population[initialPopulation]

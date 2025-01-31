@@ -32,7 +32,7 @@ valueset "Non-reactive": 'http://fhir.org/guides/who/hiv-dak/ValueSet/hiv-b-de10
 
 include FHIRHelpers version '4.0.1'
 include WHOCommon called WCom
-include FHIRCommon called FC
+
 
 //code "Assay 1 Reactive": 'HIV.B.DE95' from "TestresultofHIVassay1Codes" display 'Assay 1 reactive'
 //code "Reactive": 'HIV.B.DE103' from "HIV_DAK_Codes" display 'Reactive'

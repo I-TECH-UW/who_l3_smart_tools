@@ -5,14 +5,14 @@ Title: "HIV.IND.2 Total PrEP recipients"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "Number of people who received PrEP at least once during the reporting period"
-* url = "http://smart.who.int/HIV/Measure/HIVIND2"
+* url = "http://smart.who.int/hiv/Measure/HIVIND2"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND2"
 * title = "HIV.IND.2 Total PrEP recipients"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND2Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND2Logic"
 * scoring = $measure-scoring#continuous-variable "Continuous Variable"
 * group[+]
   * population[initialPopulation]

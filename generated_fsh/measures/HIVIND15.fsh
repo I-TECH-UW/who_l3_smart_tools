@@ -5,14 +5,14 @@ Title: "HIV.IND.15 VMMC scale-up"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "Total number of voluntary medical male circumcisions (VMMCs) performed according to national standard during the reporting period"
-* url = "http://smart.who.int/HIV/Measure/HIVIND15"
+* url = "http://smart.who.int/hiv/Measure/HIVIND15"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND15"
 * title = "HIV.IND.15 VMMC scale-up"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND15Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND15Logic"
 * scoring = $measure-scoring#continuous-variable "Continuous Variable"
 * group[+]
   * population[initialPopulation]

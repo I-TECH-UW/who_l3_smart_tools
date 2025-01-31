@@ -5,14 +5,14 @@ Title: "HIV.IND.38 Early infant diagnosis (EID) coverage"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "% of HIV-exposed infants who receive a virological test for HIV within two months (and 12 months) of birth"
-* url = "http://smart.who.int/HIV/Measure/HIVIND38"
+* url = "http://smart.who.int/hiv/Measure/HIVIND38"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND38"
 * title = "HIV.IND.38 Early infant diagnosis (EID) coverage"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND38Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND38Logic"
 * scoring = $measure-scoring#proportion "Proportion"
 * group[+]
   * population[initialPopulation]
@@ -33,3 +33,7 @@ Title: "HIV.IND.38 Early infant diagnosis (EID) coverage"
     * code = $measure-population#numerator "Numerator"
     * criteria.language = #text/cql-identifier
     * criteria.expression = "Numerator"
+  * stratifier[+]
+    * id = "HIV.IND.38.S.GR"
+    * criteria.language = #text/cql-identifier
+    * criteria.expression = "Geographic Region Stratifier"

@@ -78,7 +78,7 @@ define "Initial Population":
  */
 
 define "Numerator":
-  HIC.OAMT_retained
+  HIE.OAMT_retained
 
 
 /**
@@ -89,7 +89,7 @@ define "Numerator":
  */
 
 define "Denominator":
-  HIC.OAMT_initiated
+  HIE.OAMT_initiated
     
 
 /* end Populations */
@@ -111,7 +111,7 @@ define "patientGroups Stratifier":
 	HIE."patientGroups"
 
 define "Setting":
-    HIC."setting"
+    HIE."setting"
 
 //provider type not provided?
 
@@ -120,4 +120,4 @@ define "Stratification":
   + ':' + HIE."By Age Stratifier"
 + ':' + HIE."By Geographic Region Stratifier"
 + Combine(HIE.patientGroups, ':')
-+ Combine(HIC.setting, ':')
++ Combine(HIE.setting, ':')

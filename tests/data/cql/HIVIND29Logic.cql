@@ -111,14 +111,14 @@ define "Initial Population":
  */
 
 define "Numerator":
-  HIE."HIV-positive B.DE116"
+ HIE."Has HIV-positive Status"
   and HIE."On ART H.DE47"
   and 
    (months between (end of "Measurement Period") and (date from start of HE."First On ART".effective.toInterval()) > 6 months)
    and 
    exists(
     HIE."Viral load test result D.DE387" VL
-    with HIC."routine viral load sample collection" P 
+    with HE."routine viral load sample collection" P 
     such that VL.partOf.references(P) and P.performed.toInterval() during "Measurement Period"
     where VL.value < 1000
     )
@@ -132,14 +132,14 @@ define "Numerator":
  */
 
 define "Denominator":
-  HIE."HIV-positive B.DE116"
+ HIE."Has HIV-positive Status"
   and HIE."On ART H.DE47"
   and 
    (months between (end of "Measurement Period") and (date from start of HE."First On ART".effective.toInterval()) > 6 months)
    and 
    exists(
     HIE."Viral load test result D.DE387" VL
-    with HIC."routine viral load sample collection" P 
+    with HE."routine viral load sample collection" P 
     such that VL.partOf.references(P) and P.performed.toInterval() during "Measurement Period"
     )
     

@@ -66,8 +66,10 @@ using FHIR version '4.0.1'
 
 include HIVCommon version '0.0.1' called HIC
 include FHIRHelpers version '4.0.1'
-include FHIRCommon called FC
+
 include WHOCommon called WCom
+include HIVElements called HE
+include HIVIndicatorElements called HIE
 
 // Indicator Definition
 parameter "Measurement Period" Interval<Date> default Interval[@2023-01-01, @2023-01-30]
@@ -89,12 +91,20 @@ define "Initial Population":
  * Calculation: COUNT of infants who are an "HIV-exposed infant or child" with "Infant date of birth" within the reporting period AND with "Date of viral load sample collection" LESS THAN 2 months AFTER "Infant date of birth" AND "HIV test type"='Nucleic acid test for HIV'
  */
 
+
 define "Numerator":
-  true
+  exists(HIE."HIV-exposed infant or child E.DE112" O
+  with [Patient] P
+      such that O.subject.references(P) and P.birthDate during "Measurement Period")
+   and exists(
+    HE."Nucleic acid test for HIV B.DE84" O 
+    with [Patient] Pt
+    such that O.subject.references(Pt) 
+    and months between start of O.effective.toInterval() and FHIRHelpers.ToDate(Pt.birthDate) < 2 months)
 
 
 /**
- * Denominator
+ * Denominator - THiS SHOULDN'T BE PROPORTION
  *
  * Definition: Estimated number of HIV-positive women who delivered during the reporting period.   |  | Note: The denominator is a proxy measure for the number of infants born to HIV-infected women.
  * Calculation: *Estimated number of HIV-positive women who delivered during the reporting period
@@ -106,3 +116,10 @@ define "Denominator":
 
 /* end Populations */
 
+/*
+ * Disaggregators
+ */
+
+
+define "Geographic Region Stratifier":
+	HIE."By Geographic Region Stratifier"

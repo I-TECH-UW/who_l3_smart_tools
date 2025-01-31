@@ -67,7 +67,7 @@ using FHIR version '4.0.1'
 
 include HIVCommon called HIC
 include FHIRHelpers version '4.0.1'
-include FHIRCommon called FC
+
 include WHOCommon called WCom
 
 include HIVElements called HE
@@ -94,7 +94,7 @@ define "Initial Population":
  */
 
 define "Numerator":
-  HIE."HIV-positive B.DE116" and HIE."On ART" and exists(HIE."TB preventive treatment TPT start date in measurement period")
+ HIE."Has HIV-positive Status" and HIE."On ART" and exists(HIE."TB preventive treatment TPT start date in measurement period")
 
 /**
  * Denominator
@@ -104,7 +104,7 @@ define "Numerator":
  */
 
 define "Denominator":
-  HIE."HIV-positive B.DE116" and HIE."On ART" and HIE."Eligible for TB preventive treatment"
+ HIE."Has HIV-positive Status" and HIE."On ART" and HIE."Eligible for TB preventive treatment"
     
 
 /* end Populations */
@@ -135,5 +135,5 @@ define "Geographic Region Stratifier":
 define "Stratification":
   HIE."By Administrative Gender Stratifier".code 
     + ':' + HIE."By Age Stratifier"
-    + ':' + First(HIE."TPT regimen type".coding.code)
+    + ':' + Combine(HIE."TPT regimen type".coding.code)
 	  + ':' + HIE."By Geographic Region Stratifier"

@@ -5,14 +5,14 @@ Title: "HIV.IND.89 HCV positivity, HIV-positive clients"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "% of people living with HIV with a positive HCV test result (HCV antibody, HCV RNA (PCR) or HCV core antigen) during the reporting period"
-* url = "http://smart.who.int/HIV/Measure/HIVIND89"
+* url = "http://smart.who.int/hiv/Measure/HIVIND89"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND89"
 * title = "HIV.IND.89 HCV positivity, HIV-positive clients"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND89Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND89Logic"
 * scoring = $measure-scoring#proportion "Proportion"
 * group[+]
   * population[initialPopulation]

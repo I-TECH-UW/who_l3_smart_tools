@@ -97,7 +97,9 @@ using FHIR version '4.0.1'
 include HIVCommon version '0.0.1' called HIC
 include FHIRHelpers version '4.0.1'
 include WHOCommon called WCom
+include HIVElements called HE
 include HIVIndicatorElements called HIE
+
 
 // Indicator Definition
 parameter "Measurement Period" Interval<Date> default Interval[@2023-01-01, @2023-01-30]
@@ -109,22 +111,15 @@ context Patient
 define "Initial Population":
   true
   
+/* Numerator Calculation: Count of clients with "Date medications prescribed" within reporting period AND "Medications prescribed"='PrEP for HIV prevention'*/
 
 define "numerator":
-   exists(HIC."HIV PREP Active" H
-   where H.effective starts before end of "Measurement Period"
-    and (H.effective ends after start of "Measurement Period"
-    or end of H.effective  ~  null)
-   )
+    HIE."HIV PREP Active"
 
+/*  * Denominator Calculation: Programme/service provider level:  | COUNT of clients with "HIV test date" within reporting period AND "HIV test result"='HIV-negative' AND "At elevated risk for HIV acquisition"=True † |  | Population level: *Estimate of the number of people who would benefit from PrEP */
 define "denominator":
-	exists(HIC."HIV Negative Observation" O
-	where (O.issued before end of "Measurement Period"
-	and O.issued after start of "Measurement Period")
-	) and 
-    exists(HIC."Client is at elevated risk for HIV acquisition" O
-	where O.issued before end of "Measurement Period"
-	and O.issued after start of "Measurement Period")
+	exists(HIE."Negative HIV test within measurement period") and 
+    HIE."At elevated risk for HIV acquisition B.DE225"
 
     
 /*
@@ -144,16 +139,16 @@ define "patientGroups Stratifier":
 	HIE."patientGroups"
 
 define "Setting":
-    HIC."setting"
+    HIE."setting"
 
 define "prep product":
-    HIC."prep_product"
+    HIE."prep_product"
 
 define "prep_experience":
-    HIC."prep_experience"
+    HIE."prep_experience"
 
 define "prep_dosing":
-    HIC."prep_dosing"
+    HIE."prep_dosing"
 
 // Provider type concepts are not found in DD
 
@@ -162,7 +157,7 @@ define "Stratification":
   + ':' + HIE."By Age Stratifier 3"
 + ':' + HIE."By Geographic Region Stratifier"
 + Combine(HIE.patientGroups, ':')
-+ Combine(HIC.setting, ':')
-+ Combine(HIC.prep_product, ':')
-+ Combine(HIC.prep_experience, ':')
-+ Combine(HIC.prep_dosing, ':')
++ Combine(HIE.setting, ':')
++ Combine(HIE.prep_product, ':')
++ Combine(HIE.prep_experience, ':')
++ Combine(HIE.prep_dosing, ':')

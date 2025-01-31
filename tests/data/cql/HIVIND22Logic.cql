@@ -81,6 +81,7 @@ include HIVCommon version '0.0.1' called HIC
 include FHIRHelpers version '4.0.1'
 include WHOCommon called WCom
 include HIVIndicatorElements called HIE
+include HIVElements called HE
 
 // Indicator Definition
 parameter "Measurement Period" Interval<Date> default Interval[@2023-01-01, @2023-01-30]
@@ -103,18 +104,18 @@ define "Initial Population":
  */
                                                        
 define "Measure Population":
-    exists(HIC."Partner or contact of an index case" IC
-    with HIC."Drug-injecting partner" DIP
+    exists(HE."Partner or contact of an index case" IC
+    with HE."Drug-injecting partner" DIP
       such that IC.hasMember.references(DIP)
-      with HIC."HIV test resulted" HIV
+    with HIE."HIV test results returned in measurement period" HIV
       such that IC.hasMember.references(HIV)
       and HIV.issued after start of "Measurement Period"
       and HIV.issued before end of "Measurement Period")
     or 
-    exists(HIC."Partner or contact of an index case" IC
-    with HIC."Sexual partner" SP
+    exists(HE."Partner or contact of an index case" IC
+    with HE."Sexual partner" SP
       such that IC.hasMember.references(SP)
-      with HIC."HIV test resulted" HIV
+      with HIE."HIV test results returned in measurement period" HIV
       such that IC.hasMember.references(HIV)
       and HIV.issued after start of "Measurement Period"
       and HIV.issued before end of "Measurement Period")

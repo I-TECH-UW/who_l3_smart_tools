@@ -5,14 +5,14 @@ Title: "HIV.IND.37 Viral suppression at labour and delivery"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "% of HIV-positive pregnant women who are virally suppressed at labour and delivery"
-* url = "http://smart.who.int/HIV/Measure/HIVIND37"
+* url = "http://smart.who.int/hiv/Measure/HIVIND37"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND37"
 * title = "HIV.IND.37 Viral suppression at labour and delivery"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND37Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND37Logic"
 * scoring = $measure-scoring#proportion "Proportion"
 * group[+]
   * population[initialPopulation]
@@ -33,3 +33,7 @@ Title: "HIV.IND.37 Viral suppression at labour and delivery"
     * code = $measure-population#numerator "Numerator"
     * criteria.language = #text/cql-identifier
     * criteria.expression = "Numerator"
+  * stratifier[+]
+    * id = "HIV.IND.37.S"
+    * criteria.language = #text/cql-identifier
+    * criteria.expression = "Stratification"

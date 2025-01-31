@@ -5,14 +5,14 @@ Title: "HIV.IND.6 PEP completion"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "% of PEP recipients completing PEP course"
-* url = "http://smart.who.int/HIV/Measure/HIVIND6"
+* url = "http://smart.who.int/hiv/Measure/HIVIND6"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND6"
 * title = "HIV.IND.6 PEP completion"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND6Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND6Logic"
 * scoring = $measure-scoring#proportion "Proportion"
 * group[+]
   * population[initialPopulation]

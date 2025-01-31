@@ -5,14 +5,14 @@ Title: "HIV.IND.72 Gonorrhoea test positivity, HIV prevention services"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "% of people who tested positive for gonorrhoea during the reporting period"
-* url = "http://smart.who.int/HIV/Measure/HIVIND72"
+* url = "http://smart.who.int/hiv/Measure/HIVIND72"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND72"
 * title = "HIV.IND.72 Gonorrhoea test positivity, HIV prevention services"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND72Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND72Logic"
 * scoring = $measure-scoring#proportion "Proportion"
 * group[+]
   * population[initialPopulation]

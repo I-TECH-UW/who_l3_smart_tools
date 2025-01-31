@@ -5,14 +5,14 @@ Title: "HIV.IND.94 Pre-invasive cervical disease treatment"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "% of women living with HIV who screened positive for pre-invasive cervical disease and received treatment for it"
-* url = "http://smart.who.int/HIV/Measure/HIVIND94"
+* url = "http://smart.who.int/hiv/Measure/HIVIND94"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND94"
 * title = "HIV.IND.94 Pre-invasive cervical disease treatment"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND94Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND94Logic"
 * scoring = $measure-scoring#proportion "Proportion"
 * group[+]
   * population[initialPopulation]

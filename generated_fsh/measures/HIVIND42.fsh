@@ -5,14 +5,14 @@ Title: "HIV.IND.42 Final outcome of PMTCT"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "% of HIV-exposed infants whose final HIV outcome status is known"
-* url = "http://smart.who.int/HIV/Measure/HIVIND42"
+* url = "http://smart.who.int/hiv/Measure/HIVIND42"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND42"
 * title = "HIV.IND.42 Final outcome of PMTCT"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND42Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND42Logic"
 * scoring = $measure-scoring#proportion "Proportion"
 * group[+]
   * population[initialPopulation]

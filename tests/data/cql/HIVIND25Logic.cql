@@ -75,12 +75,12 @@ using FHIR version '4.0.1'
 include HIVCommon version '0.0.1' called HIC
 include FHIRHelpers version '4.0.1'
 include WHOCommon called WCom
+include HIVConfig called Config
 include HIVElements called HE
 include HIVIndicatorElements called HIE
 
 // Indicator Definition
 parameter "Measurement Period" Interval<Date> default Interval[@2023-01-01, @2023-01-30]
-parameter "Testing Interval" System.Quantity default 3 months
 
 context Patient
 /* Populations */
@@ -98,9 +98,6 @@ define "Initial Population":
  * Definition: Number of individuals who tested HIV-negative assessed to be at elevated risk for HIV acquisition who had another HIV test within a defined period after previous test.
  * Calculation: COUNT of clients with "At elevated risk for HIV acquisition"=True AND with a second "HIV test date" within fixed period after "HIV test date" in the reporting period with "HIV test result"='HIV-negative'
  */
-
-
-
 
 define "Numerator":
   exists(HIE."Negative Tests after First Negative Test")

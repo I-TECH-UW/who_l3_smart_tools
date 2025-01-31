@@ -5,14 +5,14 @@ Title: "HIV.IND.11 OAMT coverage"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "% of opioid dependent people receiving opioid agonist maintenance treatment (OAMT) at a specified date"
-* url = "http://smart.who.int/HIV/Measure/HIVIND11"
+* url = "http://smart.who.int/hiv/Measure/HIVIND11"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND11"
 * title = "HIV.IND.11 OAMT coverage"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND11Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND11Logic"
 * scoring = $measure-scoring#proportion "Proportion"
 * group[+]
   * population[initialPopulation]

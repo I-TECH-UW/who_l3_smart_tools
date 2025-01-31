@@ -5,14 +5,14 @@ Title: "HIV.IND.22 HTS partner services"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "Number of people who were identified and tested using partner testing services and who received their results"
-* url = "http://smart.who.int/HIV/Measure/HIVIND22"
+* url = "http://smart.who.int/hiv/Measure/HIVIND22"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND22"
 * title = "HIV.IND.22 HTS partner services"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND22Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND22Logic"
 * scoring = $measure-scoring#continuous-variable "Continuous Variable"
 * group[+]
   * population[initialPopulation]

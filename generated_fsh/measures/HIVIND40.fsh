@@ -5,14 +5,14 @@ Title: "HIV.IND.40 ART coverage in pregnant women"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "% of HIV-positive pregnant women who received ART during pregnancy and/or at labour and delivery"
-* url = "http://smart.who.int/HIV/Measure/HIVIND40"
+* url = "http://smart.who.int/hiv/Measure/HIVIND40"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND40"
 * title = "HIV.IND.40 ART coverage in pregnant women"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND40Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND40Logic"
 * scoring = $measure-scoring#proportion "Proportion"
 * group[+]
   * population[initialPopulation]

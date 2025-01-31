@@ -1,5 +1,7 @@
 /*
-@DecisionID: HIV.B9.DT Logic
+Library: HIV.B9.DT Logic
+
+@DecisionID: HIV.B9.DT.HIV Re-testing Recommendations
 @BusinessRule: HIV restesting recommendations
 @Trigger: HIV.B9 Determine recommended services
 @HitPolicy: Rule order
@@ -22,17 +24,16 @@ library HIVB9DTLogic
 // Included Libraries
 using FHIR version '4.0.1'
 
-include HIVCommon version '0.0.1' called HIC
-include HIVConcepts called HCx
+include HIVCommon version '0.0.1' called Common
+include HIVConcepts called Concepts
 include HIVConfig called Config
 include HIVEncounterElements called Elements
 include FHIRHelpers version '4.0.1'
-include FHIRCommon called FC
+
 include WHOCommon called WCom
 // Included for PlanDefinition
 include WHOConcepts called WCx
 include WHOEncounterElements called WElm
-
 
 context Patient
 
@@ -41,8 +42,8 @@ context Patient
   @pseudocode: "HIV status" IN 'HIV-negative', 'Unknown'
   */
 define "HIV status negative or unknown":
-  exists(Elements."HIV status Observation" O
-    where O.value in { HCx."HIV-negative", HCx."Unknown" })
+  exists(Elements."HIV status" S
+    where S in { Concepts."HIV-negative", Concepts."Unknown" }) 
 
  /*
   @input: "Partner HIV reported positive"
@@ -50,7 +51,7 @@ define "HIV status negative or unknown":
   */
 define "Partner HIV positive":
   exists(Elements."Partner HIV status reported Observation" O
-    where O.value ~ HCx."HIV-positive")
+    where O.value ~ Concepts."HIV-positive")
 
  /*
   @input: "Sex partner's HIV treatment status is partner not virally suppressed"
@@ -58,28 +59,28 @@ define "Partner HIV positive":
   */
 define "Sex partner's HIV treatment status is partner not virally suppressed":
   exists(Elements."Sex partners HIV treatment status Observation" O
-    where O.value ~ HCx."Partner is not virally suppressed")
+    where O.value ~ Concepts."Partner is not virally suppressed")
 
  /*
   @input: "HIV burden of setting is high HIV burden setting"
   @pseudocode: "HIV burden of the setting"='High HIV burden setting'
   */
 define "HIV burden of setting is high HIV burden setting":
-  Config."HIV burden of setting" ~ HCx."High HIV burden setting"
+  Config."HIV burden of setting" ~ Concepts."High HIV burden setting"
 
  /*
   @input: "HIV burden of setting is low HIV burden setting"
   @pseudocode: "HIV burden of the setting"='Low HIV burden setting'
   */
 define "HIV burden of setting is low HIV burden setting":
-  Config."HIV burden of setting" ~ HCx."Low HIV burden setting"
+  Config."HIV burden of setting" ~ Concepts."Low HIV burden setting"
 
  /*
   @input: "Key population member"
   @pseudocode: "Key population member" = TRUE
   */
 define "Key population member":
-  exists(Elements."Key population member* B.DE49 Observation" O
+  exists(Elements."Key population member B.DE49 Observation" O
     where O.value is true)
 
  /*
@@ -95,7 +96,7 @@ define "Currently pregnant":
   */
 define "TB diagnosis result is diagnosed TB":
   exists(Elements."TB diagnosis result Observation" O
-    where O.value ~ HCx."Diagnosed TB" or)
+    where O.value ~ Concepts."Diagnosed TB")
 
  /*
   @input: "Presumptive TB"

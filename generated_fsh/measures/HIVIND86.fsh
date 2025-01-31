@@ -5,14 +5,14 @@ Title: "HIV.IND.86 HBsAg positivity, HIV-positive clients"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "Percentage of people living with HIV who were tested for HBsAg and had a positive HBsAg test during the reporting period"
-* url = "http://smart.who.int/HIV/Measure/HIVIND86"
+* url = "http://smart.who.int/hiv/Measure/HIVIND86"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND86"
 * title = "HIV.IND.86 HBsAg positivity, HIV-positive clients"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND86Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND86Logic"
 * scoring = $measure-scoring#proportion "Proportion"
 * group[+]
   * population[initialPopulation]

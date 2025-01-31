@@ -5,14 +5,14 @@ Title: "HIV.IND.44 TPT initiation"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "Number and % of eligible people living with HIV on ART who initiated TB preventive treatment"
-* url = "http://smart.who.int/HIV/Measure/HIVIND44"
+* url = "http://smart.who.int/hiv/Measure/HIVIND44"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND44"
 * title = "HIV.IND.44 TPT initiation"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND44Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND44Logic"
 * scoring = $measure-scoring#proportion "Proportion"
 * group[+]
   * population[initialPopulation]

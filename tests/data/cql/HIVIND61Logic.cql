@@ -53,8 +53,11 @@ using FHIR version '4.0.1'
 
 include HIVCommon version '0.0.1' called HIC
 include FHIRHelpers version '4.0.1'
-include FHIRCommon called FC
+
 include WHOCommon called WCom
+include HIVElements called HE
+include HIVIndicatorElements called HIE
+include HIVConfig called Config
 
 // Indicator Definition
 parameter "Measurement Period" Interval<Date> default Interval[@2023-01-01, @2023-01-30]
@@ -76,8 +79,17 @@ define "Initial Population":
  * Calculation: COUNT of pregnant women with "ANC contact date" in reporting period AND "Syphilis test date" on ANY "ANC contact date" for this pregnancy
  */
 
+define "all anc dates":
+flatten{HE."ANC contact date E.DE85"}
+
 define "Numerator":
-  true
+  HIE."ANC contact date E.DE85"
+  and exists(HE."Syphilis test date B.DE249" P
+    where exists("all anc dates" t where duration in days of (t intersect P.performed.toInterval()) > 0)
+  )
+    
+    
+
 
 
 /**
@@ -88,8 +100,26 @@ define "Numerator":
  */
 
 define "Denominator":
-  true
+  HIE."ANC contact date E.DE85"
     
 
 /* end Populations */
 
+/*
+ * Disaggregators
+ */
+
+
+define "Age Stratifier":
+	HIE."By Age Stratifier 2"
+
+define "Geographic Region Stratifier":
+	HIE."By Geographic Region Stratifier"
+
+define "HIV Status":
+  HIE."HIV Status Stratifier"
+
+define "Stratification":
+HIE."By Age Stratifier 2"
++ ':' + HIE."By Geographic Region Stratifier"
++ ':' + HIE."HIV Status Stratifier".code 

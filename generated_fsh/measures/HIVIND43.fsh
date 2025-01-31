@@ -5,14 +5,14 @@ Title: "HIV.IND.43 HIV prevalence among women attending ANC"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "% of pregnant women who are HIV-positive at the time of their first test during the current pregnancy"
-* url = "http://smart.who.int/HIV/Measure/HIVIND43"
+* url = "http://smart.who.int/hiv/Measure/HIVIND43"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND43"
 * title = "HIV.IND.43 HIV prevalence among women attending ANC"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND43Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND43Logic"
 * scoring = $measure-scoring#proportion "Proportion"
 * group[+]
   * population[initialPopulation]

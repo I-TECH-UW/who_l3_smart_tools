@@ -5,14 +5,14 @@ Title: "HIV.IND.57 Viral suppression among people living with HIV engaged in DSD
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "% of people living with HIV engaged in DSD ART models who have virological suppression"
-* url = "http://smart.who.int/HIV/Measure/HIVIND57"
+* url = "http://smart.who.int/hiv/Measure/HIVIND57"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND57"
 * title = "HIV.IND.57 Viral suppression among people living with HIV engaged in DSD ART models"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND57Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND57Logic"
 * scoring = $measure-scoring#proportion "Proportion"
 * group[+]
   * population[initialPopulation]
@@ -33,3 +33,7 @@ Title: "HIV.IND.57 Viral suppression among people living with HIV engaged in DSD
     * code = $measure-population#numerator "Numerator"
     * criteria.language = #text/cql-identifier
     * criteria.expression = "Numerator"
+  * stratifier[+]
+    * id = "HIV.IND.57.S"
+    * criteria.language = #text/cql-identifier
+    * criteria.expression = "Stratification"

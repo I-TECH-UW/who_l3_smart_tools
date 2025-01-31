@@ -5,14 +5,14 @@ Title: "HIV.IND.12 Total person-years on OAMT"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "% of person-years of follow-up (PYFU) on OAMT among opioid dependent people"
-* url = "http://smart.who.int/HIV/Measure/HIVIND12"
+* url = "http://smart.who.int/hiv/Measure/HIVIND12"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND12"
 * title = "HIV.IND.12 Total person-years on OAMT"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND12Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND12Logic"
 * scoring = $measure-scoring#proportion "Proportion"
 * group[+]
   * population[initialPopulation]

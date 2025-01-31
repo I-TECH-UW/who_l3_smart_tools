@@ -5,14 +5,14 @@ Title: "HIV.IND.85 HBsAg positivity, HIV prevention services"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "Percentage of people attending HIV prevention services who were tested for HBsAg and had a positive HBsAg test during the reporting period"
-* url = "http://smart.who.int/HIV/Measure/HIVIND85"
+* url = "http://smart.who.int/hiv/Measure/HIVIND85"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND85"
 * title = "HIV.IND.85 HBsAg positivity, HIV prevention services"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND85Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND85Logic"
 * scoring = $measure-scoring#proportion "Proportion"
 * group[+]
   * population[initialPopulation]

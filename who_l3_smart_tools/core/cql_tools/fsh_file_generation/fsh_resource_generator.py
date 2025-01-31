@@ -21,7 +21,7 @@ Usage: #definition
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablelibrary"
 * meta.profile[+] = "http://hl7.org/fhir/uv/cql/StructureDefinition/cql-library"
 * meta.profile[+] = "http://hl7.org/fhir/uv/cql/StructureDefinition/cql-module"
-* url = "http://smart.who.int/{dak_name}/Library/{library_name}"
+* url = "http://smart.who.int/hiv/Library/{library_name}"
 * extension[+]
   * url = "http://hl7.org/fhir/StructureDefinition/cqf-knowledgeCapability"
   * valueCode = #computable
@@ -40,14 +40,14 @@ Title: "{title}"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "{description}"
-* url = "http://smart.who.int/{dak_name}/Measure/{measure_name}"
+* url = "http://smart.who.int/hiv/Measure/{measure_name}"
 * status = #draft
 * experimental = true
 * date = "{date}"
 * name = "{measure_name}"
 * title = "{title}"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/{dak_name}/Library/{library_name}"
+* library = "http://smart.who.int/hiv/Library/{library_name}"
 """
 
 scoring_value_set: str = {"proportion", "continuous-variable"}

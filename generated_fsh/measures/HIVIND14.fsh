@@ -5,14 +5,14 @@ Title: "HIV.IND.14 OAMT minimum dose"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "% of OAMT recipients receiving a maintenance dose greater than or equal to the recommended minimum dose"
-* url = "http://smart.who.int/HIV/Measure/HIVIND14"
+* url = "http://smart.who.int/hiv/Measure/HIVIND14"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND14"
 * title = "HIV.IND.14 OAMT minimum dose"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND14Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND14Logic"
 * scoring = $measure-scoring#proportion "Proportion"
 * group[+]
   * population[initialPopulation]

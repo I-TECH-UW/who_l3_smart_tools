@@ -84,7 +84,7 @@ parameter "Measurement Period" Interval<Date> default Interval[@2023-01-01, @202
 context Patient
 
 define "Measure Population":
-   HIE."HIV-positive B.DE116" 
+  HIE."Has HIV-positive Status" 
    and (date from start of HE."First On ART".effective.toInterval() during "Measurement Period")
 
 /*

@@ -95,13 +95,9 @@ define "Initial Population":
 
 
 define "numerator":
-   (exists(HIE."HIV Positive Condition" C)
+   exists(HIE."HIV Status Positive Condition" C)
 	or 
-	exists(HIC."HIV Positive Observation" O
-    //during doesn't work
-	where (O.issued before end of "Measurement Period" and
-    O.issued after start of "Measurement Period")
-	))
+	exists(HIE."HIV Status Positive Observation" O)
    and exists(HE."On ART H.DE47" H
    where H.effective starts before end of "Measurement Period"
     and (H.effective ends after start of "Measurement Period"
@@ -109,13 +105,9 @@ define "numerator":
    )
 
 define "denominator":
-   (exists(HE."HIV Positive Condition" C
-	where C.onset before end of "Measurement Period")
+   exists(HE."HIV Status Positive Condition")
 	or 
-	exists(HIC."HIV Positive Observation" O
-	where (O.issued before end of "Measurement Period" and
-    O.issued after start of "Measurement Period")
-	))
+	exists(HIE."HIV Status Positive Observation" O)
 
 /*
  * Disaggregators
@@ -133,8 +125,8 @@ define "Geographic Region Stratifier":
 define "patientGroups Stratifier":
 	HIE."patientGroups"
 
-define "TB Stratifier":
-    HIC."tb"
+// define "TB Stratifier":
+//     HIC."tb"
 
 define "Time to start ART":
 	HE."Time to start ART"
@@ -146,4 +138,4 @@ define "Stratification":
   + ':' + HIE."By Age Stratifier"
 + ':' + HIE."By Geographic Region Stratifier"
 + Combine(HIE.patientGroups, ':')
-+ Combine(HIC.tb, ':')
+//+ Combine(HIC.tb, ':')

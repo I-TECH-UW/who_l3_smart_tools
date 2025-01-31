@@ -67,6 +67,7 @@ include HIVCommon version '0.0.1' called HIC
 include FHIRHelpers version '4.0.1'
 include WHOCommon called WCom
 
+include HIVElements called HE
 include HIVIndicatorElements called HIE
 
 // Indicator Definition
@@ -81,15 +82,13 @@ define "Initial Population":
 
 
 define "numerator":
-    exists(HIC."Needle Syringe Dispensed" DUS
+    exists(HE."Needle Syringe Dispensed" DUS
 	where (DUS.timing during "Measurement Period")
    ) 
 
 
 define "denominator":
-    exists(HIC.PWID_person O
-	where (O.effective during "Measurement Period")
-   ) 
+    exists(HIE."People who inject drugs") 
 
 /*
  * Disaggregators
@@ -108,7 +107,7 @@ define "patientGroups Stratifier":
 	HIE."patientGroups"
 
 define "Setting":
-    HIC."setting"
+    HIE."setting"
 
 //provider type not provided?
 
@@ -117,4 +116,4 @@ define "Stratification":
   + ':' + HIE."By Age Stratifier"
 + ':' + HIE."By Geographic Region Stratifier"
 + Combine(HIE.patientGroups, ':')
-+ Combine(HIC.setting, ':')
++ Combine(HIE.setting, ':')

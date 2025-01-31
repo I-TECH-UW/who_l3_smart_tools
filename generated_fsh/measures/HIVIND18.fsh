@@ -5,14 +5,14 @@ Title: "HIV.IND.18 People living with HIV who know their HIV status (first 95)"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "Number and % of people living with HIV who know their HIV status"
-* url = "http://smart.who.int/HIV/Measure/HIVIND18"
+* url = "http://smart.who.int/hiv/Measure/HIVIND18"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND18"
 * title = "HIV.IND.18 People living with HIV who know their HIV status (first 95)"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND18Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND18Logic"
 * scoring = $measure-scoring#continuous-variable "Continuous Variable"
 * group[+]
   * population[initialPopulation]

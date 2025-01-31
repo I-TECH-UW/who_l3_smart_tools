@@ -53,14 +53,22 @@ using FHIR version '4.0.1'
 
 include HIVCommon version '0.0.1' called HIC
 include FHIRHelpers version '4.0.1'
-include FHIRCommon called FC
+
 include WHOCommon called WCom
+include HIVElements called HE
+include HIVIndicatorElements called HIE
+include HIVConfig called Config
 
 // Indicator Definition
 parameter "Measurement Period" Interval<Date> default Interval[@2023-01-01, @2023-01-30]
 
 context Patient
 /* Populations */
+
+
+
+
+
 
 /*
  *Initial Population
@@ -77,7 +85,9 @@ define "Initial Population":
  */
 
 define "Numerator":
-  true
+  First(HE."ANC contact date E.DE85") during "Measurement Period"
+  and exists(HE."Syphilis test date B.DE249" P
+    where start of P.performed.toInterval() = start of First(HE."ANC contact date E.DE85"))
 
 
 /**
@@ -88,8 +98,26 @@ define "Numerator":
  */
 
 define "Denominator":
-  true
+  First(HE."ANC contact date E.DE85") during "Measurement Period"
     
 
 /* end Populations */
 
+/*
+ * Disaggregators
+ */
+
+
+define "Age Stratifier":
+	HIE."By Age Stratifier 2"
+
+define "Geographic Region Stratifier":
+	HIE."By Geographic Region Stratifier"
+
+define "HIV Status":
+  HIE."HIV Status Stratifier"
+
+define "Stratification":
+HIE."By Age Stratifier 2"
++ ':' + HIE."By Geographic Region Stratifier"
++ ':' + HIE."HIV Status Stratifier".code 

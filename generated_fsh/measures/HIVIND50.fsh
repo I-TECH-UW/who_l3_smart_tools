@@ -5,14 +5,14 @@ Title: "HIV.IND.50 TB testing among those symptom-screened positive"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "% of people living with HIV newly initiated on ART and screened positive for TB symptoms who then are tested for TB"
-* url = "http://smart.who.int/HIV/Measure/HIVIND50"
+* url = "http://smart.who.int/hiv/Measure/HIVIND50"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND50"
 * title = "HIV.IND.50 TB testing among those symptom-screened positive"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND50Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND50Logic"
 * scoring = $measure-scoring#proportion "Proportion"
 * group[+]
   * population[initialPopulation]
@@ -33,3 +33,7 @@ Title: "HIV.IND.50 TB testing among those symptom-screened positive"
     * code = $measure-population#numerator "Numerator"
     * criteria.language = #text/cql-identifier
     * criteria.expression = "Numerator"
+  * stratifier[+]
+    * id = "HIV.IND.50.S"
+    * criteria.language = #text/cql-identifier
+    * criteria.expression = "Stratification"

@@ -81,16 +81,8 @@ parameter "Measurement Period" Interval<Date> default Interval[@2023-01-01, @202
 
 context Patient
 define "Measure Population":
-    exists(HE."HIV Positive Condition" C
-	where C.onset before end of "Measurement Period")
-	or 
-	exists(HIC."HIV Positive Observation" O
-	where O.issued before end of "Measurement Period"
-	) 
-
-//define denominator?
-//How to bring in data from external sources
-
+   HIE."Has HIV-positive Status"
+	
 /*
  * As defined by Member States
  */
@@ -120,8 +112,8 @@ define "Geographic Region Stratifier":
 define "patientGroups Stratifier":
 	HIE."patientGroups"
 
-define "ANC Stratifier":
-    HIC."anc"
+// define "ANC Stratifier":
+//     HIC."anc"
 
 
 define "Stratification":
@@ -129,4 +121,4 @@ define "Stratification":
   + ':' + HIE."By Age Stratifier 2"
 + ':' + HIE."By Geographic Region Stratifier"
 + Combine(HIE.patientGroups, ':')
-+ Combine(HIC."anc", ':')
+// + Combine(HIC."anc", ':')

@@ -5,14 +5,14 @@ Title: "HIV.IND.77 Presence of STI syndrome, HIV-positive clients"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "% of people living with HIV diagnosed with a particular STI syndrome during the reporting period"
-* url = "http://smart.who.int/HIV/Measure/HIVIND77"
+* url = "http://smart.who.int/hiv/Measure/HIVIND77"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND77"
 * title = "HIV.IND.77 Presence of STI syndrome, HIV-positive clients"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND77Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND77Logic"
 * scoring = $measure-scoring#proportion "Proportion"
 * group[+]
   * population[initialPopulation]

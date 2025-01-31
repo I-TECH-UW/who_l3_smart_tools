@@ -5,14 +5,14 @@ Title: "HIV.IND.16 VMMC adverse events"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "a) Number or (b) % of adverse events during the reporting period"
-* url = "http://smart.who.int/HIV/Measure/HIVIND16"
+* url = "http://smart.who.int/hiv/Measure/HIVIND16"
 * status = #draft
 * experimental = true
-* date = "2024-08-05"
+* date = "2024-08-18"
 * name = "HIVIND16"
 * title = "HIV.IND.16 VMMC adverse events"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/HIV/Library/HIVIND16Logic"
+* library = "http://smart.who.int/hiv/Library/HIVIND16Logic"
 * scoring = $measure-scoring#proportion "Proportion"
 * group[+]
   * population[initialPopulation]
