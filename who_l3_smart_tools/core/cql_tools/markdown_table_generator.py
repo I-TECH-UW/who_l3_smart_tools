@@ -91,8 +91,14 @@ class IndicatorMarkdownGenerator(MarkdownTableHelper):
             self.indicators_md_template_path, "r", encoding="utf-8"
         ) as template_file:
             template_content = template_file.read()
-        # Subset data.
+        # Subset data by row filter
+        df = self.indicator_dak_data[
+            self.indicator_dak_data["Included in DAK"] == "TRUE"
+        ]
+
+        # Subset data by columns.
         df = self.indicator_dak_data[self.indicator_columns]
+
         table_markdown = self.generate_html_table(df)
         final_md_content = template_content.replace(
             "{{body}}", table_markdown["body"]
@@ -111,57 +117,68 @@ class DecisionTableMarkdownGenerator(MarkdownTableHelper):
         self.decision_logic_md_template_path = decision_logic_md_template_path
 
     def generate_dt_section_table(self, df: pd.DataFrame) -> str:
-        # remove the first column
+        # Remove the first column.
         df = df.iloc[:, 1:]
+        markdown_output = ""
+        row_index = 0
+        while row_index < len(df):
+            # Search for a row where the first cell is "Decision ID"
+            if str(df.iloc[row_index, 0]).strip() != "Decision ID":
+                row_index += 1
+                continue
 
-        # Extract decision details
-        decision_id = df.iloc[0, 1]
-        business_rule = df.iloc[1, 1]
-        trigger = df.iloc[2, 1]
-        hit_policy = df.iloc[3, 1]
+            # Found a decision table block starting at row_index.
+            try:
+                decision_id = df.iloc[row_index, 1]
+                business_rule = df.iloc[row_index + 1, 1]
+                trigger = df.iloc[row_index + 2, 1]
+                hit_policy = df.iloc[row_index + 3, 1]
+            except IndexError:
+                break  # not enough rows for a complete header block
 
-        # Column headers are in row 6
-        headers = list(df.iloc[4])
-        headers[0] = "Rule ID"
-
-        # Generate HTML header row using HTML-safe contents
-        header_html = (
-            "  <tr>"
-            + "".join([f"    <th>{html.escape(str(h))}</th>" for h in headers])
-            + "  </tr>"
-        )
-
-        # Generate HTML table rows from row 7 until column B is empty
-        rows_html = ""
-        row_index = 5
-        while row_index < len(df) and pd.notna(df.iloc[row_index, 1]):
-            row = df.iloc[row_index]
-            row_cells = "\n".join(
-                [
-                    f"    <td>{html.escape(str(cell)) if not pd.isna(cell) else ''}</td>"
-                    for cell in row
-                ]
+            # Headers are defined in the next row.
+            headers = list(df.iloc[row_index + 4])
+            headers[0] = "Rule ID"
+            headers = [h for h in headers if pd.notna(h)]
+            header_html = (
+                "   <tr>\n"
+                + "\n".join([f"     <th>{html.escape(str(h))}</th>" for h in headers])
+                + "\n   </tr>"
             )
-            rows_html += f"\n  <tr>{row_cells}</tr>\n"
-            row_index += 1
+            # Gather rows until an empty first cell is reached.
+            rows_html = ""
+            dt_row_index = row_index + 5
+            while (
+                dt_row_index < len(df)
+                and pd.notna(df.iloc[dt_row_index, 0])
+                and str(df.iloc[dt_row_index, 0]).strip() != ""
+            ):
+                row = df.iloc[dt_row_index, : len(headers)]
+                row_cells = "\n".join(
+                    [
+                        f"      <td>{html.escape(str(cell)) if pd.notna(cell) else ''}</td>"
+                        for cell in row
+                    ]
+                )
+                rows_html += f"\n   <tr>\n{row_cells}\n</tr>\n"
+                dt_row_index += 1
 
-        # Build HTML table section
-        table_html = (
-            f"<table border='1' class='dataframe table table-striped table-bordered'>\n"
-            f"  <thead>\n    {header_html}\n  </thead>\n"
-            f"  <tbody>\n    {rows_html}\n  </tbody>\n"
-            f"</table>"
-        )
+            table_html = (
+                f"<table border='1' class='dataframe table table-striped table-bordered'>\n"
+                f"  <thead>\n    {header_html}\n  </thead>\n"
+                f"  <tbody>\n    {rows_html}\n  </tbody>\n"
+                f"</table>"
+            )
+            section_md = (
+                f"### {decision_id}\n\n"
+                f"**Business Rule**: {business_rule}\n\n"
+                f"**Trigger**: {html.escape(str(trigger))}\n\n"
+                f"**Hit Policy**: {html.escape(str(hit_policy))}\n\n"
+                f"{table_html}\n\n---\n\n"
+            )
+            markdown_output += section_md
+            row_index = dt_row_index
 
-        # Build markdown output with decision details in markdown and embed the HTML table
-        markdown_output = (
-            f"### {decision_id}\n\n"
-            f"**Business Rule**: {business_rule}\n\n"
-            f"**Trigger**: {html.escape(str(trigger))}\n\n"
-            f"**Hit Policy**: {html.escape(str(hit_policy))}\n\n"
-            f"{table_html}"
-            f"\n\n---\n\n"
-        )
         return markdown_output
 
     def generate_dt_overview_list_table(
@@ -193,7 +210,10 @@ class DecisionTableMarkdownGenerator(MarkdownTableHelper):
                 .replace("{{dt_desc}}", dt_desc)
                 .replace("{{dt_ref}}", dt_ref)
             )
-            dt_rows.append(dt_row)
+            # Add row if dt_id is a valid string
+            if isinstance(dt_id, str) and len(dt_id) > 0:
+                dt_rows.append(dt_row)
+
         overview_html = overview_table_template.replace(
             "{{overview_table_rows}}", "\n".join(dt_rows)
         )

@@ -32,9 +32,9 @@ class TestMarkdownTableGenerator(unittest.TestCase):
 
     def test_generate_decision_table_md(self):
         decision_logic_input_file = "tests/data/l2/test_cds.xlsx"
-        timestamp = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
+        # timestamp = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
         md_output_file = os.path.join(
-            self.output_dir, f"generated_decision_tables-{timestamp}.md"
+            self.output_dir, "generated_decision_tables"  # -{timestamp}.md"
         )
         decision_logic_md_template_path = (
             "tests/data/example_templates/decision-logic.template.md"
