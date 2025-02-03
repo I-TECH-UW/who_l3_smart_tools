@@ -52,15 +52,45 @@ Replace `/path/to/excel` with the directory containing your Excel file and `exce
 
 To set up a development environment for contributing to this project, clone the repository and ensure you have Python 3.6 or newer installed. Install development dependencies using:
 
+**Install pipx**
+
+*MacOS:*
 ```bash
-pip3 install -r requirements_dev.txt
+brew install pipx
+pipx ensurepath
+sudo pipx ensurepath --global # optional to allow pipx actions with --global argument
 ```
 
-Run tests to ensure everything is set up correctly:
+*Ubuntu:*
+```bash
+sudo apt update
+sudo apt install pipx
+pipx ensurepath
+sudo pipx ensurepath --global # optional to allow pipx actions with --global argument
+```
+
+**Install Poetry:**
 
 ```bash
-pytest
+pipx install poetry
+poetry completions bash >> ~/.bash_completion
 ```
+
+**Install the project dependencies:**
+
+```bash
+poetry install
+```
+
+
+**Run tests to ensure everything is set up correctly:**
+
+```bash
+poetry run pytest
+```
+
+
+
 
 ## Contributing
 

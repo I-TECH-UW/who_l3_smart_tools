@@ -355,3 +355,28 @@ class ScaffoldingGenerator:
         apply_fill_to_column_range(
             ws, dis_start_col, dis_end_col, fills["Disaggregation"]
         )
+
+    def generate_indicators_markdown(self, md_output_file: str):
+        """
+        Generate an HTML table in a Markdown file, based on the Excel data.
+        """
+        # Use self.dak_data which is the 'Indicator definitions' sheet from the input Excel.
+        with open(md_output_file, "w", encoding="utf-8") as f:
+            f.write("# Auto-generated Indicators Table\n\n")
+            f.write('<table border="1" class="dataframe">\n')
+            f.write("  <thead>\n    <tr>\n")
+            # Write header row (assuming some known columns exist)
+            headers = list(self.dak_data.columns)
+            for h in headers:
+                f.write(f"      <th>{h}</th>\n")
+            f.write("    </tr>\n  </thead>\n  <tbody>\n")
+
+            # Write rows
+            for _, row in self.dak_data.iterrows():
+                f.write("    <tr>\n")
+                for h in headers:
+                    cell_value = row[h] if not pd.isna(row[h]) else ""
+                    f.write(f"      <td>{cell_value}</td>\n")
+                f.write("    </tr>\n")
+
+            f.write("  </tbody>\n</table>\n")
