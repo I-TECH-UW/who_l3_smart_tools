@@ -268,7 +268,7 @@ class ConceptResourceGenerator:
             sheet = workbook[sheet_name]
             header: Optional[list[str]] = None
             for row in sheet.iter_rows(values_only=True):
-                # if header is set the current raw as the header and skip to the next row.
+                # if header is None. Set the current row as the header and skip to the next row.
                 if header is None:
                     header = row
                     continue

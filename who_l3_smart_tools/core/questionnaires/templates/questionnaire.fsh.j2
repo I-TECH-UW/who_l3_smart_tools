@@ -1,0 +1,26 @@
+Instance: {{activity_id}}
+InstanceOf: sdc-questionnaire-extr-smap
+Title: "{{activity_title}}"
+Description: "Questionnaire for {{activity_title_description}}"
+Usage: #definition
+* meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-shareablequestionnaire"
+* meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablequestionnaire"
+* subjectType = #Patient
+* language = #en
+* status = #draft
+* experimental = true
+
+{% for item in questionnaire_items %}
+* item[+]
+  * id = "{{item.data_element_id}}"
+  * linkId = "{{item.data_element_id}}"
+  * type = #{{item.data_type}}
+  * text = "{{item.data_element_label}}"
+  * required = {{item.required}}
+  * repeats = false
+  * readOnly = false
+  {% if item.has_valueset %}
+  * answerValueSet = "#{{item.data_element_id}}"
+  {% endif %}
+  
+{% endfor %}

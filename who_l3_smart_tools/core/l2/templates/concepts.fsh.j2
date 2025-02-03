@@ -1,0 +1,12 @@
+CodeSystem: HIVConcepts
+Title: "WHO SMART HIV Concepts CodeSystem"
+Description: "This code system defines the concepts used in theWorld Health Organization SMART HIV DAK"
+* ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-shareablecodesystem"
+* ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablecodesystem"
+* ^meta.profile[+] = "http://smart.who.int/base/StructureDefinition/SGCodeSystem"
+* ^experimental = true
+* ^caseSensitive = false
+
+{% for concept in concepts %}
+* #{{ concept.id }} "{{ concept.label }}" "{{ concept.description }}"
+{% endfor %}

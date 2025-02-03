@@ -1,4 +1,6 @@
 import argparse
+
+from who_l3_smart_tools.cli.utils import add_common_args
 from who_l3_smart_tools.core.logical_models.logical_model_generator import (
     LogicalModelAndTerminologyGenerator,
 )
@@ -8,18 +10,7 @@ def main():
     parser = argparse.ArgumentParser(
         description="Generate Logical Model FSH from L3 Data Dictionary Excel file."
     )
-    parser.add_argument(
-        "-i",
-        "--input",
-        default="./l3-data/test-data.xlsx",
-        help="Input Data Dictionary file location",
-    )
-    parser.add_argument(
-        "-o",
-        "--output",
-        default="./data/output",
-        help="Output Logical Model FSH file location",
-    )
+    add_common_args(parser)
 
     args = parser.parse_args()
 
