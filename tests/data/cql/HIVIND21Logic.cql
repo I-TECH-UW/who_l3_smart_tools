@@ -79,8 +79,9 @@ using FHIR version '4.0.1'
 
 include HIVCommon version '0.0.1' called HIC
 include FHIRHelpers version '4.0.1'
-include FHIRCommon called FC
 include WHOCommon called WCom
+include HIVElements called HE
+include HIVIndicatorElements called HIE
 
 // Indicator Definition
 parameter "Measurement Period" Interval<Date> default Interval[@2023-01-01, @2023-01-30]
@@ -94,51 +95,47 @@ define "Initial Population":
 
 
 define "numerator":
-   (exists(HIC."HIV Positive Condition" C
-	where C.onset during "Measurement Period")
+   exists(HIE."HIV Status Positive Condition" C)
 	or 
-	exists(HIC."HIV Positive Observation" O
-    //during doesn't work
-	where (O.issued before end of "Measurement Period" and
-    O.issued after start of "Measurement Period")
-	))
-   and exists(HIC."HIV Treatment Active" H
+	exists(HIE."HIV Status Positive Observation" O)
+   and exists(HE."On ART H.DE47" H
    where H.effective starts before end of "Measurement Period"
     and (H.effective ends after start of "Measurement Period"
     or end of H.effective  ~  null)
    )
 
 define "denominator":
-   (exists(HIC."HIV Positive Condition" C
-	where C.onset before end of "Measurement Period")
+   exists(HE."HIV Status Positive Condition")
 	or 
-	exists(HIC."HIV Positive Observation" O
-	where (O.issued before end of "Measurement Period" and
-    O.issued after start of "Measurement Period")
-	))
+	exists(HIE."HIV Status Positive Observation" O)
 
 /*
  * Disaggregators
  */
 
 define "Administrative Gender Stratifier":
-	HIC."By Administrative Gender Stratifier"
+	HIE."By Administrative Gender Stratifier"
 
 define "Age Stratifier":
-	HIC."By Age Stratifier"
+	HIE."By Age Stratifier"
 
 define "Geographic Region Stratifier":
-	HIC."By Geographic Region Stratifier"
+	HIE."By Geographic Region Stratifier"
 
 define "patientGroups Stratifier":
-	HIC."patientGroups"
+	HIE."patientGroups"
 
-define "TB Stratifier":
-    HIC."tb"
+// define "TB Stratifier":
+//     HIC."tb"
+
+define "Time to start ART":
+	HE."Time to start ART"
 
 define "Stratification":
- HIC."By Administrative Gender Stratifier".code 
-  + ':' + HIC."By Age Stratifier"
-+ ':' + HIC."By Geographic Region Stratifier"
-// how to add list
-//+ ':' + HIC."tb"
+ HIE."By Administrative Gender Stratifier".code 
+ //not working
+ //+ ':' + HIC."Time to start ART".code
+  + ':' + HIE."By Age Stratifier"
++ ':' + HIE."By Geographic Region Stratifier"
++ Combine(HIE.patientGroups, ':')
+//+ Combine(HIC.tb, ':')

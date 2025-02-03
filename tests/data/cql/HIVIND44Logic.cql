@@ -14,7 +14,7 @@
  * Denominator Exclusions: 
  *
  * Disaggregations:
- * • Gender (female, male, other*) 
+ *  • Gender (female, male, other*) 
  *  • Age (0–4, 5–9, 10–14, 15–19, 20–24, 25–29, 30–34, 35–39, 40–44, 45–49, 50+ years)** 
  *  • Type of TPT regimen 
  *  • Cities and other administrative regions of epidemiologic importance
@@ -65,10 +65,13 @@ library HIVIND44Logic
 // Included Libraries
 using FHIR version '4.0.1'
 
-include HIVCommon version '0.0.1' called HIC
+include HIVCommon called HIC
 include FHIRHelpers version '4.0.1'
-include FHIRCommon called FC
+
 include WHOCommon called WCom
+
+include HIVElements called HE
+include HIVIndicatorElements called HIE
 
 // Indicator Definition
 parameter "Measurement Period" Interval<Date> default Interval[@2023-01-01, @2023-01-30]
@@ -91,8 +94,7 @@ define "Initial Population":
  */
 
 define "Numerator":
-  true
-
+ HIE."Has HIV-positive Status" and HIE."On ART" and exists(HIE."TB preventive treatment TPT start date in measurement period")
 
 /**
  * Denominator
@@ -102,8 +104,36 @@ define "Numerator":
  */
 
 define "Denominator":
-  true
+ HIE."Has HIV-positive Status" and HIE."On ART" and HIE."Eligible for TB preventive treatment"
     
 
 /* end Populations */
 
+/*
+ * Disaggregations:
+ *  • Gender (female, male, other*) 
+ *  • Age (0–4, 5–9, 10–14, 15–19, 20–24, 25–29, 30–34, 35–39, 40–44, 45–49, 50+ years)** 
+ *  • Type of TPT regimen 
+ *  • Cities and other administrative regions of epidemiologic importance
+ */
+
+define "Administrative Gender Stratifier":
+	HIE."By Administrative Gender Stratifier"
+
+define "Age Stratifier":
+  HIE."By Age Stratifier"
+
+define "TPT Regimen Type Stratifier":
+  HIE."TPT regimen type"
+
+define "Geographic Region Stratifier":
+  HIE."By Geographic Region Stratifier"
+
+/*
+ * Combined stratifiers
+ */
+define "Stratification":
+  HIE."By Administrative Gender Stratifier".code 
+    + ':' + HIE."By Age Stratifier"
+    + ':' + Combine(HIE."TPT regimen type".coding.code)
+	  + ':' + HIE."By Geographic Region Stratifier"

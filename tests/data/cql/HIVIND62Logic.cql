@@ -92,8 +92,11 @@ using FHIR version '4.0.1'
 
 include HIVCommon version '0.0.1' called HIC
 include FHIRHelpers version '4.0.1'
-include FHIRCommon called FC
+
 include WHOCommon called WCom
+include HIVElements called HE
+include HIVIndicatorElements called HIE
+include HIVConfig called Config
 
 // Indicator Definition
 parameter "Measurement Period" Interval<Date> default Interval[@2023-01-01, @2023-01-30]
@@ -104,6 +107,7 @@ context Patient
 /*
  *Initial Population
  */
+
 
 define "Initial Population":
   true
@@ -116,7 +120,10 @@ define "Initial Population":
  */
 
 define "Numerator":
-  true
+  exists(HE."Positive B.DE251" S
+  with HE."Syphilis test date B.DE249" P
+  such that S.partOf.references(P) and P.performed.toInterval() during "Measurement Period")
+
 
 
 /**
@@ -127,8 +134,39 @@ define "Numerator":
  */
 
 define "Denominator":
-  true
+  exists(HE."Syphilis test date B.DE249" P
+  where P.performed.toInterval() during "Measurement Period"
+  and exists (HE."Date accessed HIV prevention intervention" t where t = start of P.performed.toInterval()))
     
 
 /* end Populations */
 
+/*
+ * Disaggregators
+ */
+
+define "Administrative Gender Stratifier":
+	HIE."By Administrative Gender Stratifier"
+
+define "Age Stratifier":
+	HIE."By Age Stratifier 2"
+
+define "Geographic Region Stratifier":
+	HIE."By Geographic Region Stratifier"
+
+define "patientGroups Stratifier":
+	HIE."patientGroups"
+
+define "HIV prevention intervention":
+	HIE."HIV prevention intervention"
+
+define "HIV Status":
+  HIE."HIV Status Stratifier"
+
+define "Stratification":
+ HIE."By Administrative Gender Stratifier".code 
+  + ':' + HIE."By Age Stratifier 2"
++ ':' + HIE."By Geographic Region Stratifier"
++ Combine(HIE.patientGroups, ':')
++ Combine(HIE."HIV prevention intervention", ':')
++ ':' + HIE."HIV Status Stratifier".code 

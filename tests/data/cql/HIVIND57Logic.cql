@@ -76,8 +76,11 @@ using FHIR version '4.0.1'
 
 include HIVCommon version '0.0.1' called HIC
 include FHIRHelpers version '4.0.1'
-include FHIRCommon called FC
+
 include WHOCommon called WCom
+include HIVElements called HE
+include HIVIndicatorElements called HIE
+include HIVConfig called Config
 
 // Indicator Definition
 parameter "Measurement Period" Interval<Date> default Interval[@2023-01-01, @2023-01-30]
@@ -100,7 +103,13 @@ define "Initial Population":
  */
 
 define "Numerator":
-  true
+  HIE."Currently enrolled in DSD ART model"
+   and exists(
+    HIE."Viral load test result D.DE387" VL
+    with HE."routine viral load sample collection" P 
+    such that VL.partOf.references(P) and  P.performed.toInterval() during "Measurement Period"
+    where VL.value < 1000
+    )
 
 /**
  * Numerator Exclusions
@@ -109,7 +118,15 @@ define "Numerator":
  */
     
 define "Numerator Exclusions":
-  false
+  HIE."Currently enrolled in DSD ART model"
+   and exists(
+    HIE."Viral load test result D.DE387" VL
+    with HE."routine viral load sample collection" P 
+    such that VL.partOf.references(P) and  P.performed.toInterval() during "Measurement Period"
+    and months between (start of P.performed.toInterval()) and (date from start of HE."First On ART".effective.toInterval()) < 6 months
+    where VL.value < 1000
+    )
+
 
 /**
  * Denominator
@@ -119,7 +136,12 @@ define "Numerator Exclusions":
  */
 
 define "Denominator":
-  true
+  HIE."Currently enrolled in DSD ART model"
+   and exists(
+    HIE."Viral load test result D.DE387" VL
+    with HE."routine viral load sample collection" P 
+    such that VL.partOf.references(P) and  P.performed.toInterval() during "Measurement Period"
+    )
     
 /**
 * Denominator Exclusions
@@ -128,7 +150,34 @@ define "Denominator":
 */
 
 define "Denominator Exclusions":
-  false
+  HIE."Currently enrolled in DSD ART model"
+   and exists(
+    HIE."Viral load test result D.DE387" VL
+    with HE."routine viral load sample collection" P 
+    such that VL.partOf.references(P) and  P.performed.toInterval() during "Measurement Period"
+    and months between (start of P.performed.toInterval()) and (date from start of HE."First On ART".effective.toInterval()) < 6 months
+    )
 
 /* end Populations */
 
+/*
+ * Disaggregators
+ */
+
+define "Administrative Gender Stratifier":
+	HIE."By Administrative Gender Stratifier"
+
+define "Age Stratifier":
+	HIE."By Age Stratifier"
+
+define "Geographic Region Stratifier":
+	HIE."By Geographic Region Stratifier"
+
+define "patientGroups Stratifier":
+	HIE."patientGroups"
+
+define "Stratification":
+ HIE."By Administrative Gender Stratifier".code 
+  + ':' + HIE."By Age Stratifier"
++ ':' + HIE."By Geographic Region Stratifier"
++ Combine(HIE.patientGroups, ':')

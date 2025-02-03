@@ -123,8 +123,9 @@ using FHIR version '4.0.1'
 
 include HIVCommon version '0.0.1' called HIC
 include FHIRHelpers version '4.0.1'
-include FHIRCommon called FC
 include WHOCommon called WCom
+include HIVElements called HE
+include HIVIndicatorElements called HIE
 
 // Indicator Definition
 parameter "Measurement Period" Interval<Date> default Interval[@2023-01-01, @2023-01-30]
@@ -147,8 +148,49 @@ define "Initial Population":
  */
 
 define "Numerator":
-  true
+  (HIE."Has HIV-positive Status"
+  and HIE."Toxicity/side effects H.DE75")
+  and ((
+    HIE."Has HIV-positive Status" 
+    and HIE."On ART H.DE47"
+    and 
+    (exists(HE."New regimen after switch to second-line regimen" R
+    with HE."Toxicity/side effects H.DE75" T
+    such that R.partOf.references(T)
+    where R.effective.toInterval() during "Measurement Period"
+    )
+    or 
+    (
+    exists(HE."New regimen after switch to third-line regimen" R
+    with HE."Toxicity/side effects H.DE75" T
+    such that R.partOf.references(T)
+    where R.effective.toInterval() during "Measurement Period"  
+    )
+    )
+  )
+  )
+  or
+  (
+    HIE."Has HIV-positive Status"
+    and HIE."On ART H.DE47"
+    and 
+    (exists(HE."New regimen after substitution within second-line regimen" R
+    with HE."Toxicity/side effects H.DE75" T
+    such that R.partOf.references(T)
+    where R.effective.toInterval() during "Measurement Period"
+    )
+    or 
+    (
+    exists(HE."New regimen after substitution within third-line regimen" R
+    with HE."Toxicity/side effects H.DE75" T
+    such that R.partOf.references(T)
+    where R.effective.toInterval() during "Measurement Period"  
+    )
+    )
+  )
+  )
 
+  )
 
 /**
  * Denominator
@@ -158,8 +200,38 @@ define "Numerator":
  */
 
 define "Denominator":
-  true
+  HIE."Has HIV-positive Status"
+    and HIE."On ART H.DE47"
     
 
 /* end Populations */
 
+
+/*
+ * Disaggregators
+ */
+
+define "Administrative Gender Stratifier":
+	HIE."By Administrative Gender Stratifier"
+
+define "Age Stratifier":
+	HIE."By Age Stratifier"
+
+define "Geographic Region Stratifier":
+	HIE."By Geographic Region Stratifier"
+
+define "patientGroups Stratifier":
+	HIE."patientGroups"
+
+define "Stratification":
+ HIE."By Administrative Gender Stratifier".code 
+  + ':' + HIE."By Age Stratifier"
++ ':' + HIE."By Geographic Region Stratifier"
++ Combine(HIE.patientGroups, ':')
+
+/*
+need to add
+*  • ART regimen 
+ *  • Pregnancy status 
+ *  • Type of toxicity (gastrointestinal, skin, peripheral neuropathy, central nervous system, weight gain, hepatic dysfunction, haematological, fatigue, headache, bone dysfunction, metabolic, kidney dysfunction) 
+*/

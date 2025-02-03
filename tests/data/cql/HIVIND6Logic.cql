@@ -79,8 +79,9 @@ using FHIR version '4.0.1'
 
 include HIVCommon version '0.0.1' called HIC
 include FHIRHelpers version '4.0.1'
-include FHIRCommon called FC
 include WHOCommon called WCom
+
+include HIVIndicatorElements called HIE
 
 // Indicator Definition
 parameter "Measurement Period" Interval<Date> default Interval[@2023-01-01, @2023-01-30]
@@ -94,13 +95,13 @@ define "Initial Population":
 
 
 define "numerator":
-    exists(HIC."PEP Prescribed before start of Measurement Period and Completed" MS
+    exists(HIE."PEP Prescribed before start of Measurement Period and Completed" MS
 	where (MS.effective ends during "Measurement Period")
    ) 
 
 
 define "denominator":
-    exists(HIC."PEP Prescribed during Measurement Period and Completed" MS
+    exists(HIE."PEP Prescribed during Measurement Period and Completed" MS
 	where not (MS.effective ends after end of "Measurement Period")
    ) 
 
@@ -109,31 +110,34 @@ define "denominator":
  */
 
 define "Administrative Gender Stratifier":
-	HIC."By Administrative Gender Stratifier"
+	HIE."By Administrative Gender Stratifier"
 
 define "Age Stratifier":
-	HIC."By Age Stratifier 3"
+	HIE."By Age Stratifier 3"
 
 define "Geographic Region Stratifier":
-	HIC."By Geographic Region Stratifier"
+	HIE."By Geographic Region Stratifier"
 
 define "patientGroups Stratifier":
-	HIC."patientGroups"
+	HIE."patientGroups"
 
 define "prep product":
-    HIC."prep_product"
+    HIE."prep_product"
 
 define "Setting":
-    HIC."setting"
+    HIE."setting"
 
 define "hiv_exposure_type":
-    HIC."hiv_exposure_type"
+    HIE."hiv_exposure_type"
 
 //provider type not provided?
 
 define "Stratification":
- HIC."By Administrative Gender Stratifier".code 
-  + ':' + HIC."By Age Stratifier"
-+ ':' + HIC."By Geographic Region Stratifier"
-//Need to discuss how to add list
-//+ ':' +HIC."patientGroups"
+ HIE."By Administrative Gender Stratifier".code 
+  + ':' + HIE."By Age Stratifier 3"
++ ':' + HIE."By Geographic Region Stratifier"
++ Combine(HIE.patientGroups, ':')
++ Combine(HIE.setting, ':')
++ Combine(HIE.prep_product, ':')
++ Combine(HIE."hiv_exposure_type", ':')
+

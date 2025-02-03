@@ -21,7 +21,7 @@ Usage: #definition
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablelibrary"
 * meta.profile[+] = "http://hl7.org/fhir/uv/cql/StructureDefinition/cql-library"
 * meta.profile[+] = "http://hl7.org/fhir/uv/cql/StructureDefinition/cql-module"
-* url = "http://smart.who.int/{dak_name}/Library/{library_name}"
+* url = "http://smart.who.int/hiv/Library/{library_name}"
 * extension[+]
   * url = "http://hl7.org/fhir/StructureDefinition/cqf-knowledgeCapability"
   * valueCode = #computable
@@ -40,14 +40,14 @@ Title: "{title}"
 * meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablemeasure"
 * extension[http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/cqfm-populationBasis].valueCode = #boolean
 * description = "{description}"
-* url = "http://smart.who.int/{dak_name}/Measure/{measure_name}"
+* url = "http://smart.who.int/hiv/Measure/{measure_name}"
 * status = #draft
 * experimental = true
 * date = "{date}"
 * name = "{measure_name}"
 * title = "{title}"
 * publisher = "World Health Organization (WHO)"
-* library = "http://smart.who.int/{dak_name}/Library/{library_name}"
+* library = "http://smart.who.int/hiv/Library/{library_name}"
 """
 
 scoring_value_set: str = {"proportion", "continuous-variable"}
@@ -111,6 +111,13 @@ measure_stratifier_fsh_template = """
     * criteria.expression = "{index}"
 """
 
+measure_combined_stratifier_fsh_template = """
+  * stratifier[+]
+    * id = "{dak_id}.S"
+    * criteria.language = #text/cql-identifier
+    * criteria.expression = "Stratification"
+"""
+
 
 class EmptyItem:
     def __getitem__(self, item) -> Any:
@@ -123,7 +130,7 @@ class EmptyItem:
 __empty__ = EmptyItem()
 
 
-class CqlResourceGenerator:
+class FshResourceGenerator:
     """
     This class assists in the translation of L2 DAK indicator artifacts into
     CQL and related resources for loading into the IG.
@@ -187,6 +194,15 @@ class CqlResourceGenerator:
         stratifier_matches = re.findall(r'define "(.+ Stratifier)":', self.cql_content)
         for stratifier in stratifier_matches:
             parsed_data["stratifiers"][stratifier] = True
+
+        # Extract Combined Stratifier
+        combined_stratifier_match = re.search(
+            r"define \"Stratification\"\:", self.cql_content, re.IGNORECASE
+        )
+        if combined_stratifier_match:
+            parsed_data["combinedStratifier"] = True
+        else:
+            parsed_data["combinedStratifier"] = False
 
         # Extract initial population
         initial_population_match = re.search(
@@ -343,13 +359,18 @@ class CqlResourceGenerator:
                     ),
                 )
 
-            for index, stratifier in self.parsed_cql["stratifiers"].items():
-                # Remove last word from stratifier title, and use first letter of each remaining word to create code
-                words = index.split()
-                strat_code = "".join([word[0] for word in words[:-1]]).upper()
-                measure_fsh += measure_stratifier_fsh_template.format(
-                    dak_id=dak_id, strat_code=strat_code, index=index
+            if self.parsed_cql["combinedStratifier"]:
+                measure_fsh += measure_combined_stratifier_fsh_template.format(
+                    dak_id=dak_id
                 )
+            else:
+                for index, stratifier in self.parsed_cql["stratifiers"].items():
+                    # Remove last word from stratifier title, and use first letter of each remaining word to create code
+                    words = index.split()
+                    strat_code = "".join([word[0] for word in words[:-1]]).upper()
+                    measure_fsh += measure_stratifier_fsh_template.format(
+                        dak_id=dak_id, strat_code=strat_code, index=index
+                    )
 
         # remove any empty lines from measure
         measure_fsh = "\n".join(

@@ -86,8 +86,9 @@ using FHIR version '4.0.1'
 
 include HIVCommon version '0.0.1' called HIC
 include FHIRHelpers version '4.0.1'
-include FHIRCommon called FC
 include WHOCommon called WCom
+
+include HIVIndicatorElements called HIE
 
 // Indicator Definition
 parameter "Measurement Period" Interval<Date> default Interval[@2023-01-01, @2023-01-30]
@@ -109,45 +110,39 @@ define "Initial Population":
 //Does this also filter out self HIV tests 
 //right now using HIVIND19 definition which does
 define "numerator":
-    exists(HIC."HIV Positive Condition" C
-	where C.onset during "Measurement Period")
+    exists(HIE."HIV Status Positive Condition")
 	or 
-	exists(HIC."HIV Positive Observation" O
-	where (O.issued before end of "Measurement Period"
-	and O.issued after start of "Measurement Period")
-	) 
+	exists(HIE."HIV Status Positive Observation") 
 
 define "denominator":
-    exists(HIC."HIV test resulted" T
-	where T.issued before end of "Measurement Period"
-	and T.issued after start of "Measurement Period")
-
+    exists(HIE."HIV test results returned in measurement period")
 
 /*
  * Disaggregators
  */
  
 define "Administrative Gender Stratifier":
-	HIC."By Administrative Gender Stratifier"
+	HIE."By Administrative Gender Stratifier"
 
 define "Age Stratifier":
-	HIC."By Age Stratifier"
+	HIE."By Age Stratifier"
 
 define "Geographic Region Stratifier":
-	HIC."By Geographic Region Stratifier"
+	HIE."By Geographic Region Stratifier"
 
 define "patientGroups Stratifier":
-	HIC."patientGroups"
+	HIE."patientGroups"
 
 define "Setting":
-    HIC."setting"
+    HIE."setting"
 
-define "TB Stratifier":
-    HIC."tb"
+// define "TB Stratifier":
+//     HIC."tb"
 
 define "Stratification":
- HIC."By Administrative Gender Stratifier".code 
-  + ':' + HIC."By Age Stratifier"
-+ ':' + HIC."By Geographic Region Stratifier"
-//Need to discuss how to add list
-//+ ':' +HIC."patientGroups"
+ HIE."By Administrative Gender Stratifier".code 
+  + ':' + HIE."By Age Stratifier"
++ ':' + HIE."By Geographic Region Stratifier"
++ Combine(HIE.patientGroups, ':')
++ Combine(HIE.setting, ':')
+//+ Combine(HIC.tb, ':')

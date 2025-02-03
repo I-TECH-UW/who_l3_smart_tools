@@ -83,8 +83,9 @@ using FHIR version '4.0.1'
 
 include HIVCommon version '0.0.1' called HIC
 include FHIRHelpers version '4.0.1'
-include FHIRCommon called FC
 include WHOCommon called WCom
+include HIVElements called HE
+include HIVIndicatorElements called HIE
 
 // Indicator Definition
 parameter "Measurement Period" Interval<Date> default Interval[@2023-01-01, @2023-01-30]
@@ -107,7 +108,17 @@ define "Initial Population":
  */
 
 define "Numerator":
-  true
+  HIE."Has HIV-positive Status"
+  and HIE."On ART H.DE47"
+  and 
+   (months between (end of "Measurement Period") and (date from start of HE."First On ART".effective.toInterval()) > 6 months)
+   and 
+   exists(
+    HE."Date viral load test results received by client D.DE193" VL
+    with HE."routine viral load sample collection" P 
+    such that VL.partOf.references(P)
+    where VL.issued.toInterval() during "Measurement Period"
+    )
 
 /**
  * Numerator Exclusions
@@ -116,7 +127,9 @@ define "Numerator":
  */
     
 define "Numerator Exclusions":
-  false
+  HIE."Has death documented"
+   or HIE."Has transferred out"
+   or HIE."Is lost to follow-up"
 
 /**
  * Denominator
@@ -126,7 +139,10 @@ define "Numerator Exclusions":
  */
 
 define "Denominator":
-  true
+ HIE."Has HIV-positive Status"
+  and HIE."On ART H.DE47"
+  and 
+   (months between (end of "Measurement Period") and (date from start of HE."First On ART".effective.toInterval()) > 6 months)
     
 /**
 * Denominator Exclusions
@@ -135,7 +151,30 @@ define "Denominator":
 */
 
 define "Denominator Exclusions":
-  false
+  HIE."Has death documented"
+   and HIE."Has transferred out"
+   and HIE."Is lost to follow-up"
 
 /* end Populations */
 
+/*
+ * Disaggregators
+ */
+
+define "Administrative Gender Stratifier":
+	HIE."By Administrative Gender Stratifier"
+
+define "Age Stratifier":
+	HIE."By Age Stratifier"
+
+define "Geographic Region Stratifier":
+	HIE."By Geographic Region Stratifier"
+
+define "patientGroups Stratifier":
+	HIE."patientGroups"
+
+define "Stratification":
+ HIE."By Administrative Gender Stratifier".code 
+  + ':' + HIE."By Age Stratifier"
++ ':' + HIE."By Geographic Region Stratifier"
++ Combine(HIE.patientGroups, ':')

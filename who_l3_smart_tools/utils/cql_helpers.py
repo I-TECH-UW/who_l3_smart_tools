@@ -42,7 +42,12 @@ DAK_DT_ID_CODE_PATTERN = re.compile(r"(\S+)(DT)(\S*)(Logic)")
 
 def sanitize_description(description: str):
     # Sanitize description to remove special characters
-    return description.replace('"', "'").replace("\n", " | ")
+    return description.replace('"', "'").replace("\n", " | ").replace("*", "")
+
+
+def sanitize_label(label: str):
+    # Sanitize label to remove special characters
+    return label.replace('*', "")
 
 
 def create_cql_concept_dictionaries(dd_xls: dict, dak_name: str):
@@ -52,62 +57,28 @@ def create_cql_concept_dictionaries(dd_xls: dict, dak_name: str):
     """
 
     # Create a dictionary of concepts
-    indicator_concept_lookup = {}
-    cql_concept_dictionary = {}
+    indicator_concept_lookup: dict[str, list[dict[str, str]]] = {}
+    cql_concept_dictionary: dict[str, dict[str, str]] = {}
 
-    # TODO: refactor to common method across logic/terminology/this file
     for sheet_name in dd_xls.keys():
         if re.match(rf"{dak_name}\.\w+", sheet_name):
-            df = dd_xls[sheet_name]
+            df: pd.DataFrame = dd_xls[sheet_name]
+            lastCodingId = None
             for _, row in df.iterrows():
-                # Grab Linkages to Decision Support Tables and Aggregate Indicators
-                data_type = row["Data Type"]
-                data_element_id = row["Data Element ID"]
-
-                cds = row["Linkages to Decision Support Tables"]
-                indicators = row["Linkages to Aggregate Indicators"]
-
-                # Handle label value == "None"
-                if row["Data Element Label"] is None or pd.isna(
-                    row["Data Element Label"]
-                ):
-                    print(f"Data Element Label is None for {data_element_id}")
-                    row["Data Element Label"] = "None"
+                linkages: list = []
+                # Save last coding label for use in following codings
+                if row["Data Type"] == "Coding":
+                    lastCodingId = row["Data Element ID"]
 
                 linkages = []
-                ## TODO: refactor to remove duplicate code for cds and indicators
 
-                # Select row if Linkage to CDS or Indicator is not empty
-                if cds and isinstance(cds, str) and not pd.isna(cds):
-                    # Grab: Data Element ID, Data Element Label, Description and Definition
-                    # and index by indicator / cds ids
-
-                    # Add to concept dictionary if not already present
-                    if data_element_id not in cql_concept_dictionary:
-                        cql_concept_dictionary[data_element_id] = {
-                            "label": row["Data Element Label"],
-                            "sheet": sheet_name,
-                            "data_type": data_type,
-                            "description": row["Description and Definition"],
-                        }
-
-                    # Parse linkages
-                    linkages.extend([item.strip() for item in cds.split(",")])
-                if (
-                    indicators
-                    and isinstance(indicators, str)
-                    and not pd.isna(indicators)
-                ):
-                    # Add to concept dictionary if not already present
-                    if data_element_id not in cql_concept_dictionary:
-                        cql_concept_dictionary[data_element_id] = {
-                            "label": row["Data Element Label"],
-                            "sheet": sheet_name,
-                            "data_type": data_type,
-                            "description": row["Description and Definition"],
-                        }
-
-                    linkages.extend([item.strip() for item in indicators.split(",")])
+                update_concepts_and_linkages(
+                    row,
+                    sheet_name,
+                    lastCodingId,
+                    linkages,
+                    cql_concept_dictionary,
+                )
 
                 # Add linkages as keys to concept dictionary, and add data element details
                 for linkage in linkages:
@@ -125,6 +96,104 @@ def create_cql_concept_dictionaries(dd_xls: dict, dak_name: str):
                     )
 
     return indicator_concept_lookup, cql_concept_dictionary
+
+
+def update_concepts_and_linkages(
+    row: pd.Series,
+    sheet_name: str,
+    lastCodingId: str,
+    linkages: list,
+    cql_concept_dictionary: dict,
+):
+    """
+    This method creates a dictionary of concepts from the data dictionary file to include in the CQL
+    templates.
+
+    It takes in a row of data from the data dictionary file, the sheet name, and the last coding ID, and
+    modifies the linkages list and the cql_concept_dictionary dictionary in place.
+
+    Parameters:
+    - row: pd.Series
+        The row of data from the data dictionary file
+    - sheet_name: str
+        The name of the sheet in the data dictionary file
+    - lastCodingId: str
+        The last coding ID
+    - linkages: list
+        The list of linkages that will be updated
+    - cql_concept_dictionary: dict
+        The dictionary of concepts that will be updated
+
+    Returns: None
+    """
+    sheet_name_pattern = re.compile(r"\w+\.[\w-]+\s(\w+)")
+    sheet_name_alt_pattern = re.compile(r"\w+\.(\w+)")
+    sheet_readable_name = None
+
+    # Parse row data
+    data_element_id = row["Data Element ID"]
+    cds = row["Linkages to Decision Support Tables"]
+    indicators = row["Linkages to Aggregate Indicators"]
+
+    # Determine linkage type
+    linkage_type = None
+    if cds and isinstance(cds, str) and not pd.isna(cds):
+        linkage_type = "dt"
+    if indicators and isinstance(indicators, str) and not pd.isna(indicators):
+        if linkage_type:
+            linkage_type = "both"
+        else:
+            linkage_type = "indicator"
+
+    # Get human-readable part of sheet name
+    sheet_name_match = sheet_name_pattern.search(sheet_name)
+
+    # Handle alternate sheet name pattern
+    if not sheet_name_match:
+        sheet_name_match = sheet_name_alt_pattern.search(sheet_name)
+        if sheet_name_match:
+            sheet_readable_name = sheet_name_match.group(1)
+        else:
+            raise ValueError("Sheet name does not match expected pattern")
+
+    sheet_readable_name = sheet_name_match.group(1)
+
+    # Handle label value == "None"
+    if row["Data Element Label"] is None or pd.isna(row["Data Element Label"]):
+        print(f"Data Element Label is None for {data_element_id}")
+        row["Data Element Label"] = "None"
+
+    concept_dict_entry = {
+        "label": row["Data Element Label"],
+        "sheet_name": sheet_readable_name,
+        "sheet": sheet_name,
+        "data_type": row["Data Type"],
+        "activity": row["Activity ID"],
+        "description": row["Description and Definition"],
+        "linkage_type": linkage_type,
+    }
+
+    if row["Data Type"] == "Codes":
+        if not lastCodingId:
+            raise ValueError("Last Coding ID not found for Data Element ID")
+        concept_dict_entry["parent_coding_id"] = lastCodingId
+
+        if cql_concept_dictionary[lastCodingId]["linkage_type"] is None:
+            cql_concept_dictionary[lastCodingId]["linkage_type"] = linkage_type
+        elif cql_concept_dictionary[lastCodingId]["linkage_type"] != linkage_type:
+            cql_concept_dictionary[lastCodingId]["linkage_type"] = "both"
+
+    # Select row if Linkage to CDS or Indicator is not empty
+    if linkage_type == "dt" or linkage_type == "both":
+        # Parse linkages
+        linkages.extend([item.strip() for item in cds.split(",")])
+
+    if linkage_type == "indicator" or linkage_type == "both":
+        linkages.extend([item.strip() for item in indicators.split(",")])
+
+    cql_concept_dictionary[data_element_id] = concept_dict_entry
+
+    return None
 
 
 def determine_scoring_suggestion(denominator_val: str):
@@ -179,7 +248,7 @@ def get_dak_name(dd_xls: dict):
     dak_name = None
 
     for sheet_name in dd_xls.keys():
-        if not sheet_name or pd.isna(sheet_name) or sheet_name is not str:
+        if not sheet_name or pd.isna(sheet_name) or not isinstance(sheet_name, str):
             continue
         matches = dak_name_pattern.search(sheet_name)
         if matches:
@@ -325,3 +394,58 @@ def parse_cql_library_name(cql_file_contents: str):
         raise ValueError("Keys missing when parsing CQL library name")
 
     return parsed_data
+
+
+def count_label_frequencies(cql_concept_dictionary):
+    label_frequency: dict[str, int] = {}
+    label_sheet_frequency: dict[(str, str), int] = {}
+
+    # Collapse concept_details["label"] to count frequency
+    for concept_id, concept_details in cql_concept_dictionary.items():
+        if (
+            pd.isna(concept_details["label"])
+            or not concept_details["label"]
+            # or concept_details["linkage_type"] is None
+        ):
+            continue
+
+        concept_details["label"] = re.sub(r"[\'\"()]", "", concept_details["label"])
+        if concept_details["label"] not in label_frequency:
+            label_frequency[concept_details["label"]] = 1
+        else:
+            label_frequency[concept_details["label"]] += 1
+
+        if (
+            concept_details["label"],
+            concept_details["sheet"],
+        ) not in label_sheet_frequency:
+            label_sheet_frequency[
+                concept_details["label"], concept_details["sheet"]
+            ] = 1
+        else:
+            label_sheet_frequency[
+                concept_details["label"], concept_details["sheet"]
+            ] += 1
+    return label_frequency, label_sheet_frequency
+
+
+def get_concept_label(label_frequency, concept_id, concept_details):
+    if label_frequency[concept_details["label"]] == 1:
+        label_str = concept_details["label"]
+    else:
+        label_str = f"{concept_details['label']} - {concept_id}"
+
+    return sanitize_label(label_str)
+
+
+def get_element_label(
+    label_frequency, label_sheet_frequency, concept_id, concept_details
+):
+    split_id = concept_id.split(".")
+
+    if label_frequency[concept_details["label"]] == 1:
+        label_str = f"{concept_details["label"]}"
+    else:
+        label_str = f"{concept_details['label']} {split_id[1]}.{split_id[2]}"
+
+    return sanitize_label(label_str)
