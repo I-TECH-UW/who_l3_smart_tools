@@ -7,11 +7,15 @@ import unittest
 import pandas as pd
 import stringcase
 
-from who_l3_smart_tools.core.cql_tools.cql_file_generation.cql_file_generator import CqlFileGenerator
+from who_l3_smart_tools.core.cql_tools.cql_file_generation.cql_file_generator import (
+    CqlFileGenerator,
+)
 from who_l3_smart_tools.core.cql_tools.fsh_file_generation.fsh_resource_generator import (
     FshResourceGenerator,
 )
-from who_l3_smart_tools.core.cql_tools.template_generation.elements_cql_generator import ElementsCqlGenerator
+from who_l3_smart_tools.core.cql_tools.template_generation.elements_cql_generator import (
+    ElementsCqlGenerator,
+)
 from who_l3_smart_tools.core.cql_tools.template_generation.indicator_cql_generator import (
     IndicatorCqlGenerator,
 )

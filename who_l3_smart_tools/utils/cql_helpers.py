@@ -47,7 +47,7 @@ def sanitize_description(description: str):
 
 def sanitize_label(label: str):
     # Sanitize label to remove special characters
-    return label.replace('*', "")
+    return label.replace("*", "")
 
 
 def create_cql_concept_dictionaries(dd_xls: dict, dak_name: str):

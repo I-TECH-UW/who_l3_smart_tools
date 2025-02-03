@@ -104,7 +104,9 @@ class TestNonFunctionalMarkdownGenerator(unittest.TestCase):
     def test_generate_non_functional_md_on_dak(self):
         # New test using fixed input file and timestamped output path.
         timestamp = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
-        md_output_file = os.path.join("tests/output/content", f"generated_non_functional-{timestamp}.md")
+        md_output_file = os.path.join(
+            "tests/output/content", f"generated_non_functional-{timestamp}.md"
+        )
         input_file = "tests/data/l2/test_functional_nonfunctional.xlsx"
         generator = NonFunctionalMarkdownGenerator(input_file)
         generator.generate_non_functional_md(md_output_file)
