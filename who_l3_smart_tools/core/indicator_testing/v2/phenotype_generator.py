@@ -50,10 +50,22 @@ def generate_phenotype_xlsx(input_excel, output_excel, indicator=None):
         return
     indicator_row = indicator_row.head(1)
 
+    # Grab dissaggregation data elements
+    disaggregation_elements = indicator_row["Disaggregation data elements"].values[0]
+    # Split by newline or comma
+    disaggregation_elements = [
+        elem.strip() for elem in disaggregation_elements.replace("\n", ",").split(",")
+    ]
+
     # Candidate headers for patient demographics and indicator features
     candidate_header = [
-        "Patient.id",
-        "<Add dissagregation patient feature columns>",
+        "Patient Phenotype ID",
+        "Phenotype Description",
+    ]
+    # Add disaggregation elements to candidate header
+    candidate_header += disaggregation_elements
+    # Add indicator feature columns
+    candidate_header += [
         "<Add indicator feature columns>",
         "Counted as Numerator (0,1)",
         "Counted as Denominator (0,1)",
