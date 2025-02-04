@@ -1,6 +1,7 @@
 import pandas as pd
 from openpyxl.styles import PatternFill
 from openpyxl.styles import Alignment
+from openpyxl.styles import Font
 import math
 
 
@@ -58,27 +59,70 @@ def generate_phenotype_xlsx(input_excel, output_excel, indicator=None):
         "Counted as Denominator (0,1)",
     ]
 
-    # Write to XLSX: first row with indicator info, blank row, then header row
     with pd.ExcelWriter(output_excel, engine="openpyxl") as writer:
-        # Write the indicator row, a blank row, and the candidate header row
-        indicator_row.to_excel(writer, index=False, header=False, startrow=0)
-        pd.DataFrame(
-            [[""] * indicator_row.shape[1]], columns=indicator_row.columns
-        ).to_excel(writer, index=False, header=False, startrow=1)
+        # Subset the indicator info to specified columns
+        cols_subset = [
+            "DAK ID",
+            "Short name",
+            "Indicator definition",
+            "Numerator calculation",
+            "Denominator calculation",
+            "Denominator definition",
+            "Disaggregation data elements",
+            "Disaggregation description",
+            "Numerator definition",
+            "Numerator exclusions",
+            "Denominator exclusions",
+            "Ref no.",
+            "List of all data elements included in numerator and denominator",
+            "Comments and references",
+            "Reference",
+            "Category",
+            "What it measures",
+            "Rationale",
+            "Method of measurement",
+        ]
+        indicator_subset = indicator_row[cols_subset]
+
+        # Write three rows:
+        # Row 1: indicator info header (column names)
+        pd.DataFrame([cols_subset]).to_excel(
+            writer, index=False, header=False, startrow=0
+        )
+        # Row 2: indicator info values
+        indicator_subset.to_excel(writer, index=False, header=False, startrow=1)
+
+        # Skip a row between indicator info and candidate header
+        sheet_name = list(writer.sheets.keys())[0]
+        writer.sheets[sheet_name].row_dimensions[3].height = 15
+
+        # Row 4: candidate header row
         pd.DataFrame([candidate_header]).to_excel(
-            writer, index=False, header=False, startrow=2
+            writer, index=False, header=False, startrow=3
         )
 
         # Access the workbook and active worksheet
         workbook = writer.book
         worksheet = writer.sheets[workbook.sheetnames[0]]
 
-        # Apply yellow background to the first row (indicator info)
-        yellow_fill = PatternFill(
-            start_color="FFFF00", end_color="FFFF00", fill_type="solid"
+        # Style rows:
+        # Row 1 (Excel row 1): indicator header - dark yellow and bold
+        dark_yellow_fill = PatternFill(
+            start_color="FFD700", end_color="FFD700", fill_type="solid"
         )
+        # Row 2 (Excel row 2): indicator values - light yellow
+        light_yellow_fill = PatternFill(
+            start_color="FFFFE0", end_color="FFFFE0", fill_type="solid"
+        )
+
         for cell in worksheet[1]:
-            cell.fill = yellow_fill
+            cell.fill = dark_yellow_fill
+            cell.font = Font(bold=True)
+        for cell in worksheet[2]:
+            cell.fill = light_yellow_fill
+        # Row 4 (Excel row 4): candidate header - bold text
+        for cell in worksheet[4]:
+            cell.font = Font(bold=True)
 
         # Define minimum and maximum column widths (adjust these values as needed)
         MIN_WIDTH = 10

@@ -21,7 +21,7 @@ class TestIndicatorToolingV2(unittest.TestCase):
             self.input_excel, self.phenotype_template_excel, "HIV.IND.20"
         )
         df = pd.read_excel(self.phenotype_template_excel)
-        self.assertEqual(len(df), 2)
+        self.assertEqual(len(df), 3)
 
     def test_generate_dataset(self):
         dataset_generator.generate_random_dataset(
