@@ -1,12 +1,10 @@
 from datetime import datetime, timedelta, timezone
 import os
-import random
 import json
-from re import sub
 import re
 
 import pandas as pd
-from who_l3_smart_tools.core.indicator_testing.generator_functions import *
+from who_l3_smart_tools.core.indicator_testing.v1.generator_functions import *
 from fhir.resources.bundle import Bundle
 from fhir.resources.measurereport import MeasureReport
 from fhir.resources.meta import Meta

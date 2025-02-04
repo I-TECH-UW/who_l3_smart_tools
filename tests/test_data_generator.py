@@ -1,5 +1,5 @@
 import unittest
-from who_l3_smart_tools.core.indicator_testing.data_generator import DataGenerator
+from who_l3_smart_tools.core.indicator_testing.v1.data_generator import DataGenerator
 
 
 class TestDataGenerator(unittest.TestCase):

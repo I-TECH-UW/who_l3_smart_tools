@@ -1,11 +1,12 @@
 import datetime
 import os
 import unittest
-from unittest.mock import MagicMock
 from fhir.resources.measurereport import MeasureReport
 
 import pandas as pd
-from who_l3_smart_tools.core.indicator_testing.bundle_generator import BundleGenerator
+from who_l3_smart_tools.core.indicator_testing.v1.bundle_generator import (
+    BundleGenerator,
+)
 
 
 class TestBundleGenerator(unittest.TestCase):

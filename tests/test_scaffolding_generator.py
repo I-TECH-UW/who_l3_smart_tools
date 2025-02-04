@@ -2,7 +2,7 @@ import unittest
 import os
 import pandas as pd
 from openpyxl import load_workbook
-from who_l3_smart_tools.core.indicator_testing.scaffolding_generator import (
+from who_l3_smart_tools.core.indicator_testing.v1.scaffolding_generator import (
     extract_elements,
     ScaffoldingGenerator,
 )
