@@ -9,7 +9,13 @@
   - [Detailed Steps](#detailed-steps)
     - [For L2 Domain Experts](#for-l2-domain-experts)
     - [For L3 Technical Experts](#for-l3-technical-experts)
-  - [The FHIR resources can be loaded into a FHIR server for validation using the TestScript and the provided MeasureReport.](#the-fhir-resources-can-be-loaded-into-a-fhir-server-for-validation-using-the-testscript-and-the-provided-measurereport)
+  - [Using the Mapping Template Tooling](#using-the-mapping-template-tooling)
+    - [1. Generating the Mapping Template](#1-generating-the-mapping-template)
+    - [2. Editing the Mapping YAML](#2-editing-the-mapping-yaml)
+    - [3. Linking Multiple Features to Single Resources](#3-linking-multiple-features-to-single-resources)
+    - [4. Default Resource Instances](#4-default-resource-instances)
+    - [5. Resource Generation Flexibility](#5-resource-generation-flexibility)
+    - [6. Saving and Testing the Final Mapping](#6-saving-and-testing-the-final-mapping)
   - [Commands Summary](#commands-summary)
   - [Working Example: HIV.IND.20](#working-example-hivind20)
   - [File Overview](#file-overview)
@@ -85,6 +91,64 @@ The process relies on splitting responsibilities between two types of users:
    - A separate FHIR Bundle for each phenotype row.
    - A representative MeasureReport.
    - A TestScript resource for automated testing.
+
+---
+
+## Using the Mapping Template Tooling
+
+This section describes how to create and fill out a mapping template YAML file that integrates phenotype definitions with FHIR resource generation. The goal is to produce valid FHIR Bundles for each patient phenotype, modified according to the indicator features.
+
+### 1. Generating the Mapping Template
+
+1. Prepare a completed phenotype XLSX file with all relevant indicator features as columns and patient phenotypes as rows.
+2. Run the "generate_mapping_template" command:
+   ```
+   generate-mapping-template --input [PHENOTYPE_XLSX] --output mapping_template.yaml
+   ```
+3. This creates a scaffolded YAML file under “features” for each relevant column. For each feature:  
+   - “name”: name of the column.  
+   - “id”: unique numeric identifier for the feature.  
+   - “target_profiles” and “target_valuesets”: placeholders for FHIR profiles or valuesets.  
+   - “values”: a list of possible feature states with “phenotype_value” and “fhir_value”.
+
+### 2. Editing the Mapping YAML
+
+Open mapping_template.yaml and add details:
+
+1. "target_profiles": Provide the FHIR resource types or profiles this feature may require (e.g., “Observation/HIVTest”).  
+2. "target_valuesets": Set any references to external code/value sets if needed.  
+3. Within "values", for each “phenotype_value”:  
+   - "fhir_value": Indicate how this phenotype value maps to the FHIR resource field, possibly referencing codeable concepts or direct field assignments.  
+
+### 3. Linking Multiple Features to Single Resources
+
+Certain columns may reference the same resource but with different properties. For instance, “Has HIV test” and “Has HIV test within reporting period” both update the same Observation resource with different date or status fields. In these cases:
+
+1. Use a shared “target_profiles” or resource reference (e.g., “Observation/HIVTest”).  
+2. Distinguish the effect of each feature by specifying unique fhir_path or extended logic in “fhir_value” (e.g., date for the reporting period if “Has HIV test within reporting period” is true).  
+
+### 4. Default Resource Instances
+
+Each resource type (Observation, Encounter, Condition, etc.) should have a default valid version. When the mapping script runs, it duplicates these defaults for each patient row, then applies feature-based modifications:  
+
+1. If a feature is present, update the resource’s fields as per “fhir_value”.  
+2. If the feature indicates the absence of some event, either omit the resource or set a field indicating no observation of that type.  
+
+### 5. Resource Generation Flexibility
+
+Because multiple features may modify the same resource, the tooling must merge these changes carefully. For example:
+
+- If one feature says “Has HIV test” and another says “HIV test is positive,” both adjust the same Observation.  
+- The date property might come from a “within reporting period” feature, driving whether the `effectiveDateTime` is within or outside the period.  
+
+### 6. Saving and Testing the Final Mapping
+
+1. Once the YAML is populated, save it alongside the phenotype XLSX.  
+2. Run the “generate-fhir” command to produce final FHIR Bundles and measure reports:  
+   ```
+   generate-fhir --template [PHENOTYPE_XLSX] --mapping [MAPPING_YAML] --output-dir [OUTPUT_FOLDER]
+   ```
+3. Validate that the resulting resources accurately reflect your definitions.  
 
 ---
 

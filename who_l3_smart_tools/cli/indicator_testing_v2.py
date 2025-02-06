@@ -2,13 +2,9 @@ import argparse
 import sys
 from who_l3_smart_tools.core.indicator_testing.v2.phenotype_generator import (
     generate_phenotype_xlsx,
-    generate_template_xlsx,
 )
 from who_l3_smart_tools.core.indicator_testing.v2.dataset_generator import (
     generate_random_dataset,
-)
-from who_l3_smart_tools.core.indicator_testing.v2.measure_report_generator import (
-    generate_measure_report,
 )
 from who_l3_smart_tools.core.indicator_testing.v2.fhir_bundle_generator import (
     generate_fhir_resources,

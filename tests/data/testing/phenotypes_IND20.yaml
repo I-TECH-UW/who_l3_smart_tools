@@ -1,0 +1,117 @@
+# **Indicator definition**
+#   % testing positive among people who received an HIV test in the reporting period
+#
+# **Denominator calculation**
+#   COUNT of clients with "HIV test date" in the reporting period AND "Date HIV test results returned" in the reporting period
+#
+# **Numerator calculation**
+#   COUNT of clients with "HIV test result"='HIV-positive' AND "HIV test date" in the reporting period AND (("Date HIV test results returned" in the reporting period) OR ("HIV diagnosis date" in the reporting period))
+#
+# **Disaggregation data elements**
+#
+#   - Gender
+#   - Age
+#   - Key population member type
+#   - TB diagnosis result
+#   - Presumptive TB
+#   - Testing entry point
+#
+# **Numerator exclusions**
+#   
+#
+# **Denominator exclusions**
+#   
+#
+# **Category**
+#   HIV testing services
+#
+# **What it measures**
+#   Measures the proportion of people testing positive for HIV. Individuals receiving more than one HIV test in the reporting period are counted only once in the denominator.
+#
+# **Rationale**
+#   Knowing the HIV test positivity among individuals by testing approach is critical to understanding the reach of HIV testing services, and the number of people aware of their status and receiving person-centred services.
+#
+# **Method of measurement**
+#   For the numerator and denominator: Patient monitoring tools, for example, HIV testing service records, HTS or lab registers, logbooks and reporting forms at facility and community levels or EMRs
+#
+# **List of all data elements included in numerator and denominator**
+#
+#   - Date HIV test results returned
+#   - HIV diagnosis date
+#   - HIV test date
+#   - HIV test result
+#
+
+dak_id: HIV.IND.20
+reporting_period: 
+  start: '2025-01-01'
+  end: '2025-01-30'
+features:
+- id: '0'
+  name: Has HIV test
+  target_profile: 'HivHivTest'
+  grouping_id: '0'
+  values:
+  - exists: true
+    phenotype_value: '1'
+  - exists: false
+    phenotype_value: '0'
+- id: '1'
+  name: Has HIV test within reporting period
+  target_profile: 'HivHivTest'
+  target_fhir_path: 'Observation.effectiveDateTime'
+  grouping_id: '0'
+  values:
+  - fhir_value: '2025-01-05'
+    phenotype_value: '1'
+  - fhir_value: '2024-12-22'
+    phenotype_value: '0'
+- id: '2'
+  name: Hiv test resulted
+  target_profiles: 'HivHivTest'
+  grouping_id: '0'
+  values:
+  - phenotype_value: '1'
+  - phenotype_value: '0'
+- id: '3'
+  name: HIV test result returned during reporting period
+  grouping_id: '0'
+  fhir_path: 'Observation.issuedDateTime'
+  values:
+  - fhir_value: '2025-01-10'
+    phenotype_value: '1'
+  - fhir_value: '2025-02-10'
+    phenotype_value: '0'
+- id: '4'
+  name: HIV test result value
+  target_profiles: 'HivHivTest'
+  target_valuesets: 'HIV.B.DE111'
+  fhir_path: 'Observation.valueCodeableConcept'
+  values:
+  - fhir_value: '#HIV.B.DE112'
+    phenotype_value: positive
+  - fhir_value: '#HIV.B.DE113'
+    phenotype_value: negative
+  - fhir_value: '#HIV.B.DE114'
+    phenotype_value: inconclusive
+- id: '5'
+  name: Has HIV Diagnosis
+  grouping_id: '1'
+  target_profiles: 'HivStatusCondition'
+  target_valuesets: 'HIV.B.DE115'
+  fhir_path: 'Condition.code'
+  values:
+  - fhir_value: '#HIV.B.DE117'
+    phenotype_value: '0'
+  - fhir_value: '#HIV.B.DE116'
+    phenotype_value: '1'
+- id: '6'
+  name: HIV Diagnosis in reporting period
+  target_profiles: 'HivStatusCondition'
+  grouping_id: '1'
+  fhir_path: 'Condition.onsetDateTime'
+  values:
+  - fhir_value: '2025-02-10'
+    phenotype_value: '0'
+  - fhir_value: '2025-01-10'
+    phenotype_value: '1'

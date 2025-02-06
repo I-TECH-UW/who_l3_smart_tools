@@ -5,7 +5,7 @@ from openpyxl.styles import Font
 import math
 
 
-def generate_phenotype_xlsx(input_excel, output_excel, indicator=None):
+def generate_phenotype_xlsx(input_excel, output_excel, indicator=None, include_disaggregation=False):
     """
     For Domain Experts
 
@@ -15,6 +15,9 @@ def generate_phenotype_xlsx(input_excel, output_excel, indicator=None):
     list out available indicators, and prompt the user to select an indicator.
     It then uses the information from this indicator row to generate a template
     file with this information laid out in a way that assists domain experts with defining an exhaustive list of patient phenotypes for this indicator.
+    
+    Parameters:
+    - include_disaggregation (bool): If True, include disaggregation column suggestions. Defaults to False.
     """
     # Read the L2 indicator dataset
     df = pd.read_excel(input_excel, sheet_name="Indicator definitions")
@@ -62,8 +65,8 @@ def generate_phenotype_xlsx(input_excel, output_excel, indicator=None):
         "Patient Phenotype ID",
         "Phenotype Description",
     ]
-    # Add disaggregation elements to candidate header
-    candidate_header += disaggregation_elements
+    if include_disaggregation:
+        candidate_header += disaggregation_elements
     # Add indicator feature columns
     candidate_header += [
         "<Add indicator feature columns>",
