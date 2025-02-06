@@ -1,0 +1,28 @@
+ValueSet: HIV.D.DE229
+Title: "General care activities recommended ValueSet"
+Description: "Value set of general care activities to be performed during the care visit"
+* ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-shareablevalueset"
+* ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablevalueset"
+* ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-computablevalueset"
+* ^status = #active
+* ^experimental = true
+* ^name = "HIVDDE229"
+* ^url = "http://smart.who.int/hiv/ValueSet/HIV.D.DE229"
+
+* HIVConcepts#HIV.D.DE230 "Determine WHO clinical stage"
+* HIVConcepts#HIV.D.DE231 "Determine if advanced disease"
+* HIVConcepts#HIV.D.DE232 "Prepare for ART"
+* HIVConcepts#HIV.D.DE233 "Prepare, assess and support adherence"
+* HIVConcepts#HIV.D.DE234 "Manage current medications"
+* HIVConcepts#HIV.D.DE235 "Check pregnancy status"
+* HIVConcepts#HIV.D.DE236 "Provide family planning and contraception"
+* HIVConcepts#HIV.D.DE237 "Support disclosure and partner notification"
+* HIVConcepts#HIV.D.DE238 "Counsel on risk reduction and prevention"
+* HIVConcepts#HIV.D.DE239 "Assess, prevent and manage noncommunicable diseases"
+* HIVConcepts#HIV.D.DE240 "Screen for and manage mental health problems"
+* HIVConcepts#HIV.D.DE241 "Screen for and manage and substance use issues"
+* HIVConcepts#HIV.D.DE242 "Provide psychosocial counselling and support"
+* HIVConcepts#HIV.D.DE243 "Manage pain and symptoms"
+* HIVConcepts#HIV.D.DE244 "Conduct a nutritional assessment and counsel on nutrition"
+* HIVConcepts#HIV.D.DE245 "Conduct a growth and development assessment"
+* HIVConcepts#HIV.D.DE246 "Provide support on infant and child feeding"

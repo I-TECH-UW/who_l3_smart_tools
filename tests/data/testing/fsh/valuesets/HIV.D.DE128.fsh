@@ -1,0 +1,28 @@
+ValueSet: HIV.D.DE128
+Title: "ART regimen composition ValueSet"
+Description: "Value set of drug composition of client's current ART regimen"
+* ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-shareablevalueset"
+* ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablevalueset"
+* ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-computablevalueset"
+* ^status = #active
+* ^experimental = true
+* ^name = "HIVDDE128"
+* ^url = "http://smart.who.int/hiv/ValueSet/HIV.D.DE128"
+
+* HIVConcepts#HIV.D.DE129 "ABC"
+* HIVConcepts#HIV.D.DE130 "FTC"
+* HIVConcepts#HIV.D.DE131 "3TC"
+* HIVConcepts#HIV.D.DE132 "AZT"
+* HIVConcepts#HIV.D.DE133 "DDI"
+* HIVConcepts#HIV.D.DE134 "D4T"
+* HIVConcepts#HIV.D.DE135 "TDF"
+* HIVConcepts#HIV.D.DE136 "EFV"
+* HIVConcepts#HIV.D.DE137 "ETV"
+* HIVConcepts#HIV.D.DE138 "NVP"
+* HIVConcepts#HIV.D.DE139 "RIL"
+* HIVConcepts#HIV.D.DE140 "ATV/r"
+* HIVConcepts#HIV.D.DE141 "LPV/r"
+* HIVConcepts#HIV.D.DE142 "DRV/r"
+* HIVConcepts#HIV.D.DE143 "RTV"
+* HIVConcepts#HIV.D.DE144 "DTG"
+* HIVConcepts#HIV.D.DE145 "RAL"

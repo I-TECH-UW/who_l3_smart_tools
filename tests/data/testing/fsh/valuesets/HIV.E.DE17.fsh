@@ -1,0 +1,28 @@
+ValueSet: HIV.E.DE17
+Title: "Past pregnancy complications ValueSet"
+Description: "Value set of whether the woman has had any complications or problems in any previous pregnancy"
+* ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-shareablevalueset"
+* ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-publishablevalueset"
+* ^meta.profile[+] = "http://hl7.org/fhir/uv/crmi/StructureDefinition/crmi-computablevalueset"
+* ^status = #active
+* ^experimental = true
+* ^name = "HIVEDE17"
+* ^url = "http://smart.who.int/hiv/ValueSet/HIV.E.DE17"
+
+* HIVConcepts#HIV.E.DE18 "No past pregnancy complications"
+* HIVConcepts#HIV.E.DE19 "Does not know of any past pregnancy complications"
+* HIVConcepts#HIV.E.DE20 "Pre-eclampsia"
+* HIVConcepts#HIV.E.DE21 "Eclampsia"
+* HIVConcepts#HIV.E.DE22 "Alcohol use"
+* HIVConcepts#HIV.E.DE23 "Baby died within 24 hours of birth"
+* HIVConcepts#HIV.E.DE24 "Prolonged labour"
+* HIVConcepts#HIV.E.DE25 "Convulsions"
+* HIVConcepts#HIV.E.DE26 "Forceps"
+* HIVConcepts#HIV.E.DE27 "Gestational diabetes mellitus"
+* HIVConcepts#HIV.E.DE28 "Heavy bleeding (during or after delivery)"
+* HIVConcepts#HIV.E.DE29 "Macrosomia"
+* HIVConcepts#HIV.E.DE30 "Perineal tear (3rd or 4th degree)"
+* HIVConcepts#HIV.E.DE31 "Substance use"
+* HIVConcepts#HIV.E.DE32 "Tobacco use"
+* HIVConcepts#HIV.E.DE33 "Vacuum delivery"
+* HIVConcepts#HIV.E.DE34 "Other past pregnancy problems"
