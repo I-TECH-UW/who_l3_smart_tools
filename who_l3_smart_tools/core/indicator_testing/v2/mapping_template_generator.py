@@ -68,7 +68,11 @@ def generate_mapping_template(phenotype_excel, output_yaml):
     df = pd.read_excel(phenotype_excel, header=3)
 
     # Create mapping template with features as an indexed list
-    mapping_template = {"dak_id": dak_id, "features": []}
+    mapping_template = {
+        "dak_id": dak_id,
+        "patient_profile": "HivPatient",
+        "features": [],
+    }
 
     # Define feature columns to ignore
     ignore_features = {

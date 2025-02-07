@@ -46,6 +46,7 @@ dak_id: HIV.IND.20
 reporting_period: 
   start: '2025-01-01'
   end: '2025-01-30'
+patient_profile: 'HivPatient'
 features:
 - id: '0'
   name: Has HIV test

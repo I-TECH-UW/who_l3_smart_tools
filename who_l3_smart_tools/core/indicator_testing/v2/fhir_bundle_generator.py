@@ -17,17 +17,20 @@ class FhirBundleGenerator:
         phenotype_file,
         mapping_file,
         output_directory,
-        ig_root_url="localhost:8099",
+        ig_root_url="http://localhost:8099",
     ):
         self.phenotype_file = phenotype_file
         self.mapping_manager = YamlMappingManager(mapping_file)
         self.output_directory = output_directory
         self.ig_root_url = ig_root_url
 
-        # Read and pre-process the phenotype excel:
-        self.df = pd.read_excel(self.phenotype_file)
-        self.df.columns = self.df.iloc[4]  # row 4 as header
-        self.df = self.df[5:]
+        # Read and pre-process the phenotype excel into indicator data from first row (column names) and 2nd row (indicator values) and the patient phenotype data with headers in row 4 and data from row 5 onwards:
+        raw_df = pd.read_excel(self.phenotype_file, header=None)
+        self.indicator_df = raw_df.iloc[1:2]
+        self.indicator_df.columns = raw_df.iloc[0]  # row 0 as header
+
+        self.phenotype_df = raw_df.iloc[4:]
+        self.phenotype_df.columns = raw_df.iloc[3]  # row 4 as header
 
         # Simple caching for IG requests:
         self.resource_cache = {}
@@ -72,11 +75,11 @@ class FhirBundleGenerator:
 
     def update_patient_resource(self, patient_json, row):
         """Update patient example using row data."""
-        for key, value in row.items():
+        for key, value in row.iloc[0].items():
             if key == "Patient Phenotype ID":
                 patient_json["id"] = value
             elif key == "Phenotype Description":
-                patient_json["text"] = {"status": "generated", "div": str(value)}
+                patient_json["text"] = str(value)
         return patient_json
 
     def update_feature_resource(self, example, resource_mapping, cell_value):
@@ -103,36 +106,61 @@ class FhirBundleGenerator:
         """Generate and write one bundle per patient phenotype row."""
         data_bundles = []
         mapping_dak_id = self.mapping_manager.mapping.get("dak_id")
-        phenotype_dak_id = self.df["DAK ID"].iloc[0]
+        phenotype_dak_id = self.indicator_df["DAK ID"].iloc[0]
         if phenotype_dak_id != mapping_dak_id:
             raise ValueError(
                 f"Phenotype DAK ID {phenotype_dak_id} does not match mapping DAK ID {mapping_dak_id}"
             )
 
         # Loop over each patient phenotype row:
-        for idx, row in self.df.iterrows():
-            # Get Patient example from IG based on mapping:
+        for idx, row in self.phenotype_df.iterrows():
+            # Make row into 1 row df with column names from original df
+            row = pd.DataFrame(row).T
+            row.columns = self.phenotype_df.columns
+
+            # Get Patient example from IG based on mapping
             patient_profile_name = self.mapping_manager.mapping["patient_profile"]
             patient_resource = self.get_patient_example(patient_profile_name)
             patient_resource = self.update_patient_resource(patient_resource, row)
-            feature_resources = []
-            # Process remaining columns (features):
-            for column_name, cell_value in row.items():
+
+            # Process features grouped by grouping_id.
+            grouping_resources = {}
+            for column_name, cell_value in row.iloc[0].items():
                 if column_name in ["Patient Phenotype ID", "Phenotype Description"]:
                     continue
                 resource_mapping = self.mapping_manager.get_feature_mapping(column_name)
                 if not resource_mapping:
                     continue
-                try:
-                    _, example = self.get_feature_resources(resource_mapping)
-                    updated_example = self.update_feature_resource(
-                        example, resource_mapping, cell_value
-                    )
-                    feature_resources.append(updated_example)
-                except Exception as e:
-                    # Skip on error or log as needed.
-                    print(f"Skipping feature '{column_name}' due to error: {e}")
-                    continue
+                grouping_id = resource_mapping.get("grouping_id")
+                if grouping_id not in grouping_resources:
+                    try:
+                        _, example = self.get_feature_resources(resource_mapping)
+                    except Exception as e:
+                        print(f"Skipping grouping '{grouping_id}' for feature '{column_name}' due to error: {e}")
+                        continue
+                    grouping_resources[grouping_id] = {"resource": example, "exists": None}
+                # Check for exists mapping from values.
+                exists_val = None
+                for val_entry in resource_mapping.get("values", []):
+                    if str(val_entry.get("phenotype_value")) == str(cell_value):
+                        if "exists" in val_entry:
+                            exists_val = val_entry["exists"]
+                            break
+                if exists_val is not None:
+                    if grouping_resources[grouping_id]["exists"] is None:
+                        grouping_resources[grouping_id]["exists"] = exists_val
+                        grouping_resources[grouping_id]["resource"]["exists"] = exists_val
+                    elif grouping_resources[grouping_id]["exists"] != exists_val:
+                        raise ValueError(f"Conflicting exists values for grouping {grouping_id}")
+                grouping_resources[grouping_id]["resource"] = self.update_feature_resource(
+                    grouping_resources[grouping_id]["resource"],
+                    resource_mapping,
+                    cell_value,
+                )
+            # Only include resource if exists flag is not false
+            feature_resources = [
+                grp["resource"] for grp in grouping_resources.values() if grp["exists"] is not False
+            ]
             # Build the bundle:
             bundle = self.build_bundle(patient_resource, feature_resources)
             bundle_filename = os.path.join(
@@ -150,7 +178,7 @@ class FhirBundleGenerator:
             rp.get("start", (datetime.now() - timedelta(days=30)).isoformat()),
             rp.get("end", datetime.now().isoformat()),
         )
-        test_bundle = generate_test_artifacts(self.df, reporting_period)
+        test_bundle = generate_test_artifacts(self.phenotype_df, reporting_period)
         test_bundle_filename = os.path.join(self.output_directory, "test_bundle.json")
         with open(test_bundle_filename, "w") as f:
             f.write(test_bundle)
