@@ -1,4 +1,4 @@
-Instance: ExampleHivPositiveCondition
+Instance: HivStatusConditionDefault
 InstanceOf: HivStatusCondition
 Title: "Example HIV Positive Status Condition"
 Description: "This is an example of an HIV Positive Status Condition resource based on the HivStatusCondition profile."

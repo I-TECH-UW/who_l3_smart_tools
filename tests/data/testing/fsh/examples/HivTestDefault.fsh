@@ -1,4 +1,4 @@
-Instance: ExampleHivTest
+Instance: HivTestDefault
 InstanceOf: HivHivTest
 Title: "Example HIV Test Observation for Positive Result"
 Description: "This is an example of an HIV Test Observation resource based on the HivTest profile for a positive test result."
