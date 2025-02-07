@@ -118,6 +118,25 @@ class TestIndicatorDataGenTooling(unittest.TestCase):
             f"Test bundle {test_bundle_path} not found.",
         )
 
+        # Check that cql_bundle.json is created
+        cql_bundle_path = os.path.join(subfolder, "cql_bundle.json")
+        self.assertTrue(
+            os.path.exists(cql_bundle_path),
+            f"cql_bundle.json not found in {subfolder}."
+        )
+
+        # Check that test_script.json and test_plan.json are generated
+        test_script_path = os.path.join(subfolder, "test_script.json")
+        test_plan_path = os.path.join(subfolder, "test_plan.json")
+        self.assertTrue(
+            os.path.exists(test_script_path),
+            f"test_script.json not found in {subfolder}."
+        )
+        self.assertTrue(
+            os.path.exists(test_plan_path),
+            f"test_plan.json not found in {subfolder}."
+        )
+
         # Check that at least one patient bundle file (with prefix 'patient_data_bundle_') exists in the subfolder.
         patient_bundles = [
             f
