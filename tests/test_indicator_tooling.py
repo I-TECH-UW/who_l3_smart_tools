@@ -90,7 +90,12 @@ class TestIndicatorToolingV2(unittest.TestCase):
             )
 
     def test_fhir_bundle_generator(self):
-        # Inputs for FHIR bundle generation using provided mapping and phenotype files.
+        """
+        Tests FHIR bundle generation:
+          - Uses given phenotype and mapping files.
+          - Verifies that output is created inside a subfolder named after the dak_id.
+          - Checks that the test_bundle.json and patient_data_bundle_<Patient Phenotype ID>.json files exist.
+        """
         phenotype_file = "tests/data/scaffolding/v2/phenotype_HIVIND20_filled.xlsx"
         mapping_file = "tests/data/testing/phenotypes_IND20.yaml"
         output_directory = "tests/output/fhir_bundles"
@@ -101,15 +106,23 @@ class TestIndicatorToolingV2(unittest.TestCase):
         generator = FhirBundleGenerator(phenotype_file, mapping_file, output_directory)
         generator.execute()
 
-        # Check that test artifact bundle exists.
-        test_bundle_path = os.path.join(output_directory, "test_bundle.json")
-        self.assertTrue(os.path.exists(test_bundle_path))
+        # Retrieve the dak_id from the mapping file.
+        expected_dak_id = "HIV.IND.20"
+        subfolder = os.path.join(output_directory, expected_dak_id)
+        self.assertTrue(os.path.isdir(subfolder), f"Subfolder {subfolder} not found.")
 
-        # Check at least one patient bundle exists.
+        # Check that test artifact bundle exists in the subfolder.
+        test_bundle_path = os.path.join(subfolder, "test_bundle.json")
+        self.assertTrue(
+            os.path.exists(test_bundle_path),
+            f"Test bundle {test_bundle_path} not found.",
+        )
+
+        # Check that at least one patient bundle file (with prefix 'patient_data_bundle_') exists in the subfolder.
         patient_bundles = [
             f
-            for f in os.listdir(output_directory)
-            if f.startswith("test_data_bundle_") and f.endswith(".json")
+            for f in os.listdir(subfolder)
+            if f.startswith("patient_data_bundle_") and f.endswith(".json")
         ]
         self.assertTrue(len(patient_bundles) > 0, "No patient bundles were generated.")
 

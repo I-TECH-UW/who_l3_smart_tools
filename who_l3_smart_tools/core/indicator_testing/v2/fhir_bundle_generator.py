@@ -3,6 +3,7 @@ import os
 import json
 import pandas as pd
 import requests
+import uuid
 from who_l3_smart_tools.core.indicator_testing.v2.fhir_mapping_manager import (
     YamlMappingManager,
 )
@@ -63,16 +64,14 @@ class FhirBundleGenerator:
         if not target_profile:
             raise ValueError("Missing target_profile in mapping")
         # Query the StructureDefinition:
-        target_profile_url = (
-            f"{self.ig_root_url}/StructureDefinition-{target_profile}.json"
-        )
+        target_profile_url = f"{self.ig_root_url}/StructureDefinition-{target_profile}.json"
         profile = self.get_fhir_resource(target_profile_url)
         resource_type = profile.get("type")
         # Query the default example:
-        target_example_url = (
-            f"{self.ig_root_url}/{resource_type}-{target_profile}Default.json"
-        )
+        target_example_url = f"{self.ig_root_url}/{resource_type}-{target_profile}Default.json"
         example = self.get_fhir_resource(target_example_url)
+        # Assign a new unique id to the example resource.
+        example["id"] = str(uuid.uuid4())
         return profile, example
 
     def update_patient_resource(self, patient_json, row):
@@ -155,13 +154,16 @@ class FhirBundleGenerator:
 
     def generate_patient_bundles(self):
         """
-        Processes each patient phenotype row by:
-          1. Extracting and updating the patient resource.
-          2. Grouping and updating feature resources via grouping_id.
-          3. Constructing and writing a FHIR bundle for the patient.
+        For each patient phenotype row:
+          1. Update the Patient resource using the Patient Phenotype ID and Description.
+          2. Group and update feature resources.
+          3. Assign a unique id to the Patient resource.
+          4. Save the patient bundle to a file named 'patient_data_bundle_<Patient Phenotype ID>.json'
+             within the output subfolder (named after the dak_id).
         """
         data_bundles = []
         mapping_dak_id = self.mapping_manager.mapping.get("dak_id")
+        # Validate the DAK ID from phenotype indicator row against the mapping.
         phenotype_dak_id = self.indicator_df["DAK ID"].iloc[0]
         if phenotype_dak_id != mapping_dak_id:
             raise ValueError(
@@ -174,18 +176,26 @@ class FhirBundleGenerator:
             row = pd.DataFrame(row).T
             row.columns = self.phenotype_df.columns
 
-            # Process patient resource.
+            # Retrieve and update the Patient resource.
             patient_profile_name = self.mapping_manager.mapping["patient_profile"]
             patient_resource = self.get_patient_example(patient_profile_name)
             patient_resource = self.update_patient_resource(patient_resource, row)
 
+            # Assign a new unique id based on the Patient Phenotype ID
+            patient_id = str(row.iloc[0]["Patient Phenotype ID"])
+            patient_resource["id"] = patient_id
+
             # Process and group feature resources.
             feature_resources = self._group_features(row)
 
-            # Build the FHIR bundle and write to file.
+            # Build the FHIR bundle for the patient.
             bundle = self.build_bundle(patient_resource, feature_resources)
+            # Set unique id for the bundle.
+            bundle["id"] = str(uuid.uuid4())
+
+            # Save the bundle using the patient id in the filename.
             bundle_filename = os.path.join(
-                self.output_directory, f"test_data_bundle_{idx}.json"
+                self.output_directory, f"patient_data_bundle_{patient_id}.json"
             )
             with open(bundle_filename, "w") as f:
                 f.write(json.dumps(bundle, indent=2))
@@ -193,20 +203,63 @@ class FhirBundleGenerator:
         return data_bundles
 
     def generate_test_bundle(self):
-        """Generate the test artifacts bundle and write to file."""
+        """
+        Generates a MeasureReport as the test bundle:
+          - Includes a complete population section with initial-population, numerator, and denominator.
+          - Uses the total number of patient phenotype rows as the total population.
+          - Assigns a unique id to the MeasureReport.
+        """
+        # Compute reporting period.
         rp = self.mapping_manager.mapping.get("reporting_period", {})
-        reporting_period = (
-            rp.get("start", (datetime.now() - timedelta(days=30)).isoformat()),
-            rp.get("end", datetime.now().isoformat()),
-        )
-        test_bundle = generate_test_artifacts(self.phenotype_df, reporting_period)
+        reporting_period = {
+            "start": rp.get("start", (datetime.now() - timedelta(days=30)).isoformat()),
+            "end": rp.get("end", datetime.now().isoformat()),
+        }
+        # Total population is the number of phenotype rows.
+        total_population = len(self.phenotype_df)
+        # For simplicity, use zero for numerator and set denominator equal to total population.
+        measure_report = {
+            "resourceType": "MeasureReport",
+            "id": str(uuid.uuid4()),
+            "status": "final",
+            "type": "summary",
+            "date": datetime.now().isoformat(),
+            "period": reporting_period,
+            "group": [
+                {
+                    "population": [
+                        {
+                            "code": {"coding": [{"code": "initial-population"}]},
+                            "count": total_population,
+                        },
+                        {
+                            "code": {"coding": [{"code": "numerator"}]},
+                            "count": 0,
+                        },
+                        {
+                            "code": {"coding": [{"code": "denominator"}]},
+                            "count": total_population,
+                        },
+                    ]
+                }
+            ],
+        }
         test_bundle_filename = os.path.join(self.output_directory, "test_bundle.json")
         with open(test_bundle_filename, "w") as f:
-            f.write(test_bundle)
-        return test_bundle
+            f.write(json.dumps(measure_report, indent=2))
+        return measure_report
 
     def execute(self):
-        """Run the complete process to generate patient and test artifact bundles."""
+        """
+        Executes the complete process:
+          1. Creates an output subfolder named after the mapping dak_id.
+          2. Generates patient bundles.
+          3. Generates the test MeasureReport bundle.
+          4. Prints the output location.
+        """
+        mapping_dak_id = self.mapping_manager.mapping.get("dak_id")
+        # Create a subfolder in the output directory named after the DAK ID.
+        self.output_directory = os.path.join(self.output_directory, mapping_dak_id)
         if not os.path.isdir(self.output_directory):
             os.makedirs(self.output_directory)
         self.generate_patient_bundles()
