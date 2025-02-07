@@ -152,54 +152,135 @@ class FhirBundleGenerator:
             if grp["exists"] is not False
         ]
 
+    def gather_cql_resources(self, mapping_dak_id):
+        """
+        Gather all CQL related resources from the IG:
+         - Measure resource from <ig_root>/Measure-{dak_id_without_periods}.json
+         - Main Library resource referenced by the Measure resource.
+         - Dependent Library resources based on 'depends-on' fields in the main Library.
+         
+        Returns a dictionary with keys: 'measure', 'main_library', and 'dependent_libraries'.
+        """
+        # Construct measure URL using dak_id (strip periods)
+        measure_url = f"{self.ig_root_url}/Measure-{mapping_dak_id.replace('.', '')}.json"
+        measure_resource = self.get_fhir_resource(measure_url)
+
+        # Assume the measure has a 'library' field; extract the main library identifier.
+        library_id = measure_resource["library"][0].split("/")[-1]
+        main_library_url = f"{self.ig_root_url}/Library-{library_id}.json"
+        main_library_resource = self.get_fhir_resource(main_library_url)
+
+        dependent_libraries = []
+        for dependency in main_library_resource.get("relatedArtifact", []):
+            if dependency.get("type") == "depends-on":
+                dep_id = dependency["resource"].split("/")[-1]
+                library_url = f"{self.ig_root_url}/Library-{dep_id}.json"
+                dependent_libraries.append(self.get_fhir_resource(library_url))
+        return {
+            "measure": measure_resource,
+            "main_library": main_library_resource,
+            "dependent_libraries": dependent_libraries,
+        }
+
+    def assemble_cql_bundle(self, patient_bundles, cql_resources):
+        """
+        Assemble a complete encapsulated CQL Bundle with the following structure:
+         - Bundle Type: collection (transaction Bundle could be used in production)
+         - Bundle Entries include:
+              • Measure resource
+              • Main Library resource
+              • Each dependent Library resource
+              • All patient data bundles
+              • (Placeholder for terminology resources if parsed elsewhere)
+        
+        Returns the assembled bundle dictionary.
+        """
+        entries = []
+        # Add Measure
+        entries.append({"resource": cql_resources["measure"]})
+        # Add Main Library
+        entries.append({"resource": cql_resources["main_library"]})
+        # Add each Dependent Library
+        for lib in cql_resources["dependent_libraries"]:
+            entries.append({"resource": lib})
+        # Add patient bundles (each bundle is already a resource)
+        for bundle in patient_bundles:
+            entries.append({"resource": bundle})
+        return {
+            "resourceType": "Bundle",
+            "type": "collection",
+            "entry": entries,
+        }
+
     def generate_patient_bundles(self):
         """
-        For each patient phenotype row:
-          1. Update the Patient resource using the Patient Phenotype ID and Description.
-          2. Group and update feature resources.
-          3. Assign a unique id to the Patient resource.
-          4. Save the patient bundle to a file named 'patient_data_bundle_<Patient Phenotype ID>.json'
-             within the output subfolder (named after the dak_id).
+        Generates individual patient bundles from phenotype data and assembles an 
+        encapsulated CQL Bundle containing:
+         1. Patient Resources updated from the phenotype XLSX.
+         2. A Measure resource defining measure criteria.
+         3. A primary Library resource along with its dependent libraries (via 'depends-on').
+         4. Terminology resources (to be added by parsing an IG's codings documentation).
+
+        Process:
+         - Validate that the DAK ID in the phenotype data matches the mapping.
+         - For each phenotype row:
+             • Update a default Patient resource.
+             • Process and update feature resources.
+             • Build and save the patient bundle.
+         - Call gather_cql_resources() to fetch CQL resources.
+         - Call assemble_cql_bundle() to build a consolidated CQL bundle that
+           aggregates the Measure, main Library, dependent libraries, and all patient bundles.
+         - Save the CQL bundle as "cql_bundle.json" in the output directory.
         """
         data_bundles = []
         mapping_dak_id = self.mapping_manager.mapping.get("dak_id")
-        # Validate the DAK ID from phenotype indicator row against the mapping.
+        # Validate mapping DAK ID matches phenotype DAK ID.
         phenotype_dak_id = self.indicator_df["DAK ID"].iloc[0]
         if phenotype_dak_id != mapping_dak_id:
             raise ValueError(
                 f"Phenotype DAK ID {phenotype_dak_id} does not match mapping DAK ID {mapping_dak_id}"
             )
 
-        # Iterate through each patient phenotype row.
+        # Process each patient phenotype row.
         for idx, row in self.phenotype_df.iterrows():
-            # Convert the row into a single-row DataFrame with correct headers.
+            # Convert row into single-row DataFrame
             row = pd.DataFrame(row).T
             row.columns = self.phenotype_df.columns
 
-            # Retrieve and update the Patient resource.
+            # Retrieve and update Patient resource.
             patient_profile_name = self.mapping_manager.mapping["patient_profile"]
             patient_resource = self.get_patient_example(patient_profile_name)
             patient_resource = self.update_patient_resource(patient_resource, row)
 
-            # Assign a new unique id based on the Patient Phenotype ID
+            # Assign unique patient id.
             patient_id = str(row.iloc[0]["Patient Phenotype ID"])
             patient_resource["id"] = patient_id
 
-            # Process and group feature resources.
+            # Process feature resources for this patient.
             feature_resources = self._group_features(row)
 
-            # Build the FHIR bundle for the patient.
+            # Create patient bundle.
             bundle = self.build_bundle(patient_resource, feature_resources)
-            # Set unique id for the bundle.
             bundle["id"] = str(uuid.uuid4())
 
-            # Save the bundle using the patient id in the filename.
+            # Save the bundle to file.
             bundle_filename = os.path.join(
                 self.output_directory, f"patient_data_bundle_{patient_id}.json"
             )
             with open(bundle_filename, "w") as f:
                 f.write(json.dumps(bundle, indent=2))
             data_bundles.append(bundle)
+
+        # --- CQL Bundle Assembly ---
+        # 1. Fetch Measure, main Library, and dependent libraries.
+        cql_resources = self.gather_cql_resources(mapping_dak_id)
+        # 2. Assemble the encapsulated CQL bundle including patient bundles and CQL resources.
+        cql_bundle = self.assemble_cql_bundle(data_bundles, cql_resources)
+        cql_bundle_filename = os.path.join(self.output_directory, "cql_bundle.json")
+        with open(cql_bundle_filename, "w") as f:
+            f.write(json.dumps(cql_bundle, indent=2))
+        # --- End CQL Bundle Assembly ---
+
         return data_bundles
 
     def generate_test_bundle(self):

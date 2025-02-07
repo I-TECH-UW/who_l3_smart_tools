@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  fhir:
+    image: hapi-fhir/hapi:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./application.yaml:/app/config/application.yaml
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CONFIG_LOCATION=/app/config/application.yaml
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/fhir/metadata"]
+      interval: 30s
+      timeout: 10s
+

@@ -18,6 +18,7 @@
     - [6. Saving and Testing the Final Mapping](#6-saving-and-testing-the-final-mapping)
   - [Commands Summary](#commands-summary)
   - [Working Example: HIV.IND.20](#working-example-hivind20)
+  - [Encapsulated CQL Bundle Generation](#encapsulated-cql-bundle-generation)
   - [File Overview](#file-overview)
     - [Folder: core/indicator\_testing/v2](#folder-coreindicator_testingv2)
     - [CLI File](#cli-file)
@@ -173,6 +174,59 @@ Below is a description of the indicator “Individuals testing positive for HIV�
 * Disaggregations: Gender, Age, Key Populations, TB status
 * Data Concepts: HIV test date, HIV test result, Date HIV test results returned, etc.
 ```
+
+## Encapsulated CQL Bundle Generation
+
+The generate_patient_bundles functionality has been refactored to support the creation of an encapsulated CQL test bundle. This bundle aggregates both the generated patient FHIR resources and the necessary CQL execution resources from the Implementation Guide (IG). The bundle includes:
+
+1. **Patient Resources:**  
+   Generated from the phenotype XLSX, these bundles represent individual patient data.
+
+2. **Measure Resource:**  
+   Retrieved using the IG root URL (e.g., `Measure-HIVIND20.json`). This resource defines the measure criteria.
+
+3. **Library Resources:**  
+   - The primary Library resource referenced by the Measure.  
+   - Dependent Libraries specified in the `depends-on` fields within the main Library (e.g., from `Library-HIVIndicatorElements.json`).
+
+4. **Terminology Resources:**  
+   CodeSystems and ValueSets required for CQL evaluation, fetched by parsing the IG’s codings documentation (e.g., from `codings-valuesets.html`). These resources provide the necessary coding and valueset definitions for complete CQL execution.
+
+### Bundle Structure Details
+
+- **Bundle Type:**  
+  A transaction Bundle containing all required resources.
+
+- **Bundle Entries:**  
+  - One entry for the Measure resource.
+  - One entry for the main Library resource.
+  - One or more entries for each dependent library.
+  - Entries for each patient bundle (generated from phenotype data).
+  - Entries for required CodeSystem and ValueSet resources parsed from the IG.
+
+The resulting bundle (saved as `cql_bundle.json`) is self-contained and can be posted directly to a HAPI FHIR server with Clinical Reasoning capabilities. This facilitates testing using the `$evaluate-measure` operation and simulates a realistic CQL execution environment.
+
+For an in-depth explanation of HAPI FHIR’s clinical reasoning capabilities, please refer to the [HAPI FHIR Clinical Reasoning Overview](https://hapifhir.io/hapi-fhir/docs/clinical_reasoning/overview.html).
+
+### Implementation Overview in Tooling
+
+- **Consistency Checks:**  
+  Validates that the phenotype DAK ID matches the mapping DAK ID before processing.
+
+- **Resource Retrieval:**  
+  Retrieves Measure, Library, and dependent Library resources from the IG using specified URL patterns.  
+  Uses caching to optimize IG resource requests.
+
+- **Dependency Parsing:**  
+  Reads `relatedArtifact` sections in the main Library to identify dependent libraries.  
+  Parses the IG’s `codings-valuesets.html` to locate and include all referenced CodeSystem and ValueSet resources.
+
+- **Bundle Assembly:**  
+  Combines the patient bundles, measure, primary library, dependent libraries, and terminology resources into a single transaction Bundle saved as `cql_bundle.json`.
+
+This encapsulated CQL bundle is crucial for enabling automated evaluation via a HAPI FHIR server's clinical reasoning module, allowing full end-to-end testing of measure logic.
+
+---
 
 ## File Overview
 Below is a brief description of the main source files for reference:
