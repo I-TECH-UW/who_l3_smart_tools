@@ -6,7 +6,9 @@ import requests
 from who_l3_smart_tools.core.indicator_testing.v2.fhir_mapping_manager import (
     YamlMappingManager,
 )
-from v2.test_artifact_generator import generate_test_artifacts
+from who_l3_smart_tools.core.indicator_testing.v2.test_artifact_generator import (
+    generate_test_artifacts,
+)
 
 
 class FhirBundleGenerator:
@@ -161,5 +163,3 @@ class FhirBundleGenerator:
         self.generate_patient_bundles()
         self.generate_test_bundle()
         print(f"FHIR resources generated in: {self.output_directory}")
-
-

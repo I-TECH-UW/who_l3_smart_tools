@@ -3,13 +3,18 @@ import shutil
 import unittest
 import yaml
 import pandas as pd
-from who_l3_smart_tools.core.indicator_testing.v2 import (
-    phenotype_generator,
-    dataset_generator,
+from who_l3_smart_tools.core.indicator_testing.v2.phenotype_generator import (
+    generate_phenotype_xlsx,
 )
+from who_l3_smart_tools.core.indicator_testing.v2.dataset_generator import (
+    generate_random_dataset,
+)
+
+
 from who_l3_smart_tools.core.indicator_testing.v2.fhir_bundle_generator import (
     FhirBundleGenerator,
 )
+
 from who_l3_smart_tools.core.indicator_testing.v2.mapping_template_generator import (
     generate_mapping_template,
 )
@@ -27,14 +32,14 @@ class TestIndicatorToolingV2(unittest.TestCase):
         os.makedirs("tests/output", exist_ok=True)
 
     def test_generate_phenotype_template(self):
-        phenotype_generator.generate_phenotype_xlsx(
+        generate_phenotype_xlsx(
             self.input_excel, self.phenotype_template_excel, "HIV.IND.20"
         )
         df = pd.read_excel(self.phenotype_template_excel)
         self.assertEqual(len(df), 3)
 
     def test_generate_dataset(self):
-        dataset_generator.generate_random_dataset(
+        generate_random_dataset(
             self.phenotype_template_excel, self.dataset_excel, num_rows=10
         )
         df = pd.read_excel(self.dataset_excel)
