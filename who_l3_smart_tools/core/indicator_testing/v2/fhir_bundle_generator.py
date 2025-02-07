@@ -24,7 +24,9 @@ class FhirBundleGenerator:
         self.output_directory = output_directory
         self.ig_root_url = ig_root_url
 
-        # Read and pre-process the phenotype excel into indicator data from first row (column names) and 2nd row (indicator values) and the patient phenotype data with headers in row 4 and data from row 5 onwards:
+        # Read and pre-process the phenotype excel into indicator data:
+        # - First row contains column names and second row contains indicator values.
+        # - Patient phenotype data starts with headers in row 4 and data from row 5 onwards.
         raw_df = pd.read_excel(self.phenotype_file, header=None)
         self.indicator_df = raw_df.iloc[1:2]
         self.indicator_df.columns = raw_df.iloc[0]  # row 0 as header
@@ -102,8 +104,62 @@ class FhirBundleGenerator:
             entries.append({"resource": res})
         return {"resourceType": "Bundle", "type": "collection", "entry": entries}
 
+    def _group_features(self, row):
+        """
+        Groups feature mappings by grouping_id, updates their resources, applies 'exists'
+        flags, and ensures no conflicting exists values.
+        Returns a list of updated feature resources (only those where exists is not False).
+        """
+        grouping_resources = {}
+        for column_name, cell_value in row.iloc[0].items():
+            # Skip patient-specific columns.
+            if column_name in ["Patient Phenotype ID", "Phenotype Description"]:
+                continue
+            resource_mapping = self.mapping_manager.get_feature_mapping(column_name)
+            if not resource_mapping:
+                continue
+            grouping_id = resource_mapping.get("grouping_id")
+            if grouping_id not in grouping_resources:
+                try:
+                    # Retrieve default resource example for the grouping.
+                    _, example = self.get_feature_resources(resource_mapping)
+                except Exception as e:
+                    print(f"Skipping grouping '{grouping_id}' for feature '{column_name}' due to error: {e}")
+                    continue
+                grouping_resources[grouping_id] = {"resource": example, "exists": None}
+            # Evaluate exists flag from mapping values.
+            exists_val = None
+            for val_entry in resource_mapping.get("values", []):
+                if str(val_entry.get("phenotype_value")) == str(cell_value):
+                    if "exists" in val_entry:
+                        exists_val = val_entry["exists"]
+                        break
+            if exists_val is not None:
+                if grouping_resources[grouping_id]["exists"] is None:
+                    grouping_resources[grouping_id]["exists"] = exists_val
+                    grouping_resources[grouping_id]["resource"]["exists"] = exists_val
+                elif grouping_resources[grouping_id]["exists"] != exists_val:
+                    raise ValueError(f"Conflicting exists values for grouping {grouping_id}")
+            # Update the feature resource based on FHIR path.
+            grouping_resources[grouping_id]["resource"] = self.update_feature_resource(
+                grouping_resources[grouping_id]["resource"],
+                resource_mapping,
+                cell_value,
+            )
+        # Return resources only if exists flag is not false.
+        return [
+            grp["resource"]
+            for grp in grouping_resources.values()
+            if grp["exists"] is not False
+        ]
+
     def generate_patient_bundles(self):
-        """Generate and write one bundle per patient phenotype row."""
+        """
+        Processes each patient phenotype row by:
+          1. Extracting and updating the patient resource.
+          2. Grouping and updating feature resources via grouping_id.
+          3. Constructing and writing a FHIR bundle for the patient.
+        """
         data_bundles = []
         mapping_dak_id = self.mapping_manager.mapping.get("dak_id")
         phenotype_dak_id = self.indicator_df["DAK ID"].iloc[0]
@@ -112,56 +168,21 @@ class FhirBundleGenerator:
                 f"Phenotype DAK ID {phenotype_dak_id} does not match mapping DAK ID {mapping_dak_id}"
             )
 
-        # Loop over each patient phenotype row:
+        # Iterate through each patient phenotype row.
         for idx, row in self.phenotype_df.iterrows():
-            # Make row into 1 row df with column names from original df
+            # Convert the row into a single-row DataFrame with correct headers.
             row = pd.DataFrame(row).T
             row.columns = self.phenotype_df.columns
 
-            # Get Patient example from IG based on mapping
+            # Process patient resource.
             patient_profile_name = self.mapping_manager.mapping["patient_profile"]
             patient_resource = self.get_patient_example(patient_profile_name)
             patient_resource = self.update_patient_resource(patient_resource, row)
 
-            # Process features grouped by grouping_id.
-            grouping_resources = {}
-            for column_name, cell_value in row.iloc[0].items():
-                if column_name in ["Patient Phenotype ID", "Phenotype Description"]:
-                    continue
-                resource_mapping = self.mapping_manager.get_feature_mapping(column_name)
-                if not resource_mapping:
-                    continue
-                grouping_id = resource_mapping.get("grouping_id")
-                if grouping_id not in grouping_resources:
-                    try:
-                        _, example = self.get_feature_resources(resource_mapping)
-                    except Exception as e:
-                        print(f"Skipping grouping '{grouping_id}' for feature '{column_name}' due to error: {e}")
-                        continue
-                    grouping_resources[grouping_id] = {"resource": example, "exists": None}
-                # Check for exists mapping from values.
-                exists_val = None
-                for val_entry in resource_mapping.get("values", []):
-                    if str(val_entry.get("phenotype_value")) == str(cell_value):
-                        if "exists" in val_entry:
-                            exists_val = val_entry["exists"]
-                            break
-                if exists_val is not None:
-                    if grouping_resources[grouping_id]["exists"] is None:
-                        grouping_resources[grouping_id]["exists"] = exists_val
-                        grouping_resources[grouping_id]["resource"]["exists"] = exists_val
-                    elif grouping_resources[grouping_id]["exists"] != exists_val:
-                        raise ValueError(f"Conflicting exists values for grouping {grouping_id}")
-                grouping_resources[grouping_id]["resource"] = self.update_feature_resource(
-                    grouping_resources[grouping_id]["resource"],
-                    resource_mapping,
-                    cell_value,
-                )
-            # Only include resource if exists flag is not false
-            feature_resources = [
-                grp["resource"] for grp in grouping_resources.values() if grp["exists"] is not False
-            ]
-            # Build the bundle:
+            # Process and group feature resources.
+            feature_resources = self._group_features(row)
+
+            # Build the FHIR bundle and write to file.
             bundle = self.build_bundle(patient_resource, feature_resources)
             bundle_filename = os.path.join(
                 self.output_directory, f"test_data_bundle_{idx}.json"

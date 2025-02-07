@@ -386,10 +386,10 @@ def generate_test_artifacts(phenotype_dataset, reporting_period):
 
 
 def generate_measure_report(phenotype_dataset, output_json=None):
+    # Count sum of 1s in the `Counted as Numerator (0,1)` and `Counted as Denominator (0,1)` columns
+    denominator_sum = sum(phenotype_dataset["Counted as Denominator (0,1)"])
+    numerator_sum = sum(phenotype_dataset["Counted as Numerator (0,1)"])
 
-    # For illustration, we simply count rows to compute denominator and count those with a specific field value for numerator.
-    denominator = len(phenotype_dataset)
-    numerator = phenotype_dataset[phenotype_dataset.get("num", "") == "1"].shape[0]
     measure_report = {
         "resourceType": "MeasureReport",
         "id": "measurereport-v2",
@@ -403,9 +403,12 @@ def generate_measure_report(phenotype_dataset, output_json=None):
                 "population": [
                     {
                         "code": {"coding": [{"code": "initial-population"}]},
-                        "count": denominator,
+                        "count": denominator_sum,
                     },
-                    {"code": {"coding": [{"code": "numerator"}]}, "count": numerator},
+                    {
+                        "code": {"coding": [{"code": "numerator"}]},
+                        "count": numerator_sum,
+                    },
                 ]
             }
         ],

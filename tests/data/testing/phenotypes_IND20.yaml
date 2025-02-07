@@ -69,7 +69,7 @@ features:
     phenotype_value: '0'
 - id: '2'
   name: Hiv test resulted
-  target_profiles: 'HivHivTest'
+  target_profile: 'HivHivTest'
   grouping_id: '0'
   values:
   - phenotype_value: '1'
@@ -77,6 +77,7 @@ features:
 - id: '3'
   name: HIV test result returned during reporting period
   grouping_id: '0'
+  target_profile: 'HivHivTest'
   fhir_path: 'Observation.issuedDateTime'
   values:
   - fhir_value: '2025-01-10'
@@ -85,7 +86,7 @@ features:
     phenotype_value: '0'
 - id: '4'
   name: HIV test result value
-  target_profiles: 'HivHivTest'
+  target_profile: 'HivHivTest'
   target_valuesets: 'HIV.B.DE111'
   fhir_path: 'Observation.valueCodeableConcept'
   values:
@@ -98,7 +99,7 @@ features:
 - id: '5'
   name: Has HIV Diagnosis
   grouping_id: '1'
-  target_profiles: 'HivStatusCondition'
+  target_profile: 'HivStatusCondition'
   target_valuesets: 'HIV.B.DE115'
   fhir_path: 'Condition.code'
   values:
@@ -108,7 +109,7 @@ features:
     phenotype_value: '1'
 - id: '6'
   name: HIV Diagnosis in reporting period
-  target_profiles: 'HivStatusCondition'
+  target_profile: 'HivStatusCondition'
   grouping_id: '1'
   fhir_path: 'Condition.onsetDateTime'
   values:
