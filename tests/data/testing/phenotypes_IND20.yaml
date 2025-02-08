@@ -44,8 +44,8 @@
 
 dak_id: HIV.IND.20
 reporting_period: 
-  start: '2025-01-01T00:00:00Z'
-  end: '2025-01-30T00:00:00Z'
+  start: '2025-01-01'
+  end: '2025-01-30'
 patient_profile: 'HivPatient'
 features:
 - id: '0'
@@ -88,7 +88,7 @@ features:
   name: HIV test result value
   target_profile: 'HivHivTest'
   grouping_id: '0'
-  target_valuesets: 'HIV.B.DE111'
+  target_valueset: 'HIV.B.DE111'
   target_fhir_path: 'Observation.valueCodeableConcept'
   values:
   - fhir_value: '#HIV.B.DE112'
@@ -101,7 +101,7 @@ features:
   name: Has HIV Diagnosis
   grouping_id: '1'
   target_profile: 'HivStatusCondition'
-  target_valuesets: 'HIV.B.DE115'
+  target_valueset: 'HIV.B.DE115'
   target_fhir_path: 'Condition.code'
   values:
   - fhir_value: '#HIV.B.DE117'

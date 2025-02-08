@@ -98,8 +98,9 @@ def generate_mapping_template(phenotype_excel, output_yaml):
         feature_entry = {
             "name": col,
             "id": str(feature_counter),  # unique id for this feature column
-            "target_profiles": "",  # placeholder for target FHIR profiles
-            "target_valuesets": "",  # placeholder for target valuesets
+            "target_profile": "",  # placeholder for target FHIR profiles
+            "target_valueset": "",  # placeholder for target valuesets
+            "target_fhir_path": "",  # placeholder for target FHIR path
             "values": [],  # sublist for each unique value mapping
         }
         for val in unique_values:
