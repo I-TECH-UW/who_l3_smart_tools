@@ -183,7 +183,8 @@ class FhirBundleGenerator:
         dependent_libraries = []
         for dependency in main_library_resource.get("relatedArtifact", []):
             if dependency.get("type") == "depends-on":
-                dep_id = dependency["resource"].split("/")[-1]
+                dep_id_version_part = dependency["resource"].split("/")[-1]
+                dep_id = dep_id_version_part.split("|")[0]
                 library_url = f"{self.ig_root_url}/Library-{dep_id}.json"
                 dependent_libraries.append(self.get_fhir_resource(library_url))
         return {
@@ -337,7 +338,7 @@ class FhirBundleGenerator:
             f.write(json.dumps(measure_report, indent=2))
 
         # Generate test artifacts using test_artifact_generator
-        artifacts = generate_test_artifacts(period_start, period_end)
+        artifacts = generate_test_artifacts(self.phenotype_df, reporting_period)
 
         test_script_filename = os.path.join(self.output_directory, "test_script.json")
         with open(test_script_filename, "w") as f:

@@ -4,6 +4,7 @@ import unittest
 import yaml
 import pandas as pd
 import requests
+import json
 from who_l3_smart_tools.core.indicator_testing.v2.phenotype_generator import (
     generate_phenotype_xlsx,
 )

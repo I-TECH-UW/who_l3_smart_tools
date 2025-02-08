@@ -249,7 +249,7 @@ measure_report_example = {
 
 def generate_test_artifacts(phenotype_dataset, reporting_period):
     # Generate MeasureReport using the existing function
-    measure_report = generate_measure_report(phenotype_dataset)
+    measure_report = generate_measure_report(phenotype_dataset, reporting_period)
 
     # Load and update TestPlan
     test_plan = json.loads(test_plan_definition_json)
@@ -323,7 +323,7 @@ def generate_test_artifacts(phenotype_dataset, reporting_period):
                                 },
                                 "resource": "Measure",
                                 "url": "$evaluate-measure",
-                                "params": f"?reportingPeriodStart={reporting_period[0]}&reportingPeriodEnd={reporting_period[1]}",
+                                "params": f"?reportingPeriodStart={reporting_period["start"]}&reportingPeriodEnd={reporting_period["end"]}",
                                 "sourceId": "create-measure-response",
                                 "responseId": "evaluate-response",
                             }
@@ -385,7 +385,7 @@ def generate_test_artifacts(phenotype_dataset, reporting_period):
     return json.dumps(test_bundle, indent=4)
 
 
-def generate_measure_report(phenotype_dataset, output_json=None):
+def generate_measure_report(phenotype_dataset, reporting_period, output_json=None):
     # Count sum of 1s in the `Counted as Numerator (0,1)` and `Counted as Denominator (0,1)` columns
     denominator_sum = sum(phenotype_dataset["Counted as Denominator (0,1)"])
     numerator_sum = sum(phenotype_dataset["Counted as Numerator (0,1)"])
@@ -397,7 +397,7 @@ def generate_measure_report(phenotype_dataset, output_json=None):
         "type": "summary",
         "measure": "http://example.org/measure/HIV.IND.20",
         "date": datetime.now().isoformat(),
-        "period": {"start": "2024-03-01", "end": "2024-03-31"},
+        "period": {"start": reporting_period["start"], "end": reporting_period["end"]},
         "group": [
             {
                 "population": [
