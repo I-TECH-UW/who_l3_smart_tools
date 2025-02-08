@@ -24,8 +24,10 @@ jobs:
           timeout: 60
       - name: show docker services
         run: docker ps
+        if: always()
       - name: show hapi logs
         run: docker logs hapi_fhir_1
+        if: always()
       - name: Set up Python
         # This is the version of the action for setting up Python, not the Python version.
         uses: actions/setup-python@v5
