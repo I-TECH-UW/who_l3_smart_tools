@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: start up hapi server
-        run: docker-compose -f tests/cql_environment/docker-compose.yml up -d
+        run: docker compose -f tests/cql_environment/docker-compose.yml up -d
       - name: wait for hapi server to start
         uses: MaximeGoyette/wait-for-it-action@master
         with:
