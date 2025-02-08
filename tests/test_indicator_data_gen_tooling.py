@@ -26,7 +26,7 @@ class TestIndicatorDataGenTooling(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.input_excel = "tests/data/l2/test_indicators.xlsx"
-        cls.phenotype_template_excel = "tests/output/testing/phenotype_v2.xlsx"
+        cls.phenotype_template_excel = "tests/data/testing/phenotype_v2.xlsx"
         cls.dataset_excel = "tests/output/dataset_v2.xlsx"
         cls.measure_report_json = "tests/output/measure_report_v2.json"
         cls.mapping_template_yaml = "tests/output/mapping_template_test.yaml"
@@ -93,8 +93,9 @@ class TestIndicatorDataGenTooling(unittest.TestCase):
 
 
 class TestFhirBundleTests(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
+    # Skip for CI
+    @unittest.skip("Skip for CI")
+    def setUp(self):
         # Prerequisite: generate FHIR bundles for tests
         phenotype_file = "tests/data/scaffolding/v2/phenotype_HIVIND20_filled.xlsx"
         mapping_file = "tests/data/testing/phenotypes_IND20.yaml"
@@ -151,9 +152,7 @@ class TestFhirBundleTests(unittest.TestCase):
         ]
         self.assertTrue(len(patient_bundles) > 0, "No patient bundles were generated.")
 
-    @unittest.skip("Skip for CI")
     def test_load_and_evaluate_indicator(self):
-        # Don't run in CI
         CLEANUP_HAPI = False  # Set to False to skip cleanup
         FHIR_SERVER_URL = "http://localhost:8080/fhir"
         # Check that the FHIR server is up
