@@ -22,6 +22,10 @@ jobs:
           host: localhost
           port: 8080
           timeout: 120
+      - name: show docker services
+        run: docker ps
+      - name: show hapi logs
+        run: docker logs hapi_fhir_1
       - name: Set up Python
         # This is the version of the action for setting up Python, not the Python version.
         uses: actions/setup-python@v5
