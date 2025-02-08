@@ -151,7 +151,9 @@ class TestFhirBundleTests(unittest.TestCase):
         ]
         self.assertTrue(len(patient_bundles) > 0, "No patient bundles were generated.")
 
+    @unittest.skip("Skip for CI")
     def test_load_and_evaluate_indicator(self):
+        # Don't run in CI
         CLEANUP_HAPI = False  # Set to False to skip cleanup
         FHIR_SERVER_URL = "http://localhost:8080/fhir"
         # Check that the FHIR server is up
