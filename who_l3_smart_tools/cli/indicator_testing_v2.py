@@ -1,26 +1,26 @@
 import argparse
 import sys
-from pathlib import Path
 from who_l3_smart_tools.core.indicator_testing.v2.phenotype_generator import (
     generate_phenotype_xlsx,
-    generate_template_xlsx,
 )
 from who_l3_smart_tools.core.indicator_testing.v2.dataset_generator import (
     generate_random_dataset,
 )
-from who_l3_smart_tools.core.indicator_testing.v2.measure_report_generator import (
-    generate_measure_report,
-)
 from who_l3_smart_tools.core.indicator_testing.v2.fhir_bundle_generator import (
     generate_fhir_resources,
+)
+from who_l3_smart_tools.core.indicator_testing.v2.mapping_template_generator import (
+    generate_mapping_template,
 )
 
 
 def main():
     parser = argparse.ArgumentParser(description="CLI tooling for indicator testing v2")
-    subparsers = parser.add_subparsers(dest="command", help="Available commands")
+    subparsers = parser.add_subparsers(
+        dest="command", help="Available commands for v2 testing"
+    )
 
-    # Command to generate a phenotype XLSX file
+    # Generate phenotype XLSX
     phen_parser = subparsers.add_parser(
         "generate-phenotype", help="Generate phenotype definitions XLSX"
     )
@@ -32,9 +32,10 @@ def main():
         "--output", required=True, help="Output phenotype XLSX file path"
     )
 
-    # Command to generate a random dataset from phenotype file
+    # Generate random test dataset
     data_parser = subparsers.add_parser(
-        "generate-dataset", help="Generate random test dataset from phenotype file"
+        "generate-test-dataset",
+        help="Generate random test dataset from phenotype file for L3 Technical Experts",
     )
     data_parser.add_argument(
         "--phenotype", required=True, help="Path to phenotype XLSX file"
@@ -46,7 +47,7 @@ def main():
         "--rows", type=int, default=1000, help="Number of random rows"
     )
 
-    # Command to generate an expected MeasureReport
+    # Generate MeasureReport
     report_parser = subparsers.add_parser(
         "evaluate", help="Generate expected MeasureReport"
     )
@@ -57,7 +58,7 @@ def main():
         "--output", required=True, help="Output MeasureReport JSON file path"
     )
 
-    # Command to generate a distilled XLSX template for mapping
+    # Generate a template XLSX for phenotype mapping
     template_parser = subparsers.add_parser(
         "generate-template", help="Generate a template XLSX for phenotype mapping"
     )
@@ -71,7 +72,19 @@ def main():
         "--output", required=True, help="Output template XLSX file path"
     )
 
-    # Command to generate FHIR bundles and TestScript using a completed template and YAML mapping file
+    # Generate mapping YAML template
+    mapping_parser = subparsers.add_parser(
+        "generate-mapping-template",
+        help="Generate mapping YAML template from phenotype template",
+    )
+    mapping_parser.add_argument(
+        "--template", required=True, help="Path to filled phenotype XLSX template"
+    )
+    mapping_parser.add_argument(
+        "--output", required=True, help="Output mapping YAML file path"
+    )
+
+    # Generate FHIR artifacts using filled template and YAML mapping
     fhir_parser = subparsers.add_parser(
         "generate-fhir",
         help="Generate FHIR bundles and TestScript from a phenotype template and mappings YAML",
@@ -90,12 +103,14 @@ def main():
 
     if args.command == "generate-phenotype":
         generate_phenotype_xlsx(args.input, args.indicator, args.output)
-    elif args.command == "generate-dataset":
+    elif args.command == "generate-test-dataset":
         generate_random_dataset(args.phenotype, args.output, num_rows=args.rows)
     elif args.command == "evaluate":
         generate_measure_report(args.dataset, args.output)
     elif args.command == "generate-template":
         generate_template_xlsx(args.input, args.indicator, args.output)
+    elif args.command == "generate-mapping-template":
+        generate_mapping_template(args.template, args.output)
     elif args.command == "generate-fhir":
         generate_fhir_resources(args.template, args.mapping, args.output_dir)
     else:

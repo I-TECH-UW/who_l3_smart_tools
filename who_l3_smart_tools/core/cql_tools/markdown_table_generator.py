@@ -256,6 +256,7 @@ class NonFunctionalMarkdownGenerator(MarkdownTableHelper):
     """
     Translates the 'Non-functional' sheet from the provided Excel file into a Markdown file.
     """
+
     non_functional_md_template = """This page provides an overview of illustrative non-functional requirements that may be considered to kick-start the process of designing or adapting the electronic immunization registry digital tracking and decision-support system.
 
 Non-functional requirements provide the general attributes and features of the digital system to ensure usability and overcome technical and physical constraints. Examples of non-functional requirements include ability to work offline, multiple language settings and password protection.
@@ -281,6 +282,8 @@ Non-functional requirements provide the general attributes and features of the d
     def generate_non_functional_md(self, output_file_path: str) -> None:
         df = pd.read_excel(self.non_functional_excel_file, sheet_name="Non-functional")
         md_table = self.generate_markdown_table(df)
-        final_md_content = self.non_functional_md_template.replace("{{table}}", md_table)
+        final_md_content = self.non_functional_md_template.replace(
+            "{{table}}", md_table
+        )
         with open(output_file_path, "w", encoding="utf-8") as output_file:
             output_file.write(final_md_content)

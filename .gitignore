@@ -178,4 +178,7 @@ who_ocl.py
 # Output for testing files
 
 test_output/
+tests/data/testing/fsh/
 tests/data/l2/csv_files/
+
+example_cql_bundle.json
