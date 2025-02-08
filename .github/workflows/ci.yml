@@ -21,7 +21,7 @@ jobs:
         with:
           host: localhost
           port: 8080
-          timeout: 240
+          timeout: 240  
       - name: show docker services
         run: docker ps
         if: always()
