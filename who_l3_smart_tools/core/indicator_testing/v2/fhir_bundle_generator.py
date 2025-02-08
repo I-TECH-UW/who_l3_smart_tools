@@ -14,12 +14,13 @@ from who_l3_smart_tools.core.indicator_testing.v2.test_artifact_generator import
 
 
 class FhirBundleGenerator:
+
     def __init__(
         self,
         phenotype_file,
         mapping_file,
         output_directory,
-        ig_root_url="http://localhost:8099",
+        ig_root_url="https://i-tech-uw.github.io/smart-hiv/",
     ):
         self.phenotype_file = phenotype_file
         self.mapping_manager = YamlMappingManager(mapping_file)
