@@ -1,7 +1,6 @@
-version: "3.8"
 services:
   fhir:
-    image: hapi-fhir/hapi:latest
+    image: hapiproject/hapi:latest
     ports:
       - "8080:8080"
     volumes:
