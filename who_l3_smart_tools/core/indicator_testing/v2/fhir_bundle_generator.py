@@ -4,6 +4,7 @@ import json
 import pandas as pd
 import requests
 import uuid
+import copy
 from who_l3_smart_tools.core.indicator_testing.v2.fhir_mapping_manager import (
     YamlMappingManager,
 )
@@ -46,6 +47,7 @@ class FhirBundleGenerator:
             response = requests.get(resource_url)
             response.raise_for_status()
             resource = response.json()
+            resource.pop("text", None)
             self.resource_cache[resource_url] = resource
             return resource
         except requests.RequestException as e:
@@ -82,30 +84,57 @@ class FhirBundleGenerator:
         """Update patient example using row data."""
         for key, value in row.iloc[0].items():
             if key == "Patient Phenotype ID":
-                patient_json["id"] = value
+                patient_json.setdefault("identifier", []).append({"value": value})
             elif key == "Phenotype Description":
                 patient_json["text"] = str(value)
         return patient_json
 
     def update_feature_resource(self, example, resource_mapping, cell_value):
         """Update the feature resource example with cell value based on the mapping's FHIR path."""
-        # Determine the FHIR path to update (supporting "target_fhir_path" or "fhir_path")
-        fhir_path = resource_mapping.get("target_fhir_path") or resource_mapping.get(
-            "fhir_path"
+
+        fhir_path = resource_mapping.get("target_fhir_path")
+
+        # Find the cell value in the `values` list of the mapping under `phenotype_value`, and grab the element it is part of.
+        value_mapping = next(
+            (
+                x
+                for x in resource_mapping.get("values", [])
+                if str(x.get("phenotype_value")) == str(cell_value)
+            ),
+            None,
         )
+
+        # If the value is not found, return the example as is.
+        if not value_mapping:
+            return example
+
+        # If value is found, update the example resource with the value at the field specified by the FHIR path.
         if fhir_path:
-            # This simple example assumes fhir_path like 'Observation.effectiveDateTime' and
-            # updates the last key in the path.
             key = fhir_path.split(".")[-1]
-            example[key] = cell_value
+            target_value = value_mapping.get("fhir_value")
+            example[key] = target_value
         return example
 
     def build_bundle(self, patient_resource, feature_resources):
-        """Construct a FHIR Bundle from patient and feature resources."""
-        entries = [{"resource": patient_resource}]
-        for res in feature_resources:
-            entries.append({"resource": res})
-        return {"resourceType": "Bundle", "type": "collection", "entry": entries}
+        """Construct a FHIR transaction Bundle from patient and feature resources."""
+        # Wrap each resource with a request section using PUT.
+        all_resources = [patient_resource] + feature_resources
+        entries = []
+        for res in all_resources:
+            # Make sure resource has an 'id'.
+            if not res.get("id"):
+                res["id"] = str(uuid.uuid4())
+            # Build the request URL from resourceType/id.
+            entries.append(
+                {
+                    "resource": res,
+                    "request": {
+                        "method": "PUT",
+                        "url": f"{res.get('resourceType')}/{res.get('id')}",
+                    },
+                }
+            )
+        return {"resourceType": "Bundle", "type": "transaction", "entry": entries}
 
     def _group_features(self, row):
         """
@@ -194,34 +223,54 @@ class FhirBundleGenerator:
         }
 
     def assemble_cql_bundle(self, patient_bundles, cql_resources):
-        """
-        Assemble a complete encapsulated CQL Bundle with the following structure:
-         - Bundle Type: collection (transaction Bundle could be used in production)
-         - Bundle Entries include:
-              • Measure resource
-              • Main Library resource
-              • Each dependent Library resource
-              • All patient data bundles
-              • (Placeholder for terminology resources if parsed elsewhere)
-
-        Returns the assembled bundle dictionary.
-        """
+        """Assemble a complete transaction CQL Bundle by taking all entries from patient bundles as-is."""
         entries = []
-        # Add Measure
-        entries.append({"resource": cql_resources["measure"]})
-        # Add Main Library
-        entries.append({"resource": cql_resources["main_library"]})
-        # Add each Dependent Library
-        for lib in cql_resources["dependent_libraries"]:
-            entries.append({"resource": lib})
-        # Add patient bundles (each bundle is already a resource)
+
+        # Add Measure and Library resources.
+        for res in [
+            cql_resources["measure"],
+            cql_resources["main_library"],
+        ] + cql_resources["dependent_libraries"]:
+            if not res.get("id"):
+                res["id"] = str(uuid.uuid4())
+            entries.append(
+                {
+                    "resource": res,
+                    "request": {
+                        "method": "PUT",
+                        "url": f"{res.get('resourceType')}/{res.get('id')}",
+                    },
+                }
+            )
+
+        # Copy each entry from patient bundles without modifying ids.
         for bundle in patient_bundles:
-            entries.append({"resource": bundle})
-        return {
-            "resourceType": "Bundle",
-            "type": "collection",
-            "entry": entries,
-        }
+            for entry in bundle.get("entry", []):
+                # Ensure the request info is consistent.
+                entry["request"]["method"] = "PUT"
+                entry["request"][
+                    "url"
+                ] = f"{entry['resource']['resourceType']}/{entry['resource']['id']}"
+                entries.append(entry)
+
+        return {"resourceType": "Bundle", "type": "transaction", "entry": entries}
+
+    def _update_patient_references(self, resource, new_patient_id):
+        """Recursively update any references to the default patient with the new patient id."""
+        if isinstance(resource, dict):
+            for key, value in resource.items():
+                if (
+                    key == "reference"
+                    and isinstance(value, str)
+                    and value == "Patient/ExampleHivPatient"
+                ):
+                    resource[key] = f"Patient/{new_patient_id}"
+                else:
+                    self._update_patient_references(value, new_patient_id)
+        elif isinstance(resource, list):
+            for item in resource:
+                self._update_patient_references(item, new_patient_id)
+        return resource
 
     def generate_patient_bundles(self):
         """
@@ -263,12 +312,21 @@ class FhirBundleGenerator:
             patient_resource = self.get_patient_example(patient_profile_name)
             patient_resource = self.update_patient_resource(patient_resource, row)
 
-            # Assign unique patient id.
-            patient_id = str(row.iloc[0]["Patient Phenotype ID"])
-            patient_resource["id"] = patient_id
+            # Assign new unique patient id and update patient references.
+            new_patient_id = str(uuid.uuid4())
+            patient_resource["id"] = new_patient_id
+            patient_resource = self._update_patient_references(
+                patient_resource, new_patient_id
+            )
+            patient_phenotype_id = row["Patient Phenotype ID"].iloc[0]
 
             # Process feature resources for this patient.
             feature_resources = self._group_features(row)
+            # Update feature resources to point to the new patient id if needed.
+            feature_resources = [
+                self._update_patient_references(resource, new_patient_id)
+                for resource in feature_resources
+            ]
 
             # Create patient bundle.
             bundle = self.build_bundle(patient_resource, feature_resources)
@@ -276,11 +334,12 @@ class FhirBundleGenerator:
 
             # Save the bundle to file.
             bundle_filename = os.path.join(
-                self.output_directory, f"patient_data_bundle_{patient_id}.json"
+                self.output_directory,
+                f"patient_data_bundle_{patient_phenotype_id}.json",
             )
             with open(bundle_filename, "w") as f:
                 f.write(json.dumps(bundle, indent=2))
-            data_bundles.append(bundle)
+            data_bundles.append(copy.deepcopy(bundle))
 
         # --- CQL Bundle Assembly ---
         # 1. Fetch Measure, main Library, and dependent libraries.

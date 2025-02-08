@@ -372,10 +372,23 @@ def generate_test_artifacts(phenotype_dataset, reporting_period):
         }
     )
 
+    # Wrap resources in transaction entries
+    def transaction_wrap(res):
+        return {
+            "resource": res,
+            "request": {
+                "method": "PUT",
+                "url": f"{res.get('resourceType')}/{res.get('id')}"
+            }
+        }
+    measure_report = transaction_wrap(measure_report)
+    test_plan = transaction_wrap(test_plan)
+    test_script = transaction_wrap(test_script)
+
     # Build and return the Testing Bundle containing MeasureReport, TestPlan, and TestScript
     test_bundle = {
         "resourceType": "Bundle",
-        "type": "collection",
+        "type": "transaction",
         "entry": [
             measure_report,  # assuming measure_report is JSON serializable
             test_plan,

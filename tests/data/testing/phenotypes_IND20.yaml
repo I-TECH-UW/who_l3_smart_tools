@@ -44,8 +44,8 @@
 
 dak_id: HIV.IND.20
 reporting_period: 
-  start: '2025-01-01'
-  end: '2025-01-30'
+  start: '2025-01-01T00:00:00Z'
+  end: '2025-01-30T00:00:00Z'
 patient_profile: 'HivPatient'
 features:
 - id: '0'
@@ -63,9 +63,9 @@ features:
   target_fhir_path: 'Observation.effectiveDateTime'
   grouping_id: '0'
   values:
-  - fhir_value: '2025-01-05'
+  - fhir_value: '2025-01-05T00:00:00Z'
     phenotype_value: '1'
-  - fhir_value: '2024-12-22'
+  - fhir_value: '2024-12-22T00:00:00Z'
     phenotype_value: '0'
 - id: '2'
   name: Hiv test resulted
@@ -78,17 +78,18 @@ features:
   name: HIV test result returned during reporting period
   grouping_id: '0'
   target_profile: 'HivHivTest'
-  fhir_path: 'Observation.issuedDateTime'
+  target_fhir_path: 'Observation.issuedDateTime'
   values:
-  - fhir_value: '2025-01-10'
+  - fhir_value: '2025-01-10T00:00:00Z'
     phenotype_value: '1'
-  - fhir_value: '2025-02-10'
+  - fhir_value: '2025-02-10T00:00:00Z'
     phenotype_value: '0'
 - id: '4'
   name: HIV test result value
   target_profile: 'HivHivTest'
+  grouping_id: '0'
   target_valuesets: 'HIV.B.DE111'
-  fhir_path: 'Observation.valueCodeableConcept'
+  target_fhir_path: 'Observation.valueCodeableConcept'
   values:
   - fhir_value: '#HIV.B.DE112'
     phenotype_value: positive
@@ -101,7 +102,7 @@ features:
   grouping_id: '1'
   target_profile: 'HivStatusCondition'
   target_valuesets: 'HIV.B.DE115'
-  fhir_path: 'Condition.code'
+  target_fhir_path: 'Condition.code'
   values:
   - fhir_value: '#HIV.B.DE117'
     phenotype_value: '0'
@@ -111,9 +112,9 @@ features:
   name: HIV Diagnosis in reporting period
   target_profile: 'HivStatusCondition'
   grouping_id: '1'
-  fhir_path: 'Condition.onsetDateTime'
+  target_fhir_path: 'Condition.onsetDateTime'
   values:
-  - fhir_value: '2025-02-10'
+  - fhir_value: '2025-02-10T00:00:00Z'
     phenotype_value: '0'
-  - fhir_value: '2025-01-10'
+  - fhir_value: '2025-01-10T00:00:00Z'
     phenotype_value: '1'

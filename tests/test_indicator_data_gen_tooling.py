@@ -5,6 +5,7 @@ import yaml
 import pandas as pd
 import requests
 import json
+import math
 from who_l3_smart_tools.core.indicator_testing.v2.phenotype_generator import (
     generate_phenotype_xlsx,
 )
@@ -123,7 +124,7 @@ class TestIndicatorDataGenTooling(unittest.TestCase):
         cql_bundle_path = os.path.join(subfolder, "cql_bundle.json")
         self.assertTrue(
             os.path.exists(cql_bundle_path),
-            f"cql_bundle.json not found in {subfolder}."
+            f"cql_bundle.json not found in {subfolder}.",
         )
 
         # Check that test_script.json and test_plan.json are generated
@@ -131,11 +132,10 @@ class TestIndicatorDataGenTooling(unittest.TestCase):
         test_plan_path = os.path.join(subfolder, "test_plan.json")
         self.assertTrue(
             os.path.exists(test_script_path),
-            f"test_script.json not found in {subfolder}."
+            f"test_script.json not found in {subfolder}.",
         )
         self.assertTrue(
-            os.path.exists(test_plan_path),
-            f"test_plan.json not found in {subfolder}."
+            os.path.exists(test_plan_path), f"test_plan.json not found in {subfolder}."
         )
 
         # Check that at least one patient bundle file (with prefix 'patient_data_bundle_') exists in the subfolder.
@@ -146,8 +146,8 @@ class TestIndicatorDataGenTooling(unittest.TestCase):
         ]
         self.assertTrue(len(patient_bundles) > 0, "No patient bundles were generated.")
 
-    def test_evaluate_measure_report(self):
-        # Set FHIR server endpoint
+    def test_load_and_evaluate_indicator(self):
+        CLEANUP_HAPI = False  # Set to False to skip cleanup
         FHIR_SERVER_URL = "http://localhost:8080/fhir"
         # Check that the FHIR server is up
         try:
@@ -156,8 +156,32 @@ class TestIndicatorDataGenTooling(unittest.TestCase):
         except Exception as e:
             self.fail(f"FHIR server check failed: {e}")
 
+        # Load and post the CQL bundle
+        subfolder = os.path.join("tests/output/fhir_bundles", "HIV.IND.20")
+        cql_bundle_path = os.path.join(subfolder, "cql_bundle.json")
+        with open(cql_bundle_path, "r") as f:
+            cql_bundle = json.load(f)
+
+        # Sanitize the bundle to replace NaN values
+        def sanitize_nan(obj):
+            if isinstance(obj, float) and math.isnan(obj):
+                return None
+            elif isinstance(obj, dict):
+                return {k: sanitize_nan(v) for k, v in obj.items()}
+            elif isinstance(obj, list):
+                return [sanitize_nan(item) for item in obj]
+            return obj
+
+        cql_bundle = sanitize_nan(cql_bundle)
+
+        post_resp = requests.post(f"{FHIR_SERVER_URL}", json=cql_bundle)
+        if not post_resp.ok:
+            raise Exception(
+                f"Error loading CQL bundle: {post_resp.status_code} - {post_resp.text}"
+            )
+
         # Load expected measure report from the generated test bundle
-        expected_bundle_path = "tests/output/fhir_bundles/HIV.IND.20/test_bundle.json"
+        expected_bundle_path = os.path.join(subfolder, "test_bundle.json")
         with open(expected_bundle_path, "r") as f:
             expected_report = json.load(f)
 
@@ -187,12 +211,37 @@ class TestIndicatorDataGenTooling(unittest.TestCase):
         evaluated_counts = get_population_counts(new_report)
         for key in ["initial-population", "numerator", "denominator"]:
             self.assertIn(key, expected_counts, f"Expected count for {key} not found.")
-            self.assertIn(key, evaluated_counts, f"Evaluated count for {key} not found.")
+            self.assertIn(
+                key, evaluated_counts, f"Evaluated count for {key} not found."
+            )
             self.assertEqual(
                 expected_counts[key],
                 evaluated_counts[key],
                 f"Mismatch in count for {key}.",
             )
+
+        # Cleanup: remove the resources loaded via the CQL bundle after evaluation
+        if CLEANUP_HAPI:
+            entries = []
+            if isinstance(cql_bundle, dict):
+                temp_entries = cql_bundle.get("entry")
+                if isinstance(temp_entries, list):
+                    entries = temp_entries
+            for entry in entries:
+                if isinstance(entry, dict):
+                    resource = entry.get("resource", {})
+                    if isinstance(resource, dict):
+                        resource_type = resource.get("resourceType")
+                        resource_id = resource.get("id")
+                        if resource_type and resource_id:
+                            delete_url = (
+                                f"{FHIR_SERVER_URL}/{resource_type}/{resource_id}"
+                            )
+                            del_resp = requests.delete(delete_url)
+                            if not del_resp.ok and del_resp.status_code != 404:
+                                raise Exception(
+                                    f"Cleanup failed for {resource_type}/{resource_id}: {del_resp.status_code}"
+                                )
 
 
 if __name__ == "__main__":
