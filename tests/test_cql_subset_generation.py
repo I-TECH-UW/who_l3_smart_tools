@@ -22,23 +22,36 @@ class TestCQLSubsetGeneration(unittest.TestCase):
 
     def test_subset_generation(self):
         generator = CQLSubsetGenerator(
-            base_cql_dir=self.base_cql_dir, output_dir=self.output_dir
+            parent_path=self.indicator_file,
+            base_cql_dir=self.base_cql_dir,
+            elements_path=os.path.join(self.base_cql_dir, "HIVElements.cql"),
+            indicators_path=os.path.join(self.base_cql_dir, "HIVIndicatorElements.cql"),
+            output_dir=self.output_dir,
         )
-        captured_output = io.StringIO()
-        with contextlib.redirect_stdout(captured_output):
-            generator.run(self.indicator_file)
-        console_output = captured_output.getvalue()
-        # Verify console output includes the subset header for HIE
-        self.assertIn("Subset for library alias HIE", console_output)
-        # Verify the expected output file is created and not empty
-        expected_file = os.path.join(self.output_dir, "HIVIndicatorElements_subset.cql")
+        # Directly run the generator
+        generator.run()
+
+        # Verify the expected output file for HIVIndicatorElements is created and not empty
+        indicator_subset_path = os.path.join(
+            self.output_dir, "HIVIndicatorElements.cql"
+        )
         self.assertTrue(
-            os.path.exists(expected_file), f"Output file not found: {expected_file}"
+            os.path.exists(indicator_subset_path),
+            f"Output file not found: {indicator_subset_path}",
         )
-        with open(expected_file, "r", encoding="utf-8") as f:
-            file_content = f.read()
-        self.assertIn("Subset for library alias HIE", file_content)
-        self.assertNotEqual(file_content.strip(), "", "Output file is empty")
+        with open(indicator_subset_path, "r", encoding="utf-8") as f:
+            indicator_subset = f.read()
+        self.assertNotEqual(indicator_subset.strip(), "", "Output file is empty")
+
+        # Check both generated files for the new subset definitions marker
+        elements_subset_path = os.path.join(self.output_dir, "HIVElements.cql")
+        with open(indicator_subset_path, "r", encoding="utf-8") as f:
+            indicator_subset = f.read()
+        with open(elements_subset_path, "r", encoding="utf-8") as f:
+            elements_subset = f.read()
+
+        self.assertIn("// ...subset definitions...", indicator_subset)
+        self.assertIn("// ...subset definitions...", elements_subset)
 
 
 if __name__ == "__main__":
