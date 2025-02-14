@@ -54,10 +54,13 @@ class CQLSubsetGenerator:
         return refs
 
     def resolve_dependencies(self, initial_refs, index, prefix):
-        # Recursively add definitions from the provided index
+        # Recursively add definitions from the provided index along with any intra-file references.
         resolved = {}
         pending = list(initial_refs)
-        pattern = re.compile(rf'\b{prefix}\.(?:"([^"]+)"|([a-zA-Z0-9_]+))')
+        # Pattern for prefix references e.g. HIE."Ref"
+        pattern_prefix = re.compile(rf'\b{prefix}\.(?:"([^"]+)"|([a-zA-Z0-9_]+))')
+        # Pattern for intra-file quoted definitions (without prefix)
+        pattern_intra = re.compile(r'"([^"]+)"')
         while pending:
             ref = pending.pop()
             if ref in resolved:
@@ -65,11 +68,20 @@ class CQLSubsetGenerator:
             if ref in index:
                 definition = index[ref]
                 resolved[ref] = definition
-                # Look for further references within this definition
-                for m in pattern.finditer(definition):
+                # Look for further prefix-based references within this definition
+                for m in pattern_prefix.finditer(definition):
                     nested = m.group(1) if m.group(1) else m.group(2)
-                    if nested and nested not in resolved:
+                    if nested and nested.strip() not in resolved:
                         pending.append(nested.strip())
+                # Additionally, look for intra-file dependencies: any quoted string that matches a definition name in the index
+                for m in pattern_intra.finditer(definition):
+                    nested_intra = m.group(1)
+                    if (
+                        nested_intra
+                        and nested_intra.strip() in index
+                        and nested_intra.strip() not in resolved
+                    ):
+                        pending.append(nested_intra.strip())
             else:
                 print(
                     f"Warning: definition '{ref}' not found in index for prefix {prefix}",
@@ -80,22 +92,25 @@ class CQLSubsetGenerator:
     def generate_subset(self):
         # Process the parent file (HIVIND20Logic.cql)
         parent_content = self.read_file(self.parent_path)
+
         # Extract initial references for IndicatorElements (HIE) and Elements (HE)
-        indicator_refs = self.extract_references(parent_content, "HIE")
+        indicator_elements_refs = self.extract_references(parent_content, "HIE")
         elements_refs = self.extract_references(parent_content, "HE")
 
-        # Recursively resolve definitions in each index
         indicator_defs = self.resolve_dependencies(
-            indicator_refs, self.indicator_index, "HIE"
+            indicator_elements_refs, self.indicator_index, "HIE"
         )
-        # Also resolve any HIE references within the already found indicator definitions
+
         elements_defs = self.resolve_dependencies(
             elements_refs, self.elements_index, "HE"
         )
-        # Additionally, Indicator definitions might reference Elements using HE. so scan each indicator def:
+
+        # Indicator definitions might reference Elements using HE. so scan each indicator def:
         for def_text in list(indicator_defs.values()):
-            extra = self.extract_references(def_text, "HE")
-            extra_defs = self.resolve_dependencies(extra, self.elements_index, "HE")
+            extra = self.extract_references(def_text, "Elements")
+            extra_defs = self.resolve_dependencies(
+                extra, self.elements_index, "Elements"
+            )
             elements_defs.update(extra_defs)
 
         # Build final subset content preserving headers

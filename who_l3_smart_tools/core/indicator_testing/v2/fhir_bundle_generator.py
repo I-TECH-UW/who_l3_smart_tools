@@ -190,6 +190,30 @@ class FhirBundleGenerator:
             if grp["exists"] is not False
         ]
 
+    def _gather_dependent_libraries(self, library_resource, visited=None):
+        if visited is None:
+            visited = set()
+        libs = []
+        lib_url = library_resource.get("url")
+        if lib_url:
+            lib_dep_id = lib_url.rsplit("/", 1)[-1].split("|")[0]
+            if lib_dep_id not in visited:
+                visited.add(lib_dep_id)
+                for dependency in library_resource.get("relatedArtifact", []):
+                    if dependency.get("type") == "depends-on" and dependency[
+                        "resource"
+                    ].startswith("http://smart.who.int/hiv/Library/"):
+                        dep_id_version_part = dependency["resource"].split("/")[-1]
+                        dep_id = dep_id_version_part.split("|")[0]
+                        if dep_id not in visited:
+                            library_url = f"{self.ig_root_url}/Library-{dep_id}.json"
+                            dep_res = self.get_fhir_resource(library_url)
+                            libs.append(dep_res)
+                            libs.extend(
+                                self._gather_dependent_libraries(dep_res, visited)
+                            )
+        return libs
+
     def gather_cql_resources(self, mapping_dak_id):
         """
         Gather all CQL related resources from the IG:
@@ -210,13 +234,7 @@ class FhirBundleGenerator:
         main_library_url = f"{self.ig_root_url}/Library-{library_id}.json"
         main_library_resource = self.get_fhir_resource(main_library_url)
 
-        dependent_libraries = []
-        for dependency in main_library_resource.get("relatedArtifact", []):
-            if dependency.get("type") == "depends-on":
-                dep_id_version_part = dependency["resource"].split("/")[-1]
-                dep_id = dep_id_version_part.split("|")[0]
-                library_url = f"{self.ig_root_url}/Library-{dep_id}.json"
-                dependent_libraries.append(self.get_fhir_resource(library_url))
+        dependent_libraries = self._gather_dependent_libraries(main_library_resource)
         return {
             "measure": measure_resource,
             "main_library": main_library_resource,

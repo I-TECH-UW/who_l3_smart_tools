@@ -95,7 +95,7 @@ class TestIndicatorDataGenTooling(unittest.TestCase):
 
 class TestFhirBundleTests(unittest.TestCase):
     # Skip for CI
-    @unittest.skip("Skip for CI")
+    # @unittest.skip("Skip for CI")
     def setUp(self):
         # Prerequisite: generate FHIR bundles for tests
         phenotype_file = "tests/data/scaffolding/v2/phenotype_HIVIND20_filled.xlsx"
@@ -104,7 +104,9 @@ class TestFhirBundleTests(unittest.TestCase):
         if os.path.exists(output_directory):
             shutil.rmtree(output_directory)
         os.makedirs(output_directory)
-        generator = FhirBundleGenerator(phenotype_file, mapping_file, output_directory)
+        generator = FhirBundleGenerator(
+            phenotype_file, mapping_file, output_directory, "http://localhost:8099"
+        )
         generator.execute()
 
     def test_fhir_bundle_generator(self):
@@ -201,7 +203,11 @@ class TestFhirBundleTests(unittest.TestCase):
         # Execute the $evaluate-measure operation using the period from expected report.
         evaluate_url = f"{FHIR_SERVER_URL}/Measure/HIVIND20/$evaluate-measure"
         params = {"periodStart": period_start, "periodEnd": period_end}
-        requests.get(evaluate_url, params=params)
+        resp = requests.get(evaluate_url, params=params)
+
+        # Print response
+        print(resp.text)
+
         # self.assertEqual(resp.status_code, 200, "Evaluate measure operation failed.")
         # new_report = resp.json()
 
