@@ -26,10 +26,10 @@ class TestIndicatorDataGenTooling(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.input_excel = "tests/data/l2/test_indicators.xlsx"
-        cls.phenotype_template_excel = "tests/data/testing/phenotype_v2.xlsx"
+        cls.phenotype_template_excel = "tests/data/testing/phenotype_IND73.xlsx"
         cls.dataset_excel = "tests/output/dataset_v2.xlsx"
         cls.measure_report_json = "tests/output/measure_report_v2.json"
-        cls.mapping_template_yaml = "tests/output/mapping_template_test.yaml"
+        cls.mapping_template_yaml = "tests/output/mapping_template_IND73.yaml"
         os.makedirs("tests/output/testing", exist_ok=True)
         os.makedirs("tests/output", exist_ok=True)
 
@@ -40,6 +40,7 @@ class TestIndicatorDataGenTooling(unittest.TestCase):
         df = pd.read_excel(self.phenotype_template_excel)
         self.assertEqual(len(df), 3)
 
+    # Ignore for now
     def test_generate_dataset(self):
         generate_random_dataset(
             self.phenotype_template_excel, self.dataset_excel, num_rows=10
@@ -49,7 +50,7 @@ class TestIndicatorDataGenTooling(unittest.TestCase):
 
     def test_generate_mapping_template(self):
         # Generate mapping template using the phenotype file and output YAML location.
-        phenotype_file = "tests/data/scaffolding/v2/phenotype_HIVIND20_filled.xlsx"
+        phenotype_file = "tests/data/testing/phenotype_IND73.xlsx"
         output_yaml = self.mapping_template_yaml
 
         # Ensure output directory exists
@@ -94,7 +95,7 @@ class TestIndicatorDataGenTooling(unittest.TestCase):
 
 class TestFhirBundleTests(unittest.TestCase):
     # Skip for CI
-    @unittest.skip("Skip for CI")
+    # @unittest.skip("Skip for CI")
     def setUp(self):
         # Prerequisite: generate FHIR bundles for tests
         phenotype_file = "tests/data/scaffolding/v2/phenotype_HIVIND20_filled.xlsx"
@@ -103,7 +104,9 @@ class TestFhirBundleTests(unittest.TestCase):
         if os.path.exists(output_directory):
             shutil.rmtree(output_directory)
         os.makedirs(output_directory)
-        generator = FhirBundleGenerator(phenotype_file, mapping_file, output_directory)
+        generator = FhirBundleGenerator(
+            phenotype_file, mapping_file, output_directory, "http://localhost:8099"
+        )
         generator.execute()
 
     def test_fhir_bundle_generator(self):
@@ -200,7 +203,11 @@ class TestFhirBundleTests(unittest.TestCase):
         # Execute the $evaluate-measure operation using the period from expected report.
         evaluate_url = f"{FHIR_SERVER_URL}/Measure/HIVIND20/$evaluate-measure"
         params = {"periodStart": period_start, "periodEnd": period_end}
-        requests.get(evaluate_url, params=params)
+        resp = requests.get(evaluate_url, params=params)
+
+        # Print response
+        print(resp.text)
+
         # self.assertEqual(resp.status_code, 200, "Evaluate measure operation failed.")
         # new_report = resp.json()
 
